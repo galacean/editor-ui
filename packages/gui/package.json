@@ -1,0 +1,30 @@
+{
+  "name": "@galacean/gui",
+  "version": "1.0.0",
+  "description": "A general-purpose GUI controller built with @galacean/editor-ui",
+  "main": "index.js",
+  "scripts": {
+    "dev": "storybook dev -p 6006",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@galacean/editor-ui": "workspace:*"
+  },
+  "devDependencies": {
+    "@chromatic-com/storybook": "^1.7.0",
+    "@storybook/addon-essentials": "^8.2.9",
+    "@storybook/addon-interactions": "^8.2.9",
+    "@storybook/addon-links": "^8.2.9",
+    "@storybook/addon-onboarding": "^8.2.9",
+    "@storybook/blocks": "^8.2.9",
+    "@storybook/react": "^8.2.9",
+    "@storybook/react-vite": "^8.2.9",
+    "@storybook/test": "^8.2.9",
+    "prop-types": "^15.8.1",
+    "storybook": "^8.2.9"
+  }
+}

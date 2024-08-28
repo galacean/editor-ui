@@ -1,0 +1,29 @@
+{
+  "name": "editor-ui",
+  "version": "1.0.0",
+  "description": "An opinionated UI library designed to create engaging and functional online tools with ease.",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "pnpm --filter \"@galacean/editor-ui\" dev",
+    "dev:gui": "pnpm --filter \"@galacean/gui\" dev"
+  },
+  "keywords": [
+    "ui",
+    "editor",
+    "tool",
+    "react",
+    "3d",
+    "inspector"
+  ],
+  "author": "Mrkou47",
+  "license": "MIT",
+  "devDependencies": {
+    "prettier": "^3.3.3",
+    "eslint": "^9.9.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "rimraf": "^6.0.1"
+  }
+}
