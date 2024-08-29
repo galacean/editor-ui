@@ -35,9 +35,10 @@ jobs:
     steps:
       - name: pwd
         run: pwd
+
       - name: log file list
         run: ls -la
-    steps:
+
       - name: Run Chromatic for editor-ui
         uses: chromaui/action@latest
         with:
