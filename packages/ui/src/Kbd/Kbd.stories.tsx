@@ -42,7 +42,7 @@ export const KbdColor: StoryFn = () => {
 }
 
 /**
- * The best way to display multiple keyboard shortcuts is to use the KbdGroup component.
+ * The best way to display multiple keyboard shortcuts is to use the `<KbdGroup />` component.
  */
 export const KbdGroup = () => {
   return (

@@ -210,7 +210,16 @@ function Select(props: SelectProps) {
     ...rest
   } = props;
 
-  const valueType = propValueType ?? typeof propValue ?? "string";
+  let valueType = 'string';
+  if(propValueType) {
+    valueType = propValueType;
+  } else {
+    if (typeof propValue === "number") {
+      valueType = "number";
+    } else if (typeof propValue === "string") {
+      valueType = "string";
+    }
+  }
 
   const [value, setValue] = useControllableState<string>({
     prop: propValue !== undefined && propValue !== null ? String(propValue) : undefined,

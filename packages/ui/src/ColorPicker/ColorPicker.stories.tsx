@@ -22,7 +22,7 @@ export default {
   argTypes,
   args: {
     disabled: false,
-    fullsize: false,
+    fullsize: true,
   }
 } as Meta;
 
@@ -34,7 +34,7 @@ export const Overview = (args) => {
   }
 
   return (
-    <Flex gap="sm" style={{ width: '500px' }} align="v" justifyContent="center">
+    <Flex gap="sm" style={{ width: '300px' }} align="v" justifyContent="center">
       <ColorPicker mode="constant" value={color} onValueChange={handleOnChange} {...args} />
       <Textarea value={JSON.stringify(color)} />
     </Flex>
@@ -54,7 +54,7 @@ export const GradientMode = (args) => {
   }
 
   return (
-    <Flex gap="sm" style={{ width: '500px' }} align="v" justifyContent="center">
+    <Flex gap="sm" style={{ width: '300px' }} align="v" justifyContent="center">
       <ColorPicker mode="gradient" value={color} onValueChange={handleOnChange} {...args} />
       <Textarea value={JSON.stringify(color)} />
     </Flex>

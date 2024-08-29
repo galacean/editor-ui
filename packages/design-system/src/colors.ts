@@ -71,7 +71,7 @@ export const semanticColors = {
   primary: "$blue9",
   primaryActive: "$blue10",
   appBg: "$gray2",
-  subtleBg: "$grayA3",
+  secondaryBg: "$grayA3",
   subtleColor: "$gray11",
   subtleHoverColor: "$gray12",
   panelTitleBg: "$gray5",

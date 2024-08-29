@@ -3,7 +3,7 @@ import { IconCopy, IconCheck } from "@tabler/icons-react";
 import { colord } from "colord";
 import { styled } from "@galacean/design-system";
 
-import { type IColor } from "./helper";
+import { type Color } from "./helper";
 import { useEyeDropper } from "../../hooks/useEyeDropper";
 
 import { Flex } from "../Flex";
@@ -54,8 +54,8 @@ const StyledColorPreview = styled("div", {
 });
 
 interface ColorPickerToolsProps {
-  color: IColor;
-  onPickColor?: (color: IColor) => void;
+  color: Color;
+  onPickColor?: (color: Color) => void;
   onCopyColor?: () => void;
   readonly: boolean;
 }

@@ -88,7 +88,7 @@ export const SimpleSelectItem = React.forwardRef<HTMLDivElement, SimpleSelectIte
 
 export interface SimpleSelectProps extends SelectProps {
   placeholder?: string;
-  valueRenderer?: (value: string) => React.ReactNode;
+  valueRenderer?: (value?: string) => React.ReactNode;
   // triggerCss?: CSS;
   id?: string;
 }
@@ -105,7 +105,7 @@ export const SimpleSelect = (props: SimpleSelectProps) => {
   return (
     <Select.Root {...rest}>
       <SelectTrigger aria-label="Food" asChild>
-        <ActionButton css={{ position: "relative" }} id={rest.id} cornerIcon>
+        <ActionButton css={{ position: "relative" }} id={rest.id} corner>
           <Select.Value placeholder={placeholder}>{renderedValue}</Select.Value>
         </ActionButton>
       </SelectTrigger>

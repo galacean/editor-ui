@@ -1,34 +1,13 @@
-import React, { PropsWithChildren, ReactNode, forwardRef, useState, useEffect, useCallback } from "react";
+import { PropsWithChildren, ReactNode, forwardRef } from "react";
 
+import { button } from "@galacean/design-system/recipes";
 import { styled, StitchesComponent } from "@galacean/design-system";
+
 import { Spin } from "../Spin";
 import { Flex } from "../Flex";
-import { button } from "@galacean/design-system/recipes";
 import { useAsyncStatus } from "../../hooks/useAsyncStatus";
 
-/**
- * Button component has many variant such as size, style variant and status
- * Size:
- * - xs (default)
- * - sm
- * - lg
- * - lg
- * Variant:
- * - primary
- * - light
- * - outline
- * - subtle
- * - uppercase
- * Status:
- * - disabled
- * - critical
- * - loading
- * - positive
- */
-
 const StyledButton = styled("button", button, {
-  // for boxShadow transition
-  boxShadow: "0 0 0 0 transparent",
   transition: "box-shadow .2s ease, opacity .6s ease-out",
   userSelect: "none",
   whiteSpace: "nowrap",
@@ -42,7 +21,6 @@ const StyledButton = styled("button", button, {
     }
   },
   variants: {
-    // The scale of button
     size: {
       xs: {
         height: "$5",
@@ -98,9 +76,6 @@ const StyledButton = styled("button", button, {
         backgroundColor: "transparent",
         border: "1px solid $grayA5",
         transition: "border-color .2s ease",
-        "&:focus-visible": {
-          boxShadow: "0 0 0 2px $colors$grayA7"
-        },
         "&:hover": {
           border: "1px solid $colors$gray8"
         },
@@ -119,38 +94,8 @@ const StyledButton = styled("button", button, {
           backgroundColor: "$blue10"
         }
       },
-      outline: {
-        borderWidth: 1,
-        borderStyle: "solid",
-        borderColor: "$blue7",
-        color: "$blue11",
-        backgroundColor: "$blue3",
-        "&:hover": {
-          borderColor: "$blue7",
-          backgroundColor: "$blue4"
-        },
-        "&:active": {
-          borderColor: "$blue8",
-          backgroundColor: "$blue5"
-        },
-        "&:disabled": {
-          borderColor: "$gray6"
-        }
-      },
-      subtle: {
-        color: "$blue9",
-        backgroundColor: "transparent",
-        "&:hover": {
-          color: "$blue10",
-          backgroundColor: "$blue4"
-        },
-        "&:active": {
-          color: "$blue10",
-          backgroundColor: "$blue4"
-        }
-      },
       secondary: {
-        backgroundColor: "$subtleBg",
+        backgroundColor: "$secondaryBg",
         color: "$gray11",
         "&:hover": {
           color: "$gray12",
@@ -160,9 +105,6 @@ const StyledButton = styled("button", button, {
           color: "$gray12",
           backgroundColor: "$grayA5"
         },
-        "&:focus-visible": {
-          boxShadow: "0 0 0 2px $colors$blue8"
-        }
       },
       subsecondary: {
         color: "$gray11",
@@ -173,9 +115,6 @@ const StyledButton = styled("button", button, {
         "&:active": {
           backgroundColor: "$gray5"
         },
-        "&:focus-visible": {
-          boxShadow: "0 0 0 2px $colors$gray7"
-        }
       }
     },
     uppercase: {
@@ -188,9 +127,6 @@ const StyledButton = styled("button", button, {
       true: {
         color: "$red11",
         backgroundColor: "transparent",
-        "&:focus-visible": {
-          boxShadow: "0 0 0 2px $colors$redA7"
-        },
         "&:hover": {
           backgroundColor: "$red3"
         },
@@ -203,9 +139,6 @@ const StyledButton = styled("button", button, {
       true: {
         color: "$green11",
         backgroundColor: "transparent",
-        "&:focus-visible": {
-          boxShadow: "0 0 0 3px $colors$greenA7"
-        },
         "&:hover": {
           backgroundColor: "$greenA3"
         },
@@ -235,10 +168,8 @@ const StyledButton = styled("button", button, {
       variant: "default",
       critical: true,
       css: {
-        borderColor: "$red7",
-        "&:focus-visible": {
-          boxShadow: "0 0 0 3px $colors$redA7"
-        },
+        color: "$red10",
+        borderColor: "$red6",
         "&:hover": {
           borderColor: "$red8",
           backgroundColor: "$redA3"
@@ -255,10 +186,8 @@ const StyledButton = styled("button", button, {
       variant: "default",
       positive: true,
       css: {
-        borderColor: "$green7",
-        "&:focus-visible": {
-          boxShadow: "0 0 0 3px $colors$greenA7"
-        },
+        color: "$green10",
+        borderColor: "$green6",
         "&:hover": {
           borderColor: "$green8",
           backgroundColor: "$greenA3"
@@ -272,7 +201,7 @@ const StyledButton = styled("button", button, {
       variant: "primary",
       critical: true,
       css: {
-        color: "white",
+        color: "$red12",
         backgroundColor: "$red9",
         "&:hover": {
           backgroundColor: "$red10"
@@ -286,7 +215,7 @@ const StyledButton = styled("button", button, {
       variant: "primary",
       positive: true,
       css: {
-        color: "white",
+        color: "$green12",
         backgroundColor: "$green9",
         "&:hover": {
           backgroundColor: "$green10"
@@ -297,39 +226,32 @@ const StyledButton = styled("button", button, {
       }
     },
     {
-      variant: "outline",
+      variant: "secondary",
       critical: true,
       css: {
         color: "$red11",
-        backgroundColor: "transparent",
-        borderColor: "$red7",
-        "&:focus-visible": {
-          boxShadow: "0 0 0 3px $colors$redA7"
-        },
+        backgroundColor: "$redA3",
         "&:hover": {
-          borderColor: "$red8",
-          backgroundColor: "$redA3"
+          color: "$red11",
+          backgroundColor: "$redA4"
         },
         "&:active": {
-          backgroundColor: "$redA4"
+          backgroundColor: "$redA3"
         }
       }
     },
     {
       variant: "secondary",
-      critical: true,
+      positive: true,
       css: {
-        color: "$red11",
-        backgroundColor: "redA3",
-        "&:focus-visible": {
-          boxShadow: "0 0 0 3px $colors$redA7"
-        },
+        color: "$green11",
+        backgroundColor: "$greenA3",
         "&:hover": {
-          color: "$red11",
-          backgroundColor: "$redA3"
+          color: "$green11",
+          backgroundColor: "$greenA4"
         },
         "&:active": {
-          backgroundColor: "$redA4"
+          backgroundColor: "$greenA3"
         }
       }
     },
@@ -342,7 +264,7 @@ const StyledButton = styled("button", button, {
           boxShadow: "0 0 0 3px $colors$redA7"
         },
         "&:hover": {
-          color: "$red11",
+          color: "$red10",
           backgroundColor: "$redA3"
         },
         "&:active": {
@@ -350,25 +272,6 @@ const StyledButton = styled("button", button, {
         }
       }
     },
-    {
-      variant: "outline",
-      positive: true,
-      css: {
-        color: "$green11",
-        backgroundColor: "transparent",
-        borderColor: "$green7",
-        "&:focus-visible": {
-          boxShadow: "0 0 0 3px $colors$greenA7"
-        },
-        "&:hover": {
-          borderColor: "$green8",
-          backgroundColor: "$greenA3"
-        },
-        "&:active": {
-          backgroundColor: "$greenA4"
-        }
-      }
-    }
   ]
 });
 

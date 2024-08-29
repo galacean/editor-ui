@@ -44,4 +44,4 @@ const ColorPicker = forwardRef<HTMLButtonElement, ColorPickerProps>(function Col
 })
 
 export { ColorPicker };
-export type { IGradientColor, IParticleColor } from "./helper";
+export type { GradientColor, ParticleColor } from "./helper";

@@ -106,7 +106,6 @@ export const basicItemStyle = styled('div', {
   alignItems: "center",
   justifyContent: "space-between",
   lineHeight: 1,
-  // fontSize: "$1",
   fontSize: "11px",
   borderRadius: "$2",
   color: "$gray11",

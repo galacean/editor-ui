@@ -18,7 +18,7 @@ const StyledTextarea = styled("textarea", {
         backgroundColor: "$gray2",
       },
       subtle: {
-        backgroundColor: "$subtleBg",
+        backgroundColor: "$secondaryBg",
       }
     },
   },

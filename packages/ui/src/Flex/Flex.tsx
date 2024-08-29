@@ -1,25 +1,20 @@
-import React, { ComponentProps, PropsWithChildren } from "react";
+import React, { PropsWithChildren } from "react";
 
 import { styled } from "@galacean/design-system";
-import type { StitchesComponent, VariantProps } from "@galacean/design-system";
+import type { StitchesComponent } from "@galacean/design-system";
 
 const StyledFlex = styled("div", {
   display: "flex",
   boxSizing: "border-box",
   variants: {
-    dir: {
+    direction: {
       column: {
         flexDirection: "column",
         alignItems: "flex-start"
       },
       row: { flexDirection: "row" },
-      rr: { flexDirection: "row-reverse" },
-      cr: { flexDirection: "column-reverse" }
-    },
-    end: {
-      true: {
-        justifyContent: "flex-end"
-      }
+      "row-reverse": { flexDirection: "row-reverse" },
+      "column-reverse": { flexDirection: "column-reverse" }
     },
     justifyContent: {
       center: {
@@ -30,6 +25,9 @@ const StyledFlex = styled("div", {
       },
       around: {
         justifyContent: "space-around"
+      },
+      end: {
+        justifyContent: "flex-end"
       }
     },
     align: {
@@ -60,16 +58,16 @@ const StyledFlex = styled("div", {
     }
   },
   defaultVariants: {
-    dir: "row",
+    direction: "row",
     wrap: true
   }
 });
 
 export type FlexProps = PropsWithChildren<StitchesComponent<typeof StyledFlex>>;
 
-export const Flex = React.forwardRef<HTMLDivElement, FlexProps>(function Flex(props: FlexProps, ref) {
+export const Flex = React.forwardRef<HTMLDivElement, FlexProps>(function Flex(props: FlexProps, forwardedRef) {
   return (
-    <StyledFlex {...props} ref={ref}>
+    <StyledFlex {...props} ref={forwardedRef}>
       {props.children}
     </StyledFlex>
   );

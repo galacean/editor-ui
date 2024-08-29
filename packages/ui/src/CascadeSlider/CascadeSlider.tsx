@@ -155,6 +155,7 @@ export interface CascadeSliderProps {
    * The step size for each thumb movement. This defines the granularity of the slider's value increments.
    * @defaultValue 1
    * @default 1
+   * @example 0.1
    */
   step?: number;
   /**
@@ -186,7 +187,7 @@ const sum = (v: number[]) => v.reduce((a, b) => a + b, 0);
  * 
  * This Component provide controlled and uncontrolled modes.
  */
-const CascadeSlider = forwardRef<HTMLSpanElement, CascadeSliderProps>(function CascadeSlider(props) {
+const CascadeSlider = forwardRef<HTMLSpanElement, CascadeSliderProps>(function CascadeSlider(props: CascadeSliderProps) {
   const { value, defaultValue, onValueChange, formatter, step = 1, max: originalMax, unit = "%" } = props;
   const [values, setValues] = useControllableState<number[]>({
     prop: value,

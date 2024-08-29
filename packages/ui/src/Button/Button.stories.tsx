@@ -33,7 +33,7 @@ const meta = {
     variant: {
       type: {
         name: "enum",
-        value: ["default", "outline", "secondary", "subtle", "subsecondary"]
+        value: ["default", "primary", "secondary", "subsecondary"]
       },
       control: {
         type: "radio"
@@ -42,7 +42,7 @@ const meta = {
   },
   args: {
     children: 'Galacean Button',
-    size: "md",
+    size: "sm",
     variant: 'secondary',
     onClick: fn(),
     critical: false,
@@ -55,6 +55,20 @@ export default meta;
 export const Overview: StoryFn = (args) => {
   return (
     <Button {...args} />
+  )
+}
+
+/**
+ * `<Button />` Component provides 4 variants: `default`, `outline`, `secondary`, `subsecondary`.
+ */
+export const Variants: StoryFn = (args) => {
+  return (
+    <Flex gap="xs">
+      <Button {...args} variant="default">Default</Button>
+      <Button {...args} variant="primary">Primary</Button>
+      <Button {...args} variant="secondary">Secondary</Button>
+      <Button {...args} variant="subsecondary">Subsecondary</Button>
+    </Flex>
   )
 }
 

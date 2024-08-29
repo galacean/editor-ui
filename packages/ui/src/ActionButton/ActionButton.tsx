@@ -1,31 +1,11 @@
 
-import React, { useState, forwardRef } from "react";
+import { forwardRef } from "react";
 
 import { StitchesComponent, styled } from "@galacean/design-system";
 import { useAsyncStatus } from "../../hooks/useAsyncStatus";
 import { Spin } from "../Spin";
 import { button } from "@galacean/design-system/recipes";
 import { IconRightBottomCorner } from "../Icons/IconRightBottomCorner";
-
-/**
- * Button component has many variant such as size, style variant and status
- * Size:
- * - xs (default)
- * - sm
- * - lg
- * - lg
- * Variant:
- * - primary
- * - light
- * - outline
- * - subtle
- * - uppercase
- * Status:
- * - disabled
- * - critical
- * - loading
- * - positive
- */
 
 const StyledActionButton = styled("button", button, {
   boxShadow: "$prepend",
@@ -43,7 +23,7 @@ const StyledActionButton = styled("button", button, {
     borderColor: "transparent"
   },
   variants: {
-    withCorner: {
+    corner: {
       true: {
         position: "relative"
       }
@@ -118,7 +98,7 @@ const StyledActionButton = styled("button", button, {
         }
       },
       secondary: {
-        backgroundColor: "$subtleBg",
+        backgroundColor: "$secondaryBg",
         "&:hover": {
           backgroundColor: "$grayA4"
         },
@@ -237,8 +217,8 @@ const CornerIcon = styled(IconRightBottomCorner, {
   width: "4px !important",
   height: "4px !important",
   color: "var(CurrentColor, $gray8)",
-  bottom: 2,
-  right: 2
+  bottom: 3,
+  right: 3
 });
 
 export interface ActionButtonProps extends StitchesComponent<typeof StyledActionButton> {
@@ -248,11 +228,14 @@ export interface ActionButtonProps extends StitchesComponent<typeof StyledAction
   async?: () => Promise<unknown>;
   loading?: boolean;
   as?: string;
-  cornerIcon?: boolean;
+  /**
+   * Sometimes the ActionButton is acting as a trigger like opening a modal, in this case, you could set the `corner` prop to `true` to show a corner icon.
+   */
+  corner?: boolean;
 };
 
 export const ActionButton = forwardRef<HTMLButtonElement, ActionButtonProps>(function ActionButton(props, forwardedRf) {
-  const { loading: propLoading, async, onClick, size, cornerIcon, ...rest } = props;
+  const { loading: propLoading, async, onClick, size, corner, ...rest } = props;
   const { handleClick, loading } = useAsyncStatus({
     asyncFunction: async,
     propLoading,
@@ -265,11 +248,11 @@ export const ActionButton = forwardRef<HTMLButtonElement, ActionButtonProps>(fun
       size={size}
       onClick={handleClick}
       ref={forwardedRf}
-      withCorner={cornerIcon}
+      corner={corner}
       disabled={loading || props.disabled}
     >
       {loading ? <Spin size="xs" color="default" /> : rest.children}
-      {cornerIcon && <CornerIcon />}
+      {corner && <CornerIcon />}
     </StyledActionButton>
   );
 });

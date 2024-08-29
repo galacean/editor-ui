@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import * as SliderPrimitive from "@radix-ui/react-slider";
 
 import { styled, type StitchesComponent } from "@galacean/design-system";
+import { useControllableState } from "@radix-ui/react-use-controllable-state";
 // import { Tooltip } from "../Tooltip";
 
 const StyledTrack = styled(SliderPrimitive.Track, {
@@ -12,7 +13,7 @@ const StyledTrack = styled(SliderPrimitive.Track, {
   borderRadius: "$2",
   overflow: "hidden",
   color: "$gra11",
-  backgroundColor: "$subtleBg",
+  backgroundColor: "$secondaryBg",
   '&[data-orientation="horizontal"]': {
     height: "100%"
   },
@@ -122,8 +123,9 @@ const StyledSliderSlot = styled("div", {
   position: "absolute",
   pointerEvents: "none",
   top: "50%",
-  fontSize: "$0_5",
+  fontSize: "10px",
   fontFamily: "$mono",
+  color: '$grayA9',
   variants: {
     position: {
       start: {
@@ -196,12 +198,27 @@ function Ruler({ length, interval, majorInterval }: RulerProps) {
 
 export interface SliderProps extends StitchesComponent<typeof StyledSlider> {
   tooltip?: boolean;
+  /**
+   * Whether to show the ruler, default is `false`
+   */
   showRuler?: boolean;
+  /**
+   * You could add some custom slots at the start via this prop. By default it will show the `MIN` when the value is at the minimum.
+   */
   startSlot?: React.ReactNode;
-  centerSlot?: React.ReactNode;
+  /**
+   * You could add some custom slots at the end via this prop. By default it will show the `MAX` when the value is at the maximum.
+   */
   endSlot?: React.ReactNode;
 };
 
+/**
+ * A slider component allows users to select a value from a range of values.
+ * 
+ * This component is built on top of the `@radix-ui/react-slider`
+ * 
+ * This component provide controlled and uncontrolled modes.
+ */
 export function Slider(props: SliderProps) {
   const {
     onValueChange,
@@ -209,7 +226,6 @@ export function Slider(props: SliderProps) {
     disabled,
     tooltip = true,
     startSlot,
-    centerSlot,
     endSlot,
     compact,
     min = 0,
@@ -217,7 +233,11 @@ export function Slider(props: SliderProps) {
     showRuler = false,
     ...rest
   } = props;
-  const [value, setValue] = useState(props.value || props.defaultValue || [0]);
+  const [value, setValue] = useControllableState({
+    prop: props.value,
+    defaultProp: props.defaultValue || [0],
+    onChange: props.onValueChange
+  });
   const [showTooltip, setShowTooltip] = useState(false);
   const [accurateMode, setAccurateMode] = useState(false);
 
@@ -251,9 +271,8 @@ export function Slider(props: SliderProps) {
     >
       <StyledTrack className="slider-track">
         <StyledRange className="slider-range" />
-        {value[0] === min && <StyledSliderSlot position="start">MIN</StyledSliderSlot>}
-        {centerSlot && <StyledSliderSlot position="center">{centerSlot}</StyledSliderSlot>}
-        {value[0] === max && <StyledSliderSlot position="end">MAX</StyledSliderSlot>}
+        {value![0] === min && <StyledSliderSlot position="start">MIN</StyledSliderSlot>}
+        {value![value!.length - 1] === max && <StyledSliderSlot position="end">MAX</StyledSliderSlot>}
         {showRuler && <Ruler length={max} interval={1} majorInterval={Math.round(max / 10)} />}
       </StyledTrack>
       {/* {tooltip ? (
@@ -261,7 +280,7 @@ export function Slider(props: SliderProps) {
           <StyledThumb />
         </Tooltip>
       ) : ( */}
-        <StyledThumb />
+        {value?.map((v, i) => <StyledThumb key={i} />)}
       {/* )} */}
     </StyledSlider>
   );

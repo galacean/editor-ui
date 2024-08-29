@@ -26,7 +26,8 @@
     "build": "tsup",
     "build:nodts": "tsup --no-dts",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "chromatic": "npx chromatic --project-token=CHROMATIC_TOKEN"
   },
   "keywords": [
     "ui",
@@ -36,7 +37,9 @@
     "3d",
     "inspector"
   ],
-  "author": "Mrkou47",
+  "author": {
+    "name": "Mrkou47"
+  },
   "license": "MIT",
   "devDependencies": {
     "@chromatic-com/storybook": "^1.6.1",
@@ -55,9 +58,7 @@
     "@types/react-dom": "^18.3.0",
     "postcss": "^8.4.41",
     "prop-types": "^15.8.1",
-    "storybook": "^8.2.9",
-    "tsup": "^8.2.4",
-    "typescript": "^5.5.4"
+    "storybook": "^8.2.9"
   },
   "packageManager": "pnpm@8.6.4",
   "dependencies": {
@@ -81,6 +82,7 @@
     "@stitches/react": "^1.2.8",
     "@tabler/icons-react": "^3.12.0",
     "colord": "^2.9.3",
+    "mathjs": "^13.1.1",
     "react-colorful": "^5.6.1"
   },
   "peerDependencies": {

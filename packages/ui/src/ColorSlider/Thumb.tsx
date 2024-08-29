@@ -145,7 +145,7 @@ function Thumb(props: ThumbProps) {
   return (
     <StyledThumbRoot
       active={active}
-      dir="column"
+      direction="column"
       align="v"
       ref={ref}
       onClick={handleSelectThumb}

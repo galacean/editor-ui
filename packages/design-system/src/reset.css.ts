@@ -8,9 +8,6 @@ export const resetCSS = {
       font: "inherit",
       verticalAlign: "baseline"
     },
-  "html, body": {
-    color: "var(--g-colors-gray12)"
-  },
   canvas: {
     outline: "none"
   },

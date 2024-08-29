@@ -38,12 +38,6 @@ const StyledBadge = styled("span", {
   fontSize: "$sm",
   padding: '$0_5 $2',
   variants: {
-    variant: {
-      solid: {
-        backgroundColor: "$gray9",
-        color: "$white"
-      }
-    },
     pill: {
       true: {
         borderRadius: "$round",

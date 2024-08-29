@@ -69,7 +69,7 @@ export const CustomTitleContent: StoryFn<typeof Accordion> = (args) => {
 
 export const Uncontrolled = function Controlled(args) {
   return (
-    <Flex gap="sm" dir="column" style={{ width: '300px' }}>
+    <Flex gap="sm" direction="column" style={{ width: '300px' }}>
       <Badge status="info">Single Mode</Badge>
       <Accordion {...args} type="single" defaultValue="first">
         <AccordionItem value="first" title="First item">
@@ -98,7 +98,7 @@ export const Controlled = function Uncontrolled(args) {
   const [value1, setValue1] = useState(['first']); 
 
   return (
-    <Flex gap="sm" dir="column" style={{ width: '300px' }}>
+    <Flex gap="sm" direction="column" style={{ width: '300px' }}>
       <Badge status="info">Single Mode</Badge>
       <Button onClick={() => setValue0('second')}>Open Second Accordion</Button>
       <Accordion {...args} type="single" value={value0} onValueChange={setValue0}>

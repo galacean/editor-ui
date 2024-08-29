@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, forwardRef, useState, useCallback } from "react";
 import ReactDOM from "react-dom";
 import { useControllableState } from "@radix-ui/react-use-controllable-state";
-import { IconSearch, IconCheck, IconChevronDown } from "@tabler/icons-react";
+import { IconSearch, IconCheck, IconChevronDown, IconX } from "@tabler/icons-react";
 
 import { PopoverCloseTrigger, Popover } from "../Popover";
 import { Flex } from "../Flex";
@@ -40,13 +40,22 @@ const StyledChevronDown = styled(IconChevronDown, {
 const SearchIcon = styled(IconSearch, {
   height: "14px",
   width: "14px",
-  marginLeft: "$1",
   color: "$gray11",
   strokeWidth: 1.5,
   flexShrink: 0
 });
 
+const StyledPlaceholder = styled('span', {
+  all: 'unset',
+  fontSize: '11px',
+  color: '$gray11',
+})
+
 interface ComboboxContextProps {
+  autoClose: boolean;
+  placeholder?: string;
+  valueRenderer?: (value: string) => React.ReactNode;
+  
   value: string[];
   selectValue?: (val: string) => void;
 
@@ -66,6 +75,7 @@ interface ComboboxContextProps {
 }
 
 const ComboboxContext = createContext<ComboboxContextProps>({
+  autoClose: true,
   value: [],
   open: false,
   setOpen: () => {},
@@ -75,6 +85,7 @@ const ComboboxContext = createContext<ComboboxContextProps>({
 });
 
 export interface ComboboxTriggerProps {
+  placeholder?: string;
   children?: React.ReactNode;
   valueRenderer?: (value: string) => React.ReactNode;
 }
@@ -83,12 +94,14 @@ export const ComboboxTrigger = forwardRef<HTMLButtonElement, ComboboxTriggerProp
   props,
   forwardedRef
 ) {
-  const { value, selectValue, onValueNodeChange } = useContext(ComboboxContext);
+  const { value, selectValue, onValueNodeChange, placeholder } = useContext(ComboboxContext);
   const { valueRenderer, ...rest } = props;
 
   return (
     <StyledComboboxTrigger {...rest} ref={forwardedRef}>
-      <Flex gap="xxs" ref={onValueNodeChange} />
+      <Flex gap="xxs" ref={onValueNodeChange}>
+      </Flex>
+      {value && value.length === 0 && <StyledPlaceholder>{placeholder}</StyledPlaceholder>}
       <StyledChevronDown />
     </StyledComboboxTrigger>
   );
@@ -96,7 +109,7 @@ export const ComboboxTrigger = forwardRef<HTMLButtonElement, ComboboxTriggerProp
 
 const StyledComboboxContent = styled(Flex, {
   padding: "$1",
-  minHeight: "100px"
+  minHeight: "60px"
 });
 
 const StyledComboboxSearchInput = styled("input", {
@@ -127,16 +140,31 @@ function ComboboxSearchInput(props: ComboboxSearchInputProps) {
   };
 
   return (
-    <Flex wrap={false} align="v" css={{ borderBottom: "1px solid $gray6" }}>
+    <Flex
+      wrap={false}
+      align="v"
+      css={{
+        borderBottom: "1px solid $border",
+        padding: "0 $2 0 $1",
+      }}
+    >
       <SearchIcon />
       <StyledComboboxSearchInput {...rest} value={searchValue} onChange={handleOnChange} />
+      <IconX size="12px" />
     </Flex>
   );
 }
 
 const StyledComboBoxItem = styled("button", basicItemStyle, {
   userSelect: "none",
+  width: '100%',
   "&:hover": {
+    backgroundColor: "$grayA3"
+  },
+  "&:focus": {
+    backgroundColor: "$grayA3"
+  },
+  "&:focus:hover": {
     backgroundColor: "$grayA3"
   },
   variants: {
@@ -173,7 +201,8 @@ export function ComboboxItem(props: ComboboxItemProps) {
     close,
     setFocusedIndex,
     valueNode,
-    searchValue
+    searchValue,
+    autoClose
   } = useContext(ComboboxContext);
   const isSelected = selectedValue.indexOf(value) !== -1;
   const ivVisible = searchValue ? value.toLowerCase().indexOf(searchValue.toLowerCase()) !== -1 : true;
@@ -193,7 +222,7 @@ export function ComboboxItem(props: ComboboxItemProps) {
     e.preventDefault();
     e.stopPropagation();
     selectValue && selectValue(value);
-    close && close();
+    autoClose && close && close();
   }
 
   return (
@@ -212,7 +241,6 @@ export function ComboboxItem(props: ComboboxItemProps) {
           {isSelected && <IconCheck size="12px" />}
         </StyledComboBoxItem>
       )}
-      {/* Portal the select item text into the trigger value node */}
       {isSelected && valueNode
         ? ReactDOM.createPortal(
             <Badge onClick={preventDefault} closeable onClose={handleRemove}>
@@ -226,7 +254,19 @@ export function ComboboxItem(props: ComboboxItemProps) {
 }
 
 export interface ComboboxProps {
+  /**
+   * indicates if the select is multiple
+   */
+  multiple?: boolean;
+  /**
+   * The placeholder for the combobox
+   */
   placeholder?: string;
+  /**
+   * If true, the combobox will display a search input
+   * 
+   * @default true
+   */
   searchable?: boolean;
 
   value?: string[];
@@ -239,11 +279,16 @@ export interface ComboboxProps {
 
   valueRenderer?: (value: string) => React.ReactNode;
 
-  multiple: boolean;
+  /**
+   * If true, the popover will close when an item is selected
+   * 
+   * @default true
+   */
+  autoClose?: boolean
 }
 
 export function Combobox(props: ComboboxProps) {
-  const { searchable = true, children, onSearch, valueRenderer } = props;
+  const { searchable = true, autoClose = true, children, onSearch, valueRenderer, placeholder } = props;
   const [open, setOpen] = useState(false);
   const closeRef = React.useRef<HTMLButtonElement>(null);
   const [valueNode, setValueNode] = React.useState(null);
@@ -274,6 +319,7 @@ export function Combobox(props: ComboboxProps) {
       value={{
         value: value!,
         selectValue,
+        valueRenderer,
 
         focusedIndex,
         setFocusedIndex,
@@ -286,7 +332,9 @@ export function Combobox(props: ComboboxProps) {
         close,
 
         valueNode,
-        onValueNodeChange: setValueNode
+        onValueNodeChange: setValueNode,
+        autoClose,
+        placeholder,
       }}
     >
       <Popover
@@ -294,11 +342,15 @@ export function Combobox(props: ComboboxProps) {
         sideOffset={4}
         forceRender
         constrainSize
-        trigger={<ComboboxTrigger valueRenderer={valueRenderer} />}
+        trigger={
+          <ComboboxTrigger
+            placeholder={placeholder}
+          />
+        }
         onOpenChange={setOpen}
       >
         {searchable && <ComboboxSearchInput onSearch={onSearch} />}
-        <StyledComboboxContent dir="column" role="listbox">
+        <StyledComboboxContent direction="column" role="listbox">
           {children}
         </StyledComboboxContent>
         <PopoverCloseTrigger ref={closeRef} style={{ display: "none" }} />

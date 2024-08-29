@@ -23,23 +23,34 @@ const meta: Meta<typeof ActionButton> = {
     size: "md",
     fancy: false,
     disabled: false,
+    corner: false,
   },
   argTypes: {
     size: {
-      defaultValue: "sm",
       type: {
         name: "enum",
         value: ["xs", "sm", "md", "lg"]
       }
     },
     variant: {
-      defaultValue: "outline",
       type: {
         name: "enum",
         value: ["outline", "secondary", "subtle"]
       },
       control: {
         type: "inline-radio"
+      }
+    },
+    fancy: {
+      description: 'Add active effect to the button.',
+      type: {
+        name: "boolean"
+      }
+    },
+    corner: {
+      description: 'Sometimes the ActionButton is acting as a trigger like opening a modal, in this case, you could set the `corner` prop to `true` to show a corner icon.',
+      type: {
+        name: "boolean"
       }
     },
   },

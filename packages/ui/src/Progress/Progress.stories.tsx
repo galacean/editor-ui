@@ -29,7 +29,7 @@ type Story = StoryObj<typeof Progress>;
 export const Overview: StoryFn<typeof Progress> = (args) => {
   return (
     <Flex style={{ width: '300px' }}>
-      <Progress value={50} {...args} />
+      <Progress value={20} {...args} />
     </Flex>
   )
 }

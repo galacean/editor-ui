@@ -19,7 +19,6 @@ const StyledSegmentControlItem = styled(RadioGroupPrimitive.Item, {
   outline: "none",
   cursor: "pointer",
   padding: "0 $3",
-  // borderRadius: "$2",
   gap: "$1",
   "& > svg": {
     height: "14px",

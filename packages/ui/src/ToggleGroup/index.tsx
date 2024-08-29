@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from "react";
+import { PropsWithChildren } from "react";
 import * as ToggleGroupPrimitive from "@radix-ui/react-toggle-group";
 import type { ToggleGroupItemProps as PrimitiveItemProps } from "@radix-ui/react-toggle-group";
 

@@ -160,7 +160,7 @@ export const StyledInputRoot = styled("div", {
         boxShadow: "inset 0 0 0 1px $colors$border",
       },
       subtle: {
-        backgroundColor: "$subtleBg"
+        backgroundColor: "$secondaryBg"
       },
       transparent: {
         backgroundColor: "transparent",
@@ -169,9 +169,18 @@ export const StyledInputRoot = styled("div", {
       }
     }
   },
+  compoundVariants: [
+    {
+      disabled: true,
+      variant: "subtle",
+      css: {
+        backgroundColor: "$gray2"
+      }
+    }
+  ],
   defaultVariants: {
     size: "sm",
-    variant: "subtle"
+    variant: "default"
   }
 });
 
@@ -185,6 +194,9 @@ export interface InputProps extends StitchesComponent<typeof StyledInput> {
   variant?: "default" | "subtle" | "transparent";
 }
 
+/**
+ * The `<Input />` component could lets users enter one of various types of text on a single line.
+ */
 export const Input = React.forwardRef<HTMLInputElement, InputProps>(function Input(props, forwardedRef) {
   const {
     startSlot,
@@ -192,7 +204,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(function Inp
     css,
     rootRef,
     disabled,
-    size = "md",
+    size = "sm",
     variant,
     overrideStartSlotStyle,
     overrideEndSlotStyle,
@@ -212,7 +224,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(function Inp
       )}
       <StyledInput disabled={disabled} ref={forwardedRef} size={size} {...rest} />
       {!!endSlot && (
-        overrideEndSlotStyle ? endSlot : <StyledInputSlot>{startSlot}</StyledInputSlot>
+        overrideEndSlotStyle ? endSlot : <StyledInputSlot>{endSlot}</StyledInputSlot>
       )}
     </StyledInputRoot>
   );

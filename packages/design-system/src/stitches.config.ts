@@ -67,14 +67,16 @@ export const resetStyle = (custom: Record<string, any> = {}) => {
   const reset = globalCss({
     ...resetCSS,
     html: {
-      fontFamily: "var(--g-fonts-default)",
+      fontFamily: "$default",
       fontSize: "16px",
       backgroundColor: "$gray1",
+      color: "$gray12",
       ...custom.html
     },
     body: {
       backgroundColor: "$gray1",
-      ...custom.body
+      color: "$gray12",
+      ...custom.body,
     },
     ...custom
   });

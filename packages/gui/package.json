@@ -3,6 +3,31 @@
   "version": "1.0.0",
   "description": "A general-purpose GUI controller built with @galacean/editor-ui",
   "main": "index.js",
+  "publishConfig": {
+    "access": "public",
+    "main": "cjs/index.js",
+    "module": "lib/es/index.js",
+    "browser": "lib/browser.js",
+    "types": "lib/index.d.ts",
+    "registry": "https://registry.npmjs.org",
+    "exports": {
+      ".": {
+        "import": "./lib/es/index.js",
+        "require": "./lib/cjs/index.js"
+      },
+      "./parser": {
+        "import": "./lib/es/parser.js",
+        "require": "./lib/cjs/parser.js"
+      }
+    },
+    "typesVersions": {
+      "*": {
+        "parser": [
+          "./lib/parser.d.ts"
+        ]
+      }
+    }
+  },
   "scripts": {
     "dev": "storybook dev -p 6006",
     "storybook": "storybook dev -p 6006",

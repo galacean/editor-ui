@@ -1,12 +1,11 @@
 import { Meta, StoryFn } from "@storybook/react";
-import { IconSearch, IconCopyCheckFilled, IconMenu3, IconChevronDown } from "@tabler/icons-react";
+import { IconSearch, IconCopyCheckFilled, IconChevronDown } from "@tabler/icons-react";
 
 import { Badge } from "../Badge";
 import { Flex } from "../Flex";
 import { DropdownMenu, MenuItem } from "../Menu";
 
 import { Input } from "./";
-import { ActionButton } from "../ActionButton";
 import { styled } from "@galacean/design-system";
 
 export default {
@@ -34,23 +33,20 @@ export default {
   }
 } as Meta<typeof Input>;
 
-
 export const Overview: StoryFn<typeof Input> = (args) => {
   return (
-    <Flex dir="column" gap="md" css={{ width: '400px' }}>
+    <Flex direction="column" gap="md" css={{ width: '400px' }}>
       <Input startSlot={<IconSearch height={12} width={12} />} placeholder="Search the components..." size="sm" {...args} />
     </Flex>
   );
 };
-
-
 
 /**
  * You could use the `startSlot` or `endSlot` props to add an icon or any other element to the input.
  */
 export const Slot: StoryFn<typeof Input> = (args) => {
   return (
-    <Flex dir="column" gap="md" css={{ width: '400px' }}>
+    <Flex direction="column" gap="md" css={{ width: '400px' }}>
       <Input
         startSlot={<IconSearch size="12px" />}
         placeholder="Search the components..."
@@ -112,7 +108,7 @@ const DropdownAction = () => {
  */
 export const OverrideSlotStyle: StoryFn<typeof Input> = (args) => {
   return (
-    <Flex dir="column" gap="md" css={{ width: '400px' }}>
+    <Flex direction="column" gap="md" css={{ width: '400px' }}>
       <Input
         startSlot={<DropdownAction />}
         overrideStartSlotStyle

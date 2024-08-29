@@ -27,13 +27,27 @@
   },
   "publishConfig": {
     "access": "public",
-    "main": "es/index.js",
-    "module": "es/index.js",
-    "types": "types/index.d.ts",
-    "registry": "https://registry.npmjs.org"
-  },
-  "devDependencies": {
-    "tsup": "^8.2.4",
-    "typescript": "^5.5.4"
+    "main": "cjs/index.js",
+    "module": "lib/es/index.js",
+    "browser": "lib/browser.js",
+    "types": "lib/index.d.ts",
+    "registry": "https://registry.npmjs.org",
+    "exports": {
+      ".": {
+        "import": "./lib/es/index.js",
+        "require": "./lib/cjs/index.js"
+      },
+      "./parser": {
+        "import": "./lib/es/parser.js",
+        "require": "./lib/cjs/parser.js"
+      }
+    },
+    "typesVersions": {
+      "*": {
+        "parser": [
+          "./lib/parser.d.ts"
+        ]
+      }
+    }
   }
 }
