@@ -1,5 +1,3 @@
-@layer reset, base, tokens, recipes, utilities;
-
 @font-face {
   font-family: "mono";
   font-weight: 300;

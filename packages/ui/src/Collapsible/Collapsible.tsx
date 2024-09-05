@@ -28,7 +28,7 @@ const StyledTitle = styled("div", {
   lineHeight: 1,
   justifyContent: "space-between",
   color: "$grayA11",
-  padding: "0 $1 0 $1",
+  padding: "0 $1 0 0",
   height: "$7",
   fontSize: "$sm",
   userSelect: "none",
@@ -146,7 +146,6 @@ const StyledChevron = styled(IconTriangleInvertedFilled, {
 
 export interface CollapsibleProps extends Omit<StitchesComponent<typeof StyledRoot>, 'title'> {
   title?: string | ReactNode;
-  triggerTitle?: boolean;
   collapsible?: boolean;
 };
 
@@ -156,7 +155,7 @@ export interface CollapsibleProps extends Omit<StitchesComponent<typeof StyledRo
  * This Component provide controlled and uncontrolled modes.
  */
 function Collapsible(props: CollapsibleProps) {
-  const { children, title, collapsible = true, triggerTitle = true, ...rest } = props;
+  const { children, title, collapsible = true, ...rest } = props;
 
   const [open, setOpen] = useControllableState({
     prop: props.open,

@@ -9,7 +9,7 @@ const StyledInputSlot = styled("div", {
   justifyContent: "center",
   flexShrink: 0,
   color: "$gray9",
-  padding: "0 calc($1 + 1px)",
+  padding: "0 $1",
   fontSize: "$1",
   transition: "color 0.2s ease",
   userSelect: "none"
@@ -158,6 +158,7 @@ export const StyledInputRoot = styled("div", {
     variant: {
       default: {
         boxShadow: "inset 0 0 0 1px $colors$border",
+        backgroundColor: '$gray2',
       },
       subtle: {
         backgroundColor: "$secondaryBg"
@@ -180,7 +181,7 @@ export const StyledInputRoot = styled("div", {
   ],
   defaultVariants: {
     size: "sm",
-    variant: "default"
+    variant: "subtle"
   }
 });
 

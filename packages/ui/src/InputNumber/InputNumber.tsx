@@ -94,7 +94,7 @@ export interface InputNumberProps extends VariantProps<typeof Input>, Omit<React
  * This Component provide controlled and uncontrolled modes.
  */
 export const InputNumber = forwardRef<HTMLInputElement, InputNumberProps>(
-  function InputNumber(props: InputNumberProps) {
+  function InputNumber(props: InputNumberProps, forwardedRef) {
     const {
       size,
       min = -Infinity,
@@ -170,6 +170,7 @@ export const InputNumber = forwardRef<HTMLInputElement, InputNumberProps>(
           step={step}
           type="number"
           startSlot={startSlot}
+          ref={forwardedRef}
           endSlot={
             !disabled && <StyledNumController active={dragging} tight={accurateMode} onMouseDown={handleMouseDown} />
           }

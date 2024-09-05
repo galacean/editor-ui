@@ -12,8 +12,7 @@ const StyledTrack = styled(SliderPrimitive.Track, {
   flexGrow: 1,
   borderRadius: "$2",
   overflow: "hidden",
-  color: "$gra11",
-  backgroundColor: "$secondaryBg",
+  color: "$gray11",
   '&[data-orientation="horizontal"]': {
     height: "100%"
   },
@@ -27,8 +26,7 @@ const StyledTrack = styled(SliderPrimitive.Track, {
 
 const StyledRange = styled(SliderPrimitive.Range, {
   position: "absolute",
-  // backgroundColor: "$blue9",
-  backgroundColor: "$grayA4",
+  backgroundColor: "$blueA6",
   height: "100%",
   transition: "background-color .2s ease",
   '&[data-orientation="vertical"]': {
@@ -42,16 +40,14 @@ const StyledRange = styled(SliderPrimitive.Range, {
 const StyledThumb = styled(SliderPrimitive.Thumb, {
   all: "unset",
   position: "relative",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  width: "$2",
-  height: "$6",
-  borderRadius: "$1",
-  transition: "opacity .2s ease, background-color .2s ease",
+  display: "block",
+  width: "$0_5",
+  height: "21px",
+  backgroundColor: '$blue11',
+  transition: "opacity .2s ease, background-color .2s ease, width .2s ease",
   '&[data-orientation="vertical"]': {
     width: "$6",
-    height: "$1_5"
+    height: "$0_5"
   },
   '&[data-disabled"]': {
     backgroundColor: "$grayA4"
@@ -66,7 +62,10 @@ const StyledSlider = styled(SliderPrimitive.Root, {
   touchAction: "none",
   width: "100%",
   '&[data-orientation="horizontal"]': {
-    height: "$sm"
+    height: "$sm",
+    padding: '$0_5',
+    backgroundColor: '$grayA4',
+    borderRadius: '$3',
   },
   '&[data-orientation="vertical"]': {
     flexDirection: "column",
@@ -75,7 +74,11 @@ const StyledSlider = styled(SliderPrimitive.Root, {
   cursor: "ew-resize",
   "&:hover": {
     [`& ${StyledRange}`]: {
-      backgroundColor: "$blue10"
+      backgroundColor: "$blue8"
+    },
+    [`& ${StyledThumb}`]: {
+      width: '4px',
+      // backgroundColor: "$blue8"
     }
   },
   "&[data-disabled]": {
@@ -123,9 +126,9 @@ const StyledSliderSlot = styled("div", {
   position: "absolute",
   pointerEvents: "none",
   top: "50%",
-  fontSize: "10px",
+  fontSize: "9px",
   fontFamily: "$mono",
-  color: '$grayA9',
+  color: '$grayA10',
   variants: {
     position: {
       start: {
@@ -274,13 +277,13 @@ export function Slider(props: SliderProps) {
         {value![0] === min && <StyledSliderSlot position="start">MIN</StyledSliderSlot>}
         {value![value!.length - 1] === max && <StyledSliderSlot position="end">MAX</StyledSliderSlot>}
         {showRuler && <Ruler length={max} interval={1} majorInterval={Math.round(max / 10)} />}
+        {value?.map((v, i) => <StyledThumb key={i} />)}
       </StyledTrack>
       {/* {tooltip ? (
         <Tooltip content={value[0]} arrow open={showTooltip}>
           <StyledThumb />
         </Tooltip>
       ) : ( */}
-        {value?.map((v, i) => <StyledThumb key={i} />)}
       {/* )} */}
     </StyledSlider>
   );

@@ -187,50 +187,53 @@ const sum = (v: number[]) => v.reduce((a, b) => a + b, 0);
  * 
  * This Component provide controlled and uncontrolled modes.
  */
-const CascadeSlider = forwardRef<HTMLSpanElement, CascadeSliderProps>(function CascadeSlider(props: CascadeSliderProps) {
-  const { value, defaultValue, onValueChange, formatter, step = 1, max: originalMax, unit = "%" } = props;
-  const [values, setValues] = useControllableState<number[]>({
-    prop: value,
-    defaultProp: defaultValue ?? [],
-    onChange: onValueChange
-  });
+const CascadeSlider = forwardRef<HTMLSpanElement, CascadeSliderProps>(
+  function CascadeSlider(props: CascadeSliderProps, forwardedRef) {
+    const { value, defaultValue, onValueChange, formatter, step = 1, max: originalMax, unit = "%" } = props;
+    const [values, setValues] = useControllableState<number[]>({
+      prop: value,
+      defaultProp: defaultValue ?? [],
+      onChange: onValueChange
+    });
 
-  const calcMax = sum(values!); 
-  const max = originalMax || calcMax;
+    const calcMax = sum(values!); 
+    const max = originalMax || calcMax;
 
-  const handleSliderChange = useCallback(
-    (v: number[]) => {
-      setValues(revert(v, max));
-    },
-    [max, setValues]
-  );
+    const handleSliderChange = useCallback(
+      (v: number[]) => {
+        setValues(revert(v, max));
+      },
+      [max, setValues]
+    );
 
-  const sliderValue = transform(values);
+    const sliderValue = transform(values);
 
-  return (
-    <StyledSlider
-      value={sliderValue}
-      onValueChange={handleSliderChange}
-      step={step}
-      minStepsBetweenThumbs={step}
-      max={max}
-    >
-      <StyledTrack>
-        {values!.map((v, i) => {
-          return (
-            <StyledColoredRange key={i} level={i as any} style={{ width: `${(v / max) * 100}%` }}>
-              {formatter ? formatter(v, i, max) : v}
-              {unit}
-            </StyledColoredRange>
-          );
-        })}
-      </StyledTrack>
-      {[...Array(values!.length)].map((_, i) => (
-        <StyledThumb key={i} />
-      ))}
-    </StyledSlider>
-  );
-})
+    return (
+      <StyledSlider
+        value={sliderValue}
+        onValueChange={handleSliderChange}
+        step={step}
+        minStepsBetweenThumbs={step}
+        max={max}
+        ref={forwardedRef}
+      >
+        <StyledTrack>
+          {values!.map((v, i) => {
+            return (
+              <StyledColoredRange key={i} level={i as any} style={{ width: `${(v / max) * 100}%` }}>
+                {formatter ? formatter(v, i, max) : v}
+                {unit}
+              </StyledColoredRange>
+            );
+          })}
+        </StyledTrack>
+        {[...Array(values!.length)].map((_, i) => (
+          <StyledThumb key={i} />
+        ))}
+      </StyledSlider>
+    );
+  }
+)
 
 export { CascadeSlider };
 

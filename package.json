@@ -1,5 +1,5 @@
 {
-  "name": "editor-ui",
+  "name": "editor-ui-root",
   "version": "1.0.0",
   "description": "An opinionated UI library designed to create engaging and functional online tools with ease.",
   "workspaces": [

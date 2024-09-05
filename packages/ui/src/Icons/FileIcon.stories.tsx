@@ -24,19 +24,18 @@ export default {
   parameters: {
     docs: {
       description: {
-        component: "Icons for different file types"
+        component: "We provide a set of icons for different file types. These icons are used in the file explorer and other places in the editor."
       }
     }
   }
 } as Meta;
 
-const StyledIconItem = styled('div', {
-  height: '60px',
-  width: '60px',
-  marginBottom: '$6',
-  '& > svg': {
-    height: '100%',
-    width: '100%'
+const StyledIconItem = styled(Flex, {
+  marginBottom: '0 $6',
+  gap: '$3',
+  '& svg': {
+    height: '60px',
+    width: '60px'
   }
 })
 
@@ -48,7 +47,7 @@ const Text = styled('p', {
 
 function IconItem(props) {
   return (
-    <StyledIconItem>
+    <StyledIconItem align="both" direction="column">
       {props.children}
     </StyledIconItem>
   )
@@ -61,10 +60,7 @@ export const Overview = () => {
         <IconCodeFile />
         <Text>Typescript</Text>
       </IconItem>
-      <IconItem>
-        <IconAnimationControllerFile />
-        <Text>Animation Controller</Text>
-      </IconItem>
+      
       <IconItem>
         <IconAnimatorClipFile />
         <Text>Animator Clip</Text>
@@ -90,10 +86,6 @@ export const Overview = () => {
         <Text>Shader</Text>
       </IconItem>
       <IconItem>
-        <IconSpineSkeletonFile />
-        <Text>Spine Skeleton</Text>
-      </IconItem>
-      <IconItem>
         <IconSpineFile />
         <Text>Spine</Text>
       </IconItem>
@@ -112,6 +104,14 @@ export const Overview = () => {
       <IconItem>
         <IconVrReferenceImageFile />
         <Text>Vr Reference Image</Text>
+      </IconItem>
+      <IconItem>
+        <IconAnimationControllerFile />
+        <Text>Animation Controller</Text>
+      </IconItem>
+      <IconItem>
+        <IconSpineSkeletonFile />
+        <Text>Spine Skeleton</Text>
       </IconItem>
     </Flex>
   )

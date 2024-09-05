@@ -16,7 +16,7 @@ type ColorPickerProps = ColorPickerRootProps & { disabled?: boolean; fullsize?: 
  * 
  * This component only provide **controlled** mode, which means that you have to control the color value by passing the `value` and `onValueChange` props.
  */
-const ColorPicker = forwardRef<HTMLButtonElement, ColorPickerProps>(function ColorPicker(props) {
+const ColorPicker = forwardRef<HTMLButtonElement, ColorPickerProps>(function ColorPicker(props, forwardedRef) {
   const { disabled, fullsize, ...rest } = props;
   const { mode, value } = props;
   const [_, setPreviewColor] = useState(generatePreviewColor(mode, value));
@@ -36,7 +36,7 @@ const ColorPicker = forwardRef<HTMLButtonElement, ColorPickerProps>(function Col
       sideOffset={8}
       side="bottom"
       align="start"
-      trigger={<ColorPickerTrigger fullsize={fullsize} color={generatePreviewColor(mode, value)} />}
+      trigger={<ColorPickerTrigger ref={forwardedRef} fullsize={fullsize} color={generatePreviewColor(mode, value)} />}
     >
       <ColorPickerRoot {...rest} onChangePreviewStr={handlePreviewChange} />
     </Popover>

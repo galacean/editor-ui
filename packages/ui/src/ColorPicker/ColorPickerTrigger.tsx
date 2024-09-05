@@ -45,8 +45,8 @@ const StyledTransparentPattern = styled(TransparentPattern, {
   borderRadius: "$2",
   height: "$6",
   width: "$6",
-
-  perspective: "1000",
+  border: "1px solid transparent",
+  perspective: 1000,
   backfaceVisibility: "hidden",
   transform: "translate3d(0,0,0)",
   variants: {
@@ -66,7 +66,9 @@ export const ColorPickerTrigger = forwardRef<HTMLButtonElement, { color: string;
 
   return (
     <StyledTrigger ref={ref} fullsize={fullsize} {...rest}>
-      <StyledTransparentPattern fullsize={fullsize} />
+      <StyledTransparentPattern fullsize={fullsize} style={{
+        borderColor: color,
+      }} />
       <div style={{ background: color }} />
     </StyledTrigger>
   );

@@ -1,0 +1,1 @@
+export { FormItemRect, type FormItemRectProps } from "./FormItemRect";

@@ -10,6 +10,7 @@
     "experimentalDecorators": true,
     "strict": true,
     "noImplicitAny": false,
+    "strictNullChecks": false,
     "skipLibCheck": true,
   }
 }
