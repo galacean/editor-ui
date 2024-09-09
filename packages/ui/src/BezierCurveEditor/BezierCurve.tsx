@@ -32,8 +32,8 @@ interface BezierCurveProps {
   points: IBezierPoint[];
   zoom: number;
   getRoot: () => SVGSVGElement;
-  onAddPoint: (point: IBezierPoint, index: number) => void;
-  // onPlay: () => void;
+  // onAddPoint only works when algo is "linear" because svg could not render higher order bezier curve accurately
+  onAddPoint?: (point: IBezierPoint, index: number) => void;
 }
 
 export const BezierCurve = forwardRef<SVGPathElement, BezierCurveProps>(function BezierCurve(
@@ -41,6 +41,10 @@ export const BezierCurve = forwardRef<SVGPathElement, BezierCurveProps>(function
   forwardedRef
 ) {
   const { points, getRoot, zoom = 1, algo = "bezier" } = props;
+  let actualAlgorithm = algo;
+  if (points.length > 2) {
+    actualAlgorithm = "linear";
+  }
   const [hovered, setHovered] = useState(false);
   const pointerRef = React.useRef<DOMPoint>();
   const tempPointRef = React.useRef<SVGCircleElement>();
@@ -126,7 +130,7 @@ export const BezierCurve = forwardRef<SVGPathElement, BezierCurveProps>(function
 
   return (
     <g className="bezier-path" onMouseLeave={handleMouseLeave}>
-      {algo === "linear" && (
+      {actualAlgorithm === "linear" && (
         <>
           <StyledPath
             className="bezier-line"
@@ -142,7 +146,7 @@ export const BezierCurve = forwardRef<SVGPathElement, BezierCurveProps>(function
           />
         </>
       )}
-      {algo === "bezier" && (
+      {actualAlgorithm === "bezier" && (
         <>
           <StyledPath
             className="bezier-curve"
@@ -153,12 +157,10 @@ export const BezierCurve = forwardRef<SVGPathElement, BezierCurveProps>(function
             hitline
             className="bezier-curve-hitarea"
             d={generateCurve(points)}
-            onMouseEnter={handleMouseEnter}
-            onMouseMove={handleMouseMove}
           />
         </>
       )}
-      {hovered && startPoint && matrixedPoint && (
+      {actualAlgorithm === 'linear' && hovered && startPoint && matrixedPoint && (
         <g>
           <StyledTempPoint ref={tempPointRef} cx={matrixedPoint.x} cy={matrixedPoint.y} onClick={handleAddPoint} />
         </g>

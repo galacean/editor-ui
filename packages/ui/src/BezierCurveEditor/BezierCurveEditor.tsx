@@ -54,22 +54,23 @@ function _BezierCurveEditor(props: BezierCurveEditorProps, forwardedRef: React.R
     draggable = true,
     zoomable = true,
     zoomLimit = [0.5, 2],
-    zoomSpeed = 0.01
+    zoomSpeed = 0.03
   } = props;
 
   const svgRef = React.useRef<SVGSVGElement>(null);
   const axisXScale = 1;
-  const axisYScale = 0.4; // the graduated scale of Y axis is 0.4, case 1 cell indicate 25% of the height
+  // the graduated scale of Y axis is 0.4, case 1 cell indicate 25% of the height
+  const axisYScale = 0.4;
+  // We set default zoom to 1.1 because the default viewport position could not display the full range 0 ~ 1
   const defaultZoom = 1.1;
+  // We set default viewport offset with the half of the height and 0 for x
   const defaultOffset = getDefaultOffset(props.width, props.height);
 
   const player = React.useRef<CurveAnimationRef>(null);
   const pointerRef = React.useRef<DOMPoint>(null);
-  // We set default viewport offset with the half of the height and 0 for x
   const [offset, setOffset] = useState<IPoint>(defaultOffset);
   const [startPoint, setStartPoint] = useState<IPoint>(null);
   const [isMoving, setIsMoving] = useState(false);
-  // We set default zoom to 1.1 because the default viewport position could not display the full range 0 ~ 1
   const [zoom, setZoom] = useState(defaultZoom);
   const normalizeZoom = zoom;
   const denormalizeZoom = 1 / zoom;

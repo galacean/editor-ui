@@ -100,57 +100,27 @@ export function getDefaultOffset(width: number, height: number) {
   };
 }
 
-
-
-export function calculateBezierPoint(t: number, points: IPoint[]): IPoint {
-  let x = 0, y = 0;
-  const n = points.length - 1;
-
-  for (let i = 0; i <= n; i++) {
-    const binCoeff = binomialCoefficient(n, i);
-    const term = binCoeff * Math.pow(1 - t, n - i) * Math.pow(t, i);
-    x += term * points[i].x;
-    y += term * points[i].y;
+function factorial(num) {
+  if (num === 0) return 1;
+  let result = 1;
+  for (let i = 2; i <= num; i++) {
+      result *= i;
   }
-
-  return { x, y };
-}
-
-export function factorial(n: number): number {
-  return n <= 1 ? 1 : n * factorial(n - 1);
-}
-
-export function binomialCoefficient(n: number, k: number): number {
-  return factorial(n) / (factorial(k) * factorial(n - k));
-}
-
-const lerp = (x, y, a) => x * (1 - a) + y * a;
-
-export function calculateHorizontalBezierPoint(t: number, points: IPoint[], fixedY: number): IPoint {
-  let x = 0;
-  const n = points.length - 1;
-
-  for (let i = 0; i <= n; i++) {
-    const binCoeff = binomialCoefficient(n, i);
-    const term = binCoeff * Math.pow(1 - t, n - i) * Math.pow(t, i);
-    x += term * points[i].x;
-  }
-
-  return { x, y: fixedY };
+  return result;
 }
 
 export function getPointOnCurve(points: IPoint[], t: number): IPoint {
-  if (points.length === 1) {
-    return points[0];
+  const n = points.length - 1; // Degree of the curve
+  let x = 0;
+  let y = 0;
+
+  // Compute the point on the Bezier curve using the Bernstein polynomial
+  for (let i = 0; i <= n; i++) {
+      const binomialCoefficient = factorial(n) / (factorial(i) * factorial(n - i));
+      const term = binomialCoefficient * Math.pow(t, i) * Math.pow(1 - t, n - i);
+      x += term * points[i].x;
+      y += term * points[i].y;
   }
 
-  // De Casteljau's algorithm
-  let newPoints = [];
-  for (let i = 0; i < points.length - 1; i++) {
-    let x = (1 - t) * points[i].x + t * points[i + 1].x;
-    let y = (1 - t) * points[i].y + t * points[i + 1].y;
-    newPoints.push({ x, y });
-  }
-
-  return getPointOnCurve(newPoints, t);
+  return { x, y };
 }

@@ -1,7 +1,7 @@
-import { ButtonHTMLAttributes } from "react";
+import { ButtonHTMLAttributes, HtmlHTMLAttributes, useEffect, useState } from "react";
 import { styled } from "@galacean/design-system";
 import { IPoint } from "./types";
-import { IconCirclePlus, IconCirclePlusFilled } from "@tabler/icons-react";
+import { IconCirclePlus, IconCirclePlusFilled, IconCircleXFilled } from "@tabler/icons-react";
 import { Flex } from "../Flex";
 import { Button } from "../Button";
 
@@ -15,7 +15,7 @@ const PresetPath = styled("path", {
 const PresetSvg = styled("svg", {
   width: "100%",
   height: "100%",
-  overflow: "visible",
+  overflow: "hidden",
   "&:hover": {
     [`& ${PresetPath}`]: {
       stroke: "$orange10",
@@ -24,43 +24,7 @@ const PresetSvg = styled("svg", {
   }
 });
 
-const bezierCurvePresets = [
-  [
-    { x: 0, y: 0 },
-    { x: 0.2, y: 0.8 },
-    { x: 0.8, y: 0.2 },
-    { x: 1, y: 1 }
-  ],
-  [
-    { x: 0, y: 0 },
-    { x: 0.3, y: 0.5 },
-    { x: 0.7, y: 0.5 },
-    { x: 1, y: 1 }
-  ],
-  [
-    { x: 0, y: 0 },
-    { x: 0.1, y: 0.9 },
-    { x: 0.9, y: 0.1 },
-    { x: 1, y: 1 }
-  ],
-  [
-    {
-        "x": 0,
-        "y": 0
-    },
-    {
-        "x": 0.3225,
-        "y": -0.5454545454545454
-    },
-    {
-        "x": 1,
-        "y": -0.7386363636363636
-    },
-    {
-        "x": 1,
-        "y": 1
-    }
-],
+const defaultPresets = [
   [
     { x: 0, y: 0 },
     { x: 0.2, y: 0.8 },
@@ -72,24 +36,6 @@ const bezierCurvePresets = [
     { x: 0.25, y: 0.75 },
     { x: 0.75, y: 0.75 },
     { x: 1, y: 0 }
-  ],
-  [
-    {
-        "x": 0,
-        "y": 0
-    },
-    {
-        "x": 0,
-        "y": 1.54
-    },
-    {
-        "x": 0.83,
-        "y": 0.67
-    },
-    {
-        "x": 1,
-        "y": 1
-    }
   ],
   [
     {
@@ -138,8 +84,21 @@ const PresetList = styled("div", {
   gap: "$2"
 });
 
-const CurvePresetItem = styled("button", {
+const DeleteButton = styled("button", {
   all: "unset",
+  position: "absolute",
+  right: 0,
+  top: 0,
+  borderRadius: '$round',
+  color: '$gray9',
+  transform: 'translate(50%, -50%)',
+  '&:hover': {
+    color: '$red10',
+  }
+});
+
+const CurvePresetItem = styled("div", {
+  position: "relative",
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
@@ -149,21 +108,22 @@ const CurvePresetItem = styled("button", {
   cursor: "pointer",
   backgroundColor: "$appBackground",
   border: "1px solid $grayA3",
-  overflow: "hidden",
   transition: "color .2s ease-in-out",
   '&:hover': {
     color: '$orange10',
-  }
+  },
 });
 
-interface PresetItemProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+interface PresetItemProps extends React.HTMLAttributes<HTMLDivElement> {
   points?: IPoint[];
   width?: number;
   height?: number;
+  deletable?: boolean;
+  onDelete?: () => void;
 }
 
 function PresetItem(props: PresetItemProps) {
-  const { points, width = 74, height = 34, ...rest } = props;
+  const { points, width = 74, height = 34, deletable = false, onDelete, ...rest } = props;
   const genPath = (points) => {
     if (points.length < 4) {
       return '';
@@ -182,27 +142,51 @@ function PresetItem(props: PresetItemProps) {
       <PresetSvg width={width} height={height} viewBox={`0 -${height} ${width} ${height}`}>
         <PresetPath d={genPath(points)} />
       </PresetSvg>
+      {deletable &&
+        <DeleteButton>
+          <IconCircleXFilled size="14px" onClick={onDelete} />
+        </DeleteButton>
+      }
     </CurvePresetItem>
   );
 }
 
 interface BezierCurveEditorProps {
-  persets?: IPoint[];
+  presets?: (IPoint[])[];
   onApplyPreset: (points: IPoint[]) => void;
   onAddPreset: () => void;
+  onDeletePreset: (index: number) => void;
 }
 
 export function BezierCurvePresets(props: BezierCurveEditorProps) {
-  const { persets = [], onApplyPreset, onAddPreset } = props;
+  const { presets = [], onApplyPreset, onAddPreset, onDeletePreset } = props;
+  const [deletable, setDeletable] = useState(false);
+
   return (
     <>
       <Flex align="v" justifyContent="between" css={{ fontSize: '$1', marginTop: '$7', color: '$gray11', userSelect: 'none' }}>
         Pesets
-        <Button variant="subsecondary">Edit</Button>
+        {presets.length > 0 &&
+          <Button
+            variant="subsecondary"
+            onClick={() => setDeletable(!deletable)}
+          >
+            {deletable ? 'Done' : 'Edit'}
+          </Button>
+        }
       </Flex>
       <PresetList>
-        {bezierCurvePresets.concat(persets).map((points, index) => (
+        {defaultPresets.map((points, index) => (
           <PresetItem key={index} points={points} onClick={() => onApplyPreset && onApplyPreset(points)} />
+        ))}
+        {presets.map((points, index) => (
+          <PresetItem
+            deletable={deletable}
+            key={index}
+            points={points}
+            onDelete={() => onDeletePreset(index)}
+            onClick={() => onApplyPreset && onApplyPreset(points)}
+          />
         ))}
         <CurvePresetItem onClick={onAddPreset}>
           <IconCirclePlusFilled size="16px" />

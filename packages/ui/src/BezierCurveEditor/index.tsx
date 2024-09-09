@@ -1,4 +1,4 @@
-import React, { useState, useRef, useLayoutEffect, forwardRef, ButtonHTMLAttributes } from "react";
+import React, { useState, useRef, useLayoutEffect, forwardRef, ButtonHTMLAttributes, useEffect } from "react";
 import { useControllableState } from "@radix-ui/react-use-controllable-state";
 
 import { BezierCurveEditor as Editor } from "./BezierCurveEditor";
@@ -90,20 +90,41 @@ const CurveWrapper = styled('div', {
   padding: '$2',
 });
 
+const LocalStorageKey = 'gui_bezier_curve_presets';
+
 export const BezierCurveEditor = function BezierCurveEditor(props: BezierCurveEditorProps) {
   const { onChange, value, defaultValue, algo = "bezier" } = props;
+  const [presets, setPresets] = useState<(IPoint[])[]>([]);
   const [points, setPoints] = useControllableState<IPoint[]>({
     prop: value,
     defaultProp: defaultPoints || defaultValue,
     onChange: onChange,
   });
 
+  useEffect(() => {
+    const getLocalPresets = localStorage.getItem(LocalStorageKey);
+    if (getLocalPresets) {
+      setPresets(JSON.parse(getLocalPresets));
+    }
+  }, []);
+
   function applyPreset(points: IPoint[]) {
     setPoints(points);
   }
 
   function addPreset() {
-    
+    const newPresets = [...presets, points];
+    setPresets(newPresets);
+    localStorage.setItem(LocalStorageKey, JSON.stringify(newPresets));
+  }
+
+  function onDeletePreset(index: number) {
+    setPresets(state => {
+      const newPresets = [...state];
+      newPresets.splice(index, 1);
+      localStorage.setItem(LocalStorageKey, JSON.stringify(newPresets));
+      return newPresets;
+    });
   }
 
   return (
@@ -117,7 +138,12 @@ export const BezierCurveEditor = function BezierCurveEditor(props: BezierCurveEd
           axisLabel={{ x: "timer", y: "value" }}
           onPointsChange={setPoints}
         />
-        <BezierCurvePresets onApplyPreset={applyPreset} onAddPreset={addPreset} />
+        <BezierCurvePresets
+          presets={presets}
+          onApplyPreset={applyPreset}
+          onAddPreset={addPreset}
+          onDeletePreset={onDeletePreset}
+        />
       </CurveWrapper>
     </Popover>
   );

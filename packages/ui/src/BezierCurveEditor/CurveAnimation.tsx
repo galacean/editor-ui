@@ -51,7 +51,7 @@ export const CurveAnimation = forwardRef<CurveAnimationRef, CurveAnimationProps>
     }
   }), [playing, points]);
 
-  function startTransition(duration = 1000) {
+  function startTransition(duration = 800) {
     setPlaying(true);
     circleRef.current?.setAttribute('cx', points[0].x.toString());
     circleRef.current?.setAttribute('cy', points[0].y.toString());
