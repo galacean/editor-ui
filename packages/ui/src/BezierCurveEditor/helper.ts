@@ -2,7 +2,11 @@ import { IBezierPoint, IPoint, BezierCurveEditorProps } from "./types";
 
 export { mergeRefs } from "../../utils/merge-refs";
 
-export function generateCurve(points: IBezierPoint[]): string {
+export function generateCurve(points: IBezierPoint[], zoom = 1): string {
+  points = points.map((point) => ({
+    point: { x: point.point.x / zoom, y: point.point.y / zoom },
+    controlPoint: point.controlPoint ? { x: point.controlPoint.x / zoom, y: point.controlPoint.y / zoom } : null
+  }));
   return `
     M ${points[0].point.x} ${points[0].point.y}
     C ${points[0].controlPoint.x} ${points[0].controlPoint.y},
@@ -13,7 +17,11 @@ export function generateCurve(points: IBezierPoint[]): string {
       .map((point) => ` S ${point.controlPoint.x} ${point.controlPoint.y}, ${point.point.x} ${point.point.y}`)}`;
 }
 
-export function generateLineByPoints(points: IBezierPoint[]): string {
+export function generateLineByPoints(points: IBezierPoint[], zoom = 1): string {
+  points = points.map((point) => ({
+    point: { x: point.point.x / zoom, y: point.point.y / zoom },
+    controlPoint: point.controlPoint ? { x: point.controlPoint.x / zoom, y: point.controlPoint.y / zoom } : null
+  }));
   return `
     M ${points[0].point.x} ${points[0].point.y}
     ${points.slice(1).map((point) => ` L ${point.point.x} ${point.point.y}`)}`;
@@ -42,7 +50,7 @@ export function convertPointsToBezierPoints(points: IPoint[], algo: "bezier" | "
 
 export function convertBezierPointToPoint(
   bezierPoints: IBezierPoint[],
-  algo: "bezier" | "linear" = "bezier"
+  algo: "bezier" | "linear" = "bezier",
 ): IPoint[] {
   if (algo === "linear") {
     return bezierPoints.map((bezierPoint) => bezierPoint.point);
@@ -57,22 +65,16 @@ export function convertPointsToLinearPoints(points: IPoint[]): IPoint[] {
   return points;
 }
 
-export function mapKeyToAxis(keyMap: BezierCurveEditorProps["keyMap"]) {
-  if (!keyMap) return ["x", "y"];
-  return [keyMap.x, keyMap.y];
-}
-
 export function denormalizePoint(
-  points: Record<string, number>[],
+  points: IPoint[],
   scaleX: number,
   scaleY: number,
-  keyMap?: BezierCurveEditorProps["keyMap"]
-) {
-  const [x, y] = mapKeyToAxis(keyMap);
+  zoom = 1,
+): IPoint[] {
   return points.map((point) => {
     return {
-      x: point[x] * scaleX,
-      y: (-point[y] * scaleY)
+      x: point.x * scaleX * zoom,
+      y: (-point.y * scaleY) * zoom
     };
   });
 }
@@ -81,11 +83,12 @@ export function normalizePoint(
   points: IPoint[],
   scaleX: number,
   scaleY: number,
+  zoom = 1,
 ): IPoint[] {
   return points.map((point) => {
     return {
-      x: point.x / scaleX,
-      y: -point.y / scaleY
+      x: point.x / scaleX * zoom,
+      y: -point.y / scaleY * zoom
     };
   });
 }
@@ -93,7 +96,6 @@ export function normalizePoint(
 export function getDefaultOffset(width: number, height: number) {
   return {
     x: 0,
-    // y: 0,
     y: -Math.round(height / 2)
   };
 }
@@ -135,4 +137,20 @@ export function calculateHorizontalBezierPoint(t: number, points: IPoint[], fixe
   }
 
   return { x, y: fixedY };
+}
+
+export function getPointOnCurve(points: IPoint[], t: number): IPoint {
+  if (points.length === 1) {
+    return points[0];
+  }
+
+  // De Casteljau's algorithm
+  let newPoints = [];
+  for (let i = 0; i < points.length - 1; i++) {
+    let x = (1 - t) * points[i].x + t * points[i + 1].x;
+    let y = (1 - t) * points[i].y + t * points[i + 1].y;
+    newPoints.push({ x, y });
+  }
+
+  return getPointOnCurve(newPoints, t);
 }

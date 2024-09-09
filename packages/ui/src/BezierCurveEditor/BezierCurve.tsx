@@ -1,7 +1,7 @@
-import React, { forwardRef, useState } from "react";
+import React, { forwardRef, useEffect, useState } from "react";
 
 import type { IBezierPoint, IPoint } from "./types";
-import { generateCurve, generateLineByPoints } from "./helper";
+import { generateCurve, generateLineByPoints, mergeRefs } from "./helper";
 
 import { styled } from "@galacean/design-system";
 
@@ -28,23 +28,33 @@ const StyledTempPoint = styled("circle", {
 });
 
 interface BezierCurveProps {
-  display: "curve" | "line";
   algo: "linear" | "bezier";
   points: IBezierPoint[];
+  zoom: number;
   getRoot: () => SVGSVGElement;
   onAddPoint: (point: IBezierPoint, index: number) => void;
+  // onPlay: () => void;
 }
 
 export const BezierCurve = forwardRef<SVGPathElement, BezierCurveProps>(function BezierCurve(
   props: BezierCurveProps,
   forwardedRef
 ) {
-  const { points, getRoot, display = "curve", algo = "bezier" } = props;
+  const { points, getRoot, zoom = 1, algo = "bezier" } = props;
   const [hovered, setHovered] = useState(false);
   const pointerRef = React.useRef<DOMPoint>();
   const tempPointRef = React.useRef<SVGCircleElement>();
+  const pathRef = React.useRef<SVGPathElement>();
   const [startPoint, setStartPoint] = useState<IPoint>();
   const [matrixedPoint, setMatrixedPoint] = useState<IPoint>();
+
+  useEffect(() => {
+    if(pathRef && pathRef.current) {
+      pathRef.current.getTotalLength
+      pathRef.current.addEventListener("mousedown", (event) => {
+      });
+    }
+  }, []);
 
   function getCurosrPoint(event: React.MouseEvent<SVGPathElement>): { x: number; y: number } {
     pointerRef.current.x = event.clientX;
@@ -74,12 +84,12 @@ export const BezierCurve = forwardRef<SVGPathElement, BezierCurveProps>(function
   const handleAddPoint = () => {
     const bezierPoint = {
       point: {
-        x: matrixedPoint.x,
-        y: matrixedPoint.y
+        x: matrixedPoint.x * zoom,
+        y: matrixedPoint.y * zoom
       },
       controlPoint: {
-        x: matrixedPoint.x + 20,
-        y: matrixedPoint.y + 20
+        x: (matrixedPoint.x + 20) * zoom,
+        y: (matrixedPoint.y + 20) * zoom
       }
     };
 
@@ -116,9 +126,13 @@ export const BezierCurve = forwardRef<SVGPathElement, BezierCurveProps>(function
 
   return (
     <g className="bezier-path" onMouseLeave={handleMouseLeave}>
-      {display === "line" && (
+      {algo === "linear" && (
         <>
-          <StyledPath className="bezier-line" ref={forwardedRef} d={generateLineByPoints(points)} />
+          <StyledPath
+            className="bezier-line"
+            ref={mergeRefs([pathRef, forwardedRef])}
+            d={generateLineByPoints(points)}
+          />
           <StyledPath
             hitline
             className="bezier-line-hitarea"
@@ -128,9 +142,13 @@ export const BezierCurve = forwardRef<SVGPathElement, BezierCurveProps>(function
           />
         </>
       )}
-      {display === "curve" && (
+      {algo === "bezier" && (
         <>
-          <StyledPath className="bezier-curve" ref={forwardedRef} d={generateCurve(points)} />
+          <StyledPath
+            className="bezier-curve"
+            ref={mergeRefs([pathRef, forwardedRef])}
+            d={generateCurve(points)}
+          />
           <StyledPath
             hitline
             className="bezier-curve-hitarea"

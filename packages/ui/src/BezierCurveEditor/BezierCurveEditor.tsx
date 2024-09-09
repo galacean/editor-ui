@@ -15,13 +15,25 @@ import { BezierCurve } from "./BezierCurve";
 import { Grid } from "./Grid";
 
 import { styled } from "@galacean/design-system";
+import { clamp } from "../../utils";
+import { ActionButton, ActionButtonGroup } from "../ActionButton";
+import { IconPlayerPlayFilled, IconZoomInFilled, IconZoomOutFilled, IconZoomReset } from "@tabler/icons-react";
+import { Flex } from "../Flex";
+import { CurveAnimation, CurveAnimationRef } from "./CurveAnimation";
 
 const StyledSvgRoot = styled("svg", {
   overflow: 'unset',
   fontSize: 0,
+  border: '1px solid $orange7',
+  backgroundImage: 'linear-gradient(180deg, rgba(0,0,0,0) 0%, $orangeA2 100%)',
   '& g': {
     fontSize: 0
   }
+});
+
+const BezierCurveContainer = styled("div", {
+  position: 'relative',
+  marginLeft: '$7',
 });
 
 const defaultPoints = [
@@ -32,28 +44,46 @@ const defaultPoints = [
 ];
 
 function _BezierCurveEditor(props: BezierCurveEditorProps, forwardedRef: React.Ref<SVGSVGElement>) {
-  const svgRef = React.useRef<SVGSVGElement>(null);
-  const axisXScale = 1;
-  const axisYScale = 0.4; // the graduated scale of Y axis is 0.4, case 1 cell indicate 25% of the height
   const {
     width = 300,
     height = 300,
     points: propPoints,
     defaultPoints: propDefaultPoints,
-    curveDisplay = "line",
+    doubleControlPoint = true,
     algo = "linear",
-    draggable = false,
+    draggable = true,
+    zoomable = true,
+    zoomLimit = [0.5, 2],
+    zoomSpeed = 0.01
   } = props;
+
+  const svgRef = React.useRef<SVGSVGElement>(null);
+  const axisXScale = 1;
+  const axisYScale = 0.4; // the graduated scale of Y axis is 0.4, case 1 cell indicate 25% of the height
+  const defaultZoom = 1.1;
+  const defaultOffset = getDefaultOffset(props.width, props.height);
+
+  const player = React.useRef<CurveAnimationRef>(null);
   const pointerRef = React.useRef<DOMPoint>(null);
-  const [offset, setOffset] = useState<IPoint>(getDefaultOffset(width, height));
+  // We set default viewport offset with the half of the height and 0 for x
+  const [offset, setOffset] = useState<IPoint>(defaultOffset);
   const [startPoint, setStartPoint] = useState<IPoint>(null);
   const [isMoving, setIsMoving] = useState(false);
+  // We set default zoom to 1.1 because the default viewport position could not display the full range 0 ~ 1
+  const [zoom, setZoom] = useState(defaultZoom);
+  const normalizeZoom = zoom;
+  const denormalizeZoom = 1 / zoom;
 
   const [points, setPoints] = useControllableState<IBezierPoint[]>({
-    prop: propPoints ? convertPointsToBezierPoints(denormalizePoint(propPoints, width * axisXScale, height * axisYScale), algo) : undefined,
-    defaultProp: convertPointsToBezierPoints(denormalizePoint(propDefaultPoints || defaultPoints, width * axisXScale, height * axisYScale), algo),
+    prop: propPoints ? convertPointsToBezierPoints(denormalizePoint(propPoints, width * axisXScale, height * axisYScale, denormalizeZoom), algo) : undefined,
+    defaultProp: convertPointsToBezierPoints(denormalizePoint(propDefaultPoints || defaultPoints, width * axisXScale, height * axisYScale, denormalizeZoom), algo),
     onChange: (bezierPoints: IBezierPoint[]) => {
-      const ret = normalizePoint(convertBezierPointToPoint(bezierPoints, algo), width * axisXScale, height * axisYScale);
+      const ret = normalizePoint(
+          convertBezierPointToPoint(bezierPoints, algo),
+          width * axisXScale,
+          height * axisYScale,
+          normalizeZoom
+        );
       if (props.onPointsChange) {
         props.onPointsChange(ret);
       }
@@ -61,13 +91,12 @@ function _BezierCurveEditor(props: BezierCurveEditorProps, forwardedRef: React.R
   });
 
   const handlePointChange = (index: number, bezierPoint: IBezierPoint) => {
-    const newPoints = [...points!];
+    const newPoints = JSON.parse(JSON.stringify(points));
     newPoints[index] = bezierPoint;
     setPoints(newPoints);
   };
 
   const handleMouseDown = (e: React.MouseEvent<SVGElement>) => {
-
     setStartPoint({
       x: e.clientX,
       y: e.clientY
@@ -83,6 +112,13 @@ function _BezierCurveEditor(props: BezierCurveEditorProps, forwardedRef: React.R
 
     setOffset({ x: offset.x - movedX, y: offset.y - movedY });
   };
+
+  const handleWheel = (e: WheelEvent) => {
+    e.preventDefault();
+    let newZoom = e.deltaY > 0 ? zoom - zoomSpeed : zoom + zoomSpeed;
+    newZoom = clamp(newZoom, zoomLimit[0], zoomLimit[1]);
+    setZoom(newZoom);
+  }
 
   const handleAddPoint = (point: IBezierPoint, index) => {
     setPoints((prevPoints) => {
@@ -123,35 +159,76 @@ function _BezierCurveEditor(props: BezierCurveEditorProps, forwardedRef: React.R
     };
   }, [isMoving, draggable]);
 
+  useEffect(() => {
+    if(svgRef.current) {
+      if (zoomable) {
+        svgRef.current.addEventListener("wheel", handleWheel);
+      } else {
+        svgRef.current.removeEventListener("wheel", handleWheel);
+      }
+    }
+    return () => {
+      if (svgRef.current && zoomable) {
+        svgRef.current.removeEventListener("wheel", handleWheel);
+      }
+    };
+  }, [zoom])
+
   return (
-    <StyledSvgRoot
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox={`${offset.x} ${offset.y} ${width} ${height}`}
-      width={width}
-      height={height}
-      ref={svgRef}
-      onMouseDown={draggable ? handleMouseDown : undefined}
-    >
-      <Grid size={{ width, height }} offset={offset} keyMap={props.keyMap} />
-      <BezierCurve
-        algo={algo}
-        display={curveDisplay}
-        points={points!}
-        getRoot={() => svgRef.current}
-        onAddPoint={handleAddPoint}
-      />
-      <g className="bezier-curve-points">
-        {points.map((bezierPoint, index) => (
-          <BezierPoint
-            index={index}
-            key={index}
-            bezierPoint={bezierPoint}
-            onPointChange={handlePointChange}
+    <BezierCurveContainer>
+      <StyledSvgRoot
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox={`${offset.x} ${offset.y} ${width} ${height}`}
+        width={width}
+        height={height}
+        ref={mergeRefs([forwardedRef, svgRef])}
+        onMouseDown={draggable ? handleMouseDown : undefined}
+      >
+        <Grid size={{ width, height }} offset={offset} axisLabel={props.axisLabel} zoom={zoom}>
+          <BezierCurve
             algo={algo}
+            points={points!}
+            zoom={zoom}
+            getRoot={() => svgRef.current}
+            onAddPoint={handleAddPoint}
           />
-        ))}
-      </g>
-    </StyledSvgRoot>
+          <g className="bezier-curve-points">
+            {points.map((bezierPoint, index) => (
+              <BezierPoint
+                index={index}
+                key={index}
+                bezierPoint={bezierPoint}
+                onPointChange={handlePointChange}
+                doublePoint={doubleControlPoint}
+                algo={algo}
+                zoom={zoom}
+              />
+            ))}
+          </g>
+          <CurveAnimation points={points} ref={player} />
+        </Grid>
+      </StyledSvgRoot>
+      <Flex gap="xs" style={{ position: 'absolute', bottom: 10, right: 10 }}>
+        <ActionButtonGroup>
+          <ActionButton onClick={() => {
+            if (player.current) {
+              player.current.play();
+            }
+          }} size="xs">
+            <IconPlayerPlayFilled />
+          </ActionButton>
+          <ActionButton size="xs" onClick={() => setZoom(zoom - 0.05)} disabled={zoom === zoomLimit[0]}>
+            <IconZoomInFilled />
+          </ActionButton>
+          <ActionButton size="xs" onClick={() => setZoom(zoom + 0.05)} disabled={zoom === zoomLimit[1]}>
+            <IconZoomOutFilled />
+          </ActionButton>
+          <ActionButton size="xs" onClick={() => setZoom(1)} disabled={zoom === 1}>
+            <IconZoomReset />
+          </ActionButton>
+        </ActionButtonGroup>
+      </Flex>
+    </BezierCurveContainer>
   );
 }
 

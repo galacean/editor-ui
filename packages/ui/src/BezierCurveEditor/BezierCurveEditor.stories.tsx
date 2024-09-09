@@ -17,3 +17,25 @@ export const Overview: StoryFn<typeof BezierCurveEditor> = (args) => {
     </Flex>
   );
 };
+
+export const Controlled: StoryFn<typeof BezierCurveEditor> = (args) => {
+  const [points, setPoints] = useState([
+    { x: 0, y: 0 },
+    { x: 0.15, y: 0.15 },
+    { x: 0.75, y: 0.75 },
+    { x: 1, y: 1 }
+  ]);
+  return (
+    <Flex gap="md">
+      <BezierCurveEditor algo="bezier" value={points} onChange={setPoints} />
+    </Flex>
+  );
+};
+
+export const Uncontrolled: StoryFn<typeof BezierCurveEditor> = (args) => {
+  return (
+    <Flex gap="md">
+      <BezierCurveEditor algo="bezier" />
+    </Flex>
+  );
+};

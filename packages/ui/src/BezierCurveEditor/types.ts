@@ -13,6 +13,9 @@ export interface BezierCurveEditorProps {
   width: number;
   height: number;
   draggable?: boolean;
+  zoomable?: boolean;
+  zoomSpeed?: number;
+  zoomLimit?: number[];
   points?: IPoint[];
   defaultPoints?: IPoint[];
   onPointsChange?: (value: IPoint[]) => void;
@@ -22,8 +25,7 @@ export interface BezierCurveEditorProps {
     tickX: number;
     tickY: number;
   };
-  curveDisplay?: "curve" | "line";
-  keyMap?: {
+  axisLabel?: {
     x: string;
     y: string;
   };

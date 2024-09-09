@@ -9,6 +9,7 @@ const StyledControlLine = styled("line", {
 
 export interface BezierPointProps {
   index: number;
+  zoom: number; 
   bezierPoint: IBezierPoint;
   doublePoint?: boolean;
   key: number;
@@ -18,7 +19,15 @@ export interface BezierPointProps {
 
 export function BezierPoint(props: BezierPointProps) {
   const { index, bezierPoint, onPointChange, algo, doublePoint = false } = props;
-  const { point, controlPoint } = bezierPoint;
+  let { point, controlPoint } = bezierPoint;
+  point = {
+    x: point.x,
+    y: point.y
+  }
+  controlPoint = {
+    x: controlPoint.x,
+    y: controlPoint.y
+  }
 
   const subControlPoint =
     algo === "bezier"
@@ -56,6 +65,13 @@ export function BezierPoint(props: BezierPointProps) {
     });
   };
 
+  const handleSubControlPointChange = (delta: IPoint) => {
+    handleControlPointChange({
+      x: -delta.x,
+      y: -delta.y
+    });
+  }
+
   return (
     <>
       {algo === "bezier" && (
@@ -69,18 +85,12 @@ export function BezierPoint(props: BezierPointProps) {
       <Point type="pivot" main point={point} onPointChange={handlePointChange} />
       {algo === "bezier" && (
         <>
-          <Point type="control" point={controlPoint} onPointChange={handleControlPointChange} />
+          <Point type="control" point={controlPoint} onPointChange={handleControlPointChange}  />
           {doublePoint && 
             <Point
-              sub
               type="control"
               point={subControlPoint}
-              onPointChange={(delta) => {
-                handleControlPointChange({
-                  x: -delta.x,
-                  y: -delta.y
-                });
-              }}
+              onPointChange={handleSubControlPointChange}
             />
           }
         </>

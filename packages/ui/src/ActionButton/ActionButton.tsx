@@ -183,8 +183,11 @@ const StyledActionButton = styled("button", button, {
 const StyledActionButtonGroup = styled("div", {
   display: "flex",
   variants: {
-    dir: {
+    direction: {
       horizontal: {
+        [`& ${StyledActionButton}`]: {
+          borderRadius: 0,
+        },
         [`& ${StyledActionButton}:nth-child(1)`]: {
           borderRight: 0,
           borderRadius: "$2 0 0 $2"
@@ -206,7 +209,7 @@ const StyledActionButtonGroup = styled("div", {
     }
   },
   defaultVariants: {
-    dir: "horizontal"
+    direction: "horizontal"
   }
 });
 

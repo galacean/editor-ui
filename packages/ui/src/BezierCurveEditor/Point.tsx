@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, forwardRef } from "react";
 
 import type { IPoint } from "./types";
 
 import { styled } from "@galacean/design-system";
 
-export const StyledPoint = styled("circle", {
+const StyledPoint = styled("circle", {
   fill: "$green9",
   cursor: "pointer",
   transition: "r 0.2s ease",
@@ -17,9 +17,9 @@ export const StyledPoint = styled("circle", {
         }
       },
       control: {
-        fill: "$gray8",
+        fill: "$green8",
         [`&[data-point-type="ring"]`]: {
-          fill: "$gray4"
+          fill: "$green4"
         }
       },
       placeholder: {
@@ -53,17 +53,20 @@ const StyledPointRoot = styled("g", {
   }
 });
 
-interface PointProps {
+const StyledPointLabel = styled("text", {
+  fill: "$orange11",
+  fontSize: "10px"
+});
+
+interface PointProps extends React.SVGProps<SVGCircleElement> {
   point: IPoint;
-  sub?: boolean;
   main?: boolean;
   onPointChange: (delta: IPoint) => void;
-  selected?: boolean;
   type?: "pivot" | "control";
 }
 
-export function Point(props: PointProps) {
-  const { point, main, selected, type = "pivot", onPointChange, sub } = props;
+export const Point = forwardRef<SVGCircleElement, PointProps>(function Point(props: PointProps, forwardedRef) {
+  const { point, main, type = "pivot", onPointChange, ...rest } = props;
   const [startPos, setStartPos] = useState<IPoint>({
     x: 0,
     y: 0
@@ -109,9 +112,8 @@ export function Point(props: PointProps) {
 
   return (
     <>
-      {/* <text fill="var(--colors-crimson6)" fontSize="12px" x={point.x} y={point.y}>x:{point.x} y:{point.y}</text> */}
       <StyledPointRoot onMouseDown={handleMouseDown}>
-        <StyledPoint data-point-type="hitpoint" cx={point.x} cy={point.y} r="10" />
+        <StyledPoint data-point-type="hitpoint" cx={point.x} cy={point.y} r="10" {...rest} ref={forwardedRef} />
         <StyledPoint data-point-type="ring" pointType={main ? "main" : "control"} cx={point.x} cy={point.y} r="5" />
         <StyledPoint
           data-point-type="point"
@@ -124,4 +126,4 @@ export function Point(props: PointProps) {
       </StyledPointRoot>
     </>
   );
-}
+}); 
