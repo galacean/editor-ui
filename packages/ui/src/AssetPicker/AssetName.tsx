@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 // import { toast, EditableText } from "../";
 import { styled } from "@galacean/design-system";
@@ -8,7 +8,6 @@ export const StyledAssetName = styled("div", {
   maxWidth: "100%",
   lineHeight: "14px",
   minHeight: "$5",
-  padding: "0 $1_5",
   flexShrink: 0,
   whiteSpace: "break-word",
   overflowWrap: "break-word",
@@ -18,6 +17,7 @@ export const StyledAssetName = styled("div", {
   cursor: "default",
   userSelect: "none",
   backgroundColor: "transparent",
+  padding: '0 $0_5',
   color: "$gray11",
   variants: {
     isSelected: {
@@ -55,12 +55,12 @@ export interface AssetNameProps {
   isSelected?: boolean;
   readonly?: boolean;
   ellipsis?: boolean;
-  onRename?: (name: string) => Promise<void>;
+  onRename?: (name: string) => (Promise<void> | void);
 }
 
 export const AssetName = function AssetName(props: AssetNameProps) {
-  const { readonly, ellipsis = false, onRename, name, isSelected } = props;
-  const [editing, setEditing] = React.useState(false);
+  const { readonly, ellipsis = true, onRename, name, isSelected } = props;
+  const [editing, setEditing] = useState(false);
 
   const rename = async (nm: string) => {
     setEditing(false);
@@ -68,12 +68,16 @@ export const AssetName = function AssetName(props: AssetNameProps) {
     return await onRename(nm);
   };
 
+  function handleClick(e: React.MouseEvent) {
+    e.stopPropagation();
+    if(readonly) return;
+    isSelected && setEditing(true);
+  }
+
   return (
-    <StyledAssetName isSelected={isSelected} editing={editing} ellipsis={ellipsis}>
-      {readonly || !isSelected ? (
-        name
-      ) : (
-        <EditableText css={{ color: "$white" }} value={name} onBlur={rename} onEdit={() => setEditing(true)} />
+    <StyledAssetName isSelected={isSelected} editing={editing} ellipsis={ellipsis} onClick={handleClick}>
+      {(readonly || !isSelected) ? name : (
+        <EditableText value={name} onBlur={rename} onEdit={() => setEditing(true)} />
       )}
     </StyledAssetName>
   );

@@ -2,7 +2,6 @@ import { styled } from "@galacean/design-system";
 
 const StyledText = styled("p", {
   lineHeight: 1.5,
-  color: "$grayA12",
   fontFamily: "$untitled",
   cursor: "default",
   variants: {
@@ -95,55 +94,6 @@ const StyledBold = styled("strong", {
         color: "$grayA11"
       }
     }
-  }
-});
-
-const StyledTitle = styled(null, {
-  color: "$grayA12",
-  fontWeight: "bold",
-  cursor: "default",
-  variants: {
-    ellipsis: {
-      true: {
-        display: "block",
-        overflow: "hidden",
-        whiteSpace: "nowrap",
-        textOverflow: "ellipsis"
-      }
-    },
-    order: {
-      1: {
-        fontSize: "32px",
-        lineHeight: 1.2
-      },
-      2: {
-        fontSize: "28px",
-        lineHeight: 1.2
-      },
-      3: {
-        fontSize: "24px",
-        lineHeight: 1.2
-      },
-      4: {
-        fontSize: "20px",
-        lineHeight: 1.2
-      },
-      5: {
-        fontSize: "18px",
-        lineHeight: 1.2
-      },
-      6: {
-        fontSize: "14px",
-        fontWeight: 600,
-        lineHeight: "24px"
-      },
-      7: {
-        fontSize: "12px"
-      }
-    }
-  },
-  defaultVariants: {
-    order: 1
   }
 });
 

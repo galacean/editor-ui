@@ -35,6 +35,24 @@ const Container = styled("div", {
   }
 });
 
+const StyledInput = styled('input', {
+  all: 'unset',
+  maxWidth: "100%",
+  lineHeight: "14px",
+  minHeight: "$5",
+  padding: "0 $1_5",
+  flexShrink: 0,
+  whiteSpace: "break-word",
+  overflowWrap: "break-word",
+  fontSize: "$sm",
+  textAlign: "center",
+  borderRadius: "$2",
+  cursor: "default",
+  userSelect: "none",
+  backgroundColor: "transparent",
+  color: "$gray11",
+});
+
 type IEditableText = {
   value: string;
   showIcon?: boolean;
@@ -86,8 +104,7 @@ function EditableText(props: IEditableText) {
   return (
     <Container focused={editing}>
       {editing ? (
-        <Input
-          size="sm"
+        <StyledInput
           disabled={loading}
           ref={inputRef}
           value={draft}

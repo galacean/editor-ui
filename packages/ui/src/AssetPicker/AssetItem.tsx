@@ -21,7 +21,7 @@ const AssetItemRoot = styled("div", {
   variants: {
     displayMode: {
       grid: {
-        flexDirection: "column"
+        flexDirection: "column",
       },
       list: {
         flexDirection: "row",
@@ -60,7 +60,7 @@ export const AssetItem = forwardRef<HTMLDivElement, AssetItemProps>(
 
       name,
       onRename,
-      readonly,
+      readonly = false,
       ellipsis,
 
       children,
