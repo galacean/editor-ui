@@ -3,7 +3,7 @@ import React, { forwardRef, useEffect, useState } from "react";
 import type { IBezierPoint, IPoint } from "./types";
 import { generateCurve, generateLineByPoints, mergeRefs } from "./helper";
 
-import { styled } from "@galacean/design-system";
+import { styled } from "../../design-system";
 
 const StyledPath = styled("path", {
   strokeWidth: 1,

@@ -1,6 +1,6 @@
 import React, { forwardRef } from "react";
 
-import { styled } from "@galacean/design-system";
+import { styled } from "../../design-system";
 import { TransparentPattern } from "./TransparentPattern";
 
 const StyledTrigger = styled("button", {

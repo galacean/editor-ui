@@ -5,7 +5,7 @@ import type { GradientColor, ParticleColor } from "../ColorPicker/helper";
 import { Range } from "./Range";
 import { ThumbGroup } from "./Thumb";
 
-import { styled } from "@galacean/design-system";
+import { styled } from "../../design-system";
 
 const StyledParticleSliderRoot = styled("div", {
   width: '100%',

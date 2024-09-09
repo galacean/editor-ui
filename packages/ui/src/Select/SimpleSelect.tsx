@@ -5,8 +5,8 @@ import { IconChevronDown } from "@tabler/icons-react";
 import { IconChevronDownRight } from "@tabler/icons-react";
 
 import { Triangle } from "../Triangle";
-import { styled } from "@galacean/design-system";
-import { basicItemStyle, selectContent } from "@galacean/design-system/recipes";
+import { styled } from "../../design-system";
+import { basicItemStyle, selectContent } from "../../design-system/recipes";
 import { ActionButton } from "../ActionButton";
 
 const SelectContent = styled(Select.Content, selectContent);

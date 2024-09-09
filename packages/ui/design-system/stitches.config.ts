@@ -66,6 +66,23 @@ export const resetStyle = (custom: Record<string, any> = {}) => {
   globalThis.reseted = true;
   const reset = globalCss({
     ...resetCSS,
+    '@font-face': [
+      {
+        fontFamily: "mono",
+        fontWeight: 300,
+        src: 'url("https://mdn.alipayobjects.com/huamei_piroyv/afts/file/A*XvJJSIIEDbYAAAAAAAAAAAAADinLAQ/JetBrainsMono-Light.woff2") format("woff2")',
+      },
+      {
+        fontFamily: "mono",
+        fontWeight: 400,
+        src: 'url("https://mdn.alipayobjects.com/huamei_piroyv/afts/file/A*cCg_QbqN1BAAAAAAAAAAAAAADinLAQ/JetBrainsMono-Regular.woff2") format("woff2")',
+      },
+      {
+        fontFamily: "mono",
+        fontWeight: 500,
+        src: 'url("https://mdn.alipayobjects.com/huamei_piroyv/afts/file/A*M8hRRpGAU5sAAAAAAAAAAAAADinLAQ/JetBrainsMono-Medium.woff2") format("woff2")',
+      },
+    ],
     html: {
       fontFamily: "$default",
       fontSize: "16px",

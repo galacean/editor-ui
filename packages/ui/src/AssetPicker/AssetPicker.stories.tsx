@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Meta, StoryFn } from "@storybook/react";
 import { Flex } from "../Flex";
 import { AssetItem } from "./AssetItem";
-import { styled } from "@galacean/design-system";
+import { styled } from "../../design-system";
 
 export default {
   title: "Display/Asset",

@@ -1,5 +1,5 @@
 import React, { cloneElement, ComponentProps, forwardRef, ReactElement, ReactNode } from "react";
-import { styled, type CSS, VariantProps } from "@galacean/design-system";
+import { styled, type CSS, VariantProps } from "../../../design-system";
 import { v4 as uuidv4 } from "uuid";
 import { Label, type LabelProps } from "./Label";
 

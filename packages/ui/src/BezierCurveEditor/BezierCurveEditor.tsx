@@ -14,7 +14,7 @@ import { BezierPoint } from "./BezierPoint";
 import { BezierCurve } from "./BezierCurve";
 import { Grid } from "./Grid";
 
-import { styled } from "@galacean/design-system";
+import { styled } from "../../design-system";
 import { clamp } from "../../utils";
 import { ActionButton, ActionButtonGroup } from "../ActionButton";
 import { IconPlayerPlayFilled, IconZoomInFilled, IconZoomOutFilled, IconZoomReset } from "@tabler/icons-react";

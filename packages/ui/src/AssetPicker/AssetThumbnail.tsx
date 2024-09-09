@@ -2,7 +2,7 @@ import React, { forwardRef, Fragment, useEffect, useRef } from "react";
 import { IconCaretRightFilled, IconCaretLeftFilled, IconCloudDownload, IconCloudX } from "@tabler/icons-react";
 
 import { ActionButton, Flex } from "..";
-import { styled } from "@galacean/design-system";
+import { styled } from "../../design-system";
 import { mergeRefs } from "../BezierCurveEditor/helper";
 
 const internalIconMap = {

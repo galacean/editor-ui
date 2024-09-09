@@ -6,8 +6,8 @@ import { IconSearch, IconCheck, IconChevronDown, IconX } from "@tabler/icons-rea
 import { PopoverCloseTrigger, Popover } from "../Popover";
 import { Flex } from "../Flex";
 import { Badge } from "../Badge";
-import { styled } from "@galacean/design-system";
-import { basicItemStyle } from "@galacean/design-system/recipes";
+import { styled } from "../../design-system";
+import { basicItemStyle } from "../../design-system/recipes";
 
 const StyledComboboxTrigger = styled("button", {
   all: "unset",

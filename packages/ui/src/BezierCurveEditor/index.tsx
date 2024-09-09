@@ -10,7 +10,7 @@ import {
   mergeRefs
 } from "./helper";
 
-import { styled } from "@galacean/design-system";
+import { styled } from "../../design-system";
 import { IPoint } from "./types";
 import { Popover } from "..";
 import { BezierCurvePresets } from "./Preset";

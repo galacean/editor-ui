@@ -1,4 +1,4 @@
-import { styled } from "@galacean/design-system";
+import { styled } from "../../design-system";
 import { Flex } from "../Flex";
 
 const StyledCallout = styled(Flex, {

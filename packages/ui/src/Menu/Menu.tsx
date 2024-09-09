@@ -24,8 +24,8 @@ import type {
   DropdownMenuCheckboxItemProps
 } from "@radix-ui/react-dropdown-menu";
 
-import { styled } from "@galacean/design-system";
-import * as listStyle from "@galacean/design-system/recipes";
+import { styled } from "../../design-system";
+import * as listStyle from "../../design-system/recipes";
 import { KbdGroup } from "../Kbd";
 import { ScrollArea } from "../ScrollArea";
 

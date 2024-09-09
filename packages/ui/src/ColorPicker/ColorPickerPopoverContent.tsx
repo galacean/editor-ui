@@ -9,7 +9,7 @@ import { ColorPickerInputGroup } from "./ColorPickerInputGroup";
 import { ColorPickerTools } from "./ColorPickerTools";
 import { type IColor, type IGradientColor, type IParticleColor } from "./helper";
 
-import { styled } from "@galacean/design-system";
+import { styled } from "../../design-system";
 
 const ConstantColorPickerRoot = styled("div", {
   position: "relative"

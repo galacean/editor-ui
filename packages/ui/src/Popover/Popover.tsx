@@ -4,9 +4,9 @@ import * as PopoverPrimitive from "@radix-ui/react-popover";
 import type { PopoverContentProps as PrimitiveContentProps } from "@radix-ui/react-popover";
 import { useControllableState } from "@radix-ui/react-use-controllable-state";
 
-import { styled } from "@galacean/design-system";
-import { keyframes } from "@galacean/design-system/keyframes";
-import { contentStyle } from "@galacean/design-system/recipes";
+import { styled } from "../../design-system";
+import { keyframes } from "../../design-system/keyframes";
+import { contentStyle } from "../../design-system/recipes";
 
 const StyledContent = styled(PopoverPrimitive.Content, {
   padding: "$2",

@@ -1,7 +1,7 @@
 import React, { ComponentProps } from "react";
 import * as ProgressPrimitive from "@radix-ui/react-progress";
 
-import { styled, VariantProps } from "@galacean/design-system";
+import { styled, VariantProps } from "../../design-system";
 
 const StyledProgressRoot = styled(ProgressPrimitive.Root, {
   position: "relative",

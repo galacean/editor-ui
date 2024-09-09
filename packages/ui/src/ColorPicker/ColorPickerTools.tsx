@@ -1,7 +1,7 @@
 import { useState, useCallback } from "react";
 import { IconCopy, IconCheck } from "@tabler/icons-react";
 import { colord } from "colord";
-import { styled } from "@galacean/design-system";
+import { styled } from "../../design-system";
 
 import { type Color } from "./helper";
 import { useEyeDropper } from "../../hooks/useEyeDropper";

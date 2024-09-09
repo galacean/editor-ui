@@ -1,7 +1,7 @@
 import { forwardRef } from 'react'
 import { AssetName, AssetNameProps } from './AssetName'
 import { AssetThumbnail, AssetThumbnailProps } from './AssetThumbnail'
-import { styled } from '@galacean/design-system';
+import { styled } from '../../design-system';
 
 const AssetItemRoot = styled("div", {
   display: "flex",

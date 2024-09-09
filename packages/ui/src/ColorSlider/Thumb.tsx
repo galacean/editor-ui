@@ -4,7 +4,7 @@ import { extend } from "colord";
 import minifyPlugin from "colord/plugins/minify";
 import mixPlugin from "colord/plugins/mix";
 
-import { styled } from "@galacean/design-system";
+import { styled } from "../../design-system";
 import { useControllableState } from '@radix-ui/react-use-controllable-state';
 
 import { isEqual, type IColor, type IGradientColor } from "../ColorPicker/helper";

@@ -1,10 +1,10 @@
 
 import { forwardRef } from "react";
 
-import { StitchesComponent, styled } from "@galacean/design-system";
+import { StitchesComponent, styled } from "../../design-system";
 import { useAsyncStatus } from "../../hooks/useAsyncStatus";
 import { Spin } from "../Spin";
-import { button } from "@galacean/design-system/recipes";
+import { button } from "../../design-system/recipes";
 import { IconRightBottomCorner } from "../Icons/IconRightBottomCorner";
 
 const StyledActionButton = styled("button", button, {

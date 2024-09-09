@@ -1,5 +1,5 @@
 import { forwardRef, useMemo } from "react";
-import { styled } from "@galacean/design-system";
+import { styled } from "../../design-system";
 
 import { generateLinearGradient, type IColor } from "../ColorPicker/helper";
 

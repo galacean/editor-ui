@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { IconSelector } from "@tabler/icons-react";
 import { HexColorInput } from "react-colorful";
 import { colord, HslaColor, RgbaColor } from "colord";
-import { styled } from "@galacean/design-system";
+import { styled } from "../../design-system";
 
 import { ActionButton } from "../ActionButton";
 import { useEventCallback } from "../../hooks/useEventCallback";

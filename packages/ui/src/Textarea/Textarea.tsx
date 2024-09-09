@@ -1,4 +1,4 @@
-import { styled } from "@galacean/design-system";
+import { styled } from "../../design-system";
 
 const StyledTextarea = styled("textarea", {
   width: "100%",

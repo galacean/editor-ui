@@ -3,7 +3,7 @@ import { IconHandFinger, IconHandTwoFingers } from "@tabler/icons-react";
 import { MouseRightDownIcon } from "../Icons/MouseRightDownIcon";
 import { MouseLeftDownIcon } from "../Icons/MouseLeftDownIcon";
 import { MouseDoubleDownIcon } from "../Icons/MouseDoubleDownIcon";
-import { styled } from "@galacean/design-system";
+import { styled } from "../../design-system";
 
 const symbolsMap = {
   backspace: "⌫",

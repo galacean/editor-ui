@@ -1,5 +1,5 @@
 import { ButtonHTMLAttributes, HtmlHTMLAttributes, useEffect, useState } from "react";
-import { styled } from "@galacean/design-system";
+import { styled } from "../../design-system";
 import { IPoint } from "./types";
 import { IconCirclePlus, IconCirclePlusFilled, IconCircleXFilled } from "@tabler/icons-react";
 import { Flex } from "../Flex";

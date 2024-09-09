@@ -1,7 +1,7 @@
 import { PropsWithChildren, ReactNode, forwardRef } from "react";
 
-import { button } from "@galacean/design-system/recipes";
-import { styled, StitchesComponent } from "@galacean/design-system";
+import { button } from "../../design-system/recipes";
+import { styled, StitchesComponent } from "../../design-system";
 
 import { Spin } from "../Spin";
 import { Flex } from "../Flex";

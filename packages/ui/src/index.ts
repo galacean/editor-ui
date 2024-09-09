@@ -1,6 +1,3 @@
-import "./index.css";
-
-
 export * from './Accordion'
 export * from './ActionButton'
 export * from './Badge'
@@ -28,3 +25,5 @@ export * from './Spin'
 export * from './Textarea'
 export * from './ToggleGroup'
 export * from './Triangle'
+
+export * from '../design-system'

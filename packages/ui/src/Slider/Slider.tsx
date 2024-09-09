@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import * as SliderPrimitive from "@radix-ui/react-slider";
 
-import { styled, type StitchesComponent } from "@galacean/design-system";
+import { styled, type StitchesComponent } from "../../design-system";
 import { useControllableState } from "@radix-ui/react-use-controllable-state";
 // import { Tooltip } from "../Tooltip";
 

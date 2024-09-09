@@ -2,7 +2,7 @@ import React, { useState, useEffect, forwardRef } from "react";
 
 import type { IPoint } from "./types";
 
-import { styled } from "@galacean/design-system";
+import { styled } from "../../design-system";
 
 const StyledPoint = styled("circle", {
   fill: "$green9",

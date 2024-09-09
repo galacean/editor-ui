@@ -1,7 +1,7 @@
 import { Meta, StoryFn } from "@storybook/react";
 import { IconMenu } from "@tabler/icons-react";
 
-import { styled } from "@galacean/design-system";
+import { styled } from "../../design-system";
 import { Flex } from "../Flex";
 import { Button } from "../Button";
 import { ActionButton } from "../ActionButton";

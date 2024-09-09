@@ -1,7 +1,7 @@
 import { IconEdit } from "@tabler/icons-react";
 import React, { useEffect, useRef, useState } from "react";
 
-import { styled, CSS } from "@galacean/design-system";
+import { styled, CSS } from "../../design-system";
 import { Text } from "../Typography";
 import { Input } from "../Input";
 import { Flex } from "../Flex";

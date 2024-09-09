@@ -1,4 +1,4 @@
-import { styled } from "@galacean/design-system";
+import { styled } from "../../design-system";
 
 const StyledTicks = styled("text", {
   fontSize: "10px",

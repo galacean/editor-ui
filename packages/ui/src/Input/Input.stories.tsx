@@ -6,7 +6,7 @@ import { Flex } from "../Flex";
 import { DropdownMenu, MenuItem } from "../Menu";
 
 import { Input } from "./";
-import { styled } from "@galacean/design-system";
+import { styled } from "../../design-system";
 
 export default {
   title: "Inputs/Input",

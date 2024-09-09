@@ -2,8 +2,8 @@ import React from "react";
 import * as ScrollAreaPrimitive from "@radix-ui/react-scroll-area";
 import type { ScrollAreaViewportProps } from "@radix-ui/react-scroll-area";
 
-import { styled } from "@galacean/design-system";
-import { css } from "@galacean/design-system";
+import { styled } from "../../design-system";
+import { css } from "../../design-system";
 
 const SCROLLBAR_SIZE = 4;
 

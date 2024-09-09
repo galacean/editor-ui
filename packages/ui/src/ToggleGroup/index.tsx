@@ -2,7 +2,7 @@ import { PropsWithChildren } from "react";
 import * as ToggleGroupPrimitive from "@radix-ui/react-toggle-group";
 import type { ToggleGroupItemProps as PrimitiveItemProps } from "@radix-ui/react-toggle-group";
 
-import { styled } from "@galacean/design-system";
+import { styled } from "../../design-system";
 import { ActionButton } from "../ActionButton";
 
 const StyledToggleGroup = styled(ToggleGroupPrimitive.Root, {

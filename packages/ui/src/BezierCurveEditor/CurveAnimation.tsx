@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useImperativeHandle, forwardRef } from 'react'
 import { IBezierPoint, IPoint } from './types';
 import { convertBezierPointToPoint, getPointOnCurve } from './helper';
-import { styled } from '@galacean/design-system';
+import { styled } from '../../design-system';
 
 const AnmiatedCircle = styled('circle', {
   fill: 'transparent',

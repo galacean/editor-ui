@@ -1,6 +1,6 @@
 import React from "react";
 
-import { StitchesComponent, styled } from "@galacean/design-system";
+import { StitchesComponent, styled } from "../../design-system";
 
 const StyledInputSlot = styled("div", {
   display: "flex",

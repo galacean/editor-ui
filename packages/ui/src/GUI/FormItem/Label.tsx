@@ -1,7 +1,7 @@
 import React, { ReactNode } from "react";
 import * as LabelPrimitive from "@radix-ui/react-label";
 
-import { styled, type CSS } from "@galacean/design-system";
+import { styled, type CSS } from "../../../design-system";
 
 const StyledLabelRoot = styled("div", {
   all: "unset",

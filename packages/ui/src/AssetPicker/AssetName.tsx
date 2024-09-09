@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 // import { toast, EditableText } from "../";
-import { styled } from "@galacean/design-system";
+import { styled } from "../../design-system";
 import { EditableText } from './EditableText'
 
 export const StyledAssetName = styled("div", {

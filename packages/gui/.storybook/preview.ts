@@ -1,7 +1,5 @@
-import { resetStyle } from "../design-system"
+import { resetStyle } from "@galacean/editor-ui"
 import type { Preview } from "@storybook/react";
-
-import '../src/index.css'
 
 resetStyle();
 

@@ -3,8 +3,8 @@ import React, { useState, useEffect, forwardRef } from "react";
 import { useInputNumberState } from "./useInputNumberState";
 import { clamp } from "../../utils/math";
 
-import type { VariantProps } from "@galacean/design-system";
-import { styled } from "@galacean/design-system";
+import type { VariantProps } from "../../design-system";
+import { styled } from "../../design-system";
 import { Input } from "../Input";
 
 function roundTo(num: number, places: number) {

@@ -1,6 +1,6 @@
 import * as RadioGroupPrimitive from "@radix-ui/react-radio-group";
 
-import { styled } from "@galacean/design-system";
+import { styled } from "../../design-system";
 
 const StyledSegmentControlItem = styled(RadioGroupPrimitive.Item, {
   all: "unset",

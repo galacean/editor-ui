@@ -8,8 +8,8 @@ import type {
 import { IconCheck, IconChevronDown, IconChevronUp } from "@tabler/icons-react";
 import { useControllableState } from "@radix-ui/react-use-controllable-state";
 
-import { styled } from "@galacean/design-system"
-import { checkboxItemStyle, contentStyle, indicatorStyle, labelStyle } from "@galacean/design-system/recipes";
+import { styled } from "../../design-system"
+import { checkboxItemStyle, contentStyle, indicatorStyle, labelStyle } from "../../design-system/recipes";
 
 const SelectTrigger = styled(SelectPrimitive.SelectTrigger, {
   all: "unset",

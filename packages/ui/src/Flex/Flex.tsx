@@ -1,7 +1,7 @@
 import React, { PropsWithChildren } from "react";
 
-import { styled } from "@galacean/design-system";
-import type { StitchesComponent } from "@galacean/design-system";
+import { styled } from "../../design-system";
+import type { StitchesComponent } from "../../design-system";
 
 const StyledFlex = styled("div", {
   display: "flex",

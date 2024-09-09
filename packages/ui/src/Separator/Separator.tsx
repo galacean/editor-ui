@@ -1,5 +1,5 @@
 import * as PrimitiveSeparator from '@radix-ui/react-separator';
-import { styled } from '@galacean/design-system';
+import { styled } from '../../design-system';
 
 const SeparatorRoot = styled(PrimitiveSeparator.Root, {
   backgroundColor: '$grayA5',

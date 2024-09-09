@@ -1,7 +1,7 @@
 import React, { forwardRef, useEffect, useState, useCallback, PropsWithChildren } from "react";
 import { IconX } from "@tabler/icons-react";
 
-import { styled, StitchesComponent } from "@galacean/design-system";
+import { styled, StitchesComponent } from "../../design-system";
 
 const StyledCloseButton = styled("div", {
   height: "$3",

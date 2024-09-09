@@ -1,4 +1,4 @@
-import { styled } from "@galacean/design-system";
+import { styled } from "../../design-system";
 
 const StyledText = styled("p", {
   lineHeight: 1.5,

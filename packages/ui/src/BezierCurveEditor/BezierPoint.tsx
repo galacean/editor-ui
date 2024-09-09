@@ -1,7 +1,7 @@
 import type { IPoint, IBezierPoint } from "./types";
 import { Point } from "./Point";
 
-import { styled } from "@galacean/design-system";
+import { styled } from "../../design-system";
 
 const StyledControlLine = styled("line", {
   stroke: "$gray5"

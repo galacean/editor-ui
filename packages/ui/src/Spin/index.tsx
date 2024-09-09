@@ -1,5 +1,5 @@
-import { styled } from '@galacean/design-system'
-import { keyframes } from '@galacean/design-system/keyframes'
+import { styled } from '../../design-system'
+import { keyframes } from '../../design-system/keyframes'
 
 const Spin = styled("div", {
   $$borderSize: "2px",

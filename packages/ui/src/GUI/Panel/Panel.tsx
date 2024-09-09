@@ -1,5 +1,5 @@
 import { forwardRef } from "react"
-import { styled } from '@galacean/design-system'
+import { styled } from '../../../design-system'
 
 interface PanelProps {
   children?: React.ReactNode;

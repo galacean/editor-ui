@@ -1,6 +1,6 @@
 import { Meta, StoryFn } from "@storybook/react";
 
-import { styled } from "@galacean/design-system";
+import { styled } from "../../design-system";
 
 import { Flex } from "./";
 

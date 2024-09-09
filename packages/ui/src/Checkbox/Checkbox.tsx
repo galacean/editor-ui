@@ -4,7 +4,7 @@ import * as CheckboxPrimitive from "@radix-ui/react-checkbox";
 import { CheckboxProps as PrimitiveProps } from "@radix-ui/react-checkbox";
 import { IconCheck } from "@tabler/icons-react";
 
-import { styled } from "@galacean/design-system";
+import { styled } from "../../design-system";
 import { Flex } from "../Flex";
 
 const StyledCheckboxRoot = styled(CheckboxPrimitive.Root, {

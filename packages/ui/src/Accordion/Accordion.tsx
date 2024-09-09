@@ -3,7 +3,7 @@ import { IconChevronRight } from "@tabler/icons-react";
 import * as AccordionPrimitive from "@radix-ui/react-accordion";
 import type { AccordionItemProps as PrimitiveItemProps, AccordionSingleProps, AccordionMultipleProps } from "@radix-ui/react-accordion";
 
-import { styled } from "@galacean/design-system";
+import { styled } from "../../design-system";
 
 const StyledAccordion = styled(AccordionPrimitive.Root, {
   borderRadius: "$2",

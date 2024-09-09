@@ -3,7 +3,7 @@ import * as CollapsiblePrimitive from "@radix-ui/react-collapsible";
 import { IconTriangleInvertedFilled } from "@tabler/icons-react";
 import { useControllableState } from "@radix-ui/react-use-controllable-state";
 
-import { styled, StitchesComponent, keyframes } from "@galacean/design-system";
+import { styled, StitchesComponent, keyframes } from "../../design-system";
 
 const StyledContent = styled(CollapsiblePrimitive.Content, {
   borderRadius: "0 0 $2 $2",

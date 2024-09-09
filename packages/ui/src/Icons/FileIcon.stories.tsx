@@ -16,7 +16,7 @@ import {
   IconVrReferenceImageFile,
 } from "."
 import { Flex } from '../Flex';
-import { styled } from "@galacean/design-system";
+import { styled } from "../../design-system";
  
 export default {
   title: "Symbols/Iconography",

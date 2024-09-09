@@ -2,7 +2,7 @@ import { forwardRef, useCallback, useRef } from "react";
 import * as SliderPrimitive from "@radix-ui/react-slider";
 import { useControllableState } from "@radix-ui/react-use-controllable-state";
 
-import { styled } from "@galacean/design-system";
+import { styled } from "../../design-system";
 
 const StyledTrack = styled(SliderPrimitive.Track, {
   display: "flex",

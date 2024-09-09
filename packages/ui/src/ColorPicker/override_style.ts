@@ -1,4 +1,4 @@
-import { globalCss } from "@galacean/design-system";
+import { globalCss } from "../../design-system";
 
 export const overrideStyle = globalCss({
   ".galacecan-color-picker .react-colorful": {
