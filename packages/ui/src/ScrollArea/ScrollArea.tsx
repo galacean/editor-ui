@@ -2,7 +2,7 @@ import React from "react";
 import * as ScrollAreaPrimitive from "@radix-ui/react-scroll-area";
 import type { ScrollAreaViewportProps } from "@radix-ui/react-scroll-area";
 
-import { styled } from "../../design-system";
+import { CSS, styled } from "../../design-system";
 import { css } from "../../design-system";
 
 const SCROLLBAR_SIZE = 4;
@@ -57,8 +57,13 @@ const ScrollAreaThumb = styled(ScrollAreaPrimitive.Thumb, {
     }
 });
 
+const StyledCorner = styled(ScrollAreaPrimitive.Corner, {
+  backgroundColor: "grayA5"
+});
+
 interface ScrollAreaProps extends ScrollAreaViewportProps {
   children: React.ReactNode;
+  css?: CSS
 }
 
 export function ScrollArea(props: ScrollAreaProps) {
@@ -71,7 +76,7 @@ export function ScrollArea(props: ScrollAreaProps) {
       <ScrollAreaScrollbar orientation="vertical">
         <ScrollAreaThumb />
       </ScrollAreaScrollbar>
-      <ScrollAreaPrimitive.Corner className={css({ backgroundColor: "grayA5" })} />
+      <StyledCorner />
     </ScrollAreaRoot>
   );
 }

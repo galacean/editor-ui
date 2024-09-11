@@ -5,40 +5,6 @@ import { ActionButton, Flex } from "..";
 import { styled } from "../../design-system";
 import { mergeRefs } from "../BezierCurveEditor/helper";
 
-const internalIconMap = {
-  Scene: "https://mdn.alipayobjects.com/huamei_dc3kgb/afts/img/A*YPp4RI0gd5AAAAAAAAAAAAAADuiaAQ/original",
-  script: "https://mdn.alipayobjects.com/huamei_x9dkln/afts/img/A*czQvQ5pE5rwAAAAAAAAAAAAADsGIAQ/original",
-  StateMachineScript: "https://mdn.alipayobjects.com/huamei_x9dkln/afts/img/A*czQvQ5pE5rwAAAAAAAAAAAAADsGIAQ/original",
-  Folder: "https://mdn.alipayobjects.com/huamei_x9dkln/afts/img/A*FCaHQb2o4LsAAAAAAAAAAAAADsGIAQ/original",
-  Font: "https://mdn.alipayobjects.com/huamei_x9dkln/afts/img/A*R3kdRoYoCj4AAAAAAAAAAAAADsGIAQ/original",
-  Lottie: "https://mdn.alipayobjects.com/huamei_x9dkln/afts/img/A*U8PPSY6hbhYAAAAAAAAAAAAADsGIAQ/original",
-  SpriteAtlas: "https://mdn.alipayobjects.com/huamei_x9dkln/afts/img/A*Q76oRpXoSFIAAAAAAAAAAAAADsGIAQ/original",
-  AnimatorController: "https://mdn.alipayobjects.com/huamei_x9dkln/afts/img/A*Rb6GQaK1aSwAAAAAAAAAAAAADsGIAQ/original",
-  AnimationClip: "https://mdn.alipayobjects.com/huamei_x9dkln/afts/img/A*xxhYSYnGJeMAAAAAAAAAAAAADsGIAQ/original",
-  Spine: "https://mdn.alipayobjects.com/huamei_x9dkln/afts/img/A*IQVfRLMioacAAAAAAAAAAAAADsGIAQ/original",
-  Shader: "https://mdn.alipayobjects.com/huamei_dc3kgb/afts/img/A*9p1WS6QC9VIAAAAAAAAAAAAADuiaAQ/original",
-  ShaderChunk: "https://mdn.alipayobjects.com/huamei_dc3kgb/afts/img/A*9p1WS6QC9VIAAAAAAAAAAAAADuiaAQ/original",
-  XRReferenceImage: "https://mdn.alipayobjects.com/huamei_dc3kgb/afts/img/A*0gBaT5r89ZAAAAAAAAAAAAAADuiaAQ/original",
-  glTF: "https://mdn.alipayobjects.com/huamei_3zduhr/afts/img/A*XyFuQLVIPr8AAAAAAAAAAAAADsJ_AQ/original",
-  Prefab: "https://mdn.alipayobjects.com/huamei_3zduhr/afts/img/A*YUWUTbgu3c0AAAAAAAAAAAAADsJ_AQ/original",
-  SpineSkeletonData: "https://mdn.alipayobjects.com/huamei_x9dkln/afts/img/A*IQVfRLMioacAAAAAAAAAAAAADsGIAQ/original",
-  SpineAtlas: "https://mdn.alipayobjects.com/huamei_dc3kgb/afts/img/A*q7VGRrYx_YQAAAAAAAAAAAAADuiaAQ/original"
-};
-
-const StyledCanvasRenderer = styled("div", {
-  width: "90%",
-  aspectRatio: "1/1",
-  borderRadius: "$3",
-  overflow: "hidden",
-  variants: {
-    isError: {
-      true: {
-        display: "none"
-      }
-    }
-  }
-});
-
 const ExpandButton = styled(ActionButton, {
   position: "absolute",
   top: "50%",
@@ -144,6 +110,8 @@ const AssetThumbnail = forwardRef<HTMLDivElement, AssetThumbnailProps>(
       e.preventDefault();
       onToggleExpand && onToggleExpand();
     };
+
+    console.log('thumbnail', thumbnail, loadingStatus);  
 
     return (
       <StyledAssetItemThumbnail

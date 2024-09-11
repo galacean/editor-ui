@@ -1,1 +1,1 @@
-export { FormItemVector4, type FormItemVector4Props } from './FormItemVector4'
+export { FormItemVector4, type FormItemVector4Props, type Vector4 } from './FormItemVector4'

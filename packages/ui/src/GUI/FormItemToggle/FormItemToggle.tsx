@@ -6,19 +6,22 @@ import { BaseFormItemProps } from "../FormItem/FormItem";
 
 export interface FormItemToggleProps extends BaseFormItemProps<boolean> {
   checkboxLabel?: string | React.ReactNode
+  withLabel?: boolean
 };
 
 export function FormItemToggle(props: FormItemToggleProps) {
+  const { label, info, value, disabled, onChange, withLabel = false } = props;
+
   return (
     <FormItem
-      name={props.name}
-      info={props.info}
+      label={label}
+      info={info}
     >
       <Checkbox
-        label={props.checkboxLabel}
-        checked={props.value}
-        disabled={props.disabled}
-        onCheckedChange={props.onChange}
+        withLabel={withLabel}
+        checked={value}
+        disabled={disabled}
+        onCheckedChange={onChange}
       />
     </FormItem>
   );

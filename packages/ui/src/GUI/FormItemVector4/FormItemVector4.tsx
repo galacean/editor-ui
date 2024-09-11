@@ -4,35 +4,27 @@ import { IconRightBottomCorner } from "../../Icons/IconRightBottomCorner";
 import { InputNumber } from "../../InputNumber";
 import { BaseFormItemProps } from "../FormItem/FormItem";
 
-export type Rect = { x: number; y: number; z: number; w: number };
+export type Vector4 = { x: number; y: number; z: number; w: number };
 
-export interface FormItemVector4Props extends Omit<BaseFormItemProps<Rect>, 'onChange'> {
+export interface FormItemVector4Props extends Omit<BaseFormItemProps<Vector4>, 'onChange'> {
   min?: number;
   max?: number;
   disabled?: boolean;
-  value: Rect;
-  onChange?: (value: Rect, key: keyof Rect) => void;
+  value: Vector4;
+  onChange?: (value: Vector4, key: keyof Vector4) => void;
 };
 
 export function FormItemVector4(props: FormItemVector4Props) {
   const { onChange, min, max, disabled, value, ...rest } = props;
 
-  const handleOnChange = (prefix: keyof Rect) => (v: number) => {
+  const handleOnChange = (prefix: keyof Vector4) => (v: number) => {
     if (!onChange) return;
     const result = { ...value, [prefix]: v };
     onChange && onChange(result, prefix);
   };
 
   return (
-    <FormItem
-      {...rest}
-      fieldColumn={4}
-      formEndSlot={
-        <ActionButton size="sm">
-          <IconRightBottomCorner />
-        </ActionButton>
-      }
-    >
+    <FormItem {...rest} fieldColumn={4}>
       <InputNumber
         disabled={disabled}
         startSlot="X"
@@ -53,17 +45,17 @@ export function FormItemVector4(props: FormItemVector4Props) {
         disabled={disabled}
         min={min}
         max={max}
-        startSlot="W"
-        value={value.width}
-        onValueChange={handleOnChange("width")}
+        startSlot="Z"
+        value={value.z}
+        onValueChange={handleOnChange("z")}
       />
       <InputNumber
         disabled={disabled}
         min={min}
         max={max}
-        startSlot="H"
-        value={value.height}
-        onValueChange={handleOnChange("height")}
+        startSlot="W"
+        value={value.w}
+        onValueChange={handleOnChange("w")}
       />
     </FormItem>
   );

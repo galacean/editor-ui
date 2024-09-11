@@ -11,7 +11,7 @@ export interface FormItemVector2Props extends Omit<BaseFormItemProps<Vector2>, '
 };
 
 export function FormItemVector2(props: FormItemVector2Props) {
-  const { name, info, value, onChange, min, max, disabled } = props;
+  const { label, info, value, onChange, min, max, disabled } = props;
 
   const handleOnChange = (prefix: keyof Vector2) => (v: number) => {
     if (!onChange) return;
@@ -20,7 +20,7 @@ export function FormItemVector2(props: FormItemVector2Props) {
   };
 
   return (
-    <FormItem name={name} info={info} fieldColumn={3}>
+    <FormItem label={label} info={info} fieldColumn={3}>
       <InputNumber
         min={min}
         max={max}

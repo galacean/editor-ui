@@ -26,7 +26,7 @@ const StyledTrack = styled(SliderPrimitive.Track, {
 
 const StyledRange = styled(SliderPrimitive.Range, {
   position: "absolute",
-  backgroundColor: "$blueA6",
+  backgroundColor: "$grayA6",
   height: "100%",
   transition: "background-color .2s ease",
   '&[data-orientation="vertical"]': {
@@ -42,8 +42,8 @@ const StyledThumb = styled(SliderPrimitive.Thumb, {
   position: "relative",
   display: "block",
   width: "$0_5",
-  height: "21px",
-  backgroundColor: '$blue11',
+  height: "100%",
+  backgroundColor: '$grayA6',
   transition: "opacity .2s ease, background-color .2s ease, width .2s ease",
   '&[data-orientation="vertical"]': {
     width: "$6",
@@ -63,9 +63,9 @@ const StyledSlider = styled(SliderPrimitive.Root, {
   width: "100%",
   '&[data-orientation="horizontal"]': {
     height: "$sm",
-    padding: '$0_5',
-    backgroundColor: '$grayA4',
-    borderRadius: '$3',
+    // padding: '$0_5',
+    backgroundColor: '$grayA3',
+    borderRadius: '$2',
   },
   '&[data-orientation="vertical"]': {
     flexDirection: "column",
@@ -74,11 +74,11 @@ const StyledSlider = styled(SliderPrimitive.Root, {
   cursor: "ew-resize",
   "&:hover": {
     [`& ${StyledRange}`]: {
-      backgroundColor: "$blue8"
+      // backgroundColor: "$blue10"
     },
     [`& ${StyledThumb}`]: {
-      width: '4px',
-      // backgroundColor: "$blue8"
+      width: '3px',
+      backgroundColor: "$white"
     }
   },
   "&[data-disabled]": {
@@ -90,12 +90,12 @@ const StyledSlider = styled(SliderPrimitive.Root, {
       true: {
         [`& ${StyledTrack}`]: {
           height: "3px",
-          borderRadius: "$3"
+          borderRadius: "$2"
         },
         [`& ${StyledThumb}`]: {
           width: "14px",
           height: "14px",
-          backgroundColor: "$white",
+          // backgroundColor: "$white",
           borderRadius: "$round",
           "&[data-disabled]": {
             backgroundColor: "$gray11"

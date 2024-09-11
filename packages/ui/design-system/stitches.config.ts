@@ -100,8 +100,7 @@ export const resetStyle = (custom: Record<string, any> = {}) => {
   reset();
 };
 
-export const defaultTheme = theme;
-export const darkTheme = defaultTheme; // default theme alias,
+export const darkTheme = theme;
 
 export const lightTheme = createTheme("light-theme", { colors: colors.light });
 

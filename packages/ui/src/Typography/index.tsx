@@ -97,6 +97,48 @@ const StyledBold = styled("strong", {
   }
 });
 
+const StyledTitle = styled(null, {
+  // color: "$hiContrast",
+  color: "$gray12",
+  fontWeight: "bold",
+  variants: {
+    order: {
+      1: {
+        fontSize: "32px",
+        lineHeight: 1.2
+      },
+      2: {
+        fontSize: "28px",
+        lineHeight: 1.2
+      },
+      3: {
+        fontSize: "24px",
+        lineHeight: 1.2
+      },
+      4: {
+        fontSize: "20px",
+        lineHeight: 1.2
+      },
+      5: {
+        fontSize: "18px",
+        lineHeight: 1.2
+      },
+      6: {
+        fontSize: "14px",
+        fontWeight: 600,
+        lineHeight: "24px"
+      },
+      7: {
+        fontSize: "12px"
+      }
+    }
+  },
+  defaultVariants: {
+    order: 1
+  }
+});
+
+
 const StyledLink = styled("a", {
   color: "$gray12",
   textDecoration: "underline",
@@ -109,4 +151,5 @@ export {
   StyledText as Text,
   StyledBold as Bold,
   StyledLink as Link,
+  StyledTitle as Title
 };

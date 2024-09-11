@@ -27,6 +27,12 @@ const StyledField = styled("div", {
       },
       number: {
         gridTemplateColumns: "minmax(0, 8fr) repeat(2, 1fr)",
+      },
+      asset: {
+        gridTemplateColumns: "minmax(0, 8fr) $6 $6",
+      },
+      gradient: {
+
       }
     }
   }
@@ -35,8 +41,8 @@ const StyledField = styled("div", {
 const StyledFormItem = styled('div', {
   display: "grid",
   width: "100%",
-  // padding: "$1",
-  gridTemplateColumns: "minmax(0px, 1.3fr) repeat(3, minmax(0px, 1fr))",
+  padding: "$0_5",
+  gridTemplateColumns: "minmax(0px, 1.5fr) repeat(3, minmax(0px, 1fr))",
   gridTemplateRows: "auto",
   columnGap: "$1",
   alignItems: "center",
@@ -45,12 +51,20 @@ const StyledFormItem = styled('div', {
       true: {
         gridTemplateColumns: "1fr",
       }
+    },
+    direction: {
+      column: {
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "flex-start",
+      }
     }
   }
+
 });
 
 export interface BaseFormItemProps<V> {
-  name?: string;
+  label?: string;
   info?: ReactNode;
   disabled?: boolean;
   value: V;
@@ -66,7 +80,7 @@ export interface FormItemRangeProps extends BaseFormItemProps<number> {
   dragStep?: number;
 }
 
-export interface FormItemSelectableProps<T> {
+export interface FormItemSelectableProps<T> extends BaseFormItemProps<T> {
   options: { value: T, label: ReactNode }[];
 }
 
@@ -74,6 +88,7 @@ export interface FormItemProps extends Omit<BaseFormItemProps<any>, 'value' | 'o
   labelStyle?: CSS;
   children?: React.ReactNode;
   css?: CSS;
+  fieldCss?: CSS;
   fieldColumn?: VariantProps<typeof StyledField>['column'];
 }
 
@@ -81,13 +96,14 @@ export interface FormItemProps extends Omit<BaseFormItemProps<any>, 'value' | 'o
 const FormItem = forwardRef<HTMLDivElement, FormItemProps>(
   function FormItem(props, forwardedRef) {
     const {
-      name: propName,
+      label: propLabel,
       fieldColumn,
       children,
       labelStyle,
       info,
       formStartSlot,
       formEndSlot,
+      fieldCss,
       css,
       ...rest
     } = props;
@@ -95,7 +111,9 @@ const FormItem = forwardRef<HTMLDivElement, FormItemProps>(
     const dir = "row";
     const defaultSize = "sm";
 
-    const label = `${(propName ?? "").replace(/\s/g, "-")}-${uuidv4()}`;
+    const name = propLabel;
+
+    const label = `${(name ?? "").replace(/\s/g, "-")}-${uuidv4()}`;
     const withoutLabel = !!label;
 
     const decorateChildren = React.Children.toArray(children).map((child) => {
@@ -103,7 +121,7 @@ const FormItem = forwardRef<HTMLDivElement, FormItemProps>(
         return cloneElement(child as ReactElement, {
           id: label,
           size: defaultSize,
-          name: propName
+          label: name
         });
       }
       return null;
@@ -115,13 +133,13 @@ const FormItem = forwardRef<HTMLDivElement, FormItemProps>(
           <Label
             info={info}
             htmlFor={label}
-            label={propName ?? ''}
+            label={name ?? ''}
             css={labelStyle}
             startSlot={formStartSlot}
             endSlot={formEndSlot}
           />
         )}
-        <StyledField column={fieldColumn}>
+        <StyledField column={fieldColumn} css={fieldCss}>
           {decorateChildren}
         </StyledField>
       </StyledFormItem>

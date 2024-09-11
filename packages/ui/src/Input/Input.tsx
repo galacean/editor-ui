@@ -131,7 +131,7 @@ export const StyledInputRoot = styled("div", {
     },
     disabled: {
       true: {
-        backgroundColor: "$gray2",
+        // backgroundColor: "$gray2",
         [`${StyledInputSlot}`]: {
           color: "$grayA7"
         },
@@ -171,13 +171,6 @@ export const StyledInputRoot = styled("div", {
     }
   },
   compoundVariants: [
-    {
-      disabled: true,
-      variant: "subtle",
-      css: {
-        backgroundColor: "$gray2"
-      }
-    }
   ],
   defaultVariants: {
     size: "sm",

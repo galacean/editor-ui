@@ -66,7 +66,7 @@ export const Controllable = (args) => {
   }
   
   return (
-    <Flex gap="sm" css={{ width: "300px" }} dir="column">
+    <Flex gap="sm" css={{ width: "300px" }} direction="column">
       <CascadeSlider
         value={value}
         onValueChange={setValue}

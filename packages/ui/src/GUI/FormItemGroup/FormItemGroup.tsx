@@ -9,18 +9,18 @@ export interface FormItemGroupProps extends CollapsibleProps, Omit<BaseFormItemP
 }
 
 function FormItemGroup(props: FormItemGroupProps) {
-  const { name, nesting, collapsible, customTitle, defaultOpen = true, open,  } = props;
+  const { label, nesting, collapsible, customTitle, defaultOpen = true, open,  } = props;
 
   return (
     <Collapsible
-      title={customTitle ?? name}
+      title={customTitle ?? label}
       defaultOpen={defaultOpen}
       open={open}
       nesting={nesting}
       collapsible={collapsible}
-      
+      css={{ marginTop: '$0_5' }}
     >
-      <Flex direction="column">{props.children}</Flex>
+      {props.children}
     </Collapsible>
   );
 }

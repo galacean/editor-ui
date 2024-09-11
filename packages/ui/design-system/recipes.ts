@@ -262,3 +262,26 @@ export const subMenuItemStyle = styled('div', basicItemStyle, {
     height: "$3"
   }
 });
+
+const overlayFadeIn = keyframes({
+  "0%": { opacity: 0 },
+  "100%": { opacity: 0.44 }
+});
+
+const overlayFadeOut = keyframes({
+  "0%": { opacity: 0.44 },
+  "100%": { opacity: 0 }
+});
+
+export const overlayStyle = styled(null, {
+  position: "fixed",
+  background: "#000",
+  opacity: 0.44,
+  inset: 0,
+  "&[data-state=open]": {
+    animation: `${overlayFadeIn} 250ms ease`
+  },
+  "&[data-state=closed]": {
+    animation: `${overlayFadeOut} 250ms ease`
+  }
+});

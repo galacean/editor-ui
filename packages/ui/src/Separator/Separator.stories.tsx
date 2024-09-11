@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Meta, StoryFn } from "@storybook/react";
-import { Separator } from "./"
+import { Separator } from "."
 import { Flex } from "../Flex";
 import { Button } from "../Button";
 

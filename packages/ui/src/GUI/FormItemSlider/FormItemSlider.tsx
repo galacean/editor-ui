@@ -8,7 +8,7 @@ export interface FormItemSliderProps extends FormItemRangeProps {
 }
 
 export function FormItemSlider(props: FormItemSliderProps) {
-  const { name, info, min, max, value, dragStep, onChange, disabled, tooltip = true } = props;
+  const { label, info, min, max, value, dragStep, onChange, disabled, tooltip = true } = props;
 
   const handleSliderValueChange = (valueList: number[]) => {
     if (props.onChange) {
@@ -17,7 +17,7 @@ export function FormItemSlider(props: FormItemSliderProps) {
   };
 
   return (
-    <FormItem name={name} info={info} fieldColumn={3}>
+    <FormItem label={label} info={info} fieldColumn={3}>
       <InputNumber
         min={min}
         max={max}

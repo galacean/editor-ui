@@ -49,6 +49,7 @@ export interface CheckboxProps extends PrimitiveProps {
   /**
    * The label of the checkbox. You could pass a string or a ReactNode.
    */
+  withLabel?: boolean;
   label?: string | React.ReactNode;
   onCheckedChange?: (checked: boolean) => void;
 }
@@ -62,7 +63,7 @@ export interface CheckboxProps extends PrimitiveProps {
  * This component provide both controlled and uncontrolled modes.
  */
 export const Checkbox = forwardRef<HTMLButtonElement, CheckboxProps>(function Checkbox(props: CheckboxProps, forwardedRef) {
-  const { id, label, onCheckedChange, ...rest } = props;
+  const { id, label, withLabel, onCheckedChange, ...rest } = props;
 
   let handleCheckChange;
 
@@ -81,7 +82,7 @@ export const Checkbox = forwardRef<HTMLButtonElement, CheckboxProps>(function Ch
           <IconCheck size="10px" strokeWidth={3} />
         </CheckboxPrimitive.Indicator>
       </StyledCheckboxRoot>
-      {label &&
+      {withLabel && label &&
         <StyledCheckboxLabel htmlFor={id}>
           {props.label}
         </StyledCheckboxLabel>

@@ -9,9 +9,9 @@ export interface FormItemSegmentControlProps extends BaseFormItemProps<any> {
 };
 
 export function FormItemSegmentControl(props: FormItemSegmentControlProps) {
-  const { name, info, value, onChange, options = [] } = props;
+  const { label, info, value, onChange, options = [] } = props;
   return (
-    <FormItem name={name} info={info} fieldColumn={1}>
+    <FormItem label={label} info={info} fieldColumn={1}>
       <SegmentControl size="sm" value={String(value)} onValueChange={(v) => onChange && onChange(isNaN(Number(v)) ? v : Number(v))}>
         {options.map((item) => (
           <SegmentControlItem disabled={item.disabled} value={String(item.value)} key={item.value}>

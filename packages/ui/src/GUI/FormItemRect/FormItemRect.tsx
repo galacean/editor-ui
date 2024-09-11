@@ -4,12 +4,11 @@ import { BaseFormItemProps } from "../FormItem/FormItem";
 
 export type Rect = { x: number; y: number; width: number; height: number };
 
-export interface FormItemRectProps extends BaseFormItemProps<Rect> {
+export interface FormItemRectProps extends Omit<BaseFormItemProps<Rect>, 'onChange'>  {
   min?: number;
   max?: number;
-  value: Rect;
-  onChange?: (value: Rect, key: keyof Rect) => void;
   disabled?: boolean;
+  onChange?: (value: Rect, key: keyof Rect) => void;
 };
 
 export function FormItemRect(props: FormItemRectProps) {

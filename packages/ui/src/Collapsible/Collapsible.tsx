@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React from "react";
 import * as CollapsiblePrimitive from "@radix-ui/react-collapsible";
 import { IconTriangleInvertedFilled } from "@tabler/icons-react";
 import { useControllableState } from "@radix-ui/react-use-controllable-state";
@@ -8,7 +8,7 @@ import { styled, StitchesComponent, keyframes } from "../../design-system";
 const StyledContent = styled(CollapsiblePrimitive.Content, {
   borderRadius: "0 0 $2 $2",
   // padding: "0 $1 $2",
-  // paddingBottom: "$1",
+  paddingBottom: "$1",
   backgroundColor: "$panelBg",
   "&:empty": {
     padding: 0
@@ -28,7 +28,7 @@ const StyledTitle = styled("div", {
   lineHeight: 1,
   justifyContent: "space-between",
   color: "$grayA11",
-  padding: "0 $1 0 0",
+  padding: "0 $1 0 $1",
   height: "$7",
   fontSize: "$sm",
   userSelect: "none",
@@ -144,18 +144,14 @@ const StyledChevron = styled(IconTriangleInvertedFilled, {
   }
 });
 
-export interface CollapsibleProps extends Omit<StitchesComponent<typeof StyledRoot>, 'title'> {
-  title?: string | ReactNode;
+type ICollapsiableProps = Omit<StitchesComponent<typeof StyledRoot>, "title"> & {
+  title: any;
+  triggerTitle?: boolean;
   collapsible?: boolean;
 };
 
-/**
- * A collapsible component that can be used to hide and show content.
- * 
- * This Component provide controlled and uncontrolled modes.
- */
-function Collapsible(props: CollapsibleProps) {
-  const { children, title, collapsible = true, ...rest } = props;
+function Collapsible(props: ICollapsiableProps) {
+  const { children, title, collapsible = true, triggerTitle = true, ...rest } = props;
 
   const [open, setOpen] = useControllableState({
     prop: props.open,
@@ -173,12 +169,23 @@ function Collapsible(props: CollapsibleProps) {
 
   return (
     <StyledRoot {...rest} open={open} onOpenChange={handleOnOpenChange} disabled={!collapsible}>
+      {triggerTitle ? (
         <CollapsiblePrimitive.Trigger asChild disabled={!collapsible}>
           <StyledTitle>
             {collapsible && <StyledChevron open={open} />}
             <StyledTitleContent>{title}</StyledTitleContent>
           </StyledTitle>
         </CollapsiblePrimitive.Trigger>
+      ) : (
+        <StyledTitle>
+          {collapsible && (
+            <StyledTrigger disabled={!collapsible}>
+              <StyledChevron open={open} />
+            </StyledTrigger>
+          )}
+          <StyledTitleContent>{title}</StyledTitleContent>
+        </StyledTitle>
+      )}
       <StyledContent>{children}</StyledContent>
     </StyledRoot>
   );

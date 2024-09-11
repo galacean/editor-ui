@@ -59,7 +59,7 @@ export interface FormItemArrayProps extends Omit<BaseFormItemProps<any>, 'value'
 
 export function FormItemArray(props: FormItemArrayProps) {
   const {
-    name,
+    label,
     info,
     items = [],
     onAdd,
@@ -92,7 +92,7 @@ export function FormItemArray(props: FormItemArrayProps) {
   }, [items]);
 
   return (
-    <FormItem name={name} info={info}
+    <FormItem label={label} info={info}
       css={{
         display: "flex",
         flexDirection: "column",
@@ -108,7 +108,7 @@ export function FormItemArray(props: FormItemArrayProps) {
             title={<AccordionTitle title={item.name} onDelete={handleItemDelete(item)} removable={item.removable} />}
             arrow={!!item.children}
           >
-            <Flex dir="column">{item.children}</Flex>
+            <Flex direction="column">{item.children}</Flex>
           </AccordionItem>
         ))}
         {addable ? (

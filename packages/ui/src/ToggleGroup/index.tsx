@@ -35,7 +35,6 @@ const StyledItem = styled(ToggleGroupPrimitive.Item, {
   }
 });
 
-// Exports
 export const ToggleGroup = StyledToggleGroup;
 
 export interface ToggleGroupItemProps extends PrimitiveItemProps {
@@ -46,6 +45,7 @@ export interface ToggleGroupItemProps extends PrimitiveItemProps {
 
 export function ToggleGroupItem(props: PropsWithChildren<ToggleGroupItemProps>) {
   const { children, fancy, size, ...rest } = props;
+
   return (
     <StyledItem {...rest} asChild>
       <ActionButton variant="secondary" fancy={fancy} size={size}>

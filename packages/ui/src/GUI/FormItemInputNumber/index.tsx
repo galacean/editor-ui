@@ -14,7 +14,7 @@ export interface FormItemInputNumberProps extends BaseFormItemProps<number>, Pic
 
 export function FormItemInputNumber(props: FormItemInputNumberProps) {
   const {
-    name,
+    label,
     info,
     value,
     disabled,
@@ -47,7 +47,7 @@ export function FormItemInputNumber(props: FormItemInputNumberProps) {
 
   return (
     <FormItem
-      name={name}
+      label={label}
       info={info}
       fieldColumn={additionalControl ? "number" : 1}
     >

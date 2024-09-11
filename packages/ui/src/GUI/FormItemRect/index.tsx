@@ -1,1 +1,1 @@
-export { FormItemRect, type FormItemRectProps } from "./FormItemRect";
+export { FormItemRect, type FormItemRectProps, type Rect } from "./FormItemRect";

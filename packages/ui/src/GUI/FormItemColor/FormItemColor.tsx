@@ -8,7 +8,7 @@ import { Kbd } from "../../Kbd";
 import { normalizeColor, denormalizeColor, toNormalizeHexStr, type Color } from "../../../utils/colors";
 
 export interface FormItemColorProps {
-  name: string;
+  label: string;
   info?: React.ReactNode;
   value: Color;
   disabled?: boolean;
@@ -17,7 +17,7 @@ export interface FormItemColorProps {
 }
 
 export function FormItemColor(props: FormItemColorProps) {
-  const { name, info, value, disabled, labelFirst, onChange, ...rest } = props;
+  const { label, info, value, disabled, labelFirst, onChange, ...rest } = props;
   const [colorStr, setColorStr] = useState(toNormalizeHexStr(value));
   const [dirty, setDirty] = useState(false);
 
@@ -44,7 +44,7 @@ export function FormItemColor(props: FormItemColorProps) {
 
   return (
     <FormItem
-      name={name}
+      label={label}
       info={info}
       fieldColumn="color"
       {...rest}

@@ -22,7 +22,7 @@ export interface FormItemVector3Props extends Omit<BaseFormItemProps<Vector3>, '
 };
 
 export function FormItemVector3(props: FormItemVector3Props) {
-  const { name, info, value, onChange, disabled, min, max, constrainable, formEndSlot, ...rest } = props;
+  const { label, info, value, onChange, disabled, min, max, constrainable, formEndSlot, ...rest } = props;
   const [constrainMode, setConstrainMode] = useState(false);
 
   const handleOnChange = (prefix: keyof Vector3) => (v: number) => {
@@ -63,7 +63,7 @@ export function FormItemVector3(props: FormItemVector3Props) {
   }
 
   return (
-    <FormItem name={name} info={info} {...rest} formEndSlot={endSlot} fieldColumn={3}>
+    <FormItem label={label} info={info} {...rest} formEndSlot={endSlot} fieldColumn={3}>
       <InputNumber
         disabled={disabled}
         startSlot="X"
