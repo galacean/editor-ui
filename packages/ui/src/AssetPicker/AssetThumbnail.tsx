@@ -111,8 +111,6 @@ const AssetThumbnail = forwardRef<HTMLDivElement, AssetThumbnailProps>(
       onToggleExpand && onToggleExpand();
     };
 
-    console.log('thumbnail', thumbnail, loadingStatus);  
-
     return (
       <StyledAssetItemThumbnail
         mini={mini}

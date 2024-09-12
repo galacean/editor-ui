@@ -1,37 +1,34 @@
-import { ComponentProps, ReactNode } from "react";
+import { PropsWithChildren } from "react";
 import { FormItem } from "./FormItem";
-import { Input, Button, Textarea, CascadeSlider } from "..";
+import { Input, Button, Textarea, CascadeSlider, } from "..";
+import { BaseFormItemProps } from "./FormItem/FormItem";
 
-interface GUIComponentProps {
-  label: string;
-  info?: ReactNode;
-  formStartSlot?: ReactNode;
-  formEndSlot?: ReactNode;
-}
+interface GUIComponentProps<T> extends BaseFormItemProps<T> {}
 
-function generateGUI<T extends React.JSXElementConstructor<any> | keyof React.JSX.IntrinsicElements>(Component: T, defaultProps?: ComponentProps<T>) {
-  function GUIComponent(props: ComponentProps<T> & GUIComponentProps) {
-    const { label, info, formStartSlot, formEndSlot, ...rest } = props;
-    return (
-      <FormItem label={label} info={info} formStartSlot={formStartSlot} formEndSlot={formEndSlot}>
-        <Component {...defaultProps} {...rest as ComponentProps<T>} />
-      </FormItem>
-    );
+function generateGUI<T>() {
+  return <C extends React.JSXElementConstructor<any>>(Component: C, defaultProps?: React.ComponentProps<C>) => {
+    return function GUIComponent(props: React.ComponentProps<C> & GUIComponentProps<T>) {
+      const { label, info, formStartSlot, formEndSlot, ...rest } = props;
+      return (
+        <FormItem label={label} info={info} formStartSlot={formStartSlot} formEndSlot={formEndSlot}>
+          <Component {...defaultProps} {...rest as typeof defaultProps} />
+        </FormItem>
+      );
+    }
   }
-
-  // GUIComponent.displayName = Component.displayName;
-
-  return GUIComponent;
 }
 
-export { FormItem };
+export type FormItemButtonProps = PropsWithChildren<Omit<GUIComponentProps<string>, 'value' | 'onChange'>>;
+export const FormItemButton = generateGUI<string>()(Button) as React.FC< PropsWithChildren<Omit<GUIComponentProps<string>, 'value' | 'onChange'>>>; 
 
-export const FormItemButton = generateGUI(Button, {
-  variant: "secondary",
-});
-export const FormItemInput = generateGUI(Input);
-export const FormItemTextarea = generateGUI(Textarea);
-export const FormItemCascadeSlider = generateGUI(CascadeSlider);
+export type FormItemInputProps = GUIComponentProps<string>;
+export const FormItemInput = generateGUI<string>()(Input);
+
+export type FormItemTexareaProps = GUIComponentProps<string>;
+export const FormItemTextarea = generateGUI<string>()(Textarea);
+
+export type FormItemCascadeSliderProps = GUIComponentProps<number[]>;
+export const FormItemCascadeSlider = generateGUI<number[]>()(CascadeSlider);
 
 export { FormItemColor, type FormItemColorProps } from './FormItemColor'
 export { FormItemGroup, type FormItemGroupProps } from './FormItemGroup'

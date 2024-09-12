@@ -3,7 +3,7 @@ import { useControllableState } from "@radix-ui/react-use-controllable-state";
 import { IconEaseIn, IconEqual, IconVectorBezier2, IconPlusMinus } from "@tabler/icons-react";
 
 import { InputNumber, Select, SelectItem, BezierCurveEditor } from "../..";
-import { FormItem } from "../..";
+import { FormItem } from "../FormItem";
 import { BaseFormItemProps } from "../FormItem/FormItem";
 
 type ParticlePropertyType = "constant" | "curve" | "two-constant" | "two-curve";

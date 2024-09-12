@@ -6,10 +6,9 @@ import { ColorPicker } from "../../ColorPicker";
 import { Input } from "../../Input";
 import { Kbd } from "../../Kbd";
 import { normalizeColor, denormalizeColor, toNormalizeHexStr, type Color } from "../../../utils/colors";
+import { BaseFormItemProps } from "../FormItem/FormItem";
 
-export interface FormItemColorProps {
-  label: string;
-  info?: React.ReactNode;
+export interface FormItemColorProps extends BaseFormItemProps<Color> {
   value: Color;
   disabled?: boolean;
   labelFirst?: boolean;

@@ -88,7 +88,6 @@ const useTheme = () => {
 
   useEffect(() => {
     const defaultTheme = getDefaultTheme();
-    console.log("defaultTheme", defaultTheme);
     setTheme(defaultTheme);
   }, []);
 

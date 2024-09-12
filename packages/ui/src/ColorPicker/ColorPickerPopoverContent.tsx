@@ -7,7 +7,7 @@ import { GradientSlider } from "../ColorSlider/GradientSlider";
 import { ParticleSlider } from "../ColorSlider/ParticleSlider";
 import { ColorPickerInputGroup } from "./ColorPickerInputGroup";
 import { ColorPickerTools } from "./ColorPickerTools";
-import { type IColor, type IGradientColor, type IParticleColor } from "./helper";
+import { type Color, type GradientColor, type ParticleColor } from "./helper";
 
 import { styled } from "../../design-system";
 
@@ -17,16 +17,16 @@ const ConstantColorPickerRoot = styled("div", {
 
 interface GradientColorPickerProps {
   mode: "gradient";
-  value: IGradientColor;
-  defaultValue?: IGradientColor;
-  onValueChange: (color: IGradientColor) => void;
+  value: GradientColor;
+  defaultValue?: GradientColor;
+  onValueChange: (color: GradientColor) => void;
 }
 
 interface ConstantColorPickerProps {
   mode: "constant";
-  value: IColor;
-  defaultValue?: IColor;
-  onValueChange: (color: IColor) => void;
+  value: Color;
+  defaultValue?: Color;
+  onValueChange: (color: Color) => void;
 }
 
 /**
@@ -34,9 +34,9 @@ interface ConstantColorPickerProps {
  */
 interface ParticleColorPickerProps {
   mode: "particle";
-  value: IParticleColor;
-  defaultValue?: IParticleColor;
-  onValueChange: (color: IParticleColor) => void;
+  value: ParticleColor;
+  defaultValue?: ParticleColor;
+  onValueChange: (color: ParticleColor) => void;
 }
 
 export type ColorPickerRootProps = (
@@ -45,14 +45,14 @@ export type ColorPickerRootProps = (
   ParticleColorPickerProps
 );
 
-const ColorPickerRoot = function ColorPickerRoot(props: ColorPickerRootProps & { onChangePreviewStr: (color: IColor | IGradientColor | IParticleColor) => void }) {
+const ColorPickerRoot = function ColorPickerRoot(props: ColorPickerRootProps & { onChangePreviewStr: (color: Color | GradientColor | ParticleColor) => void }) {
   const gProps = props as GradientColorPickerProps;
   const cProps = props as ConstantColorPickerProps;
   const pProps = props as ParticleColorPickerProps;
 
   const { mode, onChangePreviewStr, defaultValue } = props;
 
-  const [gradientColor, setGradientColor] = useControllableState<IGradientColor>({
+  const [gradientColor, setGradientColor] = useControllableState<GradientColor>({
     prop: mode === "gradient" ? gProps.value : undefined,
     defaultProp: (mode === "gradient" && gProps.defaultValue) ? gProps.defaultValue : [],
     onChange: (v) => {
@@ -61,7 +61,7 @@ const ColorPickerRoot = function ColorPickerRoot(props: ColorPickerRootProps & {
     }
   });
 
-  const [particleColor, setParticleColor] = useControllableState<IParticleColor>({
+  const [particleColor, setParticleColor] = useControllableState<ParticleColor>({
     prop: mode === "particle" ? pProps.value : { color: [], alpha: [] },
     defaultProp: (mode === "particle" && pProps.defaultValue) ? pProps.defaultValue : { color: [], alpha: [] },
     onChange: (v) => {
@@ -120,7 +120,7 @@ const ColorPickerRoot = function ColorPickerRoot(props: ColorPickerRootProps & {
     }
   }
 
-  const [color, setColor] = useControllableState<IColor>({
+  const [color, setColor] = useControllableState<Color>({
     prop: getConstantProp(),
     defaultProp: getConstantDefaultProp(),
     onChange: handleConstantColorChange
@@ -136,7 +136,7 @@ const ColorPickerRoot = function ColorPickerRoot(props: ColorPickerRootProps & {
     setSelectedIndex(Math.min(index, particleColor![type].length - 1));
   };
 
-  const handlePickColor = (color: IColor) => {
+  const handlePickColor = (color: Color) => {
     setColor(color);
   };
 
