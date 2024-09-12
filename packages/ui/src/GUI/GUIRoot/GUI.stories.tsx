@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Meta, StoryFn } from "@storybook/react";
-import { Flex } from "../Flex";
-import { Panel } from "./Panel";
+import { Flex } from "../../Flex";
+import { Panel } from "../Panel";
 
 import {
   FormItemInput,
@@ -21,7 +21,7 @@ import {
   FormItemGroup,
   FormItemSelect,
   // FormItemEntityPicker
-} from ".";
+} from "..";
 
 export default {
   title: "GUI/Overview",

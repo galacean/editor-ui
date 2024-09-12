@@ -21,7 +21,7 @@ export function FormItemRect(props: FormItemRectProps) {
   };
 
   return (
-    <FormItem name={props.name} info={props.info} fieldColumn={4}>
+    <FormItem label={props.label} info={props.info} fieldColumn={4}>
       <InputNumber
         disabled={disabled}
         startSlot="X"
