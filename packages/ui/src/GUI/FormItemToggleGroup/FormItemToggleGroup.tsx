@@ -1,25 +1,27 @@
 import { FormItem } from "../FormItem";
 import { ToggleGroupItem, ToggleGroup } from "../../ToggleGroup";
-import { BaseFormItemProps, FormItemSelectableProps } from "../FormItem/FormItem";
+import { FormItemSelectableProps } from "../FormItem/FormItem";
 
 type SingleProps = {
   type: "single";
-  value: string;
+  value?: string;
   onChange?: (v: string) => void;
 };
 
 type MultiProps = {
   type: "multiple";
-  value: string[];
+  value?: string[];
   onChange?: (v: string[]) => void;
 };
 
 export type FormItemToggleGroupProps = (SingleProps | MultiProps) & Omit<FormItemSelectableProps<string>, 'value' | 'onChange'>;
 
 export function FormItemToggleGroup(props: FormItemToggleGroupProps) {
-  const { label, info, type, value, onChange: onValueChange, disabled, options } = props;
+  const { label, info, type, value, defaultValue, onChange: onValueChange, disabled, options } = props;
 
-  const groupProps: any = { type, value, onValueChange }
+  const groupProps: any = { type, value, onValueChange, defaultValue }
+  
+  console.log('options', options)
 
   return (
     <FormItem label={label} info={info} fieldColumn={1}>

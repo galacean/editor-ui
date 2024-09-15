@@ -73,17 +73,6 @@ export function FormItemArray(props: FormItemArrayProps) {
     onDelete && onDelete(item);
   };
 
-  const btnCSS = useMemo(() => {
-    if (items.length) {
-      return {
-        borderTop: "1px solid $gray3",
-        borderTopLeftRadius: 0,
-        borderTopRightRadius: 0
-      };
-    }
-    return null;
-  }, [items]);
-
   const defaultValue = useMemo(() => {
     if (items.length) {
       return items.map((item) => `${item.id}`);
@@ -96,8 +85,8 @@ export function FormItemArray(props: FormItemArrayProps) {
       css={{
         display: "flex",
         flexDirection: "column",
-        alignItems: "flex-start",
-        gap: "$1"
+        alignItems: "normal",
+        gap: "$1",
       }}
     >
       <Accordion type="multiple" defaultValue={propDefaultValue ?? defaultValue} data-state={"closed"}>
@@ -108,7 +97,7 @@ export function FormItemArray(props: FormItemArrayProps) {
             title={<AccordionTitle title={item.name} onDelete={handleItemDelete(item)} removable={item.removable} />}
             arrow={!!item.children}
           >
-            <Flex direction="column">{item.children}</Flex>
+            {item.children && <Flex direction="column">{item.children}</Flex>}
           </AccordionItem>
         ))}
         {addable ? (
@@ -116,8 +105,8 @@ export function FormItemArray(props: FormItemArrayProps) {
             size="sm"
             variant="secondary"
             css={{
-              ...btnCSS,
               width: "100%",
+              borderRadius: 0,
               "& > svg": {
                 marginRight: "$1"
               }

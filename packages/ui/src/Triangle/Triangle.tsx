@@ -10,6 +10,11 @@ const StyledTriangle = styled("div", {
   borderTop: "6px solid CurrentColor",
   transformOrigin: "center",
   variants: {
+    animate: {
+      true: {
+        transition: 'transform .2s'
+      }
+    },
     size: {
       s: {
         borderLeftWidth: "4px",

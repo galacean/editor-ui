@@ -35,7 +35,7 @@ export * from './Pagination'
 export * from './AlertDialog'
 export * from './Dialog'
 export * from './BezierCurveEditor'
-export * from './AssetPicker'
+// export * from './AssetPicker'
 export * from './ResizablePanel'
 
 export * from './ThemeProvider'

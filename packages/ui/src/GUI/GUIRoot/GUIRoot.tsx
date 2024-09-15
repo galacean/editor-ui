@@ -29,15 +29,15 @@ import {
   FormItemVector4Props,
   FormItemSegmentControlProps,
   FormItemSelectProps,
-  FormItemTexareaProps,
+  FormItemTextareaProps,
   FormItemCascadeSliderProps,
 } from '..'
 import { FormItemRectProps, Rect } from '../FormItemRect/FormItemRect';
 import { FormItemProps } from '../FormItem';
-import { BaseFormItemProps } from '../FormItem/FormItem';
+import { BaseFormItemProps, FormItem } from '../FormItem/FormItem';
 
-export enum GUIItemType {
-  String = 'String',
+export enum GUIItemTypeEnum {
+  Input = 'Input',
   Number = 'Number',
   Slider = 'Slider',
   Color = 'Color',
@@ -55,126 +55,119 @@ export enum GUIItemType {
   CascadeSlider = 'CascadeSlider',
 }
 
-interface GUIItemBaseConfig<T> extends BaseFormItemProps<T> {
-  type: GUIItemType
+// value will be injected by GUIRoot
+type BaseGUIItemConfig<T> = Omit<BaseFormItemProps<T>, 'value'> & { bindPath: string };
+
+interface GUIItemInputConfig extends BaseGUIItemConfig<FormItemInputProps> {
+  type: GUIItemTypeEnum.Input;
 }
 
-interface GUIItemInputConfig extends FormItemInputProps {
-  type: GUIItemType.String;
+interface GUIItemNumberConfig extends BaseGUIItemConfig<FormItemInputNumberProps> {
+  type: GUIItemTypeEnum.Number;
 }
 
-interface GUIItemTextareaConfig extends FormItemTexareaProps {
-  type: GUIItemType.Textarea;
+interface GUIItemTextareaConfig extends BaseGUIItemConfig<FormItemTextareaProps> {
+  type: GUIItemTypeEnum.Textarea;
 }
 
-interface GUIItemNumberConfig extends FormItemInputNumberProps {
-  type: GUIItemType.Number;
+interface GUIItemSliderConfig extends BaseGUIItemConfig<FormItemSliderProps> {
+  type: GUIItemTypeEnum.Slider;
 }
 
-interface GUIItemSliderConfig extends FormItemSliderProps {
-  type: GUIItemType.Slider;
+interface GUIItemColorConfig extends BaseGUIItemConfig<FormItemColorProps> {
+  type: GUIItemTypeEnum.Color;
 }
 
-interface GUIItemColorConfig extends FormItemColorProps {
-  type: GUIItemType.Color;
+interface GUIItemGroupConfig extends BaseGUIItemConfig<FormItemGroupProps> {
+  type: GUIItemTypeEnum.Group;
 }
 
-interface GUIItemGroupConfig extends FormItemGroupProps {
-  type: GUIItemType.Group;
+interface GUIItemRectConfig extends BaseGUIItemConfig<FormItemRectProps> {
+  type: GUIItemTypeEnum.Rect;
 }
 
-interface GUIItemRectConfig extends FormItemRectProps {
-  type: GUIItemType.Rect;
+interface GUIItemToggleConfig extends BaseGUIItemConfig<FormItemToggleProps> {
+  type: GUIItemTypeEnum.Toggle;
 }
 
-interface GUIItemToggleConfig extends FormItemToggleProps {
-  type: GUIItemType.Toggle;
-  value: boolean;
+interface GUIItemVector2Config extends BaseGUIItemConfig<FormItemVector2Props> {
+  type: GUIItemTypeEnum.Vector2;
 }
 
-interface GUIItemVector2Config extends FormItemVector2Props {
-  type: GUIItemType.Vector2;
-  value: { x: number; y: number };
+interface GUIItemVector3Config extends BaseGUIItemConfig<FormItemVector3Props> {
+  type: GUIItemTypeEnum.Vector3;
 }
 
-interface GUIItemVector3Config extends FormItemVector3Props {
-  type: GUIItemType.Vector3;
-  value: { x: number; y: number; z: number };
+interface GUIItemVector4Config extends BaseGUIItemConfig<FormItemVector4Props> {
+  type: GUIItemTypeEnum.Vector4;
 }
 
-interface GUIItemVector4Config extends FormItemVector4Props {
-  type: GUIItemType.Vector4;
-  value: { x: number; y: number; z: number; w: number };
+interface GUIItemSegmentControlConfig extends BaseGUIItemConfig<FormItemSegmentControlProps> {
+  type: GUIItemTypeEnum.Select;
 }
 
-interface GUIItemSegmentControlConfig extends FormItemSegmentControlProps {
-  type: GUIItemType.Select;
+interface GUIItemArrayConfig extends BaseGUIItemConfig<any> {
+  type: GUIItemTypeEnum.Array;
 }
 
-interface GUIItemArrayConfig extends GUIItemBaseConfig<any> {
-  type: GUIItemType.Array;
-  value: any[];
-}
-
-interface GUIItemSelectConfig extends FormItemSelectProps<any> {
-  type: GUIItemType.Select;
-  value: string;
+interface GUIItemSelectConfig extends BaseGUIItemConfig<FormItemSelectProps<any>> {
+  type: GUIItemTypeEnum.Select;
 }
 
 // interface GUIItemButtonConfig extends {
-//   type: GUIItemType.Button;
+//   type: GUIItemTypeEnum.Button;
 // }
 
-interface GUIItemCascadeSliderConfig extends FormItemCascadeSliderProps {
-  type: GUIItemType.CascadeSlider;
+interface GUIItemCascadeSliderConfig extends BaseGUIItemConfig<FormItemCascadeSliderProps> {
+  type: GUIItemTypeEnum.CascadeSlider;
 }
 
-export type GUIItemConfig =
-  | GUIItemColorConfig
-  // | GUIItemGroupConfig
+export type GUIItemConfig = (
+    GUIItemInputConfig
   | GUIItemNumberConfig
-  | GUIItemInputConfig
+  | GUIItemColorConfig
   | GUIItemTextareaConfig
   | GUIItemRectConfig
   | GUIItemToggleConfig
+  | GUIItemSliderConfig
   | GUIItemVector2Config
   | GUIItemVector3Config
   | GUIItemVector4Config
-  | GUIItemSliderConfig
   | GUIItemSelectConfig
   | GUIItemSegmentControlConfig
-  | GUIItemCascadeSliderConfig;
+  | GUIItemCascadeSliderConfig
+);
+  // | GUIItemGroupConfig
   // | GUIItemButtonConfig
   // | GUIItemArrayConfig
 
 
-type SourceData = any;
-type KeyOrBindPath = string;
+export type SourceData = any;
+export type KeyOrBindPath = string;
 
 export type GUIDefineItem = [SourceData, KeyOrBindPath, GUIItemConfig];
 
-type GUIRootProps = {
-  data: Record<string, any>;
-  items?: GUIDefineItem[];
-}
-
-const defaultItems: GUIItemConfig[] = [
-  
-]
-
 function renderGUIItem(item: GUIDefineItem, index: number) {
   const [data, keyOrBindPath, config] = item;
-  const { type, value, onChange, ...rest } = config;
+  const { type, onChange, bindPath, label, ...rest } = config;
 
-  let label = keyOrBindPath;
+  let realLabel = label;
+  let value: any = data[keyOrBindPath];
   let GUIComponent: React.FC<BaseFormItemProps<any>> = null;
   let nested = false;
 
   const realKey = keyOrBindPath.split('.').pop();
 
   if(realKey) {
-    label = realKey;
+    realLabel = realLabel ?? realKey;
     nested = true;
+  }
+
+  if(nested) {
+    const keys = keyOrBindPath.split('.');
+    const lastKey = keys.pop();
+    const lastObj = keys.reduce((acc, key) => acc[key], data);
+    value = lastObj[lastKey];
   }
 
   let preprocesser = function preprocesser(value: any) {
@@ -200,52 +193,56 @@ function renderGUIItem(item: GUIDefineItem, index: number) {
   }
 
   switch(type) {
-    case GUIItemType.String:
+    case GUIItemTypeEnum.Input:
       GUIComponent = FormItemInput;
       break;
-    case GUIItemType.Number:
+    case GUIItemTypeEnum.Number:
       GUIComponent = FormItemInputNumber;
       break;
-    case GUIItemType.Slider:
+    case GUIItemTypeEnum.Slider:
       GUIComponent = FormItemSlider;
       break;
-    case GUIItemType.Color:
+    case GUIItemTypeEnum.Color:
       GUIComponent = FormItemColor;
       break;
-    case GUIItemType.Toggle:
+    case GUIItemTypeEnum.Toggle:
       GUIComponent = FormItemToggle;
       break;
-    case GUIItemType.Vector2:
+    case GUIItemTypeEnum.Vector2:
       GUIComponent = FormItemVector2;
       break;
-    case GUIItemType.Vector3:
+    case GUIItemTypeEnum.Vector3:
       GUIComponent = FormItemVector3;
       break;
-    case GUIItemType.Vector4:
+    case GUIItemTypeEnum.Vector4:
       GUIComponent = FormItemVector4;
       break;
-    case GUIItemType.Rect:
+    case GUIItemTypeEnum.Rect:
       GUIComponent = FormItemRect;
       break;
-    case GUIItemType.Textarea:
+    case GUIItemTypeEnum.Textarea:
       GUIComponent = FormItemTextarea;
       break;
-    // case GUIItemType.Group:
+    // case GUIItemTypeEnum.Group:
     //   GUIComponent = FormItemGroup;
     //   break;
-    // case GUIItemType.CascadeSlider:
+    // case GUIItemTypeEnum.CascadeSlider:
     //   GUIComponent = FormItemCascadeSlider;
     //   break;
-    // case GUIItemType.Select:
+    // case GUIItemTypeEnum.Select:
     //   GUIComponent = FormItemSelect;
     //   break;
-    // case GUIItemType.Button:
+    // case GUIItemTypeEnum.Button:
     //   GUIComponent = FormItemButton;
     //   break;
   }
 
+  if(!GUIComponent) {
+    return null;
+  }
+
   return (
-    <GUIComponent key={`label_${index}`} label={label} value={realValue} onChange={handleOnChange} {...rest} />
+    <GUIComponent key={`label_${index}`} label={realLabel} value={realValue} onChange={handleOnChange} {...rest} />
   );
 }
 
@@ -260,12 +257,25 @@ const GUIContext = React.createContext<GUIContextType>({
   items: []
 });
 
-function GUIProvider({ children, items, gui }: { children: React.ReactNode, items: GUIDefineItem[], gui: any }) {
-  return <GUIContext.Provider value={{ gui, items }}>{children}</GUIContext.Provider>;
+interface GUIProviderProps {
+  children: React.ReactNode;
+  items: GUIDefineItem[];
+  gui: any;
+}
+
+function GUIProvider({ children, items, gui }: GUIProviderProps) {
+  return (
+    <GUIContext.Provider value={{ gui, items }}>{children}</GUIContext.Provider>
+  );
+}
+
+export interface GUIRootProps {
+  data: Record<string, any>;
+  items?: GUIDefineItem[];
 }
 
 export function GUIRoot(props: GUIRootProps) {
-  const { items } = props;
+  const { items, data } = props;
   const [guiItems, setGUIItems] = React.useState(items);
 
   const gui = useMemo(() => {
@@ -278,9 +288,9 @@ export function GUIRoot(props: GUIRootProps) {
   }, [guiItems]);
   
   return (
-    <GUIProvider gui={gui} items={items}>
+    <GUIProvider {...{ items, data, gui }}>
       <Panel>
-        {guiItems.map(renderGUIItem)}
+        {guiItems.map(renderGUIItem).filter(Boolean)}
       </Panel>
     </GUIProvider>
   );

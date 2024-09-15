@@ -22,7 +22,7 @@ export interface FormItemVector3Props extends Omit<BaseFormItemProps<Vector3>, '
 };
 
 export function FormItemVector3(props: FormItemVector3Props) {
-  const { label, info, value, onChange, disabled, min, max, constrainable, formEndSlot, ...rest } = props;
+  const { label, info, value, onChange, disabled, min, max, constrainable = false, formEndSlot, ...rest } = props;
   const [constrainMode, setConstrainMode] = useState(false);
 
   const handleOnChange = (prefix: keyof Vector3) => (v: number) => {
@@ -48,10 +48,6 @@ export function FormItemVector3(props: FormItemVector3Props) {
   const handleToggleConstrain = (e) => {
     setConstrainMode(!constrainMode);
   };
-
-  // useEffect(() => {
-  //   setConstrainMode(constrain);
-  // }, [constrain]);
 
   let endSlot: ReactNode = null;
   if (formEndSlot) {

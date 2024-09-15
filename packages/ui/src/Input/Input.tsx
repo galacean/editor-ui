@@ -15,6 +15,36 @@ const StyledInputSlot = styled("div", {
   userSelect: "none"
 });
 
+const StyledInputBackground = styled("div", {
+  position: "absolute",
+  top: 0,
+  inset: 0,
+  borderRadius: "$2",
+  pointerEvents: 'none',
+  variants: {
+    variant: {
+      default: {
+        boxShadow: "inset 0 0 0 1px $colors$border",
+        backgroundColor: '$gray2',
+      },
+      subtle: {
+        backgroundColor: "$secondaryBg",
+        '&:active': {
+          boxShadow: 'inset 0 0 0 1px $colors$border',
+        }
+      },
+      transparent: {
+        backgroundColor: "transparent",
+        borderRadius: 0,
+        outline: "none !important"
+      }
+    }
+  },
+  defaultVariants: {
+    variant: "subtle",
+  }
+});
+
 const StyledInput = styled("input", {
   appearance: "none",
   position: "relative",
@@ -33,6 +63,9 @@ const StyledInput = styled("input", {
   padding: "0 0 $0_5",
   "&:hover": {
     color: "$gray12"
+  },
+  [`&:focus ~ ${StyledInputBackground}`]: {
+    boxShadow: "inset 0 0 0 1px $colors$blue10"
   },
   "&:focus-visible": {
     color: "$gray12"
@@ -155,26 +188,11 @@ export const StyledInputRoot = styled("div", {
         }
       }
     },
-    variant: {
-      default: {
-        boxShadow: "inset 0 0 0 1px $colors$border",
-        backgroundColor: '$gray2',
-      },
-      subtle: {
-        backgroundColor: "$secondaryBg"
-      },
-      transparent: {
-        backgroundColor: "transparent",
-        borderRadius: 0,
-        outline: "none !important"
-      }
-    }
   },
   compoundVariants: [
   ],
   defaultVariants: {
     size: "sm",
-    variant: "subtle"
   }
 });
 
@@ -211,7 +229,6 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(function Inp
       ref={rootRef}
       size={size}
       disabled={disabled}
-      variant={variant}
     >
       {!!startSlot && (
         overrideStartSlotStyle ? startSlot : <StyledInputSlot>{startSlot}</StyledInputSlot>
@@ -220,6 +237,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(function Inp
       {!!endSlot && (
         overrideEndSlotStyle ? endSlot : <StyledInputSlot>{endSlot}</StyledInputSlot>
       )}
+      <StyledInputBackground variant={variant} />
     </StyledInputRoot>
   );
 });

@@ -42,7 +42,7 @@ const StyledFormItem = styled('div', {
   display: "grid",
   width: "100%",
   padding: "$0_5",
-  gridTemplateColumns: "minmax(0px, 1.5fr) repeat(3, minmax(0px, 1fr))",
+  gridTemplateColumns: "minmax(0px, 1.3fr) repeat(3, minmax(0px, 1fr))",
   gridTemplateRows: "auto",
   columnGap: "$1",
   alignItems: "center",
@@ -68,6 +68,7 @@ export interface BaseFormItemProps<V> {
   info?: ReactNode;
   disabled?: boolean;
   value: V;
+  defaultValue?: V;
   onChange?: (value: V) => void;
   formEndSlot?: ReactNode;
   formStartSlot?: ReactNode;
@@ -85,9 +86,9 @@ export interface FormItemSelectableProps<T> extends BaseFormItemProps<T> {
 }
 
 export interface FormItemProps extends Omit<BaseFormItemProps<any>, 'value' | 'onChange'> {
-  labelStyle?: CSS;
   children?: React.ReactNode;
   css?: CSS;
+  labelCss?: CSS;
   fieldCss?: CSS;
   fieldColumn?: VariantProps<typeof StyledField>['column'];
 }
@@ -98,7 +99,7 @@ const FormItem = forwardRef<HTMLDivElement, FormItemProps>(
       label: propLabel,
       fieldColumn,
       children,
-      labelStyle,
+      labelCss,
       info,
       formStartSlot,
       formEndSlot,
@@ -127,13 +128,13 @@ const FormItem = forwardRef<HTMLDivElement, FormItemProps>(
     });
 
     return (
-      <StyledFormItem ref={forwardedRef} dir={dir} withoutLabel={!withoutLabel} {...rest}>  
+      <StyledFormItem ref={forwardedRef} dir={dir} withoutLabel={!withoutLabel} css={css} {...rest}>  
         {withoutLabel && (
           <Label
             info={info}
             htmlFor={label}
             label={name ?? ''}
-            css={labelStyle}
+            css={labelCss}
             startSlot={formStartSlot}
             endSlot={formEndSlot}
           />

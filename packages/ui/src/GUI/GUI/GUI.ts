@@ -1,13 +1,23 @@
 import { v4 as uuidv4 } from 'uuid'
 import React from 'react';
 import { createRoot, Root } from 'react-dom/client';
-import { GUIItemConfig, GUIRoot, type GUIDefineItem } from './GUIRoot';
+import { GUIItemConfig, GUIRoot, GUIItemTypeEnum, type GUIDefineItem } from '../GUIRoot';
+import { darkTheme, lightTheme } from '../../../design-system';
+
+export { type GUIItemConfig };
+export { GUIItemTypeEnum }
+
+const themeMap = {
+  light: lightTheme.className,
+  dark: darkTheme.className
+} as const;
 
 class GUI {
   private  _container: HTMLDivElement = null;
   private _root: Root = null;
   private _data: Record<string, any> = null;
   private _items: GUIDefineItem[] = [];
+  private _theme: any = 'dark';
 
   get container() {
     return this._container;
@@ -25,9 +35,13 @@ class GUI {
     return this._items;
   }
 
-  constructor(data: Record<string, any>, items?: any[]) {
+  get theme() {
+    return this._theme;
+  }
+
+  constructor(data: Record<string, any>, items: GUIItemConfig[] = []) {
     this._data = data;
-    this._items = items || [];
+    this._items = items.map(item => [data, item.bindPath, item]);
 
     const container = document.createElement('div');
     container.id = `galacean-gui-${uuidv4()}`;
@@ -68,6 +82,15 @@ class GUI {
     // document.body.removeChild(this.container);
     this.root.unmount();
   }
+
+  setTheme(theme?: keyof typeof themeMap) {
+    this._theme = theme;
+    const html = document.documentElement;
+    html.classList.remove(themeMap.dark, themeMap.light);
+    html.classList.add(themeMap[theme]);
+  }
 }
 
-export default GUI;
+export {
+  GUI
+};

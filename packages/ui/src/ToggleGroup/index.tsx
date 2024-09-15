@@ -3,35 +3,43 @@ import * as ToggleGroupPrimitive from "@radix-ui/react-toggle-group";
 import type { ToggleGroupItemProps as PrimitiveItemProps } from "@radix-ui/react-toggle-group";
 
 import { styled } from "../../design-system";
-import { ActionButton } from "../ActionButton";
 
 const StyledToggleGroup = styled(ToggleGroupPrimitive.Root, {
   display: "flex",
+  gap: '$1',
 });
 
 const StyledItem = styled(ToggleGroupPrimitive.Item, {
-  "& + &": {
-    marginLeft: "$1"
+  all: "unset",
+  display: "flex",
+  height: '$sm',
+  aspectRatio: '1/1',
+  borderRadius: '$2',
+  alignItems: "center",
+  justifyContent: "center",
+  fontSize: '$1',
+  color: '$gray11',
+  backgroundColor: "rgba(0, 0, 0, 0)",
+  transition: "background-color 0.2s, color .2s",
+  '& > svg': {
+    width: '$4',
+    height: '$4',
   },
-  backgroundColor: "transparent",
   "&[data-state=on]": {
     backgroundColor: "$blue9",
-    color: "$white"
+    color: "$blue12",
+    fontWeight: 500,
   },
   "&[data-state=on]:hover": {
-    backgroundColor: "$blue9",
+    backgroundColor: "$blue10",
     color: "$white"
+  },
+  '&:hover': {
+    backgroundColor: '$grayA3',
   },
   "&:focus-visible": {
     position: "relative",
-    boxShadow: "0 0 0 3px $colors$grayA7"
-  },
-  variants: {
-    subtle: {
-      true: {
-        backgroundColor: "transparent"
-      }
-    }
+    boxShadow: "inset 0 0 0 1px $colors$blue10"
   }
 });
 
@@ -47,10 +55,8 @@ export function ToggleGroupItem(props: PropsWithChildren<ToggleGroupItemProps>) 
   const { children, fancy, size, ...rest } = props;
 
   return (
-    <StyledItem {...rest} asChild>
-      <ActionButton variant="secondary" fancy={fancy} size={size}>
-        {children}
-      </ActionButton>
+    <StyledItem {...rest}>
+      {children}
     </StyledItem>
   );
 }

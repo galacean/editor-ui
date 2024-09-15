@@ -12,7 +12,7 @@ export const button = styled('button', {
   boxSizing: "border-box",
   cursor: "pointer",
   "&:focus-visible": {
-    boxShadow: "0 0 0 2px $colors$blueA7"
+    boxShadow: "inset 0 0 0 1px $colors$blue10"
   },
   "&:disabled": {
     backgroundColor: "$grayA3",

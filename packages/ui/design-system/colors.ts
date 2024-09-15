@@ -77,7 +77,7 @@ export const semanticColors = {
   panelTitleBg: "$gray5",
   // panelBg: "$gray3",
   panelBg: "$gray3",
-  listBg: "$gray3",
+  listBg: "$gray2",
 
   dashboardBg: "$gray2",
   sidebarBg: "$grayA3",

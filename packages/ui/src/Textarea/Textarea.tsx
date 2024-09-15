@@ -23,7 +23,7 @@ const StyledTextarea = styled("textarea", {
     },
   },
   "&:focus-visible": {
-    boxShadow: "0px 0px 0px 4px $colors$blueA7",
+    boxShadow: "0px 0px 0px 1px $colors$blue10",
     color: "$hiContrast"
   },
   "&::placeholder": {

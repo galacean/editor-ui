@@ -9,6 +9,7 @@ const StyledAccordion = styled(AccordionPrimitive.Root, {
   borderRadius: "$2",
   width: "100%",
   border: "1px solid $border",
+  overflow: "hidden",
 });
 
 const StyledChevron = styled(IconChevronRight, {
@@ -24,7 +25,7 @@ const StyledTrigger = styled(AccordionPrimitive.Trigger, {
   display: "flex",
   width: "100%",
   padding: "0 $1",
-  height: "$6",
+  height: "$7",
   alignItems: "center",
   justifyContent: "space-between",
   fontSize: "$1",
@@ -69,16 +70,17 @@ const StyledItem = styled(AccordionPrimitive.Item, {
     left: 0,
     width: "100%",
     height: "1px",
-    backgroundColor: "$gray3"
+    backgroundColor: "$border"
   },
   '&:first-child': {
     [`& ${StyledTrigger}`]: {
-      borderRadius: "$2 $2 0 0",
+      borderRadius: "$2 $2 0 0 !important",
     }
   },
-  '&:last-child': {
+  '&:last-of-type': {
     [`& ${StyledTrigger}`]: {
-      borderRadius: "0 0 $2 $2",
+      borderRadius: "",
+      borderBottom: '1px solid $border',
     }
   },
   '&[data-state="open"] + &::after': {

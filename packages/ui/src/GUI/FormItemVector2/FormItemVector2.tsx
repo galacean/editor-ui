@@ -20,7 +20,7 @@ export function FormItemVector2(props: FormItemVector2Props) {
   };
 
   return (
-    <FormItem label={label} info={info} fieldColumn={3}>
+    <FormItem label={label} info={info} fieldColumn={2}>
       <InputNumber
         min={min}
         max={max}

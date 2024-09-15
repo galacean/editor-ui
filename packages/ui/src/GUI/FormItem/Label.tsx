@@ -9,6 +9,7 @@ const StyledLabelRoot = styled("div", {
   minHeight: "$6",
   alignItems: "center",
   fontSize: "$sm",
+  fontWeight: 500,
   overflow: "hidden",
   whiteSpace: "nowrap",
   color: "$gray10",
