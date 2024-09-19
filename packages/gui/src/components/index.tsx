@@ -43,7 +43,7 @@ export { FormItemSegmentControl, type FormItemSegmentControlProps } from './Form
 export { FormItemArray, type FormItemArrayProps } from './FormItemArray'
 export { FormItemSelect, type FormItemSelectProps } from './FormItemSelect'
 export { FormItemDisplay, type FormItemDisplayProps } from './FormItemDisplay'
-// export { FormItemAssetPicker, type FormItemAssetPickerProps } from './FormItemAssetPicker'
+export { FormItemAssetPicker, type FormItemAssetPickerProps } from './FormItemAssetPicker'
 export {
   FormItemGradient,
   type FormItemGradientProps,
