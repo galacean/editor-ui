@@ -211,7 +211,7 @@ const CascadeSlider = forwardRef<HTMLSpanElement, CascadeSliderProps>(
     return (
       <StyledSlider
         value={sliderValue}
-        onChange={handleSliderChange}
+        onValueChange={handleSliderChange}
         step={step}
         minStepsBetweenThumbs={step}
         max={max}
