@@ -41,6 +41,6 @@ export * from './ResizablePanel'
 export * from './ThemeProvider'
 export * from '../hooks'
 
-export * from './GUI'
-
 export * from '../design-system'
+
+export * from '../utils'

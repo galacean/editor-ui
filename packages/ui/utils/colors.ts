@@ -5,6 +5,11 @@ export function rgb2Hex(color: Color) {
   return "#" + (0x1000000 + rgb).toString(16).slice(1);
 }
 
+export function rgb2HexWithAlpha1(color: Color) {
+  const rgb = ((color.r * 255) << 16) | ((color.g * 255) << 8) | ((color.b * 255) << 0);
+  return "#" + (0x1000000 + rgb).toString(16).slice(1);
+}
+
 /**
  * normalize color from 0-255 to 0-1
  * @param rgba Color

@@ -6,22 +6,23 @@ import { clamp } from "../../utils/math";
 import type { VariantProps } from "../../design-system";
 import { styled } from "../../design-system";
 import { Input } from "../Input";
+import { mergeRefs } from "../../utils/merge-refs";
 
-function roundTo(num: number, places: number) {
-  const factor = Math.pow(10, places);
-  return Math.round(num * factor) / factor;
+function round(value, precision = 2) {
+  const power = Math.pow(10, precision)
+  return Math.round((value*power)+(Number.EPSILON*power)) / power
 }
 
 function safePlus(a, b): number {
   a = isNaN(Number(a)) ? 0 : Number(a);
   b = isNaN(Number(b)) ? 0 : Number(b);
-  return roundTo(a + b, 3);
+  return round(a + b);
 }
 
 function safeTimes(a, b) {
   a = isNaN(Number(a)) ? 0 : Number(a);
   b = isNaN(Number(b)) ? 0 : Number(b);
-  return roundTo(a * b, 3);
+  return round(a * b);
 }
 
 const StyledNumController = styled("div", {
@@ -110,7 +111,7 @@ export const InputNumber = forwardRef<HTMLInputElement, InputNumberProps>(
     const [accurateMode, setAccurateMode] = useState(false);
     const [dragging, setDragging] = useState(false);
     const [startX, setStartX] = useState(0);
-    const inputProps = useInputNumberState({
+    const { ref, value, defaultValue, onBlur, onChange } = useInputNumberState({
       onChange: onValueChange,
       value: props.value,
       fallbackValue: 0,
@@ -134,8 +135,8 @@ export const InputNumber = forwardRef<HTMLInputElement, InputNumberProps>(
       if (!dragging) return;
       const diff = safeTimes(safePlus(e.clientX, -startX), step);
       const newValue = clamp(safePlus(props.value, diff), min, max);
-      if(inputProps.onChange) {
-        inputProps.onChange({ target: { value: newValue.toString() } } as React.ChangeEvent<HTMLInputElement>);
+      if(onChange) {
+        onChange({ target: { value: newValue.toString() } } as React.ChangeEvent<HTMLInputElement>);
       }
     };
 
@@ -162,7 +163,11 @@ export const InputNumber = forwardRef<HTMLInputElement, InputNumberProps>(
       <StyledInputNumberRoot>
         <Input
           {...rest}
-          {...inputProps}
+          ref={mergeRefs([ref, forwardedRef])}
+          value={value}
+          defaultValue={defaultValue}
+          onChange={onChange}
+          onBlur={onBlur}
           disabled={disabled}
           size={size}
           min={min}
@@ -170,7 +175,6 @@ export const InputNumber = forwardRef<HTMLInputElement, InputNumberProps>(
           step={step}
           type="number"
           startSlot={startSlot}
-          ref={forwardedRef}
           endSlot={
             !disabled && <StyledNumController active={dragging} tight={accurateMode} onMouseDown={handleMouseDown} />
           }

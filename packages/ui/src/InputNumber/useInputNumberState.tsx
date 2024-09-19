@@ -46,7 +46,7 @@ export function useInputNumberState(props: InputNumberStateOptions): InputNumber
       }
       setVal(e.target.value);
     },
-    [onChangeProps]
+    [onChangeProps, min, max]
   );
 
   const onBlur = useCallback(
@@ -63,13 +63,14 @@ export function useInputNumberState(props: InputNumberStateOptions): InputNumber
         setVal(fallbackValue.toString());
       }
     },
-    [onChangeProps]
+    [onChangeProps, min, max]
   );
 
   if (isControlled) {
     result.onChange = onChange;
     result.onBlur = onBlur;
     result.value = showNumber;
+    result.defaultValue = undefined;
   }
 
   return result;

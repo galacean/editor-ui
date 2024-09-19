@@ -8,8 +8,12 @@ const StyledSegmentControlItem = styled(RadioGroupPrimitive.Item, {
   textWrap: "nowrap",
   alignItems: "center",
   height: "100%",
-  flex: 1,
-  flexShrink: 0,
+  // flex: 1,
+  // flexShrink: 0,
+  overflow: 'hidden',
+  padding: '0 $1',
+  whiteSpace: 'nowrap',
+  textOverflow: 'ellipsis',
   lineHeight: "var(--sizes-6)",
   color: "$grayA10",
   border: "none",
@@ -19,11 +23,11 @@ const StyledSegmentControlItem = styled(RadioGroupPrimitive.Item, {
   outline: "none",
   cursor: "pointer",
   gap: "$1",
+  transition: "all .2s ease",
   "& > svg": {
     height: "14px",
     width: "14px"
   },
-  transition: "all .2s ease",
   "&:hover": {
     color: "$grayA12"
   },
@@ -49,10 +53,11 @@ const StyledSegmentControlItem = styled(RadioGroupPrimitive.Item, {
 });
 
 const StyledSegmentControlRoot = styled(RadioGroupPrimitive.Root, {
-  display: "inline-flex",
+  display: "grid",
   backgroundColor: "$grayA3",
   width: "100%",
   maxWidth: "100%",
+  gridTemplateColumns: 'repeat(4, 1fr)',
   alignItems: "center",
   borderRadius: "$2",
   variants: {

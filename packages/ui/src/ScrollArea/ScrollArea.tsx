@@ -3,7 +3,6 @@ import * as ScrollAreaPrimitive from "@radix-ui/react-scroll-area";
 import type { ScrollAreaViewportProps } from "@radix-ui/react-scroll-area";
 
 import { CSS, styled } from "../../design-system";
-import { css } from "../../design-system";
 
 const SCROLLBAR_SIZE = 4;
 
@@ -28,9 +27,9 @@ const ScrollAreaScrollbar = styled(ScrollAreaPrimitive.Scrollbar, {
     display: "flex",
     userSelect: "none",
     touchAction: "none",
-    padding: "0_5 0 0_5 0_5",
+    padding: "$0_5 0 $0_5 $0_5",
     transition: "background 160ms ease-out",
-    "&:hover": { background: "grayA5" },
+    "&:hover": { background: "$grayA5" },
     '&[data-orientation="vertical"]': { width: SCROLLBAR_SIZE },
     '&[data-orientation="horizontal"]': {
       flexDirection: "column",
@@ -40,7 +39,7 @@ const ScrollAreaScrollbar = styled(ScrollAreaPrimitive.Scrollbar, {
 
 const ScrollAreaThumb = styled(ScrollAreaPrimitive.Thumb, {
     flex: 1,
-    background: "gray10",
+    background: "$gray7",
     borderRadius: SCROLLBAR_SIZE,
     // increase target size for touch devices https://www.w3.org/WAI/WCAG21/Understanding/target-size.html
     position: "relative",
@@ -58,7 +57,7 @@ const ScrollAreaThumb = styled(ScrollAreaPrimitive.Thumb, {
 });
 
 const StyledCorner = styled(ScrollAreaPrimitive.Corner, {
-  backgroundColor: "grayA5"
+  backgroundColor: "$grayA5"
 });
 
 interface ScrollAreaProps extends ScrollAreaViewportProps {

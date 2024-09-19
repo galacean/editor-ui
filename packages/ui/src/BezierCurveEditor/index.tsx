@@ -7,9 +7,9 @@ import {
   denormalizePoint,
   generateCurve,
   generateLineByPoints,
-  mergeRefs
 } from "./helper";
 
+import { mergeRefs } from '../../utils/merge-refs'
 import { styled } from "../../design-system";
 import { IPoint } from "./types";
 import { Popover } from "..";
@@ -90,7 +90,7 @@ const CurveWrapper = styled('div', {
   padding: '$2',
 });
 
-const LocalStorageKey = 'gui_bezier_curve_presets';
+const LocalStorageKey = '_bezier_curve_presets';
 
 export const BezierCurveEditor = function BezierCurveEditor(props: BezierCurveEditorProps) {
   const { onChange, value, defaultValue, algo = "bezier" } = props;

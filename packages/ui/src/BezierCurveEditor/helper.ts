@@ -1,7 +1,5 @@
 import { IBezierPoint, IPoint, BezierCurveEditorProps } from "./types";
 
-export { mergeRefs } from "../../utils/merge-refs";
-
 export function generateCurve(points: IBezierPoint[], zoom = 1): string {
   points = points.map((point) => ({
     point: { x: point.point.x / zoom, y: point.point.y / zoom },

@@ -1,7 +1,8 @@
 import React, { forwardRef, useEffect, useState } from "react";
 
 import type { IBezierPoint, IPoint } from "./types";
-import { generateCurve, generateLineByPoints, mergeRefs } from "./helper";
+import { generateCurve, generateLineByPoints } from "./helper";
+import { mergeRefs } from '../../utils/merge-refs'
 
 import { styled } from "../../design-system";
 
