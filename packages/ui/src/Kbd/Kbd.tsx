@@ -102,7 +102,8 @@ const StyledKbd = styled("kbd", {
       xs: {
         minWidth: "$3",
         height: "$3",
-        fontSize: "$1"
+        fontSize: "10px",
+        borderRadius: '$1',
       },
       sm: {
         minWidth: "$4",

@@ -30,6 +30,8 @@ export function useDraggablePanel(panelRef: React.RefObject<HTMLDivElement>, cac
   };
 
   const handleMouseMove = useCallback((e: MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
     if (!panelRef.current) return;
 
     const xShift = clamp(
