@@ -219,19 +219,17 @@ function start() {
       ]
       );
 
-      // gui.addGroup('Transform', [
-      //   {
-      //     bindPath: 'position',
-      //     type: GUIItemTypeEnum.Vector3,
-      //     onChange(value) {
-      //       cameraEntity.transform.setPosition(value.x, value.y, value.z);
-      //     }
-      //   }
-      // ]);
+      gui.addGroup('Transform', [
+        {
+          bindPath: 'position',
+          type: GUIItemTypeEnum.Vector3,
+          onChange(value) {
+            cameraEntity.transform.setPosition(value.x, value.y, value.z);
+          }
+        }
+      ]);
     }
   });
-
-  
 }
 
 class TestData {

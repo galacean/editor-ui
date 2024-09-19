@@ -80,11 +80,6 @@ interface GUIItemColorConfig extends BaseGUIItemConfig<FormItemColorProps> {
   type: GUIItemTypeEnum.Color;
 }
 
-interface GUIItemGroupConfig extends BaseGUIItemConfig<FormItemGroupProps> {
-  type: GUIItemTypeEnum.Group;
-  items: GUIItemConfig[];
-}
-
 interface GUIItemRectConfig extends BaseGUIItemConfig<FormItemRectProps> {
   type: GUIItemTypeEnum.Rect;
 }
@@ -114,6 +109,11 @@ interface GUIItemArrayConfig extends Omit<FormItemArrayProps, 'items'> {
   bindPath: string;
   items: GUIItemConfig[];
   onChange?: (value: any) => void;
+}
+
+interface GUIItemGroupConfig extends Omit<BaseGUIItemConfig<FormItemGroupProps>, 'children'> {
+  type: GUIItemTypeEnum.Group;
+  items: GUIItemConfig[];
 }
 
 interface GUIItemSelectConfig extends BaseGUIItemConfig<FormItemSelectProps<any>> {
@@ -246,17 +246,17 @@ function renderGUIItem(item: GUIDefineItem, index: number) {
     };
     case GUIItemTypeEnum.Group: {
       GUIComponent = FormItemGroup;
-      extraProps.items = (config as GUIItemGroupConfig).items.map((item, index) => {
+      (extraProps as BaseGUIItemConfig<FormItemGroupProps>).children = (config as GUIItemGroupConfig).items.map((item, index) => {
         return renderGUIItem([data, item.bindPath, item], index);
       })
       break;
     }
-    // case GUIItemTypeEnum.CascadeSlider:
-    //   GUIComponent = FormItemCascadeSlider;
-    //   break;
-    // case GUIItemTypeEnum.Select:
-    //   GUIComponent = FormItemSelect;
-    //   break;
+    case GUIItemTypeEnum.CascadeSlider:
+      GUIComponent = FormItemCascadeSlider;
+      break;
+    case GUIItemTypeEnum.Select:
+      GUIComponent = FormItemSelect;
+      break;
     // case GUIItemTypeEnum.Button:
     //   GUIComponent = FormItemButton;
     //   break;

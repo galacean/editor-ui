@@ -16,14 +16,6 @@ function generateGUI<T>() {
   }
 }
 
-// make a primitive FormItem component uncontrollable
-export function uncontrollable<T>(value: T, onChange: (value: T) => void) {
-  return {
-    value,
-    onChange,
-  }
-}
-
 export type FormItemButtonProps = PropsWithChildren<Omit<BaseFormItemProps<string>, 'value' | 'onChange'>>;
 export const FormItemButton = generateGUI<string>()(Button) as React.FC< PropsWithChildren<Omit<BaseFormItemProps<string>, 'value' | 'onChange'>>>; 
 

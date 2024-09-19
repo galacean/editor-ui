@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid'
 import React from 'react';
 import { createRoot, Root } from 'react-dom/client';
-import { GUIItemConfig, GUIRoot, GUIItemTypeEnum, type GUIDefineItem } from '../GUIRoot';
+import { GUIItemConfig, GUIRoot, GUIItemTypeEnum, type GUIDefineItem } from '../components/GUIRoot';
 import { darkTheme, lightTheme } from '@galacean/editor-ui';
 
 export { type GUIItemConfig };
@@ -50,35 +50,29 @@ class GUI implements GUIBase {
     this._data = data;
     this._items = items.map(item => [data, item.bindPath, item]);
 
-    const container = this._createContainer();
+    this._prepareContainer();
 
-    if(document.body) {
-      document.body.appendChild(this._container = container);
-    }
     if(data && items.length) {
       this.render();
     }
   }
 
-  private _createContainer() {
+  private _prepareContainer() {
     const container = document.createElement('div');
     container.id = `galacean-gui-${uuidv4()}`;
     container.style.position = 'fixed';
     container.style.top = '32px';
     container.style.right = '32px';
-    return container
-  }
-
-  private _disposeContainer() {
-    if(this.container) {
-      document.body.removeChild(this.container);
+    if(document.body) {
+      document.body.appendChild(this._container = container);
     }
+    return container
   }
 
   render(container = this.container) {
     let root = this.root;
     if(!container) {
-      container = this._createContainer();
+      container = this._prepareContainer();
       this._container = container;
     }
     if(!this.root) {
@@ -105,17 +99,17 @@ class GUI implements GUIBase {
     }
   }
 
-  // addGroup(groupName: string, items: GUIItemConfig[]) {
-  //   this.items.push([
-  //     this.data,
-  //     groupName,
-  //     {
-  //       type: GUIItemTypeEnum.Group,
-  //       items: items,
-  //     }
-  //   ]);
-  //   this._update();
-  // }
+  addGroup(groupName: string, items: GUIItemConfig[]) {
+    this.items.push([
+      this.data,
+      groupName,
+      {
+        type: GUIItemTypeEnum.Group,
+        items: items,
+      }
+    ]);
+    this._update();
+  }
 
   private _update() {
     this.dispose();
@@ -123,9 +117,12 @@ class GUI implements GUIBase {
   }
 
   dispose() {
-    this._disposeContainer();
-    // document.body.removeChild(this.container);
+    if(this.container) {
+      document.body.removeChild(this.container);
+    }
+    this._container = null;
     this.root.unmount();
+    this._root = null;
   }
 
   setTheme(theme?: keyof typeof themeMap) {
