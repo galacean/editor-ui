@@ -17,7 +17,7 @@ function generateGUI<T>() {
 }
 
 export type FormItemButtonProps = PropsWithChildren<Omit<BaseFormItemProps<string>, 'value' | 'onChange'>>;
-export const FormItemButton = generateGUI<string>()(Button) as React.FC< PropsWithChildren<Omit<BaseFormItemProps<string>, 'value' | 'onChange'>>>; 
+export const FormItemButton = generateGUI<string>()(Button); 
 
 export type FormItemInputProps = BaseFormItemProps<string>;
 export const FormItemInput = generateGUI<string>()(Input);
