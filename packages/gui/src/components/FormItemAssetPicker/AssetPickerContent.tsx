@@ -1,15 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { groupBy } from "lodash-es";
-import { useLocalStorageState } from "ahooks";
+import React, { useState, useEffect, useRef } from "react";
+import { Input, Flex, styled, ActionButton, Breadcrumbs } from "@galacean/editor-ui";
 
-import { SearchBarBorder } from "./SearchBarBorder";
 import { BasicAssetType, PickableAssetItem } from "./PickableAssetItem";
 
-// import { Breadcrumb, BreadcrumbItem } from "../../Breadcrumb";
-// import { Search } from "../../Explorer";
-import { Flex } from "../../Flex";
-// import { ViewSwitch } from "../../Explorer/ViewSwitch";
-import { styled } from "../../../design-system";
+import { SearchBarBorder } from "./SearchBarBorder";
+import { IconLayoutGrid, IconLayoutList, IconSearch } from "@tabler/icons-react";
 
 const StyledAssetPickerContent = styled("div", {
   display: "flex",
@@ -58,64 +53,64 @@ export interface AssetPickerPopoverProps<T extends BasicAssetType> {
   assets: T[];
   onSelect?: (asset: T) => void;
   customFilter?: (asset: T) => boolean;
+  groupBy?: (asset: T) => string;
 }
+
+function groupAssets<T extends BasicAssetType>(assets: T[], groupBy: (asset: T) => string) {
+  const grouped = {};
+  for (let asset of assets) {
+    const group = groupBy(asset);
+    if (!grouped[group]) {
+      grouped[group] = [];
+    }
+    grouped[group].push(asset);
+  }
+
+  return grouped;
+}
+
+
+const key = "galacean-gui-asset-picker-display-mode";
+
 export function AssetPickerContent<T extends BasicAssetType>(props: AssetPickerPopoverProps<T>) {
-  const { assets, onSelect, selectedAssetId } = props;
+  const { assets, customFilter, onSelect, selectedAssetId } = props;
+  const searchRef = useRef<HTMLInputElement>(null);
+
   const [searchText, setSearchText] = useState("");
-  const [displayMode, setDisplayMode] = useLocalStorageState<"list" | "grid">("ui_asset_picker_view_mode", {
-    defaultValue: "grid"
-  });
+  const [displayMode, setDisplayMode] = useState(
+    window.localStorage.getItem(key) || 'grid'
+  )
   const scrollingRef = React.useRef<HTMLDivElement | null>(null);
 
   const setScrollingRef = React.useCallback((element: HTMLDivElement) => {
     scrollingRef.current = element;
   }, []);
 
-  const filteredAssets = assets
-    .filter((asset) => (asset.isSubAsset && asset.mainAsset) || !asset.isSubAsset)
-    .filter((asset) => {
-      let path = "";
-      if (asset.isSubAsset) {
-        const mainAsset = asset.mainAsset;
-        path = `${mainAsset.getTempRoutes().join("/")}/${mainAsset.name}/${asset.name}`;
-      } else {
-        const routes = asset.getTempRoutes();
-        path = `${routes.join("/")}/${asset.name}`;
-      }
-      return path.toLowerCase().indexOf(searchText.toLowerCase()) > -1;
-    });
+  const filteredAssets = assets.filter(customFilter || (() => true));
 
-  const grouped = groupBy(filteredAssets, (item) => {
-    const r = item.getTempRoutes();
-    if (item.isSubAsset) {
-      const mainAsset = item.mainAsset;
-      const path = `${mainAsset.getTempRoutes().join("/")}/${mainAsset.name}`;
-      return path;
-    }
-
-    return r;
-  });
+  const grouped = groupAssets(filteredAssets, (asset) => asset.path || "");
 
   const paths = Object.keys(grouped);
+
+  const handleChangeDisplayMode = (mode: "list" | "grid") => {
+    return () => {
+      setDisplayMode(mode);
+      window.localStorage.setItem(key, mode);
+    }
+  }
 
   const items = paths.map((path, i) => {
     return (
       <AssetGroupSection key={path}>
-        {/* {paths[i] && (
-          <Breadcrumb>
-            {path.split(",").map((p, idx) => (
-              <BreadcrumbItem key={idx}>{p}</BreadcrumbItem>
-            ))}
-          </Breadcrumb>
-        )} */}
+        <Breadcrumbs items={path.split(",").map((p) => ({ id: p, label: p }))} />
         <AssetList displayMode={displayMode}>
           {grouped[path].map((asset) => {
             return (
               <PickableAssetItem
                 selected={selectedAssetId === asset.id}
-                displayMode={displayMode}
                 key={asset.id}
-                asset={asset}
+                name={asset.name}
+                thumbnail={asset.thumbnail}
                 onClick={() => {
                   if (!asset.isInitCompleted) return;
                   if (onSelect) {
@@ -133,13 +128,36 @@ export function AssetPickerContent<T extends BasicAssetType>(props: AssetPickerP
   return (
     <StyledAssetPickerContent>
       <StyledHeader gap="xs" wrap={false}>
-        {/* <Search value={searchText} onSearch={(v) => setSearchText(v)} />
-        <ViewSwitch
-          mode={displayMode}
-          onChange={(type) => {
-            setDisplayMode(type);
-          }}
-        /> */}
+      <Input
+        value={searchText}
+        ref={searchRef}
+        startSlot={<IconSearch size="14px" />}
+        variant="subtle"
+        placeholder="Search Assets..."
+        size="sm"
+        onChange={(e) => {
+          const { value } = e.currentTarget;
+          setSearchText(value);
+        }}
+      />
+      <Flex gap="xs" wrap={false} align="both">
+        <ActionButton
+          fancy
+          variant="transparent"
+          active={displayMode === "grid"}
+          onClick={handleChangeDisplayMode('grid')}
+        >
+          <IconLayoutGrid />
+        </ActionButton>
+        <ActionButton
+          variant="transparent"
+          fancy
+          active={displayMode === "list"}
+          onClick={handleChangeDisplayMode('list')}
+        >
+          <IconLayoutList />
+        </ActionButton>
+      </Flex>
       </StyledHeader>
       <SearchBarBorder scrollingRef={scrollingRef} />
       <AssetGroups ref={setScrollingRef}>{items}</AssetGroups>

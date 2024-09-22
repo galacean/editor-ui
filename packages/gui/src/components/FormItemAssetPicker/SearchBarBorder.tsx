@@ -1,6 +1,6 @@
 import React from "react";
 
-import { styled } from "../../../design-system";
+import { styled } from "@galacean/editor-ui";
 
 const StyledBorder = styled("div", {
   borderBottom: "1px solid transparent",

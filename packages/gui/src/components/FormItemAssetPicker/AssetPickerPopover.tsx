@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import { AssetPickerContent } from "./AssetPickerContent";
 
-import { Popover } from "../../Popover";
+import { Popover } from "@galacean/editor-ui";
 
 export interface BasicAssetType {
   id: string;

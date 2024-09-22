@@ -77,12 +77,12 @@ const StyledItem = styled(AccordionPrimitive.Item, {
       borderRadius: "$2 $2 0 0 !important",
     }
   },
-  '&:last-of-type': {
-    [`& ${StyledTrigger}`]: {
-      borderRadius: "",
-      borderBottom: '1px solid $border',
-    }
-  },
+  // '&:last-of-type': {
+  //   [`& ${StyledTrigger}`]: {
+  //     borderRadius: "",
+  //     borderBottom: '1px solid $border',
+  //   }
+  // },
   '&[data-state="open"] + &::after': {
     display: "none"
   },

@@ -63,7 +63,8 @@
   "packageManager": "pnpm@8.6.4",
   "dependencies": {
     "@galacean/editor-ui": "workspace:*",
-    "@radix-ui/react-use-controllable-state": "^1.1.0"
+    "@radix-ui/react-use-controllable-state": "^1.1.0",
+    "@tabler/icons-react": "^3.17.0"
   },
   "peerDependencies": {
     "react": "^18.2.0",

@@ -1,7 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
-
-import { AssetItem, AssetName, AssetThumbnail } from "../../AssetPicker";
-import { PopoverCloseTrigger } from "../../Popover";
+import { forwardRef } from "react";
+import { AssetItem, PopoverCloseTrigger, type AssetItemProps } from '@galacean/editor-ui';
 
 export interface BasicAssetType {
   id: string;
@@ -13,29 +11,19 @@ export interface BasicAssetType {
   getMetaConfig: () => any;
 }
 
-export interface PickableAssetItemProps<T extends BasicAssetType> {
-  asset: T;
-  onClick: () => void;
-  selected: boolean;
-  displayMode: "list" | "grid";
-}
+export interface PickableAssetItemProps extends AssetItemProps {}
 
-export function PickableAssetItem<T extends BasicAssetType>(props: PickableAssetItemProps<T>) {
-  const { asset, onClick, selected, displayMode = "grid" } = props;
-  const metaInfo = useRef(asset.getMetaConfig());
-
-  return (
-    <PopoverCloseTrigger asChild>
-      <AssetItem name={asset.name} onClick={onClick} displayMode={displayMode}>
-        <AssetThumbnail
-          thumbnail={asset.thumbnailUrl}
-          loadingStatus="success"
-          expandable={false}
-          isSelected={selected}
-          mini={displayMode === "list"}
-        />
-        <AssetName name={asset.name} readonly isSelected={selected} ellipsis={displayMode !== "list"} />
-      </AssetItem>
-    </PopoverCloseTrigger>
-  );
-}
+export const PickableAssetItem = 
+  forwardRef<HTMLDivElement, PickableAssetItemProps>(
+    function PickableAssetItem(props, forwardedRef) {
+      return (
+        <PopoverCloseTrigger asChild>
+          <AssetItem
+            {...props}
+            ref={forwardedRef}
+            readOnly
+          />
+        </PopoverCloseTrigger>
+      );
+    }
+  )

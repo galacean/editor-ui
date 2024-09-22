@@ -53,4 +53,9 @@ export {
 } from './FormItemGradient'
 export { FormItemParticle, type FormItemParticleProps } from './FormItemParticle'
 
-export { FormItem } from './FormItem'
+export {
+  FormItem,
+  type BaseFormItemProps,
+  type FormItemSelectableProps,
+  type FormItemRangeProps
+} from './FormItem'
