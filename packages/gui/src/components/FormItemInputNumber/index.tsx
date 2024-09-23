@@ -5,7 +5,7 @@ import { FormItem } from "../FormItem";
 import { clamp, Button, InputNumber, type InputNumberProps } from '@galacean/editor-ui'
 import { BaseFormItemProps } from "../FormItem/FormItem";
 
-export interface FormItemInputNumberProps extends BaseFormItemProps<number>, Pick<InputNumberProps, 'dragStep' | 'min' | 'max'> {
+export interface FormItemInputNumberProps extends BaseFormItemProps<number>, Pick<InputNumberProps,  'step' | 'dragStep' | 'min' | 'max'> {
   additionalControl?: boolean;
   onChange?: (value: number) => void;
 }
@@ -22,6 +22,7 @@ export function FormItemInputNumber(props: FormItemInputNumberProps) {
     value,
     disabled,
     onChange,
+    step,
     dragStep = 1,
     min = -Infinity,
     max = Infinity,
@@ -58,6 +59,7 @@ export function FormItemInputNumber(props: FormItemInputNumberProps) {
         disabled={disabled}
         min={props.min}
         max={props.max}
+        step={props.step}
         dragStep={props.dragStep}
         value={props.value}
         onBlur={handleOnBlur}

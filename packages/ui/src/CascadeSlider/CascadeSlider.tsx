@@ -150,7 +150,7 @@ export interface CascadeSliderProps {
    * @param value the new values of the thumbs
    * @returns 
    */
-  onValueChange: (value: number[]) => void;
+  onChange: (value: number[]) => void;
   /**
    * The step size for each thumb movement. This defines the granularity of the slider's value increments.
    * @defaultValue 1
@@ -189,11 +189,11 @@ const sum = (v: number[]) => v.reduce((a, b) => a + b, 0);
  */
 const CascadeSlider = forwardRef<HTMLSpanElement, CascadeSliderProps>(
   function CascadeSlider(props: CascadeSliderProps, forwardedRef) {
-    const { value, defaultValue, onValueChange, formatter, step = 1, max: originalMax, unit = "%" } = props;
+    const { value, defaultValue, onChange, formatter, step = 1, max: originalMax, unit = "%" } = props;
     const [values, setValues] = useControllableState<number[]>({
       prop: value,
       defaultProp: defaultValue ?? [],
-      onChange: onValueChange
+      onChange: onChange
     });
 
     const calcMax = sum(values!); 
