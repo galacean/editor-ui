@@ -36,7 +36,7 @@ export interface AssetPickerPopoverProps<T> {
   assets?: T[];
   asset?: T;
   trigger?: React.ReactElement;
-  onSelect?: (asset: T) => void;
+onSelect?: (asset: T) => void;
   customFilter?: (asset: T) => boolean;
 }
 

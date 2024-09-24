@@ -56,7 +56,8 @@ export interface AssetPickerPopoverProps<T extends BasicAssetType> {
   groupBy?: (asset: T) => string;
 }
 
-function groupAssets<T extends BasicAssetType>(assets: T[], groupBy: (asset: T) => string) {
+function groupAssets<T extends BasicAssetType>(assets: T[], groupBy?: (asset: T) => string) {
+  groupBy = groupBy ?? function g(asset) { return "" }
   const grouped = {};
   for (let asset of assets) {
     const group = groupBy(asset);
@@ -73,7 +74,7 @@ function groupAssets<T extends BasicAssetType>(assets: T[], groupBy: (asset: T) 
 const key = "galacean-gui-asset-picker-display-mode";
 
 export function AssetPickerContent<T extends BasicAssetType>(props: AssetPickerPopoverProps<T>) {
-  const { assets, customFilter, onSelect, selectedAssetId } = props;
+  const { assets, customFilter, onSelect, selectedAssetId, groupBy } = props;
   const searchRef = useRef<HTMLInputElement>(null);
 
   const [searchText, setSearchText] = useState("");
@@ -87,8 +88,19 @@ export function AssetPickerContent<T extends BasicAssetType>(props: AssetPickerP
   }, []);
 
   const filteredAssets = assets.filter(customFilter || (() => true));
+  const finalAssets = filteredAssets.filter(asset => {
+    let path = "";
+    if (asset.isSubAsset) {
+      const mainAsset = asset.mainAsset;
+      path = `${mainAsset.getTempRoutes().join("/")}/${mainAsset.name}/${asset.name}`;
+    } else {
+      const routes = asset.getTempRoutes();
+      path = `${routes.join("/")}/${asset.name}`;
+    }
+    return path.toLowerCase().indexOf(searchText.toLowerCase()) > -1;
+  })
 
-  const grouped = groupAssets(filteredAssets, (asset) => asset.path || "");
+  const grouped = groupAssets(finalAssets, groupBy);
 
   const paths = Object.keys(grouped);
 
@@ -105,12 +117,19 @@ export function AssetPickerContent<T extends BasicAssetType>(props: AssetPickerP
         <Breadcrumbs items={path.split(",").map((p) => ({ id: p, label: p }))} />
         <AssetList displayMode={displayMode}>
           {grouped[path].map((asset) => {
+            console.log(
+              asset.id,
+              asset.name,
+              asset.thumbnail,
+              asset.thumbnailUrl,
+            )
             return (
               <PickableAssetItem
                 selected={selectedAssetId === asset.id}
                 key={asset.id}
                 name={asset.name}
                 thumbnail={asset.thumbnail}
+                thumbnailUrl={asset.thumbnailUrl}
                 onClick={() => {
                   if (!asset.isInitCompleted) return;
                   if (onSelect) {

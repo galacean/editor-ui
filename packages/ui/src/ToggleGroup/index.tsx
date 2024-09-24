@@ -52,7 +52,7 @@ export interface ToggleGroupItemProps extends PrimitiveItemProps {
 }
 
 export function ToggleGroupItem(props: PropsWithChildren<ToggleGroupItemProps>) {
-  const { children, fancy, size, ...rest } = props;
+  const { children, fancy, size, subtle, ...rest } = props;
 
   return (
     <StyledItem {...rest}>

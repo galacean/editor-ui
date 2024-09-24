@@ -44,6 +44,10 @@ export interface FormItemAssetPickerProps<T extends BasicAssetType> extends Asse
   placeholder?: string;
   onOpenChange?: (isOpen?: boolean) => void;
   dropLayer: number;
+  onSelect?: (asset: T) => void;
+  customFilter?: (asset: T) => boolean;
+  groupBy?: (asset: T) => string;
+
 }
 
 const Placeholder = styled("span", {
@@ -67,6 +71,8 @@ function _FormItemAssetPicker<T extends BasicAssetType>(props: FormItemAssetPick
     onSelect,
     assets,
     asset,
+    customFilter,
+    groupBy
   } = props;
 
   const actionDisabled = !!(disabled || !value);
@@ -92,6 +98,15 @@ function _FormItemAssetPicker<T extends BasicAssetType>(props: FormItemAssetPick
     [value]
   );
 
+  function assetFilter(asset) {
+    if(
+      !((asset.isSubAsset && asset.mainAsset) || !asset.isSubAsset)
+    ) {
+      return false;
+    }
+    return true;
+  }
+
   return (
     <FormItem label={label} info={info} fieldColumn="asset">
       <Popover
@@ -113,7 +128,13 @@ function _FormItemAssetPicker<T extends BasicAssetType>(props: FormItemAssetPick
         }
         onOpenChange={onOpenChange}
       >
-        <AssetPickerContent assets={assets} selectedAssetId={asset?.id} onSelect={onSelect} />
+        <AssetPickerContent
+          assets={assets}
+          selectedAssetId={asset?.id}
+          onSelect={onSelect}
+          customFilter={assetFilter}
+          groupBy={groupBy}
+        />
       </Popover>
       <ActionButton size="sm" disabled={!value} onClick={handleLocate} variant="secondary">
         <IconCurrentLocation />
@@ -130,3 +151,5 @@ export const FormItemAssetPicker = React.forwardRef(_FormItemAssetPicker) as <T 
 ) => ReturnType<typeof _FormItemAssetPicker>;
 
 export { PickableAssetItem } from "./PickableAssetItem";
+export { type BasicAssetType, type AssetPickerPopoverProps } from "./AssetPickerPopover";
+

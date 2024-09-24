@@ -43,6 +43,8 @@ export interface AssetItemProps extends React.HTMLAttributes<HTMLDivElement> {
   readOnly?: boolean;
   onRename?: (name: string) => Promise<void>;
   thumbnail?: string;
+  // @deprecate use thumbnail instead
+  thumbnailUrl?: string;
   loadingStatus?: "loading" | "error" | "success";
   expandable?: boolean;
   expanded?: boolean;
@@ -59,6 +61,7 @@ export const AssetItem =
         onSelectedChange,
         readOnly,
         thumbnail,
+        thumbnailUrl,
         onRename,
         expandable,
         loadingStatus,
@@ -71,6 +74,8 @@ export const AssetItem =
         onChange: props.onExpandedChange
       });
     
+      console.log('thumbnailUrl', thumbnailUrl)
+
       return (
         <StyledAssetItem
           aria-label={name}
@@ -81,7 +86,7 @@ export const AssetItem =
           ref={forwardedRef}
         >
           <AssetThumbnail
-            thumbnail={thumbnail}
+            thumbnail={thumbnailUrl ?? thumbnail}
             loadingStatus={loadingStatus}
             selected={selected}
             expandable={expandable}
