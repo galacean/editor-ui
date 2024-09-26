@@ -1,8 +1,8 @@
 import { forwardRef } from "react";
 import { useControllableState } from "@radix-ui/react-use-controllable-state";
 import { styled } from "../../design-system";
-import { AssetThumbnail } from "./AssetThumbnail";
-import AssetName from "./AssetName";
+import { AssetThumbnail, AssetThumbnailProps } from "./AssetThumbnail";
+import AssetName, { AssetNameProps } from "./AssetName";
 
 const StyledAssetItem = styled("div", {
   display: "flex",
@@ -35,21 +35,14 @@ const StyledAssetItem = styled("div", {
 });
 
 
-export interface AssetItemProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface AssetItemProps extends AssetThumbnailProps, AssetNameProps, React.HTMLAttributes<HTMLDivElement> {
   id?: string;
-  name: string;
-  selected?: boolean;
-  onSelectedChange?: () => void;
+  onSelectedChange?: (e: React.MouseEvent) => void;
   readOnly?: boolean;
-  onRename?: (name: string) => Promise<void>;
-  thumbnail?: string;
-  // @deprecate use thumbnail instead
-  thumbnailUrl?: string;
-  loadingStatus?: "loading" | "error" | "success";
   expandable?: boolean;
   expanded?: boolean;
   defaultExpanded?: boolean;
-  onExpandedChange?: () => void;
+  children?: React.ReactNode;
 }
 
 export const AssetItem = 
@@ -61,36 +54,39 @@ export const AssetItem =
         onSelectedChange,
         readOnly,
         thumbnail,
-        thumbnailUrl,
         onRename,
         expandable,
         loadingStatus,
+        children,
+        expanded: propExpanded,
+        dropping,
+        defaultExpanded,
+        onToggleExpanded,
         ...rest
       } = props;
     
       const [expanded, setExpanded] = useControllableState({
-        prop: props.expanded,
-        defaultProp: props.defaultExpanded ?? false,
-        onChange: props.onExpandedChange
+        prop: propExpanded,
+        defaultProp: defaultExpanded ?? false,
+        onChange: onToggleExpanded
       });
     
-      console.log('thumbnailUrl', thumbnailUrl)
-
       return (
         <StyledAssetItem
           aria-label={name}
           aria-expanded={expanded}
           aria-selected={selected}
-          onClick={onSelectedChange}
+          onClickCapture={onSelectedChange}
           {...rest}
           ref={forwardedRef}
         >
           <AssetThumbnail
-            thumbnail={thumbnailUrl ?? thumbnail}
+            thumbnail={thumbnail}
             loadingStatus={loadingStatus}
             selected={selected}
             expandable={expandable}
             expanded={expanded}
+            dropping={dropping}
             onToggleExpanded={() => setExpanded(!expanded)}
           />
           <AssetName
@@ -99,6 +95,7 @@ export const AssetItem =
             readOnly={readOnly}
             onRename={onRename}
           />
+          {children}
         </StyledAssetItem>
       )
     }

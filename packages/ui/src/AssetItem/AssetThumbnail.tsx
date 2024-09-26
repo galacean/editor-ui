@@ -83,7 +83,7 @@ const AssetThumbnailRoot = styled(Flex, {
   }
 });
 
-interface AssetThumbnailProps {
+export interface AssetThumbnailProps {
   thumbnail?: string;
   loadingStatus?: "loading" | "error" | "success";
   selected?: boolean;

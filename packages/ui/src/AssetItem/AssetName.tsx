@@ -81,17 +81,15 @@ const AssetNameInput = styled("input", {
   }
 });
 
-interface AssetNameProps {
+export interface AssetNameProps {
   name: string;
-  selected: boolean;
+  selected?: boolean;
   readOnly?: boolean;
-  onRename?: (name: string) => Promise<string | void>;
+  onRename?: (name: string) => Promise<void>;
 }
-
 
 export const AssetName = function AssetName(props: AssetNameProps) {
   const { selected, readOnly, onRename } = props;
-  const lastClickTime = useRef(0);
   const inputRef = useRef<HTMLInputElement>(null);
   const [editing, setEditing] = useState(false);
   const [renaming, setRenaming] = useState(false);
@@ -117,7 +115,6 @@ export const AssetName = function AssetName(props: AssetNameProps) {
     }
   }
 
-
   async function handleOnBlur() {
     if(!name) {
       setName(props.name);
@@ -131,12 +128,8 @@ export const AssetName = function AssetName(props: AssetNameProps) {
     if(name !== props.name) {
       setRenaming(true);
       try {
-        const result = await onRename?.(name);
-        if(result) {
-          setName(name);
-        } else {
-          setName(props.name);
-        }
+        await onRename?.(name);
+        setName(name);
       } catch (error) {
         console.warn(error);
       }
