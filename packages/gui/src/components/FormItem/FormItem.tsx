@@ -2,13 +2,12 @@ import React, { cloneElement, forwardRef, ReactElement, ReactNode } from "react"
 import { styled, type CSS, VariantProps } from "@galacean/editor-ui";
 import { v4 as uuidv4 } from "uuid";
 import { Label } from "./Label";
-import { useControllableState } from "@radix-ui/react-use-controllable-state";
 
 const StyledField = styled("div", {
   display: "grid",
   columnGap: "$1",
   gridColumn: "2 / -1",
-  alignItems: "center",
+  alignItems: "flex-start",
   variants: {
     column: {
       1: {

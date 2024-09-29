@@ -128,8 +128,7 @@ export function AssetPickerContent<T extends BasicAssetType>(props: AssetPickerP
                 selected={selectedAssetId === asset.id}
                 key={asset.id}
                 name={asset.name}
-                thumbnail={asset.thumbnail}
-                thumbnailUrl={asset.thumbnailUrl}
+                thumbnail={asset.thumbnailUrl}
                 onClick={() => {
                   if (!asset.isInitCompleted) return;
                   if (onSelect) {

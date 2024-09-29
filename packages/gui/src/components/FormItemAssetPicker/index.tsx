@@ -98,15 +98,6 @@ function _FormItemAssetPicker<T extends BasicAssetType>(props: FormItemAssetPick
     [value]
   );
 
-  function assetFilter(asset) {
-    if(
-      !((asset.isSubAsset && asset.mainAsset) || !asset.isSubAsset)
-    ) {
-      return false;
-    }
-    return true;
-  }
-
   return (
     <FormItem label={label} info={info} fieldColumn="asset">
       <Popover
@@ -132,7 +123,7 @@ function _FormItemAssetPicker<T extends BasicAssetType>(props: FormItemAssetPick
           assets={assets}
           selectedAssetId={asset?.id}
           onSelect={onSelect}
-          customFilter={assetFilter}
+          customFilter={customFilter}
           groupBy={groupBy}
         />
       </Popover>

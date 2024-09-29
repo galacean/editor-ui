@@ -6,8 +6,7 @@ import { styled, StitchesComponent } from "../../design-system";
 
 const StyledContent = styled(CollapsiblePrimitive.Content, {
   borderRadius: "0 0 $2 $2",
-  // padding: "0 $1 $2",
-  paddingBottom: "$1",
+  padding: "0 0 $1 $1",
   backgroundColor: "$panelBg",
   "&:empty": {
     padding: 0
@@ -64,6 +63,7 @@ const StyledTrigger = styled(CollapsiblePrimitive.Trigger, {
 });
 
 const StyledRoot = styled(CollapsiblePrimitive.Root, {
+  position: "relative",
   display: "flex",
   flexDirection: "column",
   width: "100%",
@@ -71,6 +71,15 @@ const StyledRoot = styled(CollapsiblePrimitive.Root, {
   background: "$appBg",
   "& ~ &": {
     // borderRadius: "$2"
+    '&::before': {
+      content: '""',
+      position: "absolute",
+      width: "100%",
+      height: "1px",
+      backgroundColor: "$gray2",
+      top: -1,
+    },
+    marginTop: '1px',
     [`${StyledTitle}`]: {
       borderRadius: "$2 $2 0 0",
       '&[data-state="closed"]': {
@@ -81,6 +90,9 @@ const StyledRoot = styled(CollapsiblePrimitive.Root, {
   "&  &": {
     backgroundColor: "$panelBg",
     paddingLeft: "$1",
+    '&::before': {
+      display: 'none',
+    },
     [`${StyledTitle}`]: {
       paddingLeft: "$1"
     },

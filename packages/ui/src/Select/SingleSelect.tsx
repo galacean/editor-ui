@@ -44,6 +44,9 @@ const SelectTrigger = styled(SelectPrimitive.SelectTrigger, {
   "&[data-placeholder]": {
     color: "$gray11"
   },
+  // '&:focus-visible': {
+  //   boxShadow: 'inset 0 0 0 1px $colors$blue10',
+  // },
   "& > span:first-child": {
     display: "block",
     flex: 1,

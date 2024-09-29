@@ -9,7 +9,7 @@ import { IconRightBottomCorner } from "../Icons/IconRightBottomCorner";
 
 const StyledActionButton = styled("button", button, {
   boxShadow: "$prepend",
-  transition: "$shadow, background-color 0.16s ease, color 0.16s ease, transform 0.2s ease",
+  transition: "$shadow, transform 0.2s ease",
   borderRadius: "$2",
   color: "$gray11",
   flexShrink: 0,
