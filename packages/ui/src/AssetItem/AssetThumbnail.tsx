@@ -110,7 +110,7 @@ export const AssetThumbnail = forwardRef<HTMLDivElement, AssetThumbnailProps>(
       css
     } = props;
   
-    const handleToogleExpand = (e: React.MouseEvent) => {
+    const handleToggleExpand = (e: React.MouseEvent) => {
       e.stopPropagation();
       e.preventDefault();
       onToggleExpanded && onToggleExpanded();
@@ -139,7 +139,7 @@ export const AssetThumbnail = forwardRef<HTMLDivElement, AssetThumbnailProps>(
         )}
         {(loadingStatus === undefined || thumbnail && loadingStatus === "success") && <img src={thumbnail} />}
         {expandable && (
-          <ExpandButton expanded={expanded} onClick={handleToogleExpand} size="xs" variant="subtle">
+          <ExpandButton expanded={expanded} onClick={handleToggleExpand} size="xs" variant="subtle">
             {expanded ? (
               <IconCaretLeftFilled size="24px" strokeWidth={3} />
             ) : (

@@ -58,7 +58,7 @@ const StyledButton = styled("button", button, {
       },
       md: {
         height: "$md",
-        borderRadius: "$4",
+        borderRadius: "$2",
         padding: "0 $4",
         fontSize: "$1"
       },

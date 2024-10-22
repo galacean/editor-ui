@@ -7,7 +7,7 @@ const StyledText = styled("p", {
   variants: {
     code: {
       true: {
-        fontFamily: "$mona"
+        fontFamily: "$mono"
       }
     },
     selectable: {

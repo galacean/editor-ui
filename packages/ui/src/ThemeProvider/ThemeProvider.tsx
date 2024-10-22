@@ -14,7 +14,7 @@ const callbackList = new Set<ColorModeListener>();
 const isBrowser = () => typeof window !== undefined;
 const isNode = () => !isBrowser();
 
-const defaultThemes = {
+export const defaultThemes = {
   light: lightTheme.className,
   dark: darkTheme.className,
   system: "system"

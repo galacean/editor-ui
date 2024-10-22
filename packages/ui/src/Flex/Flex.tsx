@@ -59,7 +59,7 @@ const StyledFlex = styled("div", {
   },
   defaultVariants: {
     direction: "row",
-    wrap: true
+    wrap: true,
   }
 });
 

@@ -63,21 +63,6 @@ export const resetCSS = {
     backgroundColor: "$blue10",
     color: "$white"
   },
-  ".monaco-editor": {
-    background: "var(--colors-gray2) !important"
-  },
-  ".monaco-editor span": {
-    fontFeatureSettings: '"calt"'
-  },
-  ".monaco-editor .margin": {
-    background: "var(--colors-gray2) !important"
-  },
-  'div[data-panel-type="T"], div[data-panel-type="B"]': {
-    minHeight: 0
-  },
-  'div[data-panel-type="L"], div[data-panel-type="R"]': {
-    minWidth: 0
-  },
   "div[role=button]": {
     outline: "none"
   },

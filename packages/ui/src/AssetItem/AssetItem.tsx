@@ -76,7 +76,7 @@ export const AssetItem =
           aria-label={name}
           aria-expanded={expanded}
           aria-selected={selected}
-          onClickCapture={onSelectedChange}
+          onClick={onSelectedChange}
           {...rest}
           ref={forwardedRef}
         >

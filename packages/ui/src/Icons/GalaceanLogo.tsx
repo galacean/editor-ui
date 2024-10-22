@@ -9,6 +9,7 @@ export const GalaceanLogo = (props: React.SVGProps<SVGSVGElement>) => {
       height="100px"
       viewBox="0 0 446.39 458.52"
       version="1.1"
+      fill="CurrentColor"
       {...props}
     >
       <defs>

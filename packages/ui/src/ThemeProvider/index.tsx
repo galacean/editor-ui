@@ -1,1 +1,8 @@
-export { useTheme, ThemeProvider, ThemeContext, addThemeChangeListener, removeThemeChangeListener } from './ThemeProvider'
+export {
+  defaultThemes,
+  useTheme,
+  ThemeProvider,
+  ThemeContext,
+  addThemeChangeListener,
+  removeThemeChangeListener
+} from './ThemeProvider'
