@@ -22,10 +22,17 @@ const {
 } = AlertDialogPrimitive;
 
 const StyledOverlay = styled(Overlay, overlayStyle);
-const StyledContent = styled(Content, contentStyle, {
+const StyledContent = styled(Content, {
   maxWidth: "500px",
   minWidth: "360px",
-  minHeight: "140px"
+  minHeight: "140px",
+	position: 'fixed',
+	top: '50%',
+	left: '50%',
+	transform: 'translate(-50%, -50%)',
+  backgroundColor: '$gray1',
+  borderRadius: '$3',
+  border: '1px solid $border',
 });
 
 const StyledFooter = styled(Flex, {
