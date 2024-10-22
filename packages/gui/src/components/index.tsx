@@ -26,6 +26,7 @@ export type FormItemCascadeSliderProps = BaseFormItemProps<number[]>;
 export const FormItemCascadeSlider = generateGUI<number[]>()(CascadeSlider);
 
 export { FormItemColor, type FormItemColorProps } from './FormItemColor'
+export { type Color } from '@galacean/editor-ui'
 export { FormItemGroup, type FormItemGroupProps } from './FormItemGroup'
 export { FormItemInputNumber, type FormItemInputNumberProps } from './FormItemInputNumber'
 export { FormItemTextarea, type FormItemTextareaProps, } from './FormItemTextarea'

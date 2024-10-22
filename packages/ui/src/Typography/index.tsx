@@ -19,6 +19,9 @@ const StyledText = styled("p", {
       }
     },
     size: {
+      "0_5": {
+        fontSize: "10px",
+      },
       1: {
         fontSize: "$1",
         lineHeight: "$1",
