@@ -11,7 +11,7 @@ export const { styled, css, keyframes, getCssText, theme, globalCss, createTheme
     // relate https://github.com/necolas/normalize.css/issues/665
     fonts: {
       default:
-        'InterVariable,-apple-system,system-ui,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji",Segoe UI Symbol',
+        'geist,InterVariable,-apple-system,system-ui,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji",Segoe UI Symbol',
       untitled: "Untitled Sans, -apple-system, system-ui, sans-serif",
       mono: "mono, -apple-system, system-ui, sans-serif"
     },
@@ -82,6 +82,30 @@ export const resetStyle = (custom: Record<string, any> = {}) => {
         fontWeight: 500,
         src: 'url("https://mdn.alipayobjects.com/huamei_piroyv/afts/file/A*M8hRRpGAU5sAAAAAAAAAAAAADinLAQ/JetBrainsMono-Medium.woff2") format("woff2")',
       },
+      {
+        fontFamily: "geist",
+        fontWeight: 300,
+        fontStyle: "normal",
+        src: 'url(https://mdn.alipayobjects.com/huamei_piroyv/afts/file/A*zUmLTpFfGT4AAAAAAAAAAAAADinLAQ/Geist-ExtraLight.woff2) format("woff2")',
+      },
+      {
+        fontFamily: "geist",
+        fontWeight: 400,
+        fontStyle: "normal",
+        src: 'url(https://mdn.alipayobjects.com/huamei_piroyv/afts/file/A*uQQpSZey8WoAAAAAAAAAAAAADinLAQ/Geist-Regular.woff2) format("woff2")',
+      },
+      {
+        fontFamily: "geist",
+        fontWeight: 500,
+        fontStyle: "normal",
+        src: 'url(https://mdn.alipayobjects.com/huamei_piroyv/afts/file/A*y26-RqzF8tUAAAAAAAAAAAAADinLAQ/Geist-Medium.woff2) format("woff2")',
+      },
+      {
+        fontFamily: "geist",
+        fontWeight: 600,
+        fontStyle: "normal",
+        src: 'url(https://mdn.alipayobjects.com/huamei_piroyv/afts/file/A*RsRyTpStUPsAAAAAAAAAAAAADinLAQ/Geist-SemiBold.woff2) format("woff2")',
+      }
     ],
     html: {
       fontFamily: "$default",

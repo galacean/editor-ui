@@ -275,9 +275,9 @@ const overlayFadeOut = keyframes({
 
 export const overlayStyle = styled(null, {
   position: "fixed",
-  background: "#000",
-  opacity: 0.44,
+  backgroundColor: 'rgba(0, 0, 0, 0.8)',
   inset: 0,
+  zIndex: 50,
   "&[data-state=open]": {
     animation: `${overlayFadeIn} 250ms ease`
   },

@@ -23,27 +23,28 @@ const {
 
 const StyledOverlay = styled(Overlay, overlayStyle);
 const StyledContent = styled(Content, {
-  maxWidth: "500px",
-  minWidth: "360px",
-  minHeight: "140px",
 	position: 'fixed',
+  padding: '$5',
 	top: '50%',
 	left: '50%',
+  maxWidth: "26rem",
+  width: '100%',
 	transform: 'translate(-50%, -50%)',
   backgroundColor: '$gray1',
   borderRadius: '$3',
-  border: '1px solid $border',
+  border: '1px solid $gray4',
+  boxShadow: 'rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.1) 0px 4px 6px -4px',
+  zIndex: 50,
+  outline: 'none',
+  boxSizing: 'content-box',
 });
 
 const StyledFooter = styled(Flex, {
   marginTop: "$6",
   justifyContent: "flex-end",
-  position: "absolute",
-  bottom: "$3",
-  right: "$3"
 });
 
-interface IAlertDialogProps {
+export interface IAlertDialogProps {
   trigger?: React.ReactNode;
   title: string;
   description?: string | React.ReactNode;
@@ -75,26 +76,26 @@ function AlertDialog(props: PropsWithChildren<IAlertDialogProps & AlertDialogPro
         <StyledOverlay style={{ zIndex }} />
         <StyledContent style={{ zIndex }}>
           <AlertTitle asChild>
-            <Title order={6} css={{ marginBottom: "$1", fontWeight: 500 }}>
+            <Title order={4} css={{ marginBottom: "$4", fontWeight: 600 }}>
               {title}
             </Title>
           </AlertTitle>
           {description && (
             <Description asChild>
-              <Text size="1" secondary css={{ whiteSpace: "pre-line" }}>
+              <Text size="2" secondary css={{ whiteSpace: "pre-line" }}>
                 {description}
               </Text>
             </Description>
           )}
           {actionable && (
-            <StyledFooter gap="sm" justifyContent="end">
+            <StyledFooter gap="sm" justifyContent="end" css={{ marginTop: '$4' }}>
               <Cancel asChild>
-                <Button variant="secondary" size="sm" onClick={onClose}>
+                <Button variant="secondary" size="md" onClick={onClose}>
                   {cancelText}
                 </Button>
               </Cancel>
               <Action asChild>
-                <Button variant="primary" critical size="sm" onClick={onConfirm}>
+                <Button variant="primary" critical size="md" onClick={onConfirm}>
                   {confirmText}
                 </Button>
               </Action>

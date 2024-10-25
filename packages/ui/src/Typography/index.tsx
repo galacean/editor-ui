@@ -2,7 +2,7 @@ import { styled } from "../../design-system";
 
 const StyledText = styled("p", {
   lineHeight: 1.5,
-  fontFamily: "$untitled",
+  fontFamily: "$default",
   cursor: "default",
   variants: {
     code: {
@@ -16,6 +16,20 @@ const StyledText = styled("p", {
       },
       false: {
         userSelect: "none"
+      }
+    },
+    weight: {
+      light: {
+        fontWeight: 300
+      },
+      normal: {
+        fontWeight: 400
+      },
+      medium: {
+        fontWeight: 500
+      },
+      bold: {
+        fontWeight: 600
       }
     },
     size: {
@@ -84,7 +98,8 @@ const StyledText = styled("p", {
   },
   defaultVariants: {
     size: "md",
-    selectable: false
+    selectable: false,
+    weight: "normal"
   }
 });
 
@@ -100,7 +115,8 @@ const StyledBold = styled("strong", {
   }
 });
 
-const StyledTitle = styled(null, {
+const StyledTitle = styled('title', {
+  display:'block',
   // color: "$hiContrast",
   color: "$gray12",
   fontWeight: "bold",

@@ -11,6 +11,7 @@ const StyledButton = styled("button", button, {
   transition: "box-shadow .2s ease, opacity .6s ease-out",
   userSelect: "none",
   whiteSpace: "nowrap",
+  outline: "none",
   "&:disabled": {
     backgroundColor: "$grayA2",
     color: "$grayA8",
