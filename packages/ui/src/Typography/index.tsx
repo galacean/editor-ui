@@ -1,9 +1,10 @@
 import { styled } from "../../design-system";
 
 const StyledText = styled("p", {
-  lineHeight: 1.5,
+  lineHeight: 1.4,
   fontFamily: "$default",
   cursor: "default",
+  fontSynthesis: "none",
   variants: {
     code: {
       true: {
@@ -119,51 +120,67 @@ const StyledTitle = styled('title', {
   display:'block',
   // color: "$hiContrast",
   color: "$gray12",
-  fontWeight: "bold",
   variants: {
-    order: {
+    weight: {
+      light: {
+        fontWeight: 300
+      },
+      normal: {
+        fontWeight: 400
+      },
+      medium: {
+        fontWeight: 500
+      },
+      semi: {
+        fontWeight: 600,
+      },
+      bold: {
+        fontWeight: 700
+      }
+    },
+    size: {
       1: {
-        fontSize: "32px",
+        fontSize: "12px",
         lineHeight: 1.2
       },
       2: {
-        fontSize: "28px",
+        fontSize: "14px",
         lineHeight: 1.2
       },
       3: {
-        fontSize: "24px",
-        lineHeight: 1.2
+        fontSize: "18px",
+        lineHeight: 1.4
       },
       4: {
-        fontSize: "20px",
-        lineHeight: 1.2
+        fontSize: "24px",
+        lineHeight: 1.4
       },
       5: {
-        fontSize: "18px",
-        lineHeight: 1.2
+        fontSize: "32px",
+        lineHeight: 1.4
       },
       6: {
-        fontSize: "14px",
+        fontSize: "64px",
         fontWeight: 600,
-        lineHeight: "24px"
+        lineHeight: 1.4
       },
-      7: {
-        fontSize: "12px"
-      }
     }
   },
   defaultVariants: {
-    order: 1
+    size: 1
   }
 });
 
 
 const StyledLink = styled("a", {
-  color: "$gray12",
+  color: 'CurrentColor',
   textDecoration: "underline",
-  textDecorationColor: "$grayA4",
+  textDecorationColor: "$grayA6",
   textUnderlineOffset: "4px",
-  cursor: "pointer"
+  cursor: "pointer",
+  '&:hover': {
+    color: "$gray12",
+  }
 });
 
 export {

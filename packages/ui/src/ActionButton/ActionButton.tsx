@@ -58,12 +58,12 @@ const StyledActionButton = styled("button", button, {
         }
       },
       md: {
-        height: "$7",
-        width: "$7",
-        borderRadius: "$3",
+        height: "$md",
+        width: "$md",
+        borderRadius: "$4",
         "& svg": {
-          height: "$4",
-          width: "$4"
+          height: "$5",
+          width: "$5"
         }
       },
       lg: {

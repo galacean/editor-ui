@@ -15,12 +15,13 @@ const StyledBreadcrumbs = styled("ol", {
 
 export interface BreadcrumbProps {
   css?: CSS;
+  size?: "sm" | "md";
   items: { id: number | string, label: string }[];
   onNavigate?: (id: number | string) => void;
 }
 
 function Breadcrumbs(props: BreadcrumbProps) {
-  const { items, onNavigate } = props;
+  const { items, size, onNavigate } = props;
   const length = items.length;
 
   const handleNavigate = (id) => {
@@ -33,8 +34,10 @@ function Breadcrumbs(props: BreadcrumbProps) {
         items.map((item, index) => {
           return (
             <BreadcrumbItem
+              size={size}
               key={item.id}
               isCurrent={index === length - 1}
+              data-current={index === length - 1}
               onClick={() => handleNavigate(item.id)}
             >
               {item.label}
@@ -57,18 +60,32 @@ const StyledBreadcrumbItem = styled("li", {
   color: "$gray10",
   '&[data-current="true"]': {
     color: "$grayA12"
+  },
+  variants: {
+    size: {
+      sm: {
+        fontSize: "$1"
+      },
+      md: {
+        fontSize: "$2"
+      }
+    }
+  },
+  defaultVariants: {
+    size: "sm"
   }
 });
 
 const Slash = styled(IconSlash, {
   height: "$3",
   width: "$3",
-  margin: "0 $1",
+  margin: "0 $0_5",
   color: "$gray8"
 });
 
 export interface BreadcrumbItemProps extends React.HtmlHTMLAttributes<HTMLLIElement> {
   isCurrent?: boolean;
+  size?: "sm" | "md";
   children: React.ReactNode;
 }
 

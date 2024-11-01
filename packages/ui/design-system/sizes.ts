@@ -18,7 +18,7 @@ export const sizes = {
   xs: "$4_5",
   s: "$5_5",
   sm: "$6",
-  md: "$8"
+  md: "$9"
 };
 
 export const fontSizes = {

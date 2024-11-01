@@ -1,6 +1,6 @@
-import { PropsWithChildren } from "react";
+import React, { forwardRef, PropsWithChildren } from "react";
 import * as ToggleGroupPrimitive from "@radix-ui/react-toggle-group";
-import type { ToggleGroupItemProps as PrimitiveItemProps } from "@radix-ui/react-toggle-group";
+import type { ToggleGroupItemProps as PrimitiveItemProps, ToggleGroupSingleProps, ToggleGroupMultipleProps } from "@radix-ui/react-toggle-group";
 
 import { styled } from "../../design-system";
 
@@ -21,18 +21,51 @@ const StyledItem = styled(ToggleGroupPrimitive.Item, {
   color: '$gray11',
   backgroundColor: "rgba(0, 0, 0, 0)",
   transition: "background-color 0.2s, color .2s",
-  '& > svg': {
-    width: '$4',
-    height: '$4',
-  },
-  "&[data-state=on]": {
-    backgroundColor: "$blue9",
-    color: "$blue12",
-    fontWeight: 500,
-  },
-  "&[data-state=on]:hover": {
-    backgroundColor: "$blue10",
-    color: "$white"
+  variants: {
+    size: {
+      sm: {
+        height: '$sm',
+        borderRadius: '$2',
+        fontSize: '$1',
+        '& > svg': {
+          width: '$4',
+          height: '$4',
+        },
+      },
+      md: {
+        height: '$md',
+        borderRadius: '$4',
+        fontSize: '$2',
+        '& > svg': {
+          width: '$5',
+          height: '$5',
+        },
+      },
+    },
+    variant: {
+      primary: {
+        "&[data-state=on]": {
+          backgroundColor: "$blue9",
+          color: "$white",
+          fontWeight: 500,
+        },
+        "&[data-state=on]:hover": {
+          backgroundColor: "$blue10",
+          color: "$white"
+        },
+      },
+      subtle: {
+        "&[data-state=on]": {
+          backgroundColor: "$grayA3",
+          color: "$gray11",
+          fontWeight: 500,
+        },
+        "&[data-state=on]:hover": {
+          backgroundColor: "$grayA4",
+          color: "$gray11"
+        },
+      }
+    }
   },
   '&:hover': {
     backgroundColor: '$grayA3',
@@ -41,21 +74,42 @@ const StyledItem = styled(ToggleGroupPrimitive.Item, {
     position: "relative",
     boxShadow: "inset 0 0 0 1px $colors$blue10"
   }
+}, {
+  defaultVariants: {
+    size: "sm",
+    variant: "primary"
+  }
 });
 
-export const ToggleGroup = StyledToggleGroup;
+type ToggleGroupPrimitiveProps = ToggleGroupSingleProps | ToggleGroupMultipleProps;
+
+
+type ToggleGroupProps = ToggleGroupPrimitiveProps & { size?: "sm" | "md", variant?: "primary" | "subtle" }
+
+export const ToggleGroup = forwardRef<HTMLDivElement, ToggleGroupProps>(function ToggleGroup(props, forwardedRef){
+  const { size, variant, children: propChildren, ...rest } = props;
+  const children = React.Children.toArray(propChildren);
+
+  return (
+    <StyledToggleGroup ref={forwardedRef} {...rest}>
+      {children.map((child, key) => {
+        return React.cloneElement(child as React.ReactElement, { size, key, variant })
+      })}
+    </StyledToggleGroup>
+  )
+});
 
 export interface ToggleGroupItemProps extends PrimitiveItemProps {
   fancy?: boolean;
-  size?: "s" | "xs" | "sm" | "md" | "lg";
+  size?: "sm" | "md";
   subtle?: boolean;
 }
 
 export function ToggleGroupItem(props: PropsWithChildren<ToggleGroupItemProps>) {
-  const { children, fancy, size, subtle, ...rest } = props;
+  const { children, fancy, size = "sm", subtle, ...rest } = props;
 
   return (
-    <StyledItem {...rest}>
+    <StyledItem size={size} {...rest}>
       {children}
     </StyledItem>
   );

@@ -19,13 +19,12 @@ const StyledInputBackground = styled("div", {
   position: "absolute",
   top: 0,
   inset: 0,
-  borderRadius: "$2",
+  borderRadius: "inherit",
   pointerEvents: 'none',
   variants: {
     variant: {
       default: {
-        boxShadow: "inset 0 0 0 1px $colors$border",
-        backgroundColor: '$gray2',
+        boxShadow: "inset 0 0 0 1px $colors$border, inset 0 -6px 18px 0px $colors$grayA2",
       },
       subtle: {
         backgroundColor: "$secondaryBg",
@@ -38,7 +37,19 @@ const StyledInputBackground = styled("div", {
         borderRadius: 0,
         outline: "none !important"
       }
-    }
+    },
+    state: {
+      invalid: {
+        boxShadow: "0 0 0 1px $colors$red7",
+        backgroundColor: "$redA3",
+        color: "$red11"
+      },
+      valid: {
+        backgroundColor: "$green3",
+        boxShadow: "0 0 0 1px $colors$green7",
+        color: "$green11"
+      }
+    },
   },
   defaultVariants: {
     variant: "subtle",
@@ -91,20 +102,8 @@ const StyledInput = styled("input", {
         paddingLeft: "$1_5"
       },
       md: {
-        fontSize: "$1",
+        fontSize: "$2",
         paddingLeft: "$2"
-      }
-    },
-    state: {
-      invalid: {
-        boxShadow: "0 0 0 1px $colors$red7",
-        backgroundColor: "$red3",
-        color: "$red11"
-      },
-      valid: {
-        backgroundColor: "$green3",
-        boxShadow: "0 0 0 1px $colors$green7",
-        color: "$green11"
       }
     },
     ellipsis: {
@@ -158,8 +157,8 @@ export const StyledInputRoot = styled("div", {
       },
       md: {
         height: "$md",
-        fontSize: "13px",
-        borderRadius: "$2"
+        fontSize: "$2",
+        borderRadius: "$4"
       }
     },
     disabled: {
@@ -204,6 +203,7 @@ export interface InputProps extends StitchesComponent<typeof StyledInput> {
   rootRef?: any;
   disabled?: boolean;
   variant?: "default" | "subtle" | "transparent";
+  state?: "valid" | "invalid";
 }
 
 /**
@@ -220,6 +220,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(function Inp
     variant,
     overrideStartSlotStyle,
     overrideEndSlotStyle,
+    state,
     ...rest
   } = props;
 
@@ -237,7 +238,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(function Inp
       {!!endSlot && (
         overrideEndSlotStyle ? endSlot : <StyledInputSlot>{endSlot}</StyledInputSlot>
       )}
-      <StyledInputBackground variant={variant} />
+      <StyledInputBackground variant={variant} state={state} />
     </StyledInputRoot>
   );
 });

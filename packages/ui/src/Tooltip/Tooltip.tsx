@@ -13,11 +13,13 @@ const StyledContent = styled(TooltipPrimitive.Content, {
   alignItems: "center",
   fontSize: "13px",
   padding: "$2",
-  backgroundColor: "$gray12",
-  borderRadius: "$1",
-  color: "$gray10",
+  backgroundColor: "$gray1",
+  borderRadius: "$3",
+  color: "$gray12",
   transformOrigin: "var(--radix-tooltip-content-transform-origin)",
-  animation: `${scaleIn} 0.16s ease-out forwards`,
+  animation: `${scaleIn} 0.15s ease-in-out forwards`,
+  boxShadow: "inset 0 0 0 1px $colors$border, inset 0 -6px 18px 0px $colors$grayA2",
+  
 });
 
 const StyledArrow = styled(TooltipPrimitive.Arrow, {

@@ -6,7 +6,8 @@ export const resetCSS = {
       border: "0",
       fontSize: "100%",
       font: "inherit",
-      verticalAlign: "baseline"
+      verticalAlign: "baseline",
+      '-webkit-font-smoothing': 'antialiased',
     },
   canvas: {
     outline: "none"

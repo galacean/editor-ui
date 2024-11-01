@@ -59,9 +59,10 @@ const StyledButton = styled("button", button, {
       },
       md: {
         height: "$md",
-        borderRadius: "$2",
+        borderRadius: "$4",
         padding: "0 $4",
-        fontSize: "$1"
+        fontSize: "$2",
+        fontWeight: 500,
       },
       lg: {
         height: "$lg",
@@ -116,6 +117,16 @@ const StyledButton = styled("button", button, {
         "&:active": {
           backgroundColor: "$gray5"
         },
+      },
+      contrast: {
+        color: "$gray1",
+        backgroundColor: "$gray12",
+        "&:hover": {
+          backgroundColor: "$gray12"
+        },
+        "&:active": {
+          backgroundColor: "$gray12"
+        }
       }
     },
     uppercase: {

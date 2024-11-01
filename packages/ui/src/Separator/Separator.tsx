@@ -19,14 +19,16 @@ const StyledCrosslineText = styled("div", {
     transform: "translateY(-0.5px)"
   },
   "& > div": {
+    position: 'relative',
+    top: -2,
     maxWidth: "calc(100% - 60px)",
     overflow: "hidden",
     textOverflow: "ellipsis",
     whiteSpace: "nowrap",
-    color: "$gray11",
-    fontSize: "$sm",
+    color: "$gray10",
+    fontSize: "$3",
     flex: "0 1 auto",
-    margin: "0 $4"
+    margin: "0 $3"
   }
 });
 

@@ -105,6 +105,18 @@ export const resetStyle = (custom: Record<string, any> = {}) => {
         fontWeight: 600,
         fontStyle: "normal",
         src: 'url(https://mdn.alipayobjects.com/huamei_piroyv/afts/file/A*RsRyTpStUPsAAAAAAAAAAAAADinLAQ/Geist-SemiBold.woff2) format("woff2")',
+      },
+      {
+        fontFamily: "geist",
+        fontWeight: 700,
+        fontStyle: "normal",
+        src: 'url(https://mdn.alipayobjects.com/huamei_piroyv/afts/file/A*S5q2SYDWJ44AAAAAAAAAAAAADinLAQ/Geist-Bold.woff2) format("woff2")',
+      },
+      {
+        fontFamily: "geist",
+        fontWeight: 800,
+        fontStyle: "normal",
+        src: 'url(https://mdn.alipayobjects.com/huamei_piroyv/afts/file/A*1HUETbzL9gsAAAAAAAAAAAAADinLAQ/Geist-Black.woff2) format("woff2")',
       }
     ],
     html: {
