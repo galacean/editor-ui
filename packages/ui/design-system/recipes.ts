@@ -204,7 +204,10 @@ export const contentStyle = styled('div', {
       },
       sm: {
         borderRadius: "$4"
-      }
+      },
+      md: {
+        borderRadius: "$5"
+      },
     }
   }
 });

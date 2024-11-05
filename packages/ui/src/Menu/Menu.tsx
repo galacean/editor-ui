@@ -30,7 +30,7 @@ import { KbdGroup } from "../Kbd";
 import { ScrollArea } from "../ScrollArea";
 
 type MenuType = "context" | "dropdown";
-type MenuSize = "xs" | "sm";
+type MenuSize = "xs" | "sm" | "md";
 type PickedContentProps = "side" | "sideOffset" | "align" | "alignOffset";
 
 const StyledMenuItemContent = styled("span", {
