@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import * as LabelPrimitive from "@radix-ui/react-label";
 
-import { styled, type CSS } from "@galacean/editor-ui";
+import { HoverCard, styled, type CSS } from "@galacean/editor-ui";
 
 const StyledLabelRoot = styled("div", {
   all: "unset",
@@ -36,7 +36,7 @@ export interface LabelProps {
 export function Label(props: LabelProps) {
   const { info, startSlot, endSlot, label, htmlFor, css } = props;
 
-  if (props.info) {
+  const labelRoot = () => {
     return (
       <StyledLabelRoot css={css}>
         {startSlot}
@@ -45,11 +45,13 @@ export function Label(props: LabelProps) {
       </StyledLabelRoot>
     );
   }
-  return (
-    <StyledLabelRoot css={css}>
-      {startSlot}
-      <StyledLabel htmlFor={htmlFor}>{label}</StyledLabel>
-      {endSlot}
-    </StyledLabelRoot>
-  );
+
+  if (info) {
+    return (
+      <HoverCard content={info}>
+        {labelRoot()}
+      </HoverCard>
+    )
+  }
+  return labelRoot();
 }
