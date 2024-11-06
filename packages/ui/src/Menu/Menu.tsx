@@ -9,6 +9,7 @@ import React, {
 } from "react";
 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";
 import * as ContextMenuPrimitive from "@radix-ui/react-context-menu";
+import * as MenubarPrimitive from "@radix-ui/react-menubar";
 import { IconChevronRight, IconCheck } from "@tabler/icons-react";
 import type {
   ContextMenuCheckboxItemProps,
@@ -29,7 +30,7 @@ import * as listStyle from "../../design-system/recipes";
 import { KbdGroup } from "../Kbd";
 import { ScrollArea } from "../ScrollArea";
 
-type MenuType = "context" | "dropdown";
+type MenuType = "context" | "dropdown" | "menubar";
 type MenuSize = "xs" | "sm" | "md";
 type PickedContentProps = "side" | "sideOffset" | "align" | "alignOffset";
 
@@ -75,6 +76,22 @@ const anatomy = {
     CheckboxItem: styled(DropdownMenuPrimitive.CheckboxItem, listStyle.checkboxItemStyle),
     RadioItem: styled(DropdownMenuPrimitive.RadioItem, listStyle.radioItemStyle),
     ItemIndicator: styled(DropdownMenuPrimitive.ItemIndicator, listStyle.indicatorStyle)
+  },
+  menubar: {
+    Root: MenubarPrimitive.Root,
+    Group: MenubarPrimitive.Group,
+    RadioGroup: MenubarPrimitive.RadioGroup,
+    Sub: MenubarPrimitive.Sub,
+    Portal: MenubarPrimitive.Portal,
+    MenuLabel: styled(MenubarPrimitive.Label, listStyle.labelStyle),
+    MenuItem: styled(MenubarPrimitive.Item, listStyle.basicItemStyle),
+    Content: styled(MenubarPrimitive.Content, listStyle.contentStyle),
+    SubContent: styled(MenubarPrimitive.SubContent, listStyle.contentStyle),
+    SubMenuItem: styled(MenubarPrimitive.SubTrigger, listStyle.subMenuItemStyle),
+    Separator: styled(MenubarPrimitive.Separator, listStyle.separatorStyle),
+    CheckboxItem: styled(MenubarPrimitive.CheckboxItem, listStyle.checkboxItemStyle),
+    RadioItem: styled(MenubarPrimitive.RadioItem, listStyle.radioItemStyle),
+    ItemIndicator: styled(MenubarPrimitive.ItemIndicator, listStyle.indicatorStyle)
   }
 } as const;
 
@@ -113,8 +130,7 @@ export interface MenuItemProps {
 }
 
 const MenuItem = forwardRef<HTMLDivElement, MenuItemProps>(function MenuItem(props, forwardedRef) {
-  const { icon, name, shortcuts, label, disabled, onSelect, onClick, asChild, critical, children, ...rest } =
-    props;
+  const { icon, name, shortcuts, label, disabled, onSelect, onClick, asChild, critical, children, ...rest } = props;
   const { size } = useContext(MenuContext);
   const { MenuItem: Item } = useResolveMenuAnatomy();
 
@@ -150,7 +166,7 @@ type ISubMenuItemProps = {
   disabled?: boolean;
 };
 
-interface MenuContentProps extends ContextMenuContentProps, DropdownMenuContentProps {
+interface MenuContentProps extends ContextMenuContentProps, DropdownMenuContentProps, MenubarPrimitive.MenubarContentProps {
   hidden?: boolean;
 };
 
@@ -337,4 +353,75 @@ function ContextMenu(props: IContextMenuProps) {
   );
 }
 
-export { DropdownMenu, ContextMenu, MenuItem, SubMenuItem, MenuSeparator, MenuCheckboxItem, MenuRadioGroup, MenuGroup };
+const StyledMenubarTrigger = styled(MenubarPrimitive.Trigger, {
+  all: "unset",
+  display: "flex",
+  height: "$6",
+  alignItems: "center",
+  padding: "0 $2",
+  fontSize: "$sm",
+  // fontFamily: "$mono",
+  outline: "none",
+  cursor: "default",
+  userSelect: "none",
+  borderRadius: "$2",
+  "&:hover": {
+    backgroundColor: "$grayA4",
+    color: "$gray12"
+  },
+  "&:focus": {
+    backgroundColor: "$grayA4",
+    color: "$gray12"
+  },
+  "&[data-state=open]": {
+    backgroundColor: "$grayA4",
+    color: "$gray12"
+  }
+});
+
+const MenubarTrigger = React.forwardRef<
+  React.ElementRef<typeof MenubarPrimitive.Trigger>,
+  React.ComponentPropsWithoutRef<typeof MenubarPrimitive.Trigger>
+>((props, ref) => <StyledMenubarTrigger ref={ref} {...props} />);
+MenubarTrigger.displayName = MenubarPrimitive.Trigger.displayName;
+
+
+interface MenubarItemProps {
+  name: string;
+  children?: ReactNode;
+}
+
+function MenubarItem(props: MenubarItemProps) {
+  const { name } = props;
+  return (
+    <MenubarPrimitive.Menu>
+      <MenubarTrigger>{name}</MenubarTrigger>
+      <MenubarPrimitive.Portal>
+        <Content align="start" alignOffset={-4} sideOffset={4}>
+          {props.children}
+        </Content>
+      </MenubarPrimitive.Portal>
+    </MenubarPrimitive.Menu>
+  )
+}
+
+const StyledMenubarRoot = styled(MenubarPrimitive.Root, {
+  display: "flex",
+  height: "100%",
+  alignItems: "center",
+  padding: "0 $2",
+  flexWrap: "nowrap",
+});
+
+function Menubar(props: PropsWithChildren<{ size?: MenuSize }>) {
+  const { size = "sm" } = props;
+  return (
+    <MenuProvider type="menubar" size={size}>
+      <StyledMenubarRoot>
+        {props.children}
+      </StyledMenubarRoot>
+    </MenuProvider>
+  )
+}
+
+export { Menubar, MenubarItem, DropdownMenu, ContextMenu, MenuItem, SubMenuItem, MenuSeparator, MenuCheckboxItem, MenuRadioGroup, MenuGroup };

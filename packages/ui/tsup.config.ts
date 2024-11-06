@@ -1,7 +1,7 @@
 import { defineConfig } from "tsup";
 
 export default defineConfig({
-  entry: ["src", "!src/**/*.stories.*"],
+  entry: ["src", "design-system", "!src/**/*.stories.*"],
   outDir: "es",
   format: "esm",
   bundle: false,

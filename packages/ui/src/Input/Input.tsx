@@ -34,7 +34,7 @@ const StyledInputBackground = styled("div", {
       },
       transparent: {
         backgroundColor: "transparent",
-        borderRadius: 0,
+        borderRadius: '$2',
         outline: "none !important"
       }
     },
