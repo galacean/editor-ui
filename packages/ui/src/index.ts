@@ -39,6 +39,7 @@ export * from './Dialog'
 export * from './BezierCurveEditor'
 // export * from './AssetPicker'
 export * from './ResizablePanel'
+export * from './HoverCard'
 
 export * from './ThemeProvider'
 export * from '../hooks'
