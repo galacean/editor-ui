@@ -38,6 +38,12 @@ const StyledBadge = styled("span", {
   fontSize: "$sm",
   padding: '$0_5 $2',
   variants: {
+    size: {
+      xs: {
+        fontSize: '$1',
+        padding: '2px 10px',
+      }
+    },
     pill: {
       true: {
         borderRadius: "$round",

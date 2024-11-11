@@ -15,6 +15,7 @@ import { gold, goldDark, goldDarkA } from "@radix-ui/colors";
 // dedicated colors for prefab
 import { cyan, cyanDark, cyanDarkA } from "@radix-ui/colors";
 import { teal, tealDark } from "@radix-ui/colors";
+import { violet, violetDark } from "@radix-ui/colors";
 
 const conver2StandardGrayColors = (colors: Record<string, string>): typeof gray & typeof grayA => {
   const standardColors: any = {};
@@ -46,7 +47,8 @@ const darkColors = {
   ...goldDarkA,
   ...cyanDark,
   ...cyanDarkA,
-  ...tealDark
+  ...tealDark,
+  ...violetDark,
 };
 
 const lightColors = {
@@ -64,7 +66,8 @@ const lightColors = {
   ...yellowA,
   ...gold,
   ...cyan,
-  ...teal
+  ...teal,
+  ...violet,
 };
 
 export const semanticColors = {

@@ -36,22 +36,18 @@ export interface LabelProps {
 export function Label(props: LabelProps) {
   const { info, startSlot, endSlot, label, htmlFor, css } = props;
 
-  const labelRoot = () => {
-    return (
-      <StyledLabelRoot css={css}>
-        {startSlot}
-        <StyledLabel htmlFor={htmlFor}>{label}</StyledLabel>
-        {endSlot}
-      </StyledLabelRoot>
-    );
-  }
+  const LabelRoot = (
+    <StyledLabelRoot css={css}>
+      {startSlot}
+      <StyledLabel htmlFor={htmlFor}>{label}</StyledLabel>
+      {endSlot}
+    </StyledLabelRoot>
+  );
 
   if (info) {
     return (
-      <HoverCard content={info}>
-        {labelRoot()}
-      </HoverCard>
+      <HoverCard trigger={LabelRoot} side="left">{info}</HoverCard>
     )
   }
-  return labelRoot();
+  return LabelRoot
 }

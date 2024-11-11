@@ -1,7 +1,6 @@
 import { styled } from "../../design-system";
 
 const StyledText = styled("p", {
-  lineHeight: 1.4,
   fontFamily: "$default",
   cursor: "default",
   fontSynthesis: "none",
@@ -9,6 +8,11 @@ const StyledText = styled("p", {
     code: {
       true: {
         fontFamily: "$mono"
+      }
+    },
+    highContrast: {
+      true: {
+        color: "$hiContrast"
       }
     },
     selectable: {
@@ -57,6 +61,9 @@ const StyledText = styled("p", {
         lineHeight: "$4",
         letterSpacing: "$4"
       },
+      5: {
+        fontSize: "$6",
+      },
       sm: {
         fontSize: "$1",
         lineHeight: "$1",
@@ -100,7 +107,8 @@ const StyledText = styled("p", {
   defaultVariants: {
     size: "md",
     selectable: false,
-    weight: "normal"
+    weight: "normal",
+    highContrast: false
   }
 });
 
