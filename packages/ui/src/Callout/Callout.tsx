@@ -3,7 +3,6 @@ import { Flex } from "../Flex";
 
 const StyledCallout = styled(Flex, {
   borderRadius: "$2",
-  margin: "0 $2",
   fontSize: "$1",
   padding: "$1 $2",
   userSelect: "none",

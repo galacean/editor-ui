@@ -13,7 +13,6 @@ const StyledButton = styled("button", button, {
   whiteSpace: "nowrap",
   outline: "none",
   "&:disabled": {
-    backgroundColor: "$grayA2",
     color: "$grayA8",
     cursor: "not-allowed",
     "&:hover": {

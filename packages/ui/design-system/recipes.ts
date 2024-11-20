@@ -16,7 +16,7 @@ export const button = styled('button', {
   },
   "&:disabled": {
     backgroundColor: "$grayA3",
-    color: "$grayA8",
+    color: "$grayA9",
     cursor: "not-allowed"
   }
 });

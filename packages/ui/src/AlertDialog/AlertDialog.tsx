@@ -76,7 +76,7 @@ function AlertDialog(props: PropsWithChildren<IAlertDialogProps & AlertDialogPro
         <StyledOverlay style={{ zIndex }} />
         <StyledContent style={{ zIndex }}>
           <AlertTitle asChild>
-            <Title order={4} css={{ marginBottom: "$4", fontWeight: 600 }}>
+            <Title size={3} css={{ marginBottom: "$3" }} weight="bold">
               {title}
             </Title>
           </AlertTitle>
@@ -89,16 +89,20 @@ function AlertDialog(props: PropsWithChildren<IAlertDialogProps & AlertDialogPro
           )}
           {actionable && (
             <StyledFooter gap="sm" justifyContent="end" css={{ marginTop: '$4' }}>
-              <Cancel asChild>
-                <Button variant="secondary" size="md" onClick={onClose}>
-                  {cancelText}
-                </Button>
-              </Cancel>
-              <Action asChild>
-                <Button variant="primary" critical size="md" onClick={onConfirm}>
-                  {confirmText}
-                </Button>
-              </Action>
+              {onClose &&
+                <Cancel asChild>
+                  <Button variant="secondary" size="md" onClick={onClose}>
+                    {cancelText}
+                  </Button>
+                </Cancel>
+              }
+              {onConfirm && (
+                <Action asChild>
+                  <Button variant="primary" critical size="md" onClick={onConfirm}>
+                    {confirmText}
+                  </Button>
+                </Action>
+              )}
             </StyledFooter>
           )}
         </StyledContent>
