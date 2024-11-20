@@ -276,15 +276,21 @@ const overlayFadeOut = keyframes({
   "100%": { opacity: 0 }
 });
 
+const overlayShow = keyframes({
+  "0%": { opacity: 0 },
+  "100%": { opacity: 1 }
+});
 export const overlayStyle = styled(null, {
   position: "fixed",
-  backgroundColor: 'rgba(0, 0, 0, 0.8)',
+  backgroundColor: 'rgba(0,0,0,.8)',
   inset: 0,
   zIndex: 50,
-  "&[data-state=open]": {
-    animation: `${overlayFadeIn} 250ms ease`
-  },
-  "&[data-state=closed]": {
-    animation: `${overlayFadeOut} 250ms ease`
+  "@media (prefers-reduced-motion: no-preference)": {
+    '&[data-state="open"]': {
+      animation: `${overlayShow} .15s cubic-bezier(0.16, 1, 0.3, 1) forwards`
+    },
+    '&[data-state="closed"]': {
+      animation: `${overlayShow} .15s cubic-bezier(0.16, 1, 0.3, 1) forwards`
+    }
   }
 });
