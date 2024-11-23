@@ -4,21 +4,6 @@ import { styled } from "../../design-system";
 import { clamp } from "../../utils";
 import { mergeRefs } from "../../utils/merge-refs";
 
-
-// export function mergeRefs<T = any>(
-//   refs: Array<React.MutableRefObject<T> | React.LegacyRef<T> | undefined | null>
-// ): React.RefCallback<T> {
-//   return (value) => {
-//     refs.forEach((ref) => {
-//       if (typeof ref === "function") {
-//         ref(value);
-//       } else if (ref != null) {
-//         (ref as React.MutableRefObject<T | null>).current = value;
-//       }
-//     });
-//   };
-// }
-
 const StyledResizeHandler = styled("div", {
   "&:after": {
     content: '""',
@@ -148,19 +133,19 @@ const ResizablePanel = forwardRef<HTMLDivElement, ResizablePanelProps>(function 
       if (reverse) {
         if (direction === "horizontal") {
           width = clamp(size.width - (clientX - origin.x), range.min, range.max);
-          height = size.height;
+          // height = size.height;
         }
         if (direction === "vertical") {
-          width = size.width;
+          // width = size.width;
           height = clamp(size.height - (clientY - origin.y), range.min, range.max);
         }
       } else {
         if (direction === "horizontal") {
           width = clamp(size.width + (clientX - origin.x), range.min, range.max);
-          height = size.height;
+          // height = size.height;
         }
         if (direction === "vertical") {
-          width = size.width;
+          // width = size.width;
           height = clamp(size.height + (clientY - origin.y), range.min, range.max);
         }
       }
