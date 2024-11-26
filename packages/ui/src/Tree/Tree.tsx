@@ -44,7 +44,7 @@ const TreeItemContentRoot = styled("div", {
   borderRadius: "$2",
   gap: "$1",
   "&:hover": {
-    boxShadow: "0 0 0 1px var(--colors-blue11)"
+    boxShadow: "0 0 0 1px var(--g-colors-blue11)"
   },
   // borderRadius: '$2',
   variants: {
@@ -125,7 +125,7 @@ export const TreeItemRoot = styled("div", {
       true: {
         color: "$white",
         borderRadius: "$2",
-        boxShadow: "0 0 0 1px var(--colors-blueA11)",
+        boxShadow: "0 0 0 1px var(--g-colors-blueA11)",
         overflow: "hidden",
         [`& > ${TreeGroup}`]: {
           backgroundColor: "$blue3"

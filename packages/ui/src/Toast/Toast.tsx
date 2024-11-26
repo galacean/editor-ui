@@ -42,14 +42,14 @@ export function Toaster(props: ToasterProps) {
         className,
         success: {
           iconTheme: {
-            primary: "var(--colors-green10)",
-            secondary: "var(--colors-white)"
+            primary: "var(--g-colors-green10)",
+            secondary: "var(--g-colors-white)"
           }
         },
         error: {
           iconTheme: {
-            primary: "var(--colors-red9)",
-            secondary: "var(--colors-white)"
+            primary: "var(--g-colors-red9)",
+            secondary: "var(--g-colors-white)"
           }
         }
       }}
