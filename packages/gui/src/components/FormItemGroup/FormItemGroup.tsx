@@ -10,7 +10,8 @@ export interface FormItemGroupProps extends CollapsibleProps, Omit<BaseFormItemP
   onOpenChange?: (open: boolean) => void;
   collapsible?: boolean;
   nesting?: boolean;
-  children: React.ReactNode;
+  // children: React.ReactNode;
+  children: any;
 }
 
 function FormItemGroup(props: FormItemGroupProps) {

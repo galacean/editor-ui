@@ -241,7 +241,7 @@ function renderGUIItem(item: GUIDefineItem, index: number) {
           id: index,
           children: renderGUIItem([data, item.bindPath, item], index)
         };
-      }) as FormItemArrayProps['items']
+      }) as unknown as FormItemArrayProps['items']
       break;
     };
     case GUIItemTypeEnum.Group: {

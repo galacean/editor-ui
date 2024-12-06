@@ -70,7 +70,8 @@ function HorizontalSlider() {
 const defaultColor: Color = denormalizeColor({ r: 0, g: 0, b: 0, a: 1 });
 
 export function FormItemColor(props: FormItemColorProps) {
-  const { label, info, value, disabled, onChange, ...rest } = props;
+  // const { label, info, value, disabled, onChange, ...rest } = props;
+  const { label, info, value, disabled, onChange } = props;
   const [color, setColor] = useControllableState({
     prop: denormalizeColor(props.value),
     defaultProp: defaultColor,
@@ -110,7 +111,7 @@ export function FormItemColor(props: FormItemColorProps) {
       label={label}
       info={info}
       fieldColumn="color"
-      {...rest}
+      // {...rest}
     >
       <ColorPicker
         mode="constant"
