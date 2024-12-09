@@ -10,7 +10,7 @@ const StyledFlex = styled("div", {
     direction: {
       column: {
         flexDirection: "column",
-        alignItems: "flex-start"
+        // alignItems: "flex-start"
       },
       row: { flexDirection: "row" },
       "row-reverse": { flexDirection: "row-reverse" },

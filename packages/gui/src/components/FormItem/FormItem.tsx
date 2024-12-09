@@ -95,6 +95,7 @@ export interface FormItemProps extends BaseFormItemProps<any> {
   css?: CSS;
   labelCss?: CSS;
   fieldCss?: CSS;
+  size?: "sm" | "md";
   fieldColumn?: VariantProps<typeof StyledField>['column'];
 }
 
@@ -110,11 +111,12 @@ const FormItem = forwardRef<HTMLDivElement, FormItemProps>(
       formEndSlot,
       fieldCss,
       css,
+      size = "md",
       direction = 'row',
       ...rest
     } = props;
 
-    const defaultSize = "sm";
+    // const defaultSize = "sm";
 
     const name = propLabel;
 
@@ -125,7 +127,7 @@ const FormItem = forwardRef<HTMLDivElement, FormItemProps>(
       if (React.isValidElement(child)) {
         return cloneElement(child as ReactElement, {
           id: label,
-          size: defaultSize,
+          size,
           label: name,
           // ...controlledProp,
         });
