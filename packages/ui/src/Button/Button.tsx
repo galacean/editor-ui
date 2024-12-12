@@ -1,4 +1,5 @@
 import { PropsWithChildren, ReactNode, forwardRef } from "react";
+import { Slot, Slottable } from "@radix-ui/react-slot";
 
 import { button } from "../../design-system/recipes";
 import { styled, StitchesComponent } from "../../design-system";
@@ -26,7 +27,7 @@ const StyledButton = styled("button", button, {
         height: "$5",
         fontSize: "$sm",
         lineHeight: "$sizes$5",
-        fontWeight: 300,
+        fontWeight: 400,
         borderRadius: "$2",
         padding: "0 $1_5",
         [`& ${Spin}`]: {
@@ -291,11 +292,12 @@ export type ButtonProps = PropsWithChildren<
     startSlot?: ReactNode;
     endSlot?: ReactNode;
     async?: () => Promise<unknown>;
+    asChild?: boolean;
   }
 >;
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(props, ref) {
-  const { children, startSlot, endSlot, async, size, loading: propLoading, onClick, ...rest } = props;
+  const { children, startSlot, endSlot, async, size, loading: propLoading, onClick, asChild, ...rest } = props;
   const { loading, handleClick } = useAsyncStatus({
     asyncFunction: async,
     propLoading: propLoading as unknown as boolean,
@@ -303,14 +305,15 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(props,
   });
 
   const spin = <Spin color="default" size="xs" css={{ marginRight: "$1_5" }} />;
+  const Comp = asChild ? Slot : StyledButton;
 
   return (
-    <StyledButton ref={ref} loading={loading} size={size} onClick={handleClick} {...rest}>
+    <Comp ref={ref} loading={loading} size={size} onClick={handleClick} {...rest}>
       {startSlot && (loading ? spin : <Flex css={{ marginRight: "$1_5" }}>{startSlot}</Flex>)}
       {!startSlot && !endSlot && loading && spin}
-      {children}
+      <Slottable>{children}</Slottable>
       {endSlot && (loading ? spin : <Flex css={{ marginLeft: "$1_5" }}>{endSlot}</Flex>)}
-    </StyledButton>
+    </Comp>
   );
 });
 
