@@ -30,6 +30,7 @@ const StyledItem = styled(ToggleGroupPrimitive.Item, {
         '& > svg': {
           width: '$4',
           height: '$4',
+          strokeWidth: 1.5
         },
       },
       md: {

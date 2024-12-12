@@ -44,7 +44,7 @@ const StyledActionButton = styled("button", button, {
         borderRadius: "$2",
         "& > svg": {
           height: "14px",
-          width: "14px"
+          width: "14px",
         }
       },
       sm: {
@@ -54,7 +54,8 @@ const StyledActionButton = styled("button", button, {
         fontSize: "$sm",
         "& svg": {
           height: "14px",
-          width: "14px"
+          width: "14px",
+          strokeWidth: 1.5
         }
       },
       md: {

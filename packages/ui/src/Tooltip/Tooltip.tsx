@@ -25,7 +25,7 @@ const StyledContent = styled(TooltipPrimitive.Content, {
 const StyledArrow = styled(TooltipPrimitive.Arrow, {
   position: "relative",
   top: -1,
-  fill: "$gray12"
+  fill: "$gray1"
 });
 
 export interface TooltipProps extends Omit<TooltipPrimitive.TooltipContentProps, 'content'> {
