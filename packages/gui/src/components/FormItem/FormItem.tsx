@@ -111,7 +111,7 @@ const FormItem = forwardRef<HTMLDivElement, FormItemProps>(
       formEndSlot,
       fieldCss,
       css,
-      size = "md",
+      size = "sm",
       direction = 'row',
       ...rest
     } = props;
