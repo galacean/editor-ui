@@ -48,8 +48,8 @@ const StyledActionButton = styled("button", button, {
         }
       },
       sm: {
-        height: "$6",
-        width: "$6",
+        height: "$sm",
+        width: "$sm",
         borderRadius: "$2",
         fontSize: "$sm",
         "& svg": {
@@ -144,7 +144,7 @@ const StyledActionButton = styled("button", button, {
     fancy: {
       true: {
         "&:active": {
-          transform: "scale(0.96)"
+          transform: "scale(0.94)"
         }
       }
     }

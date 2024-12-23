@@ -12,20 +12,18 @@ const StyledContent = styled(TooltipPrimitive.Content, {
   display: "flex",
   alignItems: "center",
   fontSize: "13px",
-  padding: "$2",
+  padding: "$2 $3",
   backgroundColor: "$gray1",
   borderRadius: "$3",
   color: "$gray12",
   transformOrigin: "var(--radix-tooltip-content-transform-origin)",
   animation: `${scaleIn} 0.15s ease-in-out forwards`,
-  boxShadow: "inset 0 0 0 1px $colors$border, inset 0 -6px 18px 0px $colors$grayA2",
-  
 });
 
 const StyledArrow = styled(TooltipPrimitive.Arrow, {
   position: "relative",
   top: -1,
-  fill: "$gray1"
+  fill: "$appBg"
 });
 
 export interface TooltipProps extends Omit<TooltipPrimitive.TooltipContentProps, 'content'> {

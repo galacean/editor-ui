@@ -296,7 +296,7 @@ export type ButtonProps = PropsWithChildren<
   }
 >;
 
-const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(props, ref) {
+const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(props, forwardedRef) {
   const { children, startSlot, endSlot, async, size, loading: propLoading, onClick, asChild, ...rest } = props;
   const { loading, handleClick } = useAsyncStatus({
     asyncFunction: async,
@@ -308,7 +308,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(props,
   const Comp = asChild ? Slot : StyledButton;
 
   return (
-    <Comp ref={ref} loading={loading} size={size} onClick={handleClick} {...rest}>
+    <Comp ref={forwardedRef} loading={loading} size={size} onClick={handleClick} {...rest}>
       {startSlot && (loading ? spin : <Flex css={{ marginRight: "$1_5" }}>{startSlot}</Flex>)}
       {!startSlot && !endSlot && loading && spin}
       <Slottable>{children}</Slottable>

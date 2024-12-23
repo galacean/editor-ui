@@ -35,16 +35,14 @@ const StyledCrosslineText = styled("div", {
 const StyledSeparator = styled(PrimitiveSeparator.Root, {
   backgroundColor: '$grayA5',
   variants: {
-    direction: {
+    orientation: {
       horizontal: {
         height: 1,
         width: '100%',
-        margin: '$2 0',
       },
       vertical: {
         height: '100%',
         width: 1,
-        margin: '0 $2',
       },
     },
     raw: {
@@ -61,32 +59,21 @@ const StyledSeparator = styled(PrimitiveSeparator.Root, {
       }
     }
   },
-  '&[data-orientation=horizontal]': {
-    height: 1,
-    width: '100%',
-    margin: '$2 0',
-  },
-  '&[data-orientation=vertical]': {
-    height: '100%',
-    width: 1,
-    margin: '0 $2',
-  },
   defaultVariants: {
-    direction: 'horizontal',
+    orientation: 'horizontal',
   }
 });
 
 export interface SeparatorProps {
   text?: string;
   css?: CSS;
-  direction?: 'horizontal' | 'vertical';
+  orientation?: 'horizontal' | 'vertical';
   raw?: boolean;
 };
 
 
 function Separator(props: SeparatorProps) {
   const { text, ...rest } = props;
-
   if (text) {
     return (
       <StyledCrosslineText {...rest}>
