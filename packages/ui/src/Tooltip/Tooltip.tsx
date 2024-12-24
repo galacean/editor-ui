@@ -13,9 +13,10 @@ const StyledContent = styled(TooltipPrimitive.Content, {
   alignItems: "center",
   fontSize: "13px",
   padding: "$2 $3",
-  backgroundColor: "$gray1",
-  borderRadius: "$3",
+  backgroundColor: "$gray2",
+  borderRadius: "$4",
   color: "$gray12",
+  boxShadow: "inset 0 0 0 1px $colors$grayA4",
   transformOrigin: "var(--radix-tooltip-content-transform-origin)",
   animation: `${scaleIn} 0.15s ease-in-out forwards`,
 });
@@ -36,20 +37,20 @@ function Tooltip(props: PropsWithChildren<TooltipProps>) {
   const {
     children,
     content,
-    arrow = false,
-    side = "top",
-    sideOffset = 4,
-    delayDuration = 300,
+    side = "bottom",
+    sideOffset = 6,
+    delayDuration = 0,
     ...rest
   } = props;
   return (
     <TooltipPrimitive.TooltipProvider>
       <TooltipPrimitive.Root delayDuration={delayDuration} {...rest}>
         <TooltipPrimitive.Trigger asChild>{children}</TooltipPrimitive.Trigger>
-        <StyledContent sideOffset={sideOffset} side={side}>
-          {arrow && <StyledArrow />}
-          {content}
-        </StyledContent>
+        <TooltipPrimitive.Portal>
+          <StyledContent sideOffset={sideOffset} side={side}>
+            {content}
+          </StyledContent>
+        </TooltipPrimitive.Portal>
       </TooltipPrimitive.Root>
     </TooltipPrimitive.TooltipProvider>
   );

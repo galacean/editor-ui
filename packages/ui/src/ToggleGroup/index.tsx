@@ -43,6 +43,13 @@ const StyledItem = styled(ToggleGroupPrimitive.Item, {
         },
       },
     },
+    fancy: {
+      true: {
+        "&:active": {
+          transform: "scale(0.94)"
+        }
+      }
+    },
     variant: {
       primary: {
         "&[data-state=on]": {
@@ -106,14 +113,6 @@ export interface ToggleGroupItemProps extends PrimitiveItemProps {
   subtle?: boolean;
 }
 
-export function ToggleGroupItem(props: PropsWithChildren<ToggleGroupItemProps>) {
-  const { children, fancy, size = "sm", subtle, ...rest } = props;
-
-  return (
-    <StyledItem size={size} {...rest}>
-      {children}
-    </StyledItem>
-  );
-}
+export const ToggleGroupItem = StyledItem;
 
 export type { ToggleGroupSingleProps, ToggleGroupMultipleProps } from "@radix-ui/react-toggle-group";

@@ -176,7 +176,7 @@ export const contentStyle = styled('div', {
   position: "relative",
   backgroundColor: "$listBg",
   borderRadius: "$3",
-  padding: "$1",
+  padding: "$2",
   boxShadow: "0 5px 10px rgba(0,0,0,0.08)",
   transformOrigin: "var(--radix-context-menu-content-transform-origin)",
   border: "1px solid $grayA4",

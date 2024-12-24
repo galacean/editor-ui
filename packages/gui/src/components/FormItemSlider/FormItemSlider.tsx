@@ -16,6 +16,8 @@ export function FormItemSlider(props: FormItemSliderProps) {
     }
   };
 
+  const arrValue = Array.isArray(value) ? value : [value];
+
   return (
     <FormItem label={label} info={info} fieldColumn={3}>
       <InputNumber
@@ -24,7 +26,7 @@ export function FormItemSlider(props: FormItemSliderProps) {
         dragStep={dragStep}
         onValueChange={onChange}
         size="sm"
-        value={value}
+        value={value[0]}
         disabled={disabled}
       />
       <Slider
@@ -33,7 +35,7 @@ export function FormItemSlider(props: FormItemSliderProps) {
         max={max}
         tooltip={tooltip}
         step={dragStep}
-        value={[value]}
+        value={arrValue}
         onValueChange={handleSliderValueChange}
         css={{ gridColumn: "2 / -1" }}
       />

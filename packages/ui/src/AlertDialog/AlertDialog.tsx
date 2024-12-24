@@ -88,7 +88,7 @@ function AlertDialog(props: PropsWithChildren<IAlertDialogProps & AlertDialogPro
             </Description>
           )}
           {actionable && (
-            <StyledFooter gap="sm" justifyContent="end" css={{ marginTop: '$4' }}>
+            <StyledFooter gap="sm" justifyContent="end" css={{ marginTop: '$8' }}>
               {onClose &&
                 <Cancel asChild>
                   <Button variant="secondary" size="md" onClick={onClose}>

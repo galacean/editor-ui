@@ -15,7 +15,7 @@ const StyledContent = styled(PopoverPrimitive.Content, {
   minWidth: "160px",
   outline: "none",
   backgroundColor: '$gray1',
-  borderRadius: '$3',
+  borderRadius: '$4',
   border: '1px solid $border',
   animationDuration: "300ms",
   animationTimingFunction: "ubic-bezier(0.25, 0.8, 0.25, 1)",
