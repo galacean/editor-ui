@@ -26,7 +26,7 @@ export function FormItemSlider(props: FormItemSliderProps) {
         dragStep={dragStep}
         onValueChange={onChange}
         size="sm"
-        value={value[0]}
+        value={arrValue[0]}
         disabled={disabled}
       />
       <Slider
