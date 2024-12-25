@@ -19,11 +19,11 @@ function generateGUI<T>() {
 export type FormItemButtonProps = PropsWithChildren<Omit<BaseFormItemProps<string>, 'value' | 'onChange'>>;
 export const FormItemButton = generateGUI<string>()(Button); 
 
-export type FormItemInputProps = BaseFormItemProps<string>;
-export const FormItemInput = generateGUI<string>()(Input);
-
 export type FormItemCascadeSliderProps = BaseFormItemProps<number[]>;
 export const FormItemCascadeSlider = generateGUI<number[]>()(CascadeSlider);
+
+export { FormItemInput, type FormItemInputProps } from './FormItemInput'
+export { FormItemSelect, type FormItemSelectProps } from './FormItemSelect'
 
 export { FormItemColor, type FormItemColorProps } from './FormItemColor'
 export { type Color } from '@galacean/editor-ui'
@@ -42,7 +42,6 @@ export * from './FormItemRect'
 export { FormItemSlider, type FormItemSliderProps } from './FormItemSlider'
 export { FormItemSegmentControl, type FormItemSegmentControlProps } from './FormItemSegmentControl'
 export { FormItemArray, type FormItemArrayProps } from './FormItemArray'
-export { FormItemSelect, type FormItemSelectProps } from './FormItemSelect'
 export { FormItemDisplay, type FormItemDisplayProps } from './FormItemDisplay'
 export * from './FormItemAssetPicker'
 export {

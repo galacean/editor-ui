@@ -159,10 +159,11 @@ type ICollapsiableProps = Omit<StitchesComponent<typeof StyledRoot>, "title"> & 
   title: any;
   triggerTitle?: boolean;
   collapsible?: boolean;
+  transparent?: boolean;
 };
 
 function Collapsible(props: ICollapsiableProps) {
-  const { children, title, collapsible = true, triggerTitle = true, ...rest } = props;
+  const { children, title, transparent = false, collapsible = true, triggerTitle = true, ...rest } = props;
 
   const [open, setOpen] = useControllableState({
     prop: props.open,
@@ -179,7 +180,7 @@ function Collapsible(props: ICollapsiableProps) {
   };
 
   return (
-    <StyledRoot {...rest} open={open} onOpenChange={handleOnOpenChange} disabled={!collapsible}>
+    <StyledRoot {...rest} open={open} onOpenChange={handleOnOpenChange} disabled={!collapsible} transparent={transparent}>
       {triggerTitle ? (
         <CollapsiblePrimitive.Trigger asChild disabled={!collapsible}>
           <StyledTitle>

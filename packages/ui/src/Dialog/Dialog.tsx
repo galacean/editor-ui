@@ -1,8 +1,10 @@
 import * as DialogPrimitive from "@radix-ui/react-dialog";
+import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 import { IconX } from "@tabler/icons-react";
 import React, { ComponentProps, forwardRef } from "react";
 
 import { CSS, keyframes, styled } from "../../design-system";
+
 
 export const basicStyle = styled(null, {
   all: "unset",
@@ -173,6 +175,10 @@ export function Dialog(props: DialogProps) {
         </DialogPrimitive.Trigger>
       )}
       <DialogContent css={css} zIndex={zIndex} className={className}>
+        <VisuallyHidden.Root>
+          <DialogPrimitive.Title />
+          <DialogPrimitive.Description />
+        </VisuallyHidden.Root>
         {children}
         {closable && (
           <StyledCloseButton>

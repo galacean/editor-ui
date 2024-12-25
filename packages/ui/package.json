@@ -103,6 +103,7 @@
     "@radix-ui/react-toggle-group": "^1.1.0",
     "@radix-ui/react-tooltip": "^1.1.2",
     "@radix-ui/react-use-controllable-state": "^1.1.0",
+    "@radix-ui/react-visually-hidden": "^1.1.1",
     "@stitches/react": "^1.2.8",
     "@tabler/icons-react": "^3.12.0",
     "colord": "^2.9.3",
