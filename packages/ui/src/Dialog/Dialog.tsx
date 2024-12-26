@@ -89,6 +89,11 @@ const StyledContent = styled(DialogPrimitive.Content, {
   overflow: "hidden",
   border: "1px solid $grayA4",
   backgroundColor: "$subbg",
+  boxShadow: `
+  0px 4.5px 3.8px -27px rgba(0, 0, 0, 0.035),
+  0px 12.5px 10.5px -27px rgba(0, 0, 0, 0.05),
+  0px 30.1px 25.3px -27px rgba(0, 0, 0, 0.065),
+  0px 100px 84px -27px rgba(0, 0, 0, 0.1)`,
   // zIndex: 2,
   animation: `${contentShow} 150ms cubic-bezier(0.16, 1, 0.3, 1)`,
 

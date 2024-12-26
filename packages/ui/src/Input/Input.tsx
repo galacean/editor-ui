@@ -9,10 +9,20 @@ const StyledInputSlot = styled("div", {
   justifyContent: "center",
   flexShrink: 0,
   color: "$gray9",
-  padding: "0 $1",
-  fontSize: "$1",
   transition: "color 0.2s ease",
-  userSelect: "none"
+  userSelect: "none",
+  variants: {
+    size: {
+      sm: {
+        padding: "0 $1",
+        fontSize: "$1",
+      },
+      md: {
+        padding: "0 $2",
+        fontSize: "$1_5",
+      }
+    }
+  }
 });
 
 const StyledInputBackground = styled("div", {
@@ -232,11 +242,11 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(function Inp
       disabled={disabled}
     >
       {!!startSlot && (
-        overrideStartSlotStyle ? startSlot : <StyledInputSlot>{startSlot}</StyledInputSlot>
+        overrideStartSlotStyle ? startSlot : <StyledInputSlot size={size}>{startSlot}</StyledInputSlot>
       )}
       <StyledInput disabled={disabled} ref={forwardedRef} size={size} {...rest} />
       {!!endSlot && (
-        overrideEndSlotStyle ? endSlot : <StyledInputSlot>{endSlot}</StyledInputSlot>
+        overrideEndSlotStyle ? endSlot : <StyledInputSlot size={size}>{endSlot}</StyledInputSlot>
       )}
       <StyledInputBackground variant={variant} state={state} />
     </StyledInputRoot>
