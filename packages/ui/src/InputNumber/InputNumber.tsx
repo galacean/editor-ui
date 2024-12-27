@@ -162,7 +162,6 @@ export const InputNumber = forwardRef<HTMLInputElement, InputNumberProps>(
     return (
       <StyledInputNumberRoot>
         <Input
-          {...rest}
           ref={mergeRefs([ref, forwardedRef])}
           value={value}
           defaultValue={defaultValue}
@@ -178,6 +177,7 @@ export const InputNumber = forwardRef<HTMLInputElement, InputNumberProps>(
           endSlot={
             !disabled && <StyledNumController active={dragging} tight={accurateMode} onMouseDown={handleMouseDown} />
           }
+          {...rest}
         />
       </StyledInputNumberRoot>
     );

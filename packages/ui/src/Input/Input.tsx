@@ -81,7 +81,7 @@ const StyledInput = styled("input", {
   fontWeight: "$regular",
   backgroundColor: "transparent",
   textAlign: "inherit",
-  padding: "0 0 $0_5",
+  padding: 0,
   "&:hover": {
     color: "$gray12"
   },
