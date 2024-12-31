@@ -26,13 +26,11 @@ const resolveError = () => {
   throw new Error("Unsupported browser.");
 };
 
-const createInstance = () => isSupported() && new window.EyeDropper!();
-
-const a: ColorSelectionOptions = {};
+const createInstance = () => isSupported() && new (window as any).EyeDropper!();
 
 const bindFunc = (key, instance) => {
   if (!instance) return resolveError;
-  return window.EyeDropper!.prototype[key].bind(instance);
+  return (window as any).EyeDropper!.prototype[key].bind(instance);
 };
 
 const useIsSupported = () => {

@@ -78,8 +78,8 @@ export function AssetPickerContent<T extends BasicAssetType>(props: AssetPickerP
   const searchRef = useRef<HTMLInputElement>(null);
 
   const [searchText, setSearchText] = useState("");
-  const [displayMode, setDisplayMode] = useState(
-    window.localStorage.getItem(key) || 'grid'
+  const [displayMode, setDisplayMode] = useState<'list' | 'grid'>(
+    window.localStorage.getItem(key) as any || 'grid'
   )
   const scrollingRef = React.useRef<HTMLDivElement | null>(null);
 

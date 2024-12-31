@@ -149,14 +149,14 @@ const StyledChevron = styled(IconTriangleInvertedFilled, {
   }
 });
 
-export type CollapsiableProps = Omit<StitchesComponent<typeof StyledRoot>, "title"> & {
-  title: any;
+export type CollapsibleProps = Omit<StitchesComponent<typeof StyledRoot>, "title"> & {
+  title?: any;
   triggerTitle?: boolean;
   collapsible?: boolean;
   transparent?: boolean;
 };
 
-function Collapsible(props: CollapsiableProps) {
+function Collapsible(props: CollapsibleProps) {
   const { children, title, transparent = false, collapsible = true, triggerTitle = true, ...rest } = props;
 
   const [open, setOpen] = useControllableState({

@@ -54,8 +54,10 @@
   "scripts": {
     "dev": "storybook dev -p 6006",
     "build": "tsup",
+    "build:types": "npm run clean:dts && tsc --emitDeclarationOnly --declaration --skipLibCheck --outDir types",
+    "build:all": "npm run build && npm run build:types",
+    "prepublishOnly": "npm run build:all",
     "clean": "rimraf dist types",
-    "dts": "tsc --emitDeclarationOnly --declaration --skipLibCheck --outDir types",
     "clean:dts": "rimraf types",
     "build:nodts": "tsup --no-dts",
     "storybook": "storybook dev -p 6006",

@@ -3,7 +3,7 @@ import React from "react";
 import { Flex, Collapsible, type CollapsibleProps } from "@galacean/editor-ui";
 import { BaseFormItemProps } from "../FormItem/FormItem";
 
-export interface FormItemGroupProps extends CollapsibleProps, Omit<BaseFormItemProps<any>, 'value' | 'onChange'> {
+export interface FormItemGroupProps extends Omit<CollapsibleProps, 'defaultValue'> , Omit<BaseFormItemProps<any>, 'value' | 'onChange'> {
   customTitle?: React.ReactNode;
   defaultOpen?: boolean;
   open?: boolean;

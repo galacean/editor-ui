@@ -2,9 +2,6 @@
   "name": "@galacean/gui",
   "version": "1.0.0",
   "description": "An opinionated UI library designed to create engaging and functional online tools with ease.",
-  "workspaces": [
-    "packages/*"
-  ],
   "licenses": [
     {
       "type": "MIT",
@@ -16,15 +13,18 @@
   "types": "src/index.ts",
   "publishConfig": {
     "access": "public",
-    "main": "dist/index.js",
-    "module": "dist/index.js",
-    "types": "types/index.d.ts",
+    "main": "es/index.js",
+    "module": "es/index.js",
+    "types": "types/src/index.d.ts",
     "registry": "https://registry.npmjs.org"
   },
   "scripts": {
     "dev": "storybook dev -p 6006",
-    "build": "tsup",
-    "build:nodts": "tsup --no-dts",
+    "build": "tsup && vite build",
+    "build:types": "npm run clean:dts && tsc --emitDeclarationOnly --declaration --skipLibCheck --outDir types",
+    "build:all": "npm run build && npm run build:types",
+    "prepublishOnly": "npm run build:all",
+    "clean:dts": "rimraf types",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "chromatic": "npx chromatic --project-token=CHROMATIC_TOKEN"
@@ -40,6 +40,11 @@
   "author": {
     "name": "Mrkou47"
   },
+  "files": [
+    "es",
+    "lib",
+    "dist"
+  ],
   "license": "MIT",
   "devDependencies": {
     "@chromatic-com/storybook": "^1.6.1",
