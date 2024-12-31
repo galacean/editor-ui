@@ -31,10 +31,10 @@ export const KbdColor: StoryFn = () => {
       <div>
         <Kbd>shift</Kbd>
       </div>
-      <div style={{ color: 'var(--g-colors-red10)' }}>
+      <div style={{ color: 'var(colors-red10)' }}>
         <Kbd>Delete</Kbd>
       </div>
-      <div style={{ color: 'var(--g-colors-gray10)' }}>
+      <div style={{ color: 'var(colors-gray10)' }}>
         <Kbd>Command</Kbd>
       </div>
     </Flex>
@@ -46,7 +46,7 @@ export const KbdColor: StoryFn = () => {
  */
 export const KbdGroup = () => {
   return (
-    <Flex gap="sm" style={{ color: 'var(--g-colors-gray11)' }}>
+    <Flex gap="sm" style={{ color: 'var(colors-gray11)' }}>
       <PrimitiveKbdGroup shortcuts={["shift", "d"]} />
       <PrimitiveKbdGroup shortcuts={["⇧", "d"]} />
       <PrimitiveKbdGroup shortcuts="⌘+d+f" />

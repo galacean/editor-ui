@@ -17,7 +17,9 @@ function generateGUI<T>() {
 }
 
 export type FormItemButtonProps = PropsWithChildren<Omit<BaseFormItemProps<string>, 'value' | 'onChange'>>;
-export const FormItemButton = generateGUI<string>()(Button); 
+export const FormItemButton = generateGUI<string>()(Button, {
+  variant: "secondary"
+}); 
 
 export type FormItemCascadeSliderProps = BaseFormItemProps<number[]>;
 export const FormItemCascadeSlider = generateGUI<number[]>()(CascadeSlider);

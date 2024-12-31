@@ -6,7 +6,6 @@ import { fontSizes, sizes, space, radii } from "./sizes";
 import { resetCSS } from "./reset.css";
 
 export const { styled, css, keyframes, getCssText, theme, globalCss, createTheme } = createStitches({
-  prefix: "g",
   theme: {
     // relate https://github.com/necolas/normalize.css/issues/665
     fonts: {

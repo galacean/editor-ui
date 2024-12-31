@@ -48,7 +48,7 @@ const StyledSegmentControlRoot = styled(RadioGroupPrimitive.Root, {
   width: "100%",
   alignItems: "center",
   borderRadius: "$2",
-  // padding: "1px",
+  overflow: "hidden",
   variants: {
     size: {
       sm: {

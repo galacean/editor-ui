@@ -23,6 +23,7 @@ function FormItemGroup(props: FormItemGroupProps) {
       defaultOpen={defaultOpen}
       open={open}
       nesting={nesting}
+      transparent
       onOpenChange={onOpenChange}
       collapsible={collapsible}
       css={{ marginTop: '$0_5' }}

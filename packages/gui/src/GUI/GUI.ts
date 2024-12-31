@@ -1,4 +1,3 @@
-import { v4 as uuidv4 } from 'uuid'
 import React from 'react';
 import { createRoot, Root } from 'react-dom/client';
 import { GUIItemConfig, GUIRoot, GUIItemTypeEnum, type GUIDefineItem } from '../components/GUIRoot';
@@ -19,7 +18,14 @@ abstract class GUIBase {
   abstract add(data: object, keyName: string, item: any): void;
 }
 
+const initContainerStyle = {
+  position: 'fixed',
+  top: '32px',
+  right: '32px',
+} as const;
+
 class GUI implements GUIBase {
+  private _containerId = 'galacean-gui-container';
   private  _container: HTMLDivElement = null;
   private _root: Root = null;
   private _data: Record<string, any> = null;
@@ -58,11 +64,14 @@ class GUI implements GUIBase {
   }
 
   private _prepareContainer() {
+
+    const checkContainer = document.getElementById(this._containerId);
+    if(checkContainer) {
+      return checkContainer as HTMLDivElement;
+    }
     const container = document.createElement('div');
-    container.id = `galacean-gui-${uuidv4()}`;
-    container.style.position = 'fixed';
-    container.style.top = '32px';
-    container.style.right = '32px';
+    container.id = this._containerId;
+    Object.assign(container.style, initContainerStyle);
     if(document.body) {
       document.body.appendChild(this._container = container);
     }
@@ -117,12 +126,12 @@ class GUI implements GUIBase {
   }
 
   dispose() {
-    if(this.container) {
-      document.body.removeChild(this.container);
-    }
     this._container = null;
     this.root.unmount();
     this._root = null;
+    if(this.container) {
+      document.body.removeChild(this.container);
+    }
   }
 
   setTheme(theme?: keyof typeof themeMap) {

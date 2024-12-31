@@ -1,7 +1,7 @@
 import { forwardRef, useMemo } from "react";
 import { styled } from "../../design-system";
 
-import { generateLinearGradient, type IColor } from "../ColorPicker/helper";
+import { generateLinearGradient, type Color } from "../ColorPicker/helper";
 
 export const StyledTrack = styled("div", {
   position: "relative",
@@ -19,7 +19,7 @@ export const StyledTrack = styled("div", {
 });
 
 interface RangeProps {
-  colors: IColor[];
+  colors: Color[];
   positions: number[];
 }
 

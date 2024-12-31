@@ -63,7 +63,7 @@ const InputItem = styled("div", {
 });
 
 /** the value ofng rgba is normalized(0~1) */
-interface IColorPickerInputProps<T = number> {
+interface ColorPickerInputProps<T = number> {
   type?: "text" | "number";
   label?: string;
   min?: number;
@@ -75,7 +75,7 @@ interface IColorPickerInputProps<T = number> {
   onBlur?: (val: T) => void;
 }
 
-function ColorPickerInput(props: IColorPickerInputProps) {
+function ColorPickerInput(props: ColorPickerInputProps) {
   const { type = "number", min = 0, max, label, step = 1, onChange, onBlur } = props;
   const id = `ColorPicker${props.label}`;
   const onChangeCallback = useEventCallback<number>(onChange);
@@ -180,14 +180,14 @@ function HEXAColorInput(props: ColorInputProps<HexaColor>) {
   );
 }
 
-type IColorPickerInputGroupProps = {
+type ColorPickerInputGroupProps = {
   alpha?: boolean;
   value: RgbaColor;
   onChange: (value: RgbaColor) => void;
   readonly?: boolean;
 };
 
-export function ColorPickerInputGroup(props: IColorPickerInputGroupProps) {
+export function ColorPickerInputGroup(props: ColorPickerInputGroupProps) {
   const { value, onChange, alpha = true, readonly = false } = props;
   const [mode, switchMode] = useCycleSwitch(colorModes, "RGBA");
 

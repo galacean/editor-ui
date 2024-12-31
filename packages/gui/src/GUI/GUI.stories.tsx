@@ -18,7 +18,7 @@ import { Meta } from "@storybook/react";
 import { GUIItemConfig, GUIItemTypeEnum, GUI } from './GUI';
 
 export default {
-  title: "GUI/Commands"
+  title: "Commands"
 } as Meta;
 
 function start() {
@@ -232,24 +232,7 @@ function start() {
   });
 }
 
-class TestData {
-  _name: string = 'test'
-
-  constructor() {
-    this.name = 'test'
-  }
-
-  get name() {
-    return this._name;
-  }
-
-  set name(value: string) {
-    this._name = value;
-  }
-}
-
 export const Overview = (args) => {
-  // const guiRef = React.useRef<GUI>(null)
 
   useEffect(() => {
     start();

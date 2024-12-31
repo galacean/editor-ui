@@ -5,7 +5,7 @@ import { FormItemVector3 } from "."
 import { Flex } from "@galacean/editor-ui";
 
 export default {
-  title: "GUI/FormItemVector3",
+  title: "Components/FormItemVector3",
   component: FormItemVector3,
 } as Meta<typeof FormItemVector3>;
 

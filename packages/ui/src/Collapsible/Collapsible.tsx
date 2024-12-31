@@ -11,12 +11,6 @@ const StyledContent = styled(CollapsiblePrimitive.Content, {
   "&:empty": {
     padding: 0
   },
-  '&[data-state="open"]': {
-    // animation: `${slideDown} .1s ease-in-out`
-  },
-  '&[data-state="closed"]': {
-    // animation: `${slideUp} .1s ease-in-out`
-  }
 });
 
 const StyledTitle = styled("div", {
@@ -37,7 +31,7 @@ const StyledTitle = styled("div", {
         minHeight: "$7",
         backgroundColor: "$grayA3",
         margin: "2px auto",
-        border: "1px solid $grayA6",
+        border: "1px solid $border",
         borderRadius: "$2"
       }
     }
@@ -155,14 +149,14 @@ const StyledChevron = styled(IconTriangleInvertedFilled, {
   }
 });
 
-type ICollapsiableProps = Omit<StitchesComponent<typeof StyledRoot>, "title"> & {
+export type CollapsiableProps = Omit<StitchesComponent<typeof StyledRoot>, "title"> & {
   title: any;
   triggerTitle?: boolean;
   collapsible?: boolean;
   transparent?: boolean;
 };
 
-function Collapsible(props: ICollapsiableProps) {
+function Collapsible(props: CollapsiableProps) {
   const { children, title, transparent = false, collapsible = true, triggerTitle = true, ...rest } = props;
 
   const [open, setOpen] = useControllableState({

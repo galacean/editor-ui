@@ -1,5 +1,5 @@
-import React, { useMemo, useRef } from 'react';
-import { Panel } from '../Panel'
+import React, { useEffect, useMemo, useRef } from 'react';
+import { Panel } from '../Panel';
 
 import {
   FormItemColor,
@@ -10,12 +10,8 @@ import {
   FormItemVector2,
   FormItemVector3,
   FormItemVector4,
-  FormItemSlider,
-  FormItemSegmentControl,
-  FormItemArray,
-  FormItemSelect,
-  FormItemButton,
-  FormItemInput,
+  FormItemSlider, FormItemArray,
+  FormItemSelect, FormItemInput,
   FormItemTextarea,
   FormItemCascadeSlider,
   FormItemInputProps,
@@ -31,12 +27,11 @@ import {
   FormItemSelectProps,
   FormItemTextareaProps,
   FormItemCascadeSliderProps,
-  FormItemArrayProps,
-} from '..'
-import { FormItemRectProps, Rect } from '../FormItemRect/FormItemRect';
-import { FormItemProps } from '../FormItem';
-import { BaseFormItemProps, FormItem } from '../FormItem/FormItem';
+  FormItemArrayProps
+} from '..';
+import { FormItemRectProps } from '../FormItemRect/FormItemRect';
 import { useControllableState } from '@radix-ui/react-use-controllable-state';
+import { resetStyle } from '@galacean/editor-ui';
 
 export enum GUIItemTypeEnum {
   Input = 'Input',
@@ -309,10 +304,6 @@ function UnControlledComponent({
   )
 }
 
-function GUIArray() {
-
-}
-
 type GUIContextType = {
   items: GUIDefineItem[];
   // onAdd: (item: GUIItemConfig) => void;
@@ -353,6 +344,10 @@ export function GUIRoot(props: GUIRootProps) {
       }
     };
   }, [guiItems]);
+
+  useEffect(() => {
+    resetStyle();
+  }, []);
   
   return (
     <GUIProvider {...{ items, data, gui }}>

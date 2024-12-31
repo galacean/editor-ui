@@ -29,20 +29,34 @@
   },
   "publishConfig": {
     "access": "public",
-    "main": "dist/index.js",
-    "module": "dist/index.js",
-    "types": "types/index.d.ts",
+    "main": "lib/src/index.js",
+    "module": "es/src/index.js",
+    "types": "types/src/index.d.ts",
     "registry": "https://registry.npmjs.org",
     "exports": {
       ".": {
-        "import": "./es/index.js"
+        "import": "./es/src/index.js",
+        "require": "./lib/src/index.js"
       },
-      "./recipes": "./es/design-system/recipes.js"
+      "./recipes": {
+        "import": "./es/design-system/recipes.js",
+        "require": "./lib/design-system/recipes.js"
+      }
+    },
+    "typesVersions": {
+      "*": {
+        "recipes": [
+          "./typs/design-system/recipes.ts"
+        ]
+      }
     }
   },
   "scripts": {
     "dev": "storybook dev -p 6006",
     "build": "tsup",
+    "clean": "rimraf dist types",
+    "dts": "tsc --emitDeclarationOnly --declaration --skipLibCheck --outDir types",
+    "clean:dts": "rimraf types",
     "build:nodts": "tsup --no-dts",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
@@ -59,6 +73,12 @@
   "author": {
     "name": "Mrkou47"
   },
+  "files": [
+    "dist",
+    "types",
+    "es",
+    "lib"
+  ],
   "license": "MIT",
   "devDependencies": {
     "@chromatic-com/storybook": "^1.6.1",
@@ -66,7 +86,6 @@
     "@storybook/addon-essentials": "^8.2.9",
     "@storybook/addon-interactions": "^8.2.9",
     "@storybook/addon-links": "^8.2.9",
-    "@storybook/addon-onboarding": "^8.2.9",
     "@storybook/blocks": "^8.2.9",
     "@storybook/react": "^8.2.9",
     "@storybook/react-vite": "^8.2.9",

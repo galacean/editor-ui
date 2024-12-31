@@ -12,5 +12,15 @@
     "noImplicitAny": false,
     "strictNullChecks": false,
     "skipLibCheck": true,
-  }
+  },
+  "exclude": [
+    "node_modules",
+    "lib",
+    "es",
+    "dist",
+    ".storybook",
+    "**/*.stories.tsx",
+    "tsconfig.json",
+    "tsup.config.ts",
+  ]
 }

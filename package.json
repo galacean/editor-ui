@@ -7,7 +7,8 @@
   ],
   "scripts": {
     "dev": "pnpm --filter \"@galacean/editor-ui\" dev",
-    "dev:gui": "pnpm --filter \"@galacean/gui\" dev"
+    "dev:gui": "pnpm --filter \"@galacean/gui\" dev",
+    "clear": "npx rimraf ./**/*/node_modules"
   },
   "keywords": [
     "ui",
@@ -24,6 +25,7 @@
     "@galacean/engine": "^1.3.11",
     "@galacean/engine-toolkit": "^1.3.2",
     "@rollup/plugin-typescript": "^11.1.6",
+    "@vitejs/plugin-react": "^4.3.4",
     "chromatic": "^11.7.1",
     "eslint": "^9.9.0",
     "eslint-config-prettier": "^9.1.0",
@@ -32,6 +34,7 @@
     "rimraf": "^6.0.1",
     "rollup": "^4.21.1",
     "tsup": "^8.2.4",
-    "typescript": "^5.5.4"
+    "typescript": "^5.7.0",
+    "vite": "^6.0.6"
   }
 }

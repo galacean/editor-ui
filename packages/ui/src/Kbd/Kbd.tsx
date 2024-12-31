@@ -24,9 +24,9 @@ const gastureMap = {
     <IconHandFinger
       width="16px"
       height="18px"
-      stroke="var(--g-colors-gray8)"
+      stroke="var(colors-gray8)"
       strokeWidth={1.2}
-      fill="var(--g-colors-grayA2)"
+      fill="var(colors-grayA2)"
       style={{ marginLeft: "2px" }}
     />
   ),
@@ -34,9 +34,9 @@ const gastureMap = {
     <IconHandTwoFingers
       width="16px"
       height="18px"
-      stroke="var(--g-colors-gray8)"
+      stroke="var(colors-gray8)"
       strokeWidth={1.2}
-      fill="var(--g-colors-grayA2)"
+      fill="var(colors-grayA2)"
       style={{ marginLeft: "2px" }}
     />
   ),
@@ -44,8 +44,8 @@ const gastureMap = {
     <MouseLeftDownIcon
       width="18px"
       height="18px"
-      stroke="var(--g-colors-gray8)"
-      fill="var(--g-colors-gray8)"
+      stroke="var(colors-gray8)"
+      fill="var(colors-gray8)"
       strokeWidth={1.2}
     />
   ),
@@ -53,8 +53,8 @@ const gastureMap = {
     <MouseRightDownIcon
       width="18px"
       height="18px"
-      stroke="var(--g-colors-gray8)"
-      fill="var(--g-colors-gray8)"
+      stroke="var(colors-gray8)"
+      fill="var(colors-gray8)"
       strokeWidth={1.2}
     />
   ),
@@ -62,8 +62,8 @@ const gastureMap = {
     <MouseDoubleDownIcon
       width="18px"
       height="18px"
-      stroke="var(--g-colors-gray8)"
-      fill="var(--g-colors-gray8)"
+      stroke="var(colors-gray8)"
+      fill="var(colors-gray8)"
       strokeWidth={1.2}
     />
   )

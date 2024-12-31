@@ -1,8 +1,8 @@
 import type { SVGProps } from 'react';
 import { forwardRef, useEffect, useRef, useState } from "react";
-import { IconGripHorizontal, IconSearch } from "@tabler/icons-react";
+import { IconGripHorizontal } from "@tabler/icons-react";
 import { useDraggablePanel } from "./useDraggablePanel";
-import { Flex, ActionButton, mergeRefs, styled, Input, Separator, ScrollArea } from "@galacean/editor-ui";
+import { Flex, ActionButton, mergeRefs, styled, ScrollArea } from "@galacean/editor-ui";
 
 const IconTriangleRightFilled = forwardRef<SVGSVGElement, SVGProps<SVGSVGElement>>(
   function IconTriangleRightFilled(props, ref) {

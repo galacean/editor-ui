@@ -6,7 +6,7 @@ import type { AccordionItemProps as PrimitiveItemProps, AccordionSingleProps, Ac
 import { styled } from "../../design-system";
 
 const StyledAccordion = styled(AccordionPrimitive.Root, {
-  borderRadius: "$2",
+  borderRadius: "$3",
   width: "100%",
   border: "1px solid $border",
   overflow: "hidden",
@@ -41,7 +41,7 @@ const StyledTrigger = styled(AccordionPrimitive.Trigger, {
   "&:hover": { backgroundColor: "$grayA3" },
   '&:focus-visible': {
     outline: "none",
-    boxShadow: "0 0 0 5px $colors$border"
+    boxShadow: "inset 0 0 0 1px $colors$blue9"
   }
 });
 

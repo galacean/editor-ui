@@ -7,7 +7,7 @@ import mixPlugin from "colord/plugins/mix";
 import { styled } from "../../design-system";
 import { useControllableState } from '@radix-ui/react-use-controllable-state';
 
-import { isEqual, type IColor, type IGradientColor } from "../ColorPicker/helper";
+import { isEqual, type Color, type GradientColor } from "../ColorPicker/helper";
 import { Flex } from "../Flex";
 import { clamp } from "../../utils/math";
 
@@ -65,7 +65,7 @@ const StyledThumbRoot = styled(Flex, {
 
 interface ThumbProps {
   range: { min: number; max: number };
-  color: IColor;
+  color: Color;
   index: number;
   active?: boolean;
   onSelect?: (index: number) => void;
@@ -178,8 +178,8 @@ const ThumbContainer = styled("div", {
 interface ThumbGroupProps {
   selectedIndex: number;
   positions: number[];
-  colors: IColor[];
-  onChange: (colors: IGradientColor) => void;
+  colors: Color[];
+  onChange: (colors: GradientColor) => void;
   onSelect: (index: number) => void;
   flipY?: boolean;
   width: number;
@@ -224,7 +224,7 @@ function ThumbGroup(props: ThumbGroupProps) {
     const position = x / width;
 
     let afterIndex = positions.findIndex((p) => p > position);
-    let newColor: IColor;
+    let newColor: Color;
 
     // if no position is greater than the new position, insert at the end
     if (afterIndex === -1) {

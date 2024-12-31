@@ -44,7 +44,7 @@ export const CustomTitleContent: StoryFn<typeof Accordion> = (args) => {
           value="first"
           title={
             <Flex gap="xs" align="v" css={{ fontFamily: "$mono" }}>
-              <IconBox style={{ color: "var(--g-colors-blue10)" }} size="14px" />
+              <IconBox style={{ color: "var(colors-blue10)" }} size="14px" />
               Bounding box 1
             </Flex>
           }
@@ -55,7 +55,7 @@ export const CustomTitleContent: StoryFn<typeof Accordion> = (args) => {
           value="second"
           title={
             <Flex gap="xs" align="v" css={{ fontFamily: "$mono" }}>
-              <IconBox style={{ color: "var(--g-colors-blue10)" }} size="14px" />
+              <IconBox style={{ color: "var(colors-blue10)" }} size="14px" />
               Bounding box 2
             </Flex>
           }

@@ -1,8 +1,6 @@
 import { resetStyle } from "../design-system"
 import type { Preview } from "@storybook/react";
 
-import '../src/index.css'
-
 resetStyle();
 
 const preview: Preview = {
