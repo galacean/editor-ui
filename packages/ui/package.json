@@ -1,10 +1,7 @@
 {
   "name": "@galacean/editor-ui",
-  "version": "1.0.0",
+  "version": "0.0.5",
   "description": "An opinionated UI library designed to create engaging and functional online tools with ease.",
-  "workspaces": [
-    "packages/*"
-  ],
   "licenses": [
     {
       "type": "MIT",
