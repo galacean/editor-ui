@@ -2,9 +2,6 @@
   "name": "editor-ui-root",
   "version": "1.0.0",
   "description": "An opinionated UI library designed to create engaging and functional online tools with ease.",
-  "workspaces": [
-    "packages/*"
-  ],
   "scripts": {
     "dev": "pnpm --filter \"@galacean/editor-ui\" dev",
     "dev:gui": "pnpm --filter \"@galacean/gui\" dev",
