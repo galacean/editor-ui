@@ -1,6 +1,6 @@
 {
   "name": "@galacean/editor-ui",
-  "version": "0.0.6-beta.1",
+  "version": "0.0.6-beta.2",
   "description": "An opinionated UI library designed to create engaging and functional online tools with ease.",
   "licenses": [
     {
@@ -33,10 +33,12 @@
     "exports": {
       ".": {
         "import": "./es/src/index.js",
+        "types": "./types/src/index.d.ts",
         "require": "./lib/src/index.js"
       },
       "./recipes": {
         "import": "./es/design-system/recipes.js",
+        "types": "./types/design-system/recipes.d.ts",
         "require": "./lib/design-system/recipes.js"
       }
     },
