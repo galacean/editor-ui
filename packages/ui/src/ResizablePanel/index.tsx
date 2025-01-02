@@ -188,9 +188,9 @@ const ResizablePanel = forwardRef<HTMLDivElement, ResizablePanelProps>(function 
       if (direction === "vertical") {
         min = offsetHeight - 50;
         max = offsetHeight + 50;
+        ref.current.style.height = `${offsetHeight}px`;
       }
       setRange({ min, max });
-      ref.current.style.height = `${offsetHeight}px`;
     }
 
     ref.current.style.flex = "initial";

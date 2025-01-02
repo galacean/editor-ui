@@ -4,8 +4,8 @@ import * as TooltipPrimitive from "@radix-ui/react-tooltip";
 import { styled, keyframes, VariantProps, CSS } from "../../design-system";
 
 const scaleIn = keyframes({
-  "0%": { opacity: 0, transform: "scale(0)" },
-  "100%": { opacity: 1, transform: "scale(1)" }
+  "0%": { opacity: 0, transform: "scale(0) translateY(-4px)" },
+  "100%": { opacity: 1, transform: "scale(1) translateY(0px)" }
 });
 
 const StyledContent = styled(TooltipPrimitive.Content, {
@@ -18,18 +18,11 @@ const StyledContent = styled(TooltipPrimitive.Content, {
   color: "$gray12",
   boxShadow: "inset 0 0 0 1px $colors$grayA4",
   transformOrigin: "var(--radix-tooltip-content-transform-origin)",
-  animation: `${scaleIn} 0.15s ease-in-out forwards`,
-});
-
-const StyledArrow = styled(TooltipPrimitive.Arrow, {
-  position: "relative",
-  top: -1,
-  fill: "$appBg"
+  animation: `${scaleIn} 0.2s ease forwards`,
 });
 
 export interface TooltipProps extends Omit<TooltipPrimitive.TooltipContentProps, 'content'> {
   content?: React.ReactNode;
-  arrow?: boolean;
   delayDuration?: number;
 }
 
