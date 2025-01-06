@@ -13,7 +13,7 @@ export function FormItemInput(props: FormItemInputProps) {
   const { label, info, value, defaultValue, onChange, ...rest } = props;
 
   const handleOnChange = useCallback((e) => {
-    onChange(e.target.value);
+    onChange && onChange(e.target.value);
   }, [onChange]);
 
   return (

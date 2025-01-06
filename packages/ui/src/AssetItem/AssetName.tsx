@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { styled } from "../../design-system";
 
 export const StyledAssetNameRoot = styled("div", {
@@ -95,6 +95,10 @@ export const AssetName = function AssetName(props: AssetNameProps) {
   const [renaming, setRenaming] = useState(false);
   const [name, setName] = useState(props.name);
 
+  useEffect(() => {
+    setName(props.name);
+  }, [props.name]);
+
   function handleDoubleClick(e: React.MouseEvent) {
     e.stopPropagation();
     e.preventDefault();
@@ -140,7 +144,7 @@ export const AssetName = function AssetName(props: AssetNameProps) {
     setEditing(false);
     setName(props.name);
   }
-
+  
   return (
     <StyledAssetNameRoot onDoubleClickCapture={handleDoubleClick}>
       {!editing && 
