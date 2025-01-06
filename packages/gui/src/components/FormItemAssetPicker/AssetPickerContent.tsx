@@ -117,12 +117,6 @@ export function AssetPickerContent<T extends BasicAssetType>(props: AssetPickerP
         <Breadcrumbs items={path.split(",").map((p) => ({ id: p, label: p }))} />
         <AssetList displayMode={displayMode}>
           {grouped[path].map((asset) => {
-            console.log(
-              asset.id,
-              asset.name,
-              asset.thumbnail,
-              asset.thumbnailUrl,
-            )
             return (
               <PickableAssetItem
                 selected={selectedAssetId === asset.id}
