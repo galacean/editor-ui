@@ -20,7 +20,7 @@ const StyledItem = styled(ToggleGroupPrimitive.Item, {
   fontSize: '$1',
   color: '$gray11',
   backgroundColor: "rgba(0, 0, 0, 0)",
-  transition: "background-color 0.2s, color .2s",
+  transition: "background-color 0.2s, color .2s, transform 0.2s ease",
   variants: {
     size: {
       sm: {

@@ -11,6 +11,22 @@ const StyledContent = styled(CollapsiblePrimitive.Content, {
   "&:empty": {
     padding: 0
   },
+  variants: {
+    guideline: {
+      true: {
+        position: "relative",
+        paddingLeft: "$1 !important",
+        '&::before': {
+          content: '""',
+          position: "absolute",
+          width: "1px",
+          height: "100%",
+          backgroundColor: "$grayA5",
+          left: -1,
+        }
+      }
+    }
+  }
 });
 
 const StyledTitle = styled("div", {
@@ -21,7 +37,7 @@ const StyledTitle = styled("div", {
   justifyContent: "space-between",
   color: "$grayA11",
   padding: "0 $1 0 $1",
-  height: "$7",
+  minHeight: "$7",
   fontSize: "$sm",
   userSelect: "none",
   backgroundColor: "$panelBg",
@@ -91,7 +107,8 @@ const StyledRoot = styled(CollapsiblePrimitive.Root, {
       paddingLeft: "$1"
     },
     [`& > ${StyledContent}`]: {
-      padding: 0
+      position: "relative",
+      padding: 0,
     }
   },
   variants: {
@@ -154,10 +171,12 @@ export type CollapsibleProps = Omit<StitchesComponent<typeof StyledRoot>, "title
   triggerTitle?: boolean;
   collapsible?: boolean;
   transparent?: boolean;
+  guideline?: boolean;
+  
 };
 
 function Collapsible(props: CollapsibleProps) {
-  const { children, title, transparent = false, collapsible = true, triggerTitle = true, ...rest } = props;
+  const { children, title, guideline = false, transparent = false, collapsible = true, triggerTitle = true, ...rest } = props;
 
   const [open, setOpen] = useControllableState({
     prop: props.open,
@@ -192,7 +211,7 @@ function Collapsible(props: CollapsibleProps) {
           <StyledTitleContent>{title}</StyledTitleContent>
         </StyledTitle>
       )}
-      <StyledContent>{children}</StyledContent>
+      <StyledContent guideline={guideline}>{children}</StyledContent>
     </StyledRoot>
   );
 }
