@@ -28,7 +28,7 @@ export const resetCSS = {
   },
   a: {
     textDecoration: "none",
-    color: "$gray12"
+    color: "inherit"
   },
   "ol, ul": {
     listStyle: "none"
