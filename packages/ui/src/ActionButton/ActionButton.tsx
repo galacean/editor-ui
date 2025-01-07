@@ -112,6 +112,7 @@ const StyledActionButton = styled("button", button, {
       subtle: {
         color: "CurrentColor",
         backgroundColor: "transparent",
+        transition: "color .2s ease, background-color .2s ease",
         "&:hover": {
           color: "$gray12",
           backgroundColor: "$grayA4"

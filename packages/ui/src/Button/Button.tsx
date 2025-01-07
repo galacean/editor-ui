@@ -110,6 +110,7 @@ const StyledButton = styled("button", button, {
       },
       subsecondary: {
         color: "$gray11",
+        transition: "color .2s ease, background-color .2s ease",
         "&:hover": {
           backgroundColor: "$grayA4",
           color: "$gray11"
