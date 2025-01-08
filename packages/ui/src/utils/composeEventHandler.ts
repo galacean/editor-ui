@@ -4,12 +4,12 @@ function composeEventHandlers<E>(
   { checkForDefaultPrevented = true } = {}
 ) {
   return function handleEvent(event: E) {
-    originalEventHandler?.(event);
+    originalEventHandler?.(event)
 
     if (checkForDefaultPrevented === false || !(event as unknown as Event).defaultPrevented) {
-      return ourEventHandler?.(event);
+      return ourEventHandler?.(event)
     }
-  };
+  }
 }
 
-export { composeEventHandlers };
+export { composeEventHandlers }

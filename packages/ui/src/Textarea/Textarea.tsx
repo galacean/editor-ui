@@ -1,38 +1,38 @@
-import { styled } from "../../design-system";
+import { styled } from '../design-system'
 
-const StyledTextarea = styled("textarea", {
-  width: "100%",
+const StyledTextarea = styled('textarea', {
+  width: '100%',
   minHeight: '80px',
-  padding: "$1 $2",
-  borderRadius: "$3",
-  transition: "$shadow",
-  fontSize: "$1",
-  outline: "none",
-  border: "none",
-  color: "$gray11",
-  resize: "vertical",
+  padding: '$1 $2',
+  borderRadius: '$3',
+  transition: '$shadow',
+  fontSize: '$1',
+  outline: 'none',
+  border: 'none',
+  color: '$gray11',
+  resize: 'vertical',
   variants: {
     variant: {
       default: {
         border: '1px solid $border',
-        backgroundColor: "$gray2",
+        backgroundColor: '$gray2',
       },
       subtle: {
-        backgroundColor: "$secondaryBg",
-      }
+        backgroundColor: '$secondaryBg',
+      },
     },
   },
-  "&:focus-visible": {
-    boxShadow: "0px 0px 0px 1px $colors$blue10",
-    color: "$hiContrast"
+  '&:focus-visible': {
+    boxShadow: '0px 0px 0px 1px $colors$blue10',
+    color: '$hiContrast',
   },
-  "&::placeholder": {
-    color: "$gray9",
-    fontSize: "$1"
+  '&::placeholder': {
+    color: '$gray9',
+    fontSize: '$1',
   },
   defaultVariants: {
-    variant: "default"
-  }
-});
+    variant: 'default',
+  },
+})
 
-export { StyledTextarea as Textarea };
+export { StyledTextarea as Textarea }

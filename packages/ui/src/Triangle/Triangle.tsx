@@ -1,54 +1,54 @@
-import { styled } from "../../design-system";
+import { styled } from '../design-system'
 
-const StyledTriangle = styled("div", {
-  position: "relative",
+const StyledTriangle = styled('div', {
+  position: 'relative',
   width: 0,
   height: 0,
-  borderLeft: "6px solid transparent",
-  borderRight: "6px solid transparent",
-  borderRadius: "2px",
-  borderTop: "6px solid CurrentColor",
-  transformOrigin: "center",
+  borderLeft: '6px solid transparent',
+  borderRight: '6px solid transparent',
+  borderRadius: '2px',
+  borderTop: '6px solid CurrentColor',
+  transformOrigin: 'center',
   variants: {
     animate: {
       true: {
-        transition: 'transform .2s'
-      }
+        transition: 'transform .2s',
+      },
     },
     size: {
       s: {
-        borderLeftWidth: "4px",
-        borderRightWidth: "4px",
-        borderTopWidth: "4px"
-      }
+        borderLeftWidth: '4px',
+        borderRightWidth: '4px',
+        borderTopWidth: '4px',
+      },
     },
     direction: {
       rightbottom: {
-        transform: "rotate(-45deg)"
+        transform: 'rotate(-45deg)',
       },
       leftbottom: {
-        transform: "rotate(45deg)"
+        transform: 'rotate(45deg)',
       },
       righttop: {
-        transform: "rotate(135deg)"
+        transform: 'rotate(135deg)',
       },
       lefttop: {
-        transform: "rotate(-135deg)"
+        transform: 'rotate(-135deg)',
       },
       right: {
-        transform: "rotate(90deg)"
+        transform: 'rotate(90deg)',
       },
       left: {
-        transform: "rotate(-90deg)"
+        transform: 'rotate(-90deg)',
       },
       top: {
-        transform: "rotate(180deg)"
+        transform: 'rotate(180deg)',
       },
       bottom: {
-        transform: "rotate(0deg)"
-      }
-    }
-  }
-});
+        transform: 'rotate(0deg)',
+      },
+    },
+  },
+})
 
-export { StyledTriangle as Triangle };
+export { StyledTriangle as Triangle }

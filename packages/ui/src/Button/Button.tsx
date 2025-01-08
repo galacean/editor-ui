@@ -1,323 +1,322 @@
-import { PropsWithChildren, ReactNode, forwardRef } from "react";
-import { Slot, Slottable } from "@radix-ui/react-slot";
+import { PropsWithChildren, ReactNode, forwardRef } from 'react'
+import { Slot, Slottable } from '@radix-ui/react-slot'
 
-import { button } from "../../design-system/recipes";
-import { styled, StitchesComponent } from "../../design-system";
+import { button } from '../design-system/recipes'
+import { styled, StitchesComponent } from '../design-system'
 
-import { Spin } from "../Spin";
-import { Flex } from "../Flex";
-import { useAsyncStatus } from "../../hooks/useAsyncStatus";
+import { Spin } from '../Spin'
+import { Flex } from '../Flex'
+import { useAsyncStatus } from '../hooks/useAsyncStatus'
 
-const StyledButton = styled("button", button, {
-  transition: "box-shadow .2s ease, opacity .6s ease-out",
-  userSelect: "none",
-  whiteSpace: "nowrap",
-  outline: "none",
-  "&:disabled": {
-    color: "$grayA8",
-    cursor: "not-allowed",
-    "&:hover": {
-      backgroundColor: "$grayA2",
-      color: "$grayA8"
-    }
+const StyledButton = styled('button', button, {
+  transition: 'box-shadow .2s ease, opacity .6s ease-out',
+  userSelect: 'none',
+  whiteSpace: 'nowrap',
+  outline: 'none',
+  '&:disabled': {
+    color: '$grayA8',
+    cursor: 'not-allowed',
+    '&:hover': {
+      backgroundColor: '$grayA2',
+      color: '$grayA8',
+    },
   },
   variants: {
     size: {
       xs: {
-        height: "$5",
-        fontSize: "$sm",
-        lineHeight: "$sizes$5",
+        height: '$5',
+        fontSize: '$sm',
+        lineHeight: '$sizes$5',
         fontWeight: 400,
-        borderRadius: "$2",
-        padding: "0 $1_5",
+        borderRadius: '$2',
+        padding: '0 $1_5',
         [`& ${Spin}`]: {
-          height: "$2",
-          width: "$2"
-        }
+          height: '$2',
+          width: '$2',
+        },
       },
       s: {
-        height: "$s",
-        fontSize: "$sm",
+        height: '$s',
+        fontSize: '$sm',
         fontWeight: 400,
-        borderRadius: "$2",
-        padding: "0 $2",
+        borderRadius: '$2',
+        padding: '0 $2',
         [`& ${Spin}`]: {
-          height: "$3",
-          width: "$3"
-        }
+          height: '$3',
+          width: '$3',
+        },
       },
       sm: {
-        height: "$sm",
-        fontSize: "11px",
+        height: '$sm',
+        fontSize: '11px',
         fontWeight: 400,
-        borderRadius: "$2",
-        padding: "0 $2",
+        borderRadius: '$2',
+        padding: '0 $2',
         [`& ${Spin}`]: {
-          height: "$3",
-          width: "$3"
-        }
+          height: '$3',
+          width: '$3',
+        },
       },
       md: {
-        height: "$md",
-        borderRadius: "$4",
-        padding: "0 $4",
-        fontSize: "$2",
+        height: '$md',
+        borderRadius: '$4',
+        padding: '0 $4',
+        fontSize: '$2',
         fontWeight: 500,
       },
       lg: {
-        height: "$lg",
-        fontSize: "$3",
-        borderRadius: "$1",
-        padding: "0 $4"
-      }
+        height: '$lg',
+        fontSize: '$3',
+        borderRadius: '$1',
+        padding: '0 $4',
+      },
     },
     // The Variant of button
     variant: {
       default: {
-        color: "$gray11",
-        backgroundColor: "transparent",
-        border: "1px solid $grayA5",
-        transition: "border-color .2s ease",
-        "&:hover": {
-          border: "1px solid $colors$gray8"
+        color: '$gray11',
+        backgroundColor: 'transparent',
+        border: '1px solid $grayA5',
+        transition: 'border-color .2s ease',
+        '&:hover': {
+          border: '1px solid $colors$gray8',
         },
-        "&:active": {
-          backgroundColor: "$gray3"
-        }
+        '&:active': {
+          backgroundColor: '$gray3',
+        },
       },
       /** the basic style */
       primary: {
-        backgroundColor: "$blue9",
-        color: "$white",
-        "&:hover": {
-          backgroundColor: "$blue10"
+        backgroundColor: '$blue9',
+        color: '$white',
+        '&:hover': {
+          backgroundColor: '$blue10',
         },
-        "&:active": {
-          backgroundColor: "$blue10"
-        }
+        '&:active': {
+          backgroundColor: '$blue10',
+        },
       },
       secondary: {
-        backgroundColor: "$secondaryBg",
-        color: "$gray11",
-        "&:hover": {
-          color: "$gray12",
-          backgroundColor: "$grayA4"
+        backgroundColor: '$secondaryBg',
+        color: '$gray11',
+        '&:hover': {
+          color: '$gray12',
+          backgroundColor: '$grayA4',
         },
-        "&:active": {
-          color: "$gray12",
-          backgroundColor: "$grayA5"
+        '&:active': {
+          color: '$gray12',
+          backgroundColor: '$grayA5',
         },
       },
       subsecondary: {
-        color: "$gray11",
-        transition: "color .2s ease, background-color .2s ease",
-        "&:hover": {
-          backgroundColor: "$grayA4",
-          color: "$gray11"
+        color: '$gray11',
+        '&:hover': {
+          backgroundColor: '$grayA4',
+          color: '$gray11',
         },
-        "&:active": {
-          backgroundColor: "$gray5"
+        '&:active': {
+          backgroundColor: '$gray5',
         },
       },
       contrast: {
-        color: "$gray1",
-        backgroundColor: "$gray12",
-        "&:hover": {
-          backgroundColor: "$gray12"
+        color: '$gray1',
+        backgroundColor: '$gray12',
+        '&:hover': {
+          backgroundColor: '$gray12',
         },
-        "&:active": {
-          backgroundColor: "$gray12"
-        }
-      }
+        '&:active': {
+          backgroundColor: '$gray12',
+        },
+      },
     },
     uppercase: {
       true: {
-        textTransform: "uppercase"
-      }
+        textTransform: 'uppercase',
+      },
     },
     // The state of button
     critical: {
       true: {
-        color: "$red11",
-        backgroundColor: "transparent",
-        "&:hover": {
-          backgroundColor: "$red3"
+        color: '$red11',
+        backgroundColor: 'transparent',
+        '&:hover': {
+          backgroundColor: '$red3',
         },
-        "&:active": {
-          backgroundColor: "$red4"
-        }
-      }
+        '&:active': {
+          backgroundColor: '$red4',
+        },
+      },
     },
     positive: {
       true: {
-        color: "$green11",
-        backgroundColor: "transparent",
-        "&:hover": {
-          backgroundColor: "$greenA3"
+        color: '$green11',
+        backgroundColor: 'transparent',
+        '&:hover': {
+          backgroundColor: '$greenA3',
         },
-        "&:active": {
-          backgroundColor: "$greenA4"
-        }
-      }
+        '&:active': {
+          backgroundColor: '$greenA4',
+        },
+      },
     },
     loading: {
       true: {
-        opacity: ".6",
-        pointerEvents: "none"
-      }
+        opacity: '.6',
+        pointerEvents: 'none',
+      },
     },
     round: {
       true: {
-        borderRadius: "$round"
-      }
-    }
+        borderRadius: '$round',
+      },
+    },
   },
   defaultVariants: {
-    size: "sm",
-    variant: "default"
+    size: 'sm',
+    variant: 'default',
   },
   compoundVariants: [
     {
-      variant: "default",
+      variant: 'default',
       critical: true,
       css: {
-        color: "$red10",
-        borderColor: "$red6",
-        "&:hover": {
-          borderColor: "$red8",
-          backgroundColor: "$redA3"
+        color: '$red10',
+        borderColor: '$red6',
+        '&:hover': {
+          borderColor: '$red8',
+          backgroundColor: '$redA3',
         },
-        "&:active": {
-          backgroundColor: "$redA4"
+        '&:active': {
+          backgroundColor: '$redA4',
         },
-        "&:disabled": {
-          borderColor: "$gray6"
-        }
-      }
+        '&:disabled': {
+          borderColor: '$gray6',
+        },
+      },
     },
     {
-      variant: "default",
+      variant: 'default',
       positive: true,
       css: {
-        color: "$green10",
-        borderColor: "$green6",
-        "&:hover": {
-          borderColor: "$green8",
-          backgroundColor: "$greenA3"
+        color: '$green10',
+        borderColor: '$green6',
+        '&:hover': {
+          borderColor: '$green8',
+          backgroundColor: '$greenA3',
         },
-        "&:active": {
-          backgroundColor: "$greenA4"
-        }
-      }
+        '&:active': {
+          backgroundColor: '$greenA4',
+        },
+      },
     },
     {
-      variant: "primary",
+      variant: 'primary',
       critical: true,
       css: {
-        color: "$red12",
-        backgroundColor: "$red9",
-        "&:hover": {
-          backgroundColor: "$red10"
+        color: '$red12',
+        backgroundColor: '$red9',
+        '&:hover': {
+          backgroundColor: '$red10',
         },
-        "&:active": {
-          backgroundColor: "$red9"
-        }
-      }
+        '&:active': {
+          backgroundColor: '$red9',
+        },
+      },
     },
     {
-      variant: "primary",
+      variant: 'primary',
       positive: true,
       css: {
-        color: "$green12",
-        backgroundColor: "$green9",
-        "&:hover": {
-          backgroundColor: "$green10"
+        color: '$green12',
+        backgroundColor: '$green9',
+        '&:hover': {
+          backgroundColor: '$green10',
         },
-        "&:active": {
-          backgroundColor: "$green10"
-        }
-      }
+        '&:active': {
+          backgroundColor: '$green10',
+        },
+      },
     },
     {
-      variant: "secondary",
+      variant: 'secondary',
       critical: true,
       css: {
-        color: "$red11",
-        backgroundColor: "$redA3",
-        "&:hover": {
-          color: "$red11",
-          backgroundColor: "$redA4"
+        color: '$red11',
+        backgroundColor: '$redA3',
+        '&:hover': {
+          color: '$red11',
+          backgroundColor: '$redA4',
         },
-        "&:active": {
-          backgroundColor: "$redA3"
-        }
-      }
+        '&:active': {
+          backgroundColor: '$redA3',
+        },
+      },
     },
     {
-      variant: "secondary",
+      variant: 'secondary',
       positive: true,
       css: {
-        color: "$green11",
-        backgroundColor: "$greenA3",
-        "&:hover": {
-          color: "$green11",
-          backgroundColor: "$greenA4"
+        color: '$green11',
+        backgroundColor: '$greenA3',
+        '&:hover': {
+          color: '$green11',
+          backgroundColor: '$greenA4',
         },
-        "&:active": {
-          backgroundColor: "$greenA3"
-        }
-      }
+        '&:active': {
+          backgroundColor: '$greenA3',
+        },
+      },
     },
     {
-      variant: "subsecondary",
+      variant: 'subsecondary',
       critical: true,
       css: {
-        color: "$redA9",
-        "&:focus-visible": {
-          boxShadow: "0 0 0 3px $colors$redA7"
+        color: '$redA9',
+        '&:focus-visible': {
+          boxShadow: '0 0 0 3px $colors$redA7',
         },
-        "&:hover": {
-          color: "$red10",
-          backgroundColor: "$redA3"
+        '&:hover': {
+          color: '$red10',
+          backgroundColor: '$redA3',
         },
-        "&:active": {
-          backgroundColor: "$redA4"
-        }
-      }
+        '&:active': {
+          backgroundColor: '$redA4',
+        },
+      },
     },
-  ]
-});
+  ],
+})
 
 export type ButtonProps = PropsWithChildren<
   StitchesComponent<typeof StyledButton> & {
-    startSlot?: ReactNode;
-    endSlot?: ReactNode;
-    async?: () => Promise<unknown>;
-    asChild?: boolean;
+    startSlot?: ReactNode
+    endSlot?: ReactNode
+    async?: () => Promise<unknown>
+    asChild?: boolean
   }
->;
+>
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(props, forwardedRef) {
-  const { children, startSlot, endSlot, async, size, loading: propLoading, onClick, asChild, ...rest } = props;
+  const { children, startSlot, endSlot, async, size, loading: propLoading, onClick, asChild, ...rest } = props
   const { loading, handleClick } = useAsyncStatus({
     asyncFunction: async,
     propLoading: propLoading as unknown as boolean,
-    onClick
-  });
+    onClick,
+  })
 
-  const spin = <Spin color="default" size="xs" css={{ marginRight: "$1_5" }} />;
-  const Comp = asChild ? Slot : StyledButton;
+  const spin = <Spin color="default" size="xs" css={{ marginRight: '$1_5' }} />
+  const Comp = asChild ? Slot : StyledButton
 
   return (
     <Comp ref={forwardedRef} loading={loading} size={size} onClick={handleClick} {...rest}>
-      {startSlot && (loading ? spin : <Flex css={{ marginRight: "$1_5" }}>{startSlot}</Flex>)}
+      {startSlot && (loading ? spin : <Flex css={{ marginRight: '$1_5' }}>{startSlot}</Flex>)}
       {!startSlot && !endSlot && loading && spin}
       <Slottable>{children}</Slottable>
-      {endSlot && (loading ? spin : <Flex css={{ marginLeft: "$1_5" }}>{endSlot}</Flex>)}
+      {endSlot && (loading ? spin : <Flex css={{ marginLeft: '$1_5' }}>{endSlot}</Flex>)}
     </Comp>
-  );
-});
+  )
+})
 
-Button.toString = () => ".editor-button-component";
+Button.toString = () => '.editor-button-component'
 
-export { Button };
+export { Button }

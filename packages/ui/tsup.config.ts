@@ -1,36 +1,33 @@
-import { defineConfig } from "tsup";
+import { defineConfig } from 'tsup'
 
 export default defineConfig([
+  // build ES Module spec
   {
-    entry: ["src", "design-system", "hooks", "utils", "!src/**/*.stories.*"],
-    outDir: "es",
-    format: "esm",
+    entry: ['src', '!src/**/*.stories.*'],
+    outDir: 'dist/es',
+    format: 'esm',
     bundle: false,
-    target: "esnext",
+    target: 'esnext',
     dts: false,
     outExtension: () => {
       return {
-        js: ".js"
-      };
+        js: '.js',
+      }
     },
     splitting: false,
     sourcemap: true,
-    clean: true
+    clean: true,
   },
+  // build CommonJS spec
   {
-    entry: ["src", "design-system", "hooks", "utils", "!src/**/*.stories.*"],
-    outDir: "lib",
-    format: "cjs",
-    bundle: true,
-    target: "esnext",
+    entry: ['src', '!src/**/*.stories.*'],
+    outDir: 'dist/cjs',
+    format: 'cjs',
+    bundle: false,
+    target: 'esnext',
     dts: false,
-    outExtension: () => {
-      return {
-        js: ".js"
-      };
-    },
     splitting: false,
     sourcemap: true,
-    clean: true
-  }
-]);
+    clean: true,
+  },
+])

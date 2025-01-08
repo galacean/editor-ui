@@ -20,7 +20,9 @@
   },
   "scripts": {
     "dev": "storybook dev -p 6006",
-    "build": "tsup && vite build",
+    "example": "vite dev",
+    "build": "vite build",
+    "analyze": "npx vite-bundle-visualizer",
     "build:types": "npm run clean:dts && tsc --emitDeclarationOnly --declaration --skipLibCheck --outDir types",
     "build:all": "npm run build && npm run build:types",
     "prepublishOnly": "npm run build:all",
@@ -43,7 +45,8 @@
   "files": [
     "es",
     "lib",
-    "dist"
+    "dist",
+    "types"
   ],
   "license": "MIT",
   "devDependencies": {

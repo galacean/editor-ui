@@ -1,18 +1,21 @@
-import { Fragment, useCallback } from "react";
-import { IconPlus, IconMinus } from "@tabler/icons-react";
+import { Fragment, useCallback } from 'react'
+import { IconPlus, IconMinus } from '@tabler/icons-react'
 
-import { FormItem } from "../FormItem";
-import { clamp, Button, InputNumber, type InputNumberProps } from '@galacean/editor-ui'
-import { BaseFormItemProps } from "../FormItem/FormItem";
+import { FormItem } from '../FormItem'
+import { Button, InputNumber, type InputNumberProps } from '@galacean/editor-ui'
+import { BaseFormItemProps } from '../FormItem/FormItem'
+import { clamp } from '../../utils'
 
-export interface FormItemInputNumberProps extends BaseFormItemProps<number>, Pick<InputNumberProps,  'step' | 'dragStep' | 'min' | 'max' | 'endSlot' | 'startSlot'> {
-  additionalControl?: boolean;
-  onChange?: (value: number) => void;
+export interface FormItemInputNumberProps
+  extends BaseFormItemProps<number>,
+    Pick<InputNumberProps, 'step' | 'dragStep' | 'min' | 'max' | 'endSlot' | 'startSlot'> {
+  additionalControl?: boolean
+  onChange?: (value: number) => void
 }
 
 function round(value, precision = 10) {
   const power = Math.pow(10, precision)
-  return Math.round((value*power)+(Number.EPSILON*power)) / power
+  return Math.round(value * power + Number.EPSILON * power) / power
 }
 
 export function FormItemInputNumber(props: FormItemInputNumberProps) {
@@ -30,26 +33,26 @@ export function FormItemInputNumber(props: FormItemInputNumberProps) {
     dragStep = 1,
     min = -Infinity,
     max = Infinity,
-    additionalControl = true
-  } = props;
+    additionalControl = true,
+  } = props
 
   const handleOnBlur = (e) => {
-    if (e.target.value === "") {
-      onChange && onChange(0);
+    if (e.target.value === '') {
+      onChange && onChange(0)
     }
-  };
+  }
 
   const handleIncrease = () => {
     if (onChange) {
-      const ret = clamp(round(value + dragStep), min, max);
-      onChange(ret);
+      const ret = clamp(round(value + dragStep), min, max)
+      onChange(ret)
     }
-  };
+  }
 
   const handleDecrease = () => {
     if (onChange) {
-      const ret = clamp(round(value - dragStep), min, max);
-      onChange(ret);
+      const ret = clamp(round(value - dragStep), min, max)
+      onChange(ret)
     }
   }
 
@@ -57,10 +60,9 @@ export function FormItemInputNumber(props: FormItemInputNumberProps) {
     <FormItem
       label={label}
       info={info}
-      fieldColumn={additionalControl ? "number" : 1}
+      fieldColumn={additionalControl ? 'number' : 1}
       formStartSlot={formStartSlot}
-      formEndSlot={formEndSlot}
-    >
+      formEndSlot={formEndSlot}>
       <InputNumber
         startSlot={startSlot}
         endSlot={endSlot}
@@ -84,5 +86,5 @@ export function FormItemInputNumber(props: FormItemInputNumberProps) {
         </Fragment>
       )}
     </FormItem>
-  );
+  )
 }

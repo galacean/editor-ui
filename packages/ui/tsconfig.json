@@ -2,7 +2,6 @@
   "compilerOptions": {
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "inlineSources": false,
     "isolatedModules": true,
     "moduleResolution": "node",
     "noUnusedLocals": false,
@@ -16,20 +15,11 @@
     "module": "ESNext",
     "target": "ESNext",
     "experimentalDecorators": true,
-    "noEmit": false,
+    "noEmit": true,
     "resolveJsonModule": true,
     "strictNullChecks": false,
     "sourceMap": false,
-    "jsx": "react-jsx",
+    "jsx": "react-jsx"
   },
-  "exclude": [
-    "node_modules",
-    "lib",
-    "es",
-    "dist",
-    ".storybook",
-    "**/*.stories.tsx",
-    "tsconfig.json",
-    "tsup.config.ts",
-  ]
+  "exclude": ["node_modules", "lib", "es", "dist", ".storybook", "**/*.stories.tsx", "tsconfig.json", "tsup.config.ts"]
 }

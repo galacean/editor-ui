@@ -1,1 +1,3 @@
-export * from './components'
+import GUI from './GUI'
+
+export default GUI

@@ -1,32 +1,32 @@
-import { styled } from "../../design-system";
-import { Flex } from "../Flex";
+import { styled } from '../design-system'
+import { Flex } from '../Flex'
 
 const StyledCallout = styled(Flex, {
-  borderRadius: "$2",
-  fontSize: "$1",
-  padding: "$1 $2",
-  userSelect: "none",
+  borderRadius: '$2',
+  fontSize: '$1',
+  padding: '$1 $2',
+  userSelect: 'none',
   fontWeight: 500,
   variants: {
     type: {
       info: {
-        backgroundColor: "$blue3",
-        color: "$blueA11"
+        backgroundColor: '$blue3',
+        color: '$blueA11',
       },
       warning: {
-        backgroundColor: "$orange3",
-        color: "$orange11"
+        backgroundColor: '$orange3',
+        color: '$orange11',
       },
       error: {
-        backgroundColor: "$red3",
-        color: "$red11"
+        backgroundColor: '$red3',
+        color: '$red11',
       },
       success: {
-        backgroundColor: "$green3",
-        color: "$green11"
-      }
-    }
-  }
-});
+        backgroundColor: '$green3',
+        color: '$green11',
+      },
+    },
+  },
+})
 
-export { StyledCallout as Callout };
+export { StyledCallout as Callout }

@@ -5,44 +5,44 @@ import React, {
   PropsWithChildren,
   ReactNode,
   isValidElement,
-  Fragment
-} from "react";
-import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";
-import * as ContextMenuPrimitive from "@radix-ui/react-context-menu";
-import * as MenubarPrimitive from "@radix-ui/react-menubar";
-import { IconChevronRight, IconCheck } from "@tabler/icons-react";
+  Fragment,
+} from 'react'
+import * as DropdownMenuPrimitive from '@radix-ui/react-dropdown-menu'
+import * as ContextMenuPrimitive from '@radix-ui/react-context-menu'
+import * as MenubarPrimitive from '@radix-ui/react-menubar'
+import { IconChevronRight, IconCheck } from '@tabler/icons-react'
 import type {
   ContextMenuCheckboxItemProps,
   ContextMenuRadioItemProps,
   ContextMenuRadioGroupProps,
   ContextMenuGroupProps,
   ContextMenuProps,
-  ContextMenuContentProps as ContextMenuContentProps
-} from "@radix-ui/react-context-menu";
+  ContextMenuContentProps as ContextMenuContentProps,
+} from '@radix-ui/react-context-menu'
 import type {
   DropdownMenuProps,
   DropdownMenuContentProps,
-  DropdownMenuCheckboxItemProps
-} from "@radix-ui/react-dropdown-menu";
+  DropdownMenuCheckboxItemProps,
+} from '@radix-ui/react-dropdown-menu'
 
-import { styled } from "../../design-system";
-import * as listStyle from "../../design-system/recipes";
-import { KbdGroup } from "../Kbd";
-import { ScrollArea } from "../ScrollArea";
+import { styled } from '../design-system'
+import * as listStyle from '../design-system/recipes'
+import { KbdGroup } from '../Kbd'
+import { ScrollArea } from '../ScrollArea'
 
-type MenuType = "context" | "dropdown" | "menubar";
-type MenuSize = "xs" | "sm" | "md";
-type PickedContentProps = "side" | "sideOffset" | "align" | "alignOffset";
+type MenuType = 'context' | 'dropdown' | 'menubar'
+type MenuSize = 'xs' | 'sm' | 'md'
+type PickedContentProps = 'side' | 'sideOffset' | 'align' | 'alignOffset'
 
-const StyledMenuItemContent = styled("span", {
-  display: "flex",
-  alignItems: "center",
-  "& > svg": {
-    marginRight: "$1_5",
-    width: "$4",
-    height: "$4"
-  }
-});
+const StyledMenuItemContent = styled('span', {
+  display: 'flex',
+  alignItems: 'center',
+  '& > svg': {
+    marginRight: '$1_5',
+    width: '$4',
+    height: '$4',
+  },
+})
 
 const anatomy = {
   context: {
@@ -59,7 +59,7 @@ const anatomy = {
     Separator: styled(ContextMenuPrimitive.Separator, listStyle.separatorStyle),
     CheckboxItem: styled(ContextMenuPrimitive.CheckboxItem, listStyle.checkboxItemStyle),
     RadioItem: styled(ContextMenuPrimitive.RadioItem, listStyle.radioItemStyle),
-    ItemIndicator: styled(ContextMenuPrimitive.ItemIndicator, listStyle.indicatorStyle)
+    ItemIndicator: styled(ContextMenuPrimitive.ItemIndicator, listStyle.indicatorStyle),
   },
   dropdown: {
     Root: DropdownMenuPrimitive.Root,
@@ -75,7 +75,7 @@ const anatomy = {
     Separator: styled(DropdownMenuPrimitive.Separator, listStyle.separatorStyle),
     CheckboxItem: styled(DropdownMenuPrimitive.CheckboxItem, listStyle.checkboxItemStyle),
     RadioItem: styled(DropdownMenuPrimitive.RadioItem, listStyle.radioItemStyle),
-    ItemIndicator: styled(DropdownMenuPrimitive.ItemIndicator, listStyle.indicatorStyle)
+    ItemIndicator: styled(DropdownMenuPrimitive.ItemIndicator, listStyle.indicatorStyle),
   },
   menubar: {
     Root: MenubarPrimitive.Root,
@@ -91,48 +91,48 @@ const anatomy = {
     Separator: styled(MenubarPrimitive.Separator, listStyle.separatorStyle),
     CheckboxItem: styled(MenubarPrimitive.CheckboxItem, listStyle.checkboxItemStyle),
     RadioItem: styled(MenubarPrimitive.RadioItem, listStyle.radioItemStyle),
-    ItemIndicator: styled(MenubarPrimitive.ItemIndicator, listStyle.indicatorStyle)
-  }
-} as const;
+    ItemIndicator: styled(MenubarPrimitive.ItemIndicator, listStyle.indicatorStyle),
+  },
+} as const
 
 function useResolveMenuAnatomy() {
-  const ctx = useContext(MenuContext);
-  const ret = anatomy[ctx.type];
+  const ctx = useContext(MenuContext)
+  const ret = anatomy[ctx.type]
 
   if (!ret) {
-    throw new Error(`Cannot resolve Primitive Component by type ${ctx.type}`);
+    throw new Error(`Cannot resolve Primitive Component by type ${ctx.type}`)
   }
 
-  return ret;
+  return ret
 }
 
 const MenuContext = createContext<{ type: MenuType; size: MenuSize }>({
-  type: "dropdown",
-  size: "sm"
-});
-MenuContext.displayName = "MenuContext";
+  type: 'dropdown',
+  size: 'sm',
+})
+MenuContext.displayName = 'MenuContext'
 
 const MenuProvider = function MenuProvider(props: PropsWithChildren<{ type: MenuType; size: MenuSize }>) {
-  return <MenuContext.Provider value={{ type: props.type, size: props.size }}>{props.children}</MenuContext.Provider>;
-};
+  return <MenuContext.Provider value={{ type: props.type, size: props.size }}>{props.children}</MenuContext.Provider>
+}
 
 export interface MenuItemProps {
-  icon?: ReactNode;
-  name?: string;
-  label?: string;
-  shortcuts?: string[] | string;
-  disabled?: boolean;
-  onClick?: (e: React.MouseEvent) => void;
-  onSelect?: (e: Event) => void;
-  critical?: boolean;
-  children?: ReactNode;
-  asChild?: boolean;
+  icon?: ReactNode
+  name?: string
+  label?: string
+  shortcuts?: string[] | string
+  disabled?: boolean
+  onClick?: (e: React.MouseEvent) => void
+  onSelect?: (e: Event) => void
+  critical?: boolean
+  children?: ReactNode
+  asChild?: boolean
 }
 
 const MenuItem = forwardRef<HTMLDivElement, MenuItemProps>(function MenuItem(props, forwardedRef) {
-  const { icon, name, shortcuts, label, disabled, onSelect, onClick, asChild, critical, children, ...rest } = props;
-  const { size } = useContext(MenuContext);
-  const { MenuItem: Item } = useResolveMenuAnatomy();
+  const { icon, name, shortcuts, label, disabled, onSelect, onClick, asChild, critical, children, ...rest } = props
+  const { size } = useContext(MenuContext)
+  const { MenuItem: Item } = useResolveMenuAnatomy()
 
   return (
     <Item
@@ -143,8 +143,7 @@ const MenuItem = forwardRef<HTMLDivElement, MenuItemProps>(function MenuItem(pro
       size={size}
       critical={critical}
       asChild={asChild}
-      {...rest}
-    >
+      {...rest}>
       {isValidElement(children) ? (
         children
       ) : (
@@ -157,33 +156,36 @@ const MenuItem = forwardRef<HTMLDivElement, MenuItemProps>(function MenuItem(pro
         </Fragment>
       )}
     </Item>
-  );
-});
+  )
+})
 
 type ISubMenuItemProps = {
-  name: string;
-  icon?: ReactNode;
-  disabled?: boolean;
-};
+  name: string
+  icon?: ReactNode
+  disabled?: boolean
+}
 
-interface MenuContentProps extends ContextMenuContentProps, DropdownMenuContentProps, MenubarPrimitive.MenubarContentProps {
-  hidden?: boolean;
-};
+interface MenuContentProps
+  extends ContextMenuContentProps,
+    DropdownMenuContentProps,
+    MenubarPrimitive.MenubarContentProps {
+  hidden?: boolean
+}
 
 const Content = forwardRef<HTMLDivElement, MenuContentProps>(function Content(props: MenuContentProps, ref) {
-  const { Content: PrimitiveContent } = useResolveMenuAnatomy();
-  const { size } = useContext(MenuContext);
-  return <PrimitiveContent size={size} ref={ref} {...props} />;
-});
+  const { Content: PrimitiveContent } = useResolveMenuAnatomy()
+  const { size } = useContext(MenuContext)
+  return <PrimitiveContent size={size} ref={ref} {...props} />
+})
 
 /* -------------------------------------------------------------------------- */
 /*                                 SubMenuItem                                */
 /* -------------------------------------------------------------------------- */
 
 function SubMenuItem(props: PropsWithChildren<ISubMenuItemProps>) {
-  const { name, icon, disabled, children } = props;
-  const { size } = useContext(MenuContext);
-  const { SubMenuItem: SubItem, SubContent, Sub, Portal } = useResolveMenuAnatomy();
+  const { name, icon, disabled, children } = props
+  const { size } = useContext(MenuContext)
+  const { SubMenuItem: SubItem, SubContent, Sub, Portal } = useResolveMenuAnatomy()
 
   return (
     <Sub>
@@ -198,20 +200,20 @@ function SubMenuItem(props: PropsWithChildren<ISubMenuItemProps>) {
         <SubContent loop>{children}</SubContent>
       </Portal>
     </Sub>
-  );
+  )
 }
 
 interface GroupProps extends ContextMenuGroupProps {
-  label?: string;
-  divider?: "top" | "both" | "bottom" | boolean;
+  label?: string
+  divider?: 'top' | 'both' | 'bottom' | boolean
 }
 
 function MenuGroup(props: GroupProps) {
-  const { Group, MenuLabel } = useResolveMenuAnatomy();
-  const { label, divider, children, ...rest } = props;
-  const dividerVal = typeof divider === "boolean" && divider ? "bottom" : divider;
-  const showTopDivider = dividerVal === "top" || dividerVal === "both";
-  const showBottomDivider = dividerVal === "bottom" || dividerVal === "both";
+  const { Group, MenuLabel } = useResolveMenuAnatomy()
+  const { label, divider, children, ...rest } = props
+  const dividerVal = typeof divider === 'boolean' && divider ? 'bottom' : divider
+  const showTopDivider = dividerVal === 'top' || dividerVal === 'both'
+  const showBottomDivider = dividerVal === 'bottom' || dividerVal === 'both'
 
   return (
     <React.Fragment>
@@ -222,15 +224,18 @@ function MenuGroup(props: GroupProps) {
       </Group>
       {showBottomDivider && <MenuSeparator />}
     </React.Fragment>
-  );
+  )
 }
 
-interface ICheckboxItemProps extends ContextMenuCheckboxItemProps, DropdownMenuCheckboxItemProps { name: string; icon?: ReactNode };
+interface ICheckboxItemProps extends ContextMenuCheckboxItemProps, DropdownMenuCheckboxItemProps {
+  name: string
+  icon?: ReactNode
+}
 
 function MenuCheckboxItem(props: ICheckboxItemProps) {
-  const { name, icon, ...rest } = props;
-  const { size } = useContext(MenuContext);
-  const { CheckboxItem: StyledCheckboxItem, ItemIndicator } = useResolveMenuAnatomy();
+  const { name, icon, ...rest } = props
+  const { size } = useContext(MenuContext)
+  const { CheckboxItem: StyledCheckboxItem, ItemIndicator } = useResolveMenuAnatomy()
 
   return (
     <StyledCheckboxItem {...rest} size={size}>
@@ -242,21 +247,23 @@ function MenuCheckboxItem(props: ICheckboxItemProps) {
         {name}
       </StyledMenuItemContent>
     </StyledCheckboxItem>
-  );
+  )
 }
 
-interface RadioItemProps extends ContextMenuRadioItemProps { name: string };
+interface RadioItemProps extends ContextMenuRadioItemProps {
+  name: string
+}
 
-const DotIndicator = styled("div", {
-  height: "$1",
-  width: "$1",
-  borderRadius: "$round",
-  backgroundColor: "currentColor"
-});
+const DotIndicator = styled('div', {
+  height: '$1',
+  width: '$1',
+  borderRadius: '$round',
+  backgroundColor: 'currentColor',
+})
 
 function RadioItem(props: RadioItemProps) {
-  const { value, onSelect, name } = props;
-  const { RadioItem: StyledRadioItem, ItemIndicator } = useResolveMenuAnatomy();
+  const { value, onSelect, name } = props
+  const { RadioItem: StyledRadioItem, ItemIndicator } = useResolveMenuAnatomy()
 
   return (
     <StyledRadioItem value={value} onSelect={onSelect}>
@@ -265,14 +272,16 @@ function RadioItem(props: RadioItemProps) {
       </ItemIndicator>
       {name}
     </StyledRadioItem>
-  );
+  )
 }
 
-interface RadioGroupProps extends ContextMenuRadioGroupProps { items: RadioItemProps[] };
+interface RadioGroupProps extends ContextMenuRadioGroupProps {
+  items: RadioItemProps[]
+}
 
 function MenuRadioGroup(props: RadioGroupProps) {
-  const { items, ...rest } = props;
-  const { RadioGroup: RadioGroupPrimitive } = useResolveMenuAnatomy();
+  const { items, ...rest } = props
+  const { RadioGroup: RadioGroupPrimitive } = useResolveMenuAnatomy()
 
   return (
     <RadioGroupPrimitive {...rest}>
@@ -280,33 +289,24 @@ function MenuRadioGroup(props: RadioGroupProps) {
         <RadioItem key={index} {...item} />
       ))}
     </RadioGroupPrimitive>
-  );
+  )
 }
 
 function MenuSeparator() {
-  const { Separator: StyledSeparator } = useResolveMenuAnatomy();
-  return <StyledSeparator />;
+  const { Separator: StyledSeparator } = useResolveMenuAnatomy()
+  return <StyledSeparator />
 }
 
 type IDropdownMenuProps = Pick<DropdownMenuContentProps, PickedContentProps> &
   DropdownMenuProps & {
-    trigger: React.ReactNode;
-    size?: MenuSize;
-    sideOffset?: number;
-    disabled?: boolean;
-  };
+    trigger: React.ReactNode
+    size?: MenuSize
+    sideOffset?: number
+    disabled?: boolean
+  }
 
 function DropdownMenu(props: PropsWithChildren<IDropdownMenuProps>) {
-  const {
-    children,
-    size = "sm",
-    side,
-    sideOffset = 4,
-    align = "start",
-    alignOffset,
-    disabled = false,
-    ...rest
-  } = props;
+  const { children, size = 'sm', side, sideOffset = 4, align = 'start', alignOffset, disabled = false, ...rest } = props
 
   return (
     <MenuProvider type="dropdown" size={size}>
@@ -321,22 +321,22 @@ function DropdownMenu(props: PropsWithChildren<IDropdownMenuProps>) {
         </DropdownMenuPrimitive.Portal>
       </DropdownMenuPrimitive.Root>
     </MenuProvider>
-  );
+  )
 }
 
 type IContextMenuProps = ContextMenuProps & {
-  trigger: React.ReactNode;
-  size?: MenuSize;
-  asChild?: boolean;
-  onOpenChange?: (open: boolean) => void;
-  onPointerDownOutside?: (e: any) => void;
-  portal?: any;
-  hidden?: boolean;
-  disabled?: boolean;
-};
+  trigger: React.ReactNode
+  size?: MenuSize
+  asChild?: boolean
+  onOpenChange?: (open: boolean) => void
+  onPointerDownOutside?: (e: any) => void
+  portal?: any
+  hidden?: boolean
+  disabled?: boolean
+}
 
 function ContextMenu(props: IContextMenuProps) {
-  const { trigger, size = "sm", children, onPointerDownOutside, portal, asChild, disabled = false, hidden } = props;
+  const { trigger, size = 'sm', children, onPointerDownOutside, portal, asChild, disabled = false, hidden } = props
   return (
     <MenuProvider type="context" size={size}>
       <ContextMenuPrimitive.Root>
@@ -350,49 +350,48 @@ function ContextMenu(props: IContextMenuProps) {
         </ContextMenuPrimitive.Portal>
       </ContextMenuPrimitive.Root>
     </MenuProvider>
-  );
+  )
 }
 
 const StyledMenubarTrigger = styled(MenubarPrimitive.Trigger, {
-  all: "unset",
-  display: "flex",
-  height: "$6",
-  alignItems: "center",
-  padding: "0 $2",
-  fontSize: "$sm",
+  all: 'unset',
+  display: 'flex',
+  height: '$6',
+  alignItems: 'center',
+  padding: '0 $2',
+  fontSize: '$sm',
   // fontFamily: "$mono",
-  outline: "none",
-  cursor: "default",
-  userSelect: "none",
-  borderRadius: "$2",
-  "&:hover": {
-    backgroundColor: "$grayA4",
-    color: "$gray12"
+  outline: 'none',
+  cursor: 'default',
+  userSelect: 'none',
+  borderRadius: '$2',
+  '&:hover': {
+    backgroundColor: '$grayA4',
+    color: '$gray12',
   },
-  "&:focus": {
-    backgroundColor: "$grayA4",
-    color: "$gray12"
+  '&:focus': {
+    backgroundColor: '$grayA4',
+    color: '$gray12',
   },
-  "&[data-state=open]": {
-    backgroundColor: "$grayA4",
-    color: "$gray12"
-  }
-});
+  '&[data-state=open]': {
+    backgroundColor: '$grayA4',
+    color: '$gray12',
+  },
+})
 
 const MenubarTrigger = React.forwardRef<
   React.ElementRef<typeof MenubarPrimitive.Trigger>,
   React.ComponentPropsWithoutRef<typeof MenubarPrimitive.Trigger>
->((props, ref) => <StyledMenubarTrigger ref={ref} {...props} />);
-MenubarTrigger.displayName = MenubarPrimitive.Trigger.displayName;
-
+>((props, ref) => <StyledMenubarTrigger ref={ref} {...props} />)
+MenubarTrigger.displayName = MenubarPrimitive.Trigger.displayName
 
 interface MenubarItemProps {
-  name: string;
-  children?: ReactNode;
+  name: string
+  children?: ReactNode
 }
 
 function MenubarItem(props: MenubarItemProps) {
-  const { name } = props;
+  const { name } = props
   return (
     <MenubarPrimitive.Menu>
       <MenubarTrigger>{name}</MenubarTrigger>
@@ -406,22 +405,31 @@ function MenubarItem(props: MenubarItemProps) {
 }
 
 const StyledMenubarRoot = styled(MenubarPrimitive.Root, {
-  display: "flex",
-  height: "100%",
-  alignItems: "center",
-  padding: "0 $2",
-  flexWrap: "nowrap",
-});
+  display: 'flex',
+  height: '100%',
+  alignItems: 'center',
+  padding: '0 $2',
+  flexWrap: 'nowrap',
+})
 
 function Menubar(props: PropsWithChildren<{ size?: MenuSize }>) {
-  const { size = "sm" } = props;
+  const { size = 'sm' } = props
   return (
     <MenuProvider type="menubar" size={size}>
-      <StyledMenubarRoot>
-        {props.children}
-      </StyledMenubarRoot>
+      <StyledMenubarRoot>{props.children}</StyledMenubarRoot>
     </MenuProvider>
   )
 }
 
-export { Menubar, MenubarItem, DropdownMenu, ContextMenu, MenuItem, SubMenuItem, MenuSeparator, MenuCheckboxItem, MenuRadioGroup, MenuGroup };
+export {
+  Menubar,
+  MenubarItem,
+  DropdownMenu,
+  ContextMenu,
+  MenuItem,
+  SubMenuItem,
+  MenuSeparator,
+  MenuCheckboxItem,
+  MenuRadioGroup,
+  MenuGroup,
+}

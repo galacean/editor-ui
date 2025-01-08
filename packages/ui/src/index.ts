@@ -42,8 +42,8 @@ export * from './ResizablePanel'
 export * from './HoverCard'
 
 export * from './ThemeProvider'
-export * from '../hooks'
 
-export * from '../design-system'
+export * from './design-system'
 
-export * from '../utils'
+export * from './hooks'
+export * from './utils'

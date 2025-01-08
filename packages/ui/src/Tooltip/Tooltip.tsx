@@ -1,40 +1,33 @@
-import React, { useState, PropsWithChildren, ComponentProps } from "react";
-import * as TooltipPrimitive from "@radix-ui/react-tooltip";
+import React, { useState, PropsWithChildren, ComponentProps } from 'react'
+import * as TooltipPrimitive from '@radix-ui/react-tooltip'
 
-import { styled, keyframes, VariantProps, CSS } from "../../design-system";
+import { styled, keyframes, VariantProps, CSS } from '../design-system'
 
 const scaleIn = keyframes({
-  "0%": { opacity: 0, transform: "scale(0) translateY(-4px)" },
-  "100%": { opacity: 1, transform: "scale(1) translateY(0px)" }
-});
+  '0%': { opacity: 0, transform: 'scale(0) translateY(-4px)' },
+  '100%': { opacity: 1, transform: 'scale(1) translateY(0px)' },
+})
 
 const StyledContent = styled(TooltipPrimitive.Content, {
-  display: "flex",
-  alignItems: "center",
-  fontSize: "13px",
-  padding: "$2 $3",
-  backgroundColor: "$gray2",
-  borderRadius: "$4",
-  color: "$gray12",
-  boxShadow: "inset 0 0 0 1px $colors$grayA4",
-  transformOrigin: "var(--radix-tooltip-content-transform-origin)",
+  display: 'flex',
+  alignItems: 'center',
+  fontSize: '13px',
+  padding: '$2 $3',
+  backgroundColor: '$gray2',
+  borderRadius: '$4',
+  color: '$gray12',
+  boxShadow: 'inset 0 0 0 1px $colors$grayA4',
+  transformOrigin: 'var(--radix-tooltip-content-transform-origin)',
   animation: `${scaleIn} 0.2s ease forwards`,
-});
+})
 
 export interface TooltipProps extends Omit<TooltipPrimitive.TooltipContentProps, 'content'> {
-  content?: React.ReactNode;
-  delayDuration?: number;
+  content?: React.ReactNode
+  delayDuration?: number
 }
 
 function Tooltip(props: PropsWithChildren<TooltipProps>) {
-  const {
-    children,
-    content,
-    side = "bottom",
-    sideOffset = 6,
-    delayDuration = 0,
-    ...rest
-  } = props;
+  const { children, content, side = 'bottom', sideOffset = 6, delayDuration = 0, ...rest } = props
   return (
     <TooltipPrimitive.TooltipProvider>
       <TooltipPrimitive.Root delayDuration={delayDuration} {...rest}>
@@ -46,7 +39,7 @@ function Tooltip(props: PropsWithChildren<TooltipProps>) {
         </TooltipPrimitive.Portal>
       </TooltipPrimitive.Root>
     </TooltipPrimitive.TooltipProvider>
-  );
+  )
 }
 
-export { Tooltip };
+export { Tooltip }

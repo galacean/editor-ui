@@ -1,59 +1,50 @@
-import * as AlertDialogPrimitive from "@radix-ui/react-alert-dialog";
-import { AlertDialogProps } from "@radix-ui/react-alert-dialog";
-import React, { forwardRef, PropsWithChildren, ReactElement, useImperativeHandle, useState } from "react";
-import { createRoot } from "react-dom/client";
+import * as AlertDialogPrimitive from '@radix-ui/react-alert-dialog'
+import { AlertDialogProps } from '@radix-ui/react-alert-dialog'
+import React, { forwardRef, PropsWithChildren, ReactElement, useImperativeHandle, useState } from 'react'
+import { createRoot } from 'react-dom/client'
 
-import { styled } from "../../design-system";
-import { Button } from "../Button";
-import { Flex } from "../Flex";
-import { contentStyle, overlayStyle } from "../../design-system/recipes";
-import { Text, Title } from "../Typography";
+import { styled } from '../design-system'
+import { Button } from '../Button'
+import { Flex } from '../Flex'
+import { contentStyle, overlayStyle } from '../design-system/recipes'
+import { Text, Title } from '../Typography'
 
-const {
-  Root,
-  Trigger,
-  Portal,
-  Overlay,
-  Content,
-  Title: AlertTitle,
-  Description,
-  Cancel,
-  Action
-} = AlertDialogPrimitive;
+const { Root, Trigger, Portal, Overlay, Content, Title: AlertTitle, Description, Cancel, Action } = AlertDialogPrimitive
 
-const StyledOverlay = styled(Overlay, overlayStyle);
+const StyledOverlay = styled(Overlay, overlayStyle)
 const StyledContent = styled(Content, {
-	position: 'fixed',
+  position: 'fixed',
   padding: '$5',
-	top: '50%',
-	left: '50%',
-  maxWidth: "26rem",
+  top: '50%',
+  left: '50%',
+  maxWidth: '26rem',
   width: '100%',
-	transform: 'translate(-50%, -50%)',
+  transform: 'translate(-50%, -50%)',
   backgroundColor: '$gray1',
   borderRadius: '$3',
   border: '1px solid $gray4',
-  boxShadow: 'rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.1) 0px 4px 6px -4px',
+  boxShadow:
+    'rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.1) 0px 4px 6px -4px',
   zIndex: 50,
   outline: 'none',
   boxSizing: 'content-box',
-});
+})
 
 const StyledFooter = styled(Flex, {
-  marginTop: "$6",
-  justifyContent: "flex-end",
-});
+  marginTop: '$6',
+  justifyContent: 'flex-end',
+})
 
 export interface IAlertDialogProps {
-  trigger?: React.ReactNode;
-  title: string;
-  description?: string | React.ReactNode;
-  cancelText?: string;
-  confirmText?: string;
-  onClose?: () => void;
-  onConfirm?: () => void;
-  zIndex?: number;
-  actionable?: boolean;
+  trigger?: React.ReactNode
+  title: string
+  description?: string | React.ReactNode
+  cancelText?: string
+  confirmText?: string
+  onClose?: () => void
+  onConfirm?: () => void
+  zIndex?: number
+  actionable?: boolean
 }
 
 function AlertDialog(props: PropsWithChildren<IAlertDialogProps & AlertDialogProps>) {
@@ -61,14 +52,14 @@ function AlertDialog(props: PropsWithChildren<IAlertDialogProps & AlertDialogPro
     trigger,
     title,
     description,
-    cancelText = "Cancel",
-    confirmText = "Confirm",
+    cancelText = 'Cancel',
+    confirmText = 'Confirm',
     onConfirm,
     onClose,
     zIndex,
     actionable = true,
     ...rest
-  } = props;
+  } = props
   return (
     <Root {...rest}>
       <Trigger asChild>{trigger}</Trigger>
@@ -76,26 +67,26 @@ function AlertDialog(props: PropsWithChildren<IAlertDialogProps & AlertDialogPro
         <StyledOverlay style={{ zIndex }} />
         <StyledContent style={{ zIndex }}>
           <AlertTitle asChild>
-            <Title size={3} css={{ marginBottom: "$3" }} weight="bold">
+            <Title size={3} css={{ marginBottom: '$3' }} weight="bold">
               {title}
             </Title>
           </AlertTitle>
           {description && (
             <Description asChild>
-              <Text size="2" secondary css={{ whiteSpace: "pre-line" }}>
+              <Text size="2" secondary css={{ whiteSpace: 'pre-line' }}>
                 {description}
               </Text>
             </Description>
           )}
           {actionable && (
             <StyledFooter gap="sm" justifyContent="end" css={{ marginTop: '$8' }}>
-              {onClose &&
+              {onClose && (
                 <Cancel asChild>
                   <Button variant="secondary" size="md" onClick={onClose}>
                     {cancelText}
                   </Button>
                 </Cancel>
-              }
+              )}
               {onConfirm && (
                 <Action asChild>
                   <Button variant="primary" critical size="md" onClick={onConfirm}>
@@ -108,41 +99,41 @@ function AlertDialog(props: PropsWithChildren<IAlertDialogProps & AlertDialogPro
         </StyledContent>
       </Portal>
     </Root>
-  );
+  )
 }
 
 function genPortalId() {
-  return `editor-portal-id-${new Date().getTime()}`;
+  return `editor-portal-id-${new Date().getTime()}`
 }
 
-function showAlert(props: Omit<IAlertDialogProps, "trigger">) {
-  const el = document.createElement("span");
-  const id = genPortalId();
-  el.id = id;
-  document.body.appendChild(el);
-  const root = createRoot(el);
+function showAlert(props: Omit<IAlertDialogProps, 'trigger'>) {
+  const el = document.createElement('span')
+  const id = genPortalId()
+  el.id = id
+  document.body.appendChild(el)
+  const root = createRoot(el)
 
   const Wrapper = forwardRef(function AlertWrapper(_, ref) {
-    const [open, setOpen] = useState(true);
+    const [open, setOpen] = useState(true)
 
     const close = () => {
-      setOpen(false);
-      root.unmount();
+      setOpen(false)
+      root.unmount()
       if (props.onClose) {
-        props.onClose();
+        props.onClose()
       }
-    };
+    }
 
     const confirm = () => {
-      setOpen(false);
+      setOpen(false)
       if (props.onConfirm) {
-        props.onConfirm();
+        props.onConfirm()
       }
-    };
+    }
 
     useImperativeHandle(ref, () => ({
-      close
-    }));
+      close,
+    }))
 
     return (
       <AlertDialog
@@ -152,20 +143,20 @@ function showAlert(props: Omit<IAlertDialogProps, "trigger">) {
         onConfirm={confirm}
         open={open}
         onOpenChange={(o) => {
-          setOpen(o);
+          setOpen(o)
           if (!o) {
-            close();
+            close()
           }
         }}
       />
-    );
-  });
+    )
+  })
 
-  root.render(<Wrapper />);
+  root.render(<Wrapper />)
 
   return {
-    close
-  };
+    close,
+  }
 }
 
-export { AlertDialog, showAlert };
+export { AlertDialog, showAlert }
