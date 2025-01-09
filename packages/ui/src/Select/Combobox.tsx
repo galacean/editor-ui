@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, forwardRef, useState, useCallback } from 'react'
+import React, { createContext, useContext, forwardRef, useState, useCallback } from 'react'
 import { createPortal } from 'react-dom'
 import { useControllableState } from '@radix-ui/react-use-controllable-state'
 import { IconSearch, IconCheck, IconChevronDown, IconX } from '@tabler/icons-react'
@@ -154,15 +154,6 @@ function ComboboxSearchInput(props: ComboboxSearchInputProps) {
 const StyledComboBoxItem = styled('button', basicItemStyle, {
   userSelect: 'none',
   width: '100%',
-  '&:hover': {
-    backgroundColor: '$grayA3',
-  },
-  '&:focus': {
-    backgroundColor: '$grayA3',
-  },
-  '&:focus:hover': {
-    backgroundColor: '$grayA3',
-  },
   variants: {
     focused: {
       true: {

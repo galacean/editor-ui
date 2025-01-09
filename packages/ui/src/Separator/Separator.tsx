@@ -1,5 +1,6 @@
 import * as PrimitiveSeparator from '@radix-ui/react-separator'
-import { CSS, styled, VariantProps } from '../design-system'
+import { CSS, StitchesComponent, styled, VariantProps } from '../design-system'
+import { forwardRef } from 'react'
 
 const StyledCrosslineText = styled('div', {
   display: 'flex',
@@ -64,24 +65,24 @@ const StyledSeparator = styled(PrimitiveSeparator.Root, {
   },
 })
 
-export interface SeparatorProps {
+export interface SeparatorProps extends StitchesComponent<typeof StyledSeparator> {
   text?: string
   css?: CSS
   orientation?: 'horizontal' | 'vertical'
   raw?: boolean
 }
 
-function Separator(props: SeparatorProps) {
+const Separator = forwardRef<HTMLDivElement, SeparatorProps>(function Separator(props, forwardedRef) {
   const { text, ...rest } = props
   if (text) {
     return (
-      <StyledCrosslineText {...rest}>
+      <StyledCrosslineText {...rest} ref={forwardedRef}>
         <div>{text}</div>
       </StyledCrosslineText>
     )
   }
 
   return <StyledSeparator {...rest} />
-}
+})
 
 export { Separator }

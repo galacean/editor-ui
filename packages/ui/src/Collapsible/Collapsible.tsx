@@ -79,24 +79,8 @@ const StyledRoot = styled(CollapsiblePrimitive.Root, {
   width: '100%',
   color: '$grayA11',
   background: '$appBg',
-  '& ~ &': {
-    // borderRadius: "$2"
-    '&::before': {
-      content: '""',
-      position: 'absolute',
-      width: '100%',
-      height: '1px',
-      backgroundColor: '$gray2',
-      top: -1,
-    },
-    marginTop: '1px',
-    [`${StyledTitle}`]: {
-      borderRadius: '$2 $2 0 0',
-      '&[data-state="closed"]': {
-        borderRadius: '$2',
-      },
-    },
-  },
+  borderRadius: '$2',
+  overflow: 'hidden',
   '&  &': {
     backgroundColor: '$panelBg',
     paddingLeft: '$1',
