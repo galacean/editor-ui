@@ -26,8 +26,8 @@ const conver2StandardGrayColors = (colors: Record<string, string>): typeof gray 
 }
 
 // Radix UI provide 7 types of gray.
-export const lightStandardGrayColor = conver2StandardGrayColors({ ...slate, ...slateA })
-export const darkStandardGrayColor = conver2StandardGrayColors({ ...slateDark, ...slateDarkA })
+export const lightStandardGrayColor = conver2StandardGrayColors({ ...gray, ...grayA })
+export const darkStandardGrayColor = conver2StandardGrayColors({ ...grayDark, ...grayDarkA })
 
 const darkColors = {
   ...darkStandardGrayColor,

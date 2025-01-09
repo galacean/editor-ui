@@ -33,7 +33,7 @@ const ColorPicker = forwardRef<HTMLButtonElement, ColorPickerProps>(function Col
   return (
     <Popover
       disabled={disabled}
-      sideOffset={8}
+      sideOffset={4}
       side="bottom"
       align="start"
       trigger={<ColorPickerTrigger ref={forwardedRef} fullsize={fullsize} color={generatePreviewColor(mode, value)} />}
