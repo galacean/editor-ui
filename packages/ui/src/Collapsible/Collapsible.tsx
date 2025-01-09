@@ -37,21 +37,10 @@ const StyledTitle = styled('div', {
   justifyContent: 'space-between',
   color: '$grayA11',
   padding: '0 $1 0 $1',
-  minHeight: '$7',
+  minHeight: '$8',
   fontSize: '$sm',
   userSelect: 'none',
   backgroundColor: '$panelBg',
-  variants: {
-    border: {
-      true: {
-        minHeight: '$7',
-        backgroundColor: '$grayA3',
-        margin: '2px auto',
-        border: '1px solid $border',
-        borderRadius: '$2',
-      },
-    },
-  },
 })
 
 const StyledTitleContent = styled('div', {
@@ -78,7 +67,6 @@ const StyledRoot = styled(CollapsiblePrimitive.Root, {
   flexDirection: 'column',
   width: '100%',
   color: '$grayA11',
-  background: '$appBg',
   borderRadius: '$2',
   overflow: 'hidden',
   '&  &': {
@@ -137,7 +125,7 @@ const StyledRoot = styled(CollapsiblePrimitive.Root, {
 })
 
 const StyledChevron = styled(IconTriangleInvertedFilled, {
-  marginRight: '$1',
+  margin: '0 $1_5 0 $1',
   height: '6px',
   width: '6px',
   transform: 'rotate(-90deg)',
@@ -186,6 +174,7 @@ function Collapsible(props: CollapsibleProps) {
   return (
     <StyledRoot
       {...rest}
+      className='collapsible'
       open={open}
       onOpenChange={handleOnOpenChange}
       disabled={!collapsible}
