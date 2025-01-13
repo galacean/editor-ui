@@ -304,7 +304,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(props,
     onClick,
   })
 
-  const spin = <Spin color="default" size="xs" css={{ marginRight: '$1_5' }} />
+  const spin = <Spin color="inherit" size="xs" css={{ marginRight: '$1_5' }} />
   const Comp = asChild ? Slot : StyledButton
 
   return (
