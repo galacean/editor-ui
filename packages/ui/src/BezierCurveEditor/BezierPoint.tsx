@@ -20,14 +20,6 @@ export interface BezierPointProps {
 export function BezierPoint(props: BezierPointProps) {
   const { index, bezierPoint, onPointChange, algo, doublePoint = false } = props
   let { point, controlPoint } = bezierPoint
-  point = {
-    x: point.x,
-    y: point.y,
-  }
-  controlPoint = {
-    x: controlPoint.x,
-    y: controlPoint.y,
-  }
 
   const subControlPoint =
     algo === 'bezier'
