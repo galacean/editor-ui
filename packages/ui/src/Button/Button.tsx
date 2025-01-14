@@ -24,8 +24,8 @@ const StyledButton = styled('button', button, {
   variants: {
     size: {
       xs: {
-        height: '$5',
-        fontSize: '$sm',
+        height: '$xs',
+        fontSize: '$xs',
         lineHeight: '$sizes$5',
         fontWeight: 400,
         borderRadius: '$2',
@@ -48,7 +48,7 @@ const StyledButton = styled('button', button, {
       },
       sm: {
         height: '$sm',
-        fontSize: '11px',
+        fontSize: '$sm',
         fontWeight: 400,
         borderRadius: '$2',
         padding: '0 $2',
@@ -127,6 +127,11 @@ const StyledButton = styled('button', button, {
         '&:active': {
           backgroundColor: '$gray12',
         },
+      },
+    },
+    fullWidth: {
+      true: {
+        width: '100%',
       },
     },
     uppercase: {

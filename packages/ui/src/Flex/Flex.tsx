@@ -56,6 +56,11 @@ const StyledFlex = styled('div', {
       md: { gap: '$3' },
       lg: { gap: '$4' },
     },
+    fullWidth: {
+      true: {
+        width: '100%',
+      },
+    }
   },
   defaultVariants: {
     direction: 'row',
