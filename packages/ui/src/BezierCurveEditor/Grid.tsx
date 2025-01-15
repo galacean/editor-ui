@@ -21,9 +21,9 @@ const StyledTicks = styled('text', {
 })
 
 const StyledLabel = styled('text', {
-  fontSize: '10px',
+  fontSize: '11px',
   textAnchor: 'middle',
-  fill: '$grayA10',
+  fill: '$grayA11',
   userSelect: 'none',
   variants: {
     vertical: {
@@ -127,8 +127,16 @@ export function Grid(props: GridProps) {
 
   function renderYAxisLabel() {
     return (
-      <StyledLabel className="y-axis" vertical x={offset.x + 10} y={-height / 2 + labelGap} textAnchor="middle">
+      <StyledLabel className="y-axis-label" vertical x={offset.x + 10} y={offset.y + labelGap} textAnchor="middle">
         {axisLabel ? axisLabel.y : 'y'}
+      </StyledLabel>
+    )
+  }
+
+  function renderXAxisLabel() {
+    return (
+      <StyledLabel className="x-axis-label" x={offset.x + width / 2} y={offset.y + height - labelGap}>
+        {axisLabel ? axisLabel.x : 'x'}
       </StyledLabel>
     )
   }
@@ -173,14 +181,6 @@ export function Grid(props: GridProps) {
 
   function renderXAxis() {
     return <StyledAxis className="x-axis" x1={offset.x} y1={0} x2={offset.x + width} y2={0} strokeWidth="1" />
-  }
-
-  function renderXAxisLabel() {
-    return (
-      <StyledLabel className="x-axis-label" x={offset.x + width / 2} y={offset.y + height - labelGap}>
-        {axisLabel ? axisLabel.x : 'x'}
-      </StyledLabel>
-    )
   }
 
   return (

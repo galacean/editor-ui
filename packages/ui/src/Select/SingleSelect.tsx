@@ -51,6 +51,7 @@ const SelectTrigger = styled(SelectPrimitive.SelectTrigger, {
     display: 'block',
     flex: 1,
     minWidth: 0,
+    lineHeight: 0,
     overflow: 'hidden',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
@@ -84,23 +85,16 @@ const SelectIcon = styled(SelectPrimitive.SelectIcon, {
   },
 })
 
-const SelectContent = styled(SelectPrimitive.Content, contentStyle, {
-  overflow: 'hidden',
-  borderRadius: '$3',
-  width: 'var(--radix-select-trigger-width)',
-  minWidth: 'initial !important',
-  maxHeight: 'var(--radix-select-content-available-height)',
-  variants: {
-    width: {
-      initial: {
-        width: 'initial !important',
-      },
-    },
-  },
+const SelectContent = styled(SelectPrimitive.Content, {
+  overflow: "hidden",
+  backgroundColor: "$gray3",
+  borderRadius: "$2",
+  boxShadow: "0 5px 10px rgba(0,0,0,0.08)",
+  border: "1px solid $grayA4"
 })
 
 const SelectViewport = styled(SelectPrimitive.Viewport, {
-  padding: 0,
+  padding: '$1',
 })
 
 const StyledItem = styled(SelectPrimitive.Item, checkboxItemStyle)
@@ -124,13 +118,15 @@ const SelectScrollUpButton = styled(SelectPrimitive.ScrollUpButton, scrollButton
 const SelectScrollDownButton = styled(SelectPrimitive.ScrollDownButton, scrollButtonStyles)
 
 type SelectContextProps = {
-  size: 'xs' | 'sm' | 'md'
-  valueType: 'string' | 'number'
+  size: 'xs' | 'sm' | 'md',
+  valueType: 'string' | 'number',
+  valueRenderer?: (value: string | number, location?: 'item' | 'trigger') => React.ReactNode
 }
 
 const SelectContext = React.createContext<SelectContextProps>({
   size: 'sm',
   valueType: 'string',
+  valueRenderer: undefined,
 })
 
 const StyledSelectItemContent = styled('span', {
@@ -152,14 +148,19 @@ const SelectItem = forwardRef<HTMLDivElement, SelectItemProps>(function SelectIt
   { children, value, ...props },
   forwardedRef
 ) {
-  const { size, valueType } = React.useContext(SelectContext)
+  const { size, valueType, valueRenderer } = React.useContext(SelectContext)
+
+  const renderedValue = valueRenderer ? (
+    valueRenderer(value, 'item')
+  ) : children
+
   return (
     <StyledItem {...props} value={valueType === 'number' ? String(value) : value} ref={forwardedRef} size={size}>
       <StyledItemIndicator>
         <IconCheck />
       </StyledItemIndicator>
       <StyledSelectItemContent>
-        <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
+        <SelectPrimitive.ItemText>{renderedValue ?? children}</SelectPrimitive.ItemText>
       </StyledSelectItemContent>
     </StyledItem>
   )
@@ -191,12 +192,14 @@ export interface SelectProps extends Omit<PrimitiveSelectProps, 'value' | 'defau
   size?: 'xs' | 'sm' | 'md'
   width?: 'initial'
   valueType?: 'string' | 'number'
-  value?: string | number
+  value?: string | number;
+  valueRenderer?: (value: string | number, location?: "item" | "trigger") => React.ReactNode
   defaultValue?: string | number
   onValueChange?: (value: any) => void
   id?: string
   sideOffset?: number
   children?: React.ReactNode
+  arrow?: boolean
 }
 
 function Select(props: SelectProps) {
@@ -206,7 +209,9 @@ function Select(props: SelectProps) {
     defaultValue: propDefaultValue,
     valueType: propValueType,
     position = 'popper',
+    valueRenderer,
     size = 'sm',
+    arrow = true,
     width,
     id,
     sideOffset = 4,
@@ -237,17 +242,24 @@ function Select(props: SelectProps) {
     },
   })
 
+
+  const renderedValue = valueRenderer ? (
+    valueRenderer(value, 'trigger')
+  ) : undefined
+
   return (
-    <SelectContext.Provider value={{ size, valueType: valueType as unknown as 'string' | 'number' }}>
+    <SelectContext.Provider value={{ size, valueType: valueType as unknown as 'string' | 'number', valueRenderer }}>  
       <SelectPrimitive.Root {...rest} value={value} onValueChange={setValue}>
         <SelectTrigger size={size} id={id}>
-          <SelectPrimitive.Value placeholder={placeholder} />
-          <SelectIcon>
-            <IconChevronDown />
-          </SelectIcon>
+          <SelectPrimitive.Value placeholder={placeholder}>{renderedValue}</SelectPrimitive.Value>
+          {arrow && 
+            <SelectIcon>
+              <IconChevronDown />
+            </SelectIcon>
+          }
         </SelectTrigger>
         <SelectPrimitive.Portal>
-          <SelectContent position={position} width={width} sideOffset={sideOffset} collisionPadding={0}>
+          <SelectContent position={position} sideOffset={sideOffset} collisionPadding={4}>
             <SelectScrollUpButton>
               <IconChevronUp size="14px" />
             </SelectScrollUpButton>

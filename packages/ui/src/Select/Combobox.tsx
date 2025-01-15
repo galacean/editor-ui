@@ -54,7 +54,7 @@ const StyledPlaceholder = styled('span', {
 interface ComboboxContextProps {
   autoClose: boolean
   placeholder?: string
-  valueRenderer?: (value: string) => React.ReactNode
+  valueRenderer?: (value: string, location?: "item" | "trigger") => React.ReactNode
 
   value: string[]
   selectValue?: (val: string) => void

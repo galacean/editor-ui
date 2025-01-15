@@ -123,7 +123,7 @@ function _BezierCurveEditor(props: BezierCurveEditorProps, forwardedRef: React.R
 
   const handleWheel = (e: WheelEvent) => {
     e.preventDefault()
-    let newZoom = e.deltaY > 0 ? zoom - zoomSpeed : zoom + zoomSpeed
+    let newZoom = e.deltaY > 0 ?  zoom + zoomSpeed : zoom - zoomSpeed
     newZoom = clamp(newZoom, zoomLimit[0], zoomLimit[1])
     setZoom(newZoom)
   }

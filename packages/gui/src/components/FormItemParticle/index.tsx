@@ -10,10 +10,10 @@ import { BezierCurveEditorProps } from "@galacean/editor-ui/src/BezierCurveEdito
 type ParticlePropertyType = "constant" | "curve" | "two-constant" | "two-curve";
 
 const particlePropertyTypeOptions = [
-  { type: "constant", icon: <IconEqual />, columns: "minmax(0, 12fr) 1fr" },
-  { type: "curve", icon: <IconEaseIn />, columns: "minmax(0, 12fr) 1fr" },
-  { type: "two-constant", icon: <IconPlusMinus />, columns: "repeat(2, minmax(0, 12fr)) 1fr" },
-  { type: "two-curve", icon: <IconVectorBezier2 />, columns: "repeat(2, minmax(0, 12fr)) 1fr" }
+  { type: "constant", icon: <IconEqual size="14px" />, columns: "minmax(0, 12fr) minmax(30px, 1fr)" },
+  { type: "curve", icon: <IconEaseIn size="14px" />, columns: "minmax(0, 12fr) minmax(30px, 1fr)" },
+  { type: "two-constant", icon: <IconPlusMinus size="14px" />, columns: "repeat(2, minmax(0, 12fr)) minmax(30px, 1fr)" },
+  { type: "two-curve", icon: <IconVectorBezier2 size="14px" />, columns: "repeat(2, minmax(0, 12fr)) minmax(30px, 1fr)" }
 ] as const;
 
 const defaultPoints = [
@@ -64,8 +64,11 @@ export function FormItemParticle(props: FormItemParticleProps) {
     ]
   });
 
-  function renderTypeIcon(type) {
-    return particlePropertyTypeOptions.find((option) => option.type === type)?.icon;
+  function renderTypeIcon(value, location) {
+    if(location === "trigger") {
+      return particlePropertyTypeOptions.find((option) => option.type === value)?.icon;
+    }
+    return value;
   }
 
   const handleConstantValueChange = (value) => {
@@ -134,11 +137,10 @@ export function FormItemParticle(props: FormItemParticleProps) {
     <FormItem
       label={label}
       info={info}
-      // fieldCss={{
-      //   gridTemplateColumns: particlePropertyTypeOptions.find((option) => option.type === propType)?.columns,
-      //   columnGap: "$1"
-      // }}
-      fieldColumn="particle"
+      fieldCss={{
+        gridTemplateColumns: particlePropertyTypeOptions.find((option) => option.type === propType)?.columns,
+        columnGap: "$1"
+      }}
       {...rest}
     >
       {valueMap.map((item) => {
@@ -198,6 +200,7 @@ export function FormItemParticle(props: FormItemParticleProps) {
       })}
       <Select
         defaultValue="constant"
+        arrow={false}
         value={propType}
         valueRenderer={renderTypeIcon}
         onValueChange={(v) => setPropType(v as ParticlePropertyType)}
