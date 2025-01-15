@@ -122,7 +122,7 @@ export const basicItemStyle = styled('div', {
   '&:focus': {
     // backgroundColor: "$grayA3",
     // color: "$grayA11"
-    backgroundColor: '$blue10',
+    backgroundColor: '$blue9',
     color: '$white',
   },
 

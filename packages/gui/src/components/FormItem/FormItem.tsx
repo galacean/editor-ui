@@ -31,6 +31,9 @@ const StyledField = styled("div", {
       asset: {
         gridTemplateColumns: "minmax(0, 8fr) $6 $6",
       },
+      particle: {
+        gridTemplateColumns: "1fr 60px",
+      },
       gradient: {
 
       }

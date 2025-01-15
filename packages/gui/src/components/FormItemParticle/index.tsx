@@ -5,6 +5,7 @@ import { IconEaseIn, IconEqual, IconVectorBezier2, IconPlusMinus } from "@tabler
 import { InputNumber, Select, SelectItem, BezierCurveEditor } from "@galacean/editor-ui";
 import { FormItem } from "../FormItem";
 import { BaseFormItemProps } from "../FormItem/FormItem";
+import { BezierCurveEditorProps } from "@galacean/editor-ui/src/BezierCurveEditor/types";
 
 type ParticlePropertyType = "constant" | "curve" | "two-constant" | "two-curve";
 
@@ -33,12 +34,12 @@ type ParticleValue = {
 
 export interface FormItemParticleProps extends BaseFormItemProps<ParticleValue> {
   type?: ParticlePropertyType;
-  labelFirst?: boolean;
+  algo?: BezierCurveEditorProps["algo"];
   onValueChange?: (value: FormItemParticleProps["value"], type: ParticlePropertyType) => void;
 }
 
 export function FormItemParticle(props: FormItemParticleProps) {
-  const { label, labelFirst, info, value, onValueChange, ...rest } = props;
+  const { label, info, value, onValueChange, algo = "bezier", ...rest } = props;
   const [propType, setPropType] = useControllableState<ParticlePropertyType>({
     prop: props.type,
     defaultProp: "constant",
@@ -133,10 +134,11 @@ export function FormItemParticle(props: FormItemParticleProps) {
     <FormItem
       label={label}
       info={info}
-      fieldCss={{
-        gridTemplateColumns: particlePropertyTypeOptions.find((option) => option.type === propType)?.columns,
-        columnGap: "$1"
-      }}
+      // fieldCss={{
+      //   gridTemplateColumns: particlePropertyTypeOptions.find((option) => option.type === propType)?.columns,
+      //   columnGap: "$1"
+      // }}
+      fieldColumn="particle"
       {...rest}
     >
       {valueMap.map((item) => {
@@ -157,7 +159,7 @@ export function FormItemParticle(props: FormItemParticleProps) {
               />
             );
           case "curve":
-            return <BezierCurveEditor key="curve" value={value} onChange={handleCurveValueChange} />;
+            return <BezierCurveEditor key="curve" algo={algo} value={value} onChange={handleCurveValueChange} />;
           case "two-constant":
             return (
               <React.Fragment key="two-constant">
@@ -186,8 +188,8 @@ export function FormItemParticle(props: FormItemParticleProps) {
           case "two-curve":
             return (
               <React.Fragment key="two-curve">
-                <BezierCurveEditor value={value[0]} onChange={handleRdCurveValueChange(0)} />
-                <BezierCurveEditor value={value[1]} onChange={handleRdCurveValueChange(1)} />
+                <BezierCurveEditor value={value[0]} algo={algo} onChange={handleRdCurveValueChange(0)} />
+                <BezierCurveEditor value={value[1]} algo={algo} onChange={handleRdCurveValueChange(1)} />
               </React.Fragment>
             );
           default:
