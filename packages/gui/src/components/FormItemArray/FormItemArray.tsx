@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { IconTrash, IconPlus, IconEdit } from "@tabler/icons-react";
-import { Flex, ActionButton, Accordion, AccordionItem, Button } from "@galacean/editor-ui";
+import { Flex, ActionButton, Accordion, AccordionItem, Button, styled } from "@galacean/editor-ui";
 
 import { FormItem, type BaseFormItemProps } from "../FormItem";
 
@@ -11,6 +11,24 @@ interface AccordionTitleProps {
   renameable?: boolean;
   hasChild?: boolean;
 }
+
+const AddItemButton = styled(Button, {
+  width: "100%",
+  border: 'none',
+  position: "relative",
+  borderRadius: 0,
+  "& > svg": {
+    marginRight: "$1"
+  },
+  '&::after': {
+    content: "''",
+    position: 'absolute',
+    top: 0,
+    left: 0, 
+    width: '100%',
+    borderTop: "1px solid $grayA2",
+  }
+});
 
 function AccordionTitle(props: AccordionTitleProps) {
   const { renameable, onDelete, removable } = props;
@@ -113,20 +131,13 @@ export function FormItemArray(props: FormItemArrayProps) {
           </AccordionItem>
         ))}
         {addable && (
-          <Button
+          <AddItemButton
             size="sm"
             variant="secondary"
-            css={{
-              width: "100%",
-              borderRadius: 0,
-              "& > svg": {
-                marginRight: "$1"
-              }
-            }}
             onClick={onAdd}
           >
             <IconPlus size="12px" /> {addItemText}
-          </Button>
+          </AddItemButton>
         )}
       </Accordion>
     </FormItem>

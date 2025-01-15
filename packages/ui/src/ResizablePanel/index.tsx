@@ -123,8 +123,7 @@ const ResizablePanel = forwardRef<HTMLDivElement, ResizablePanelProps>(function 
   const [size, setSize] = useState({ width: 0, height: 0 })
   const [resizing, setResizing] = useState(false)
 
-  const handleMouseMove = useCallback(
-    ({ clientX, clientY }) => {
+  const handleMouseMove = ({ clientX, clientY }) => {
       if (!resizing) return
       let width, height
       // const width = clamp(size.width + (clientX - origin.x), range.min, range.max);
@@ -142,6 +141,7 @@ const ResizablePanel = forwardRef<HTMLDivElement, ResizablePanelProps>(function 
       } else {
         if (direction === 'horizontal') {
           width = clamp(size.width + (clientX - origin.x), range.min, range.max)
+          console.log('widht', width)
           // height = size.height;
         }
         if (direction === 'vertical') {
@@ -156,9 +156,7 @@ const ResizablePanel = forwardRef<HTMLDivElement, ResizablePanelProps>(function 
       if (direction === 'vertical') {
         ref.current.style.height = `${height}px`
       }
-    },
-    [size, origin, resizing, direction]
-  )
+  }
 
   const handleMouseUp = useCallback(() => {
     setResizing(false)
@@ -169,11 +167,11 @@ const ResizablePanel = forwardRef<HTMLDivElement, ResizablePanelProps>(function 
     }))
   }, [])
 
-  const handleMouseDown = useCallback((e) => {
+  const handleMouseDown = (e) => {
     e.preventDefault()
     setResizing(true)
     setOrigin({ x: e.clientX, y: e.clientY })
-  }, [])
+  }
 
   useEffect(() => {
     const { offsetWidth, offsetHeight } = ref.current
@@ -193,7 +191,7 @@ const ResizablePanel = forwardRef<HTMLDivElement, ResizablePanelProps>(function 
       setRange({ min, max })
     }
 
-    ref.current.style.flex = 'initial'
+    ref.current.style.flexGrow = 'initial'
   }, [])
 
   useEffect(() => {
@@ -214,7 +212,7 @@ const ResizablePanel = forwardRef<HTMLDivElement, ResizablePanelProps>(function 
       window.removeEventListener('mousemove', handleMouseMove)
       window.removeEventListener('mouseup', handleMouseUp)
     }
-  }, [resizing, direction, handleMouseDown, handleMouseMove, handleMouseUp])
+  }, [resizing, direction, handleMouseMove, handleMouseUp])
 
   if (asChild) {
     const child = React.Children.only(children) as unknown as React.ReactElement

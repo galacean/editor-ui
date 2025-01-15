@@ -6,7 +6,7 @@ import { styled, StitchesComponent } from '../design-system'
 
 const StyledContent = styled(CollapsiblePrimitive.Content, {
   borderRadius: '0 0 $2 $2',
-  padding: '0 0 $1 $1',
+  padding: '0 $1 $1 $1',
   backgroundColor: '$panelBg',
   '&:empty': {
     padding: 0,

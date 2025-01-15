@@ -293,3 +293,12 @@ export const overlayStyle = styled(null, {
     },
   },
 })
+
+
+export const flexTextOverflow = css({
+  flex: 1,
+  minWidth: 0,
+  whiteSpace: "nowrap",
+  overflow: "hidden",
+  textOverflow: "ellipsis"
+})
