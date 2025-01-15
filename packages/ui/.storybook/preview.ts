@@ -1,7 +1,7 @@
-import { resetStyle } from "../design-system"
-import type { Preview } from "@storybook/react";
+import { resetStyle } from '../src/design-system'
+import type { Preview } from '@storybook/react'
 
-resetStyle();
+resetStyle()
 
 const preview: Preview = {
   parameters: {
@@ -12,20 +12,20 @@ const preview: Preview = {
       },
     },
     backgrounds: {
-      default: "dark",
+      default: 'dark',
       values: [
         {
-          name: "dark",
-          value: "#111",
+          name: 'dark',
+          value: '#111',
         },
         {
-          name: "light",
-          value: "#fff",
-        }
-      ]
+          name: 'light',
+          value: '#fff',
+        },
+      ],
     },
-    layout: "centered"
+    layout: 'centered',
   },
-};
- 
-export default preview;
+}
+
+export default preview

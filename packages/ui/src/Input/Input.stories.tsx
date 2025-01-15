@@ -1,45 +1,51 @@
-import { Meta, StoryFn } from "@storybook/react";
-import { IconSearch, IconCopyCheckFilled, IconChevronDown } from "@tabler/icons-react";
+import React, { useState } from 'react'
+import { Meta, StoryFn } from '@storybook/react'
+import { IconSearch, IconCopyCheckFilled, IconChevronDown } from '@tabler/icons-react'
 
-import { Badge } from "../Badge";
-import { Flex } from "../Flex";
-import { DropdownMenu, MenuItem } from "../Menu";
+import { Badge } from '../Badge'
+import { Flex } from '../Flex'
+import { DropdownMenu, MenuItem } from '../Menu'
 
-import { Input } from "./";
-import { styled } from "../../design-system";
+import { Input } from './'
+import { styled } from '../design-system'
 
 export default {
-  title: "Inputs/Input",
+  title: 'Inputs/Input',
   component: Input,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   argTypes: {
     variant: {
       type: {
-        name: "enum",
-        value: ["default", "subtle"],
+        name: 'enum',
+        value: ['default', 'subtle'],
       },
     },
     size: {
       type: {
-        name: "enum",
-        value: ["sm", "md"],
+        name: 'enum',
+        value: ['sm', 'md'],
       },
     },
   },
   args: {
-    placeholder: "Search the components...",
-    size: "sm",
+    placeholder: 'Search the components...',
+    size: 'sm',
     disabled: false,
-  }
-} as Meta<typeof Input>;
+  },
+} as Meta<typeof Input>
 
 export const Overview: StoryFn<typeof Input> = (args) => {
   return (
     <Flex direction="column" gap="md" css={{ width: '400px' }}>
-      <Input startSlot={<IconSearch height={12} width={12} />} placeholder="Search the components..." size="sm" {...args} />
+      <Input
+        startSlot={<IconSearch height={12} width={12} />}
+        placeholder="Search the components..."
+        size="sm"
+        {...args}
+      />
     </Flex>
-  );
-};
+  )
+}
 
 /**
  * You could use the `startSlot` or `endSlot` props to add an icon or any other element to the input.
@@ -47,31 +53,21 @@ export const Overview: StoryFn<typeof Input> = (args) => {
 export const Slot: StoryFn<typeof Input> = (args) => {
   return (
     <Flex direction="column" gap="md" css={{ width: '400px' }}>
-      <Input
-        startSlot={<IconSearch size="12px" />}
-        placeholder="Search the components..."
-        size="sm"
-        {...args}
-      />
-      <Input
-        placeholder="Search the components..."
-        size="sm"
-        {...args}
-        endSlot={
-          <IconCopyCheckFilled size="12px" />
-        }
-      />
+      <Input startSlot={<IconSearch size="12px" />} placeholder="Search the components..." size="sm" {...args} />
+      <Input placeholder="Search the components..." size="sm" {...args} endSlot={<IconCopyCheckFilled size="12px" />} />
       <Input
         placeholder="Search the components..."
         size="sm"
         {...args}
         startSlot={
-          <Badge status="warning" style={{ marginLeft: '-3px' }}>Danger</Badge>
+          <Badge status="warning" style={{ marginLeft: '-3px' }}>
+            Danger
+          </Badge>
         }
       />
     </Flex>
-  );
-};
+  )
+}
 
 const CustomTrigger = styled(Flex, {
   padding: '0 $2',
@@ -82,9 +78,9 @@ const CustomTrigger = styled(Flex, {
   cursor: 'pointer',
   userSelect: 'none',
   '&:hover': {
-    color: '$gray11'
-  }
-});
+    color: '$gray11',
+  },
+})
 
 const DropdownAction = () => {
   return (
@@ -94,8 +90,7 @@ const DropdownAction = () => {
           Action
           <IconChevronDown size="12px" />
         </CustomTrigger>
-      }
-    >
+      }>
       <MenuItem name="Copy" />
       <MenuItem name="Download" />
       <MenuItem name="Delete" critical />
@@ -117,5 +112,5 @@ export const OverrideSlotStyle: StoryFn<typeof Input> = (args) => {
         {...args}
       />
     </Flex>
-  );
+  )
 }

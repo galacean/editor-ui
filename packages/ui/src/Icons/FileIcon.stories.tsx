@@ -1,4 +1,5 @@
-import { Meta, StoryFn } from "@storybook/react";
+import { Meta, StoryFn } from '@storybook/react'
+import React, { useState } from 'react'
 import {
   IconCodeFile,
   IconAnimationControllerFile,
@@ -14,29 +15,30 @@ import {
   IconSpriteAltasFile,
   IconUnknownFile,
   IconVrReferenceImageFile,
-} from "."
-import { Flex } from '../Flex';
-import { styled } from "../../design-system";
- 
+} from '.'
+import { Flex } from '../Flex'
+import { styled } from '../design-system'
+
 export default {
-  title: "Symbols/Iconography",
-  tags: ["autodocs"],
+  title: 'Symbols/Iconography',
+  tags: ['autodocs'],
   parameters: {
     docs: {
       description: {
-        component: "We provide a set of icons for different file types. These icons are used in the file explorer and other places in the editor."
-      }
-    }
-  }
-} as Meta;
+        component:
+          'We provide a set of icons for different file types. These icons are used in the file explorer and other places in the editor.',
+      },
+    },
+  },
+} as Meta
 
 const StyledIconItem = styled(Flex, {
   marginBottom: '0 $6',
   gap: '$3',
   '& svg': {
     height: '60px',
-    width: '60px'
-  }
+    width: '60px',
+  },
 })
 
 const Text = styled('p', {
@@ -60,7 +62,7 @@ export const Overview = () => {
         <IconCodeFile />
         <Text>Typescript</Text>
       </IconItem>
-      
+
       <IconItem>
         <IconAnimatorClipFile />
         <Text>Animator Clip</Text>
@@ -116,4 +118,3 @@ export const Overview = () => {
     </Flex>
   )
 }
-

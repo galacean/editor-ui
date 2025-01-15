@@ -92,7 +92,7 @@ export interface ComboboxTriggerProps {
 
 export const ComboboxTrigger = forwardRef<HTMLButtonElement, ComboboxTriggerProps>(
   function ComboboxTrigger(props, forwardedRef) {
-    const { value, selectValue, onValueNodeChange, placeholder } = useContext(ComboboxContext)
+    const { value, onValueNodeChange, placeholder } = useContext(ComboboxContext)
     const { valueRenderer, ...rest } = props
 
     return (
@@ -187,6 +187,7 @@ export function ComboboxItem(props: ComboboxItemProps) {
     selectValue,
     close,
     setFocusedIndex,
+    valueRenderer,
     valueNode,
     searchValue,
     autoClose,
@@ -224,14 +225,14 @@ export function ComboboxItem(props: ComboboxItemProps) {
           focused={focusedIndex === index}
           // onPointerMove={handlePointerMove}
         >
-          {children}
+          {valueRenderer ? valueRenderer(value) : children}
           {isSelected && <IconCheck size="12px" />}
         </StyledComboBoxItem>
       )}
       {isSelected && valueNode
         ? createPortal(
             <Badge onClick={preventDefault} closeable onClose={handleRemove}>
-              {children}
+              {valueRenderer ? valueRenderer(value) : children}
             </Badge>,
             valueNode
           )

@@ -1,36 +1,37 @@
-import { Meta, StoryFn } from "@storybook/react";
-import { IconMenu } from "@tabler/icons-react";
+import React, { useState } from 'react'
+import { Meta, StoryFn } from '@storybook/react'
+import { IconMenu } from '@tabler/icons-react'
 
-import { styled } from "../../design-system";
-import { Flex } from "../Flex";
-import { Button } from "../Button";
-import { ActionButton } from "../ActionButton";
+import { styled } from '../design-system'
+import { Flex } from '../Flex'
+import { Button } from '../Button'
+import { ActionButton } from '../ActionButton'
 
-import { ContextMenu, DropdownMenu, MenuItem, SubMenuItem, MenuGroup, MenuCheckboxItem, MenuSeparator } from "./";
+import { ContextMenu, DropdownMenu, MenuItem, SubMenuItem, MenuGroup, MenuCheckboxItem, MenuSeparator } from './'
 
-const File = styled("div", {
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  height: "$10",
-  width: "$10",
-  borderRadius: "$2",
-  backgroundColor: "$blue6",
-  color: "$blue11"
-});
+const File = styled('div', {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  height: '$10',
+  width: '$10',
+  borderRadius: '$2',
+  backgroundColor: '$blue6',
+  color: '$blue11',
+})
 
 const Area = styled(Flex, {
-  width: "200px",
-  height: "50px",
-  borderRadius: "$2",
-  color: "$gray8",
-  border: "1px dashed $gray8"
-});
+  width: '200px',
+  height: '50px',
+  borderRadius: '$2',
+  color: '$gray8',
+  border: '1px dashed $gray8',
+})
 
 export default {
-  title: "Display/Menu",
-  tags: ["autodocs"],
-} as Meta<typeof ContextMenu>;
+  title: 'Display/Menu',
+  tags: ['autodocs'],
+} as Meta<typeof ContextMenu>
 
 export const Overview = (args) => {
   return (
@@ -42,10 +43,10 @@ export const Overview = (args) => {
         <MenuItem name="Remove" />
       </ContextMenu>
     </Flex>
-  );
-};
+  )
+}
 
-Overview.args = {};
+Overview.args = {}
 
 export const DropdownMenuDemo: StoryFn<any> = () => {
   return (
@@ -56,8 +57,7 @@ export const DropdownMenuDemo: StoryFn<any> = () => {
           <ActionButton>
             <IconMenu />
           </ActionButton>
-        }
-      >
+        }>
         <SubMenuItem name="Animation">
           <MenuItem name="Sprite Renderer" />
           <MenuItem name="Lottie" />
@@ -67,15 +67,15 @@ export const DropdownMenuDemo: StoryFn<any> = () => {
         <SubMenuItem name="Clips">
           <MenuItem name="Sprite Mask" />
           <MenuItem name="Sprite Renderer" />
-          <MenuItem name="Lottie" shortcuts={["⌘", "D"]} />
+          <MenuItem name="Lottie" shortcuts={['⌘', 'D']} />
           <MenuItem name="Mars" />
           <MenuItem name="Spine Animation" />
         </SubMenuItem>
         <MenuItem name="Remove" critical />
       </DropdownMenu>
     </Flex>
-  );
-};
+  )
+}
 
 export const ContextMenuDemo: StoryFn<typeof ContextMenu> = () => {
   return (
@@ -96,19 +96,19 @@ export const ContextMenuDemo: StoryFn<typeof ContextMenu> = () => {
       </SubMenuItem>
       <MenuItem name="Remove" />
     </ContextMenu>
-  );
-};
+  )
+}
 
-ContextMenuDemo.storyName = "ContextMenu";
+ContextMenuDemo.storyName = 'ContextMenu'
 
-ContextMenuDemo.argTypes = {};
+ContextMenuDemo.argTypes = {}
 
 export const ContextMenuInList = (args) => {
   return (
     <Flex gap="sm">
       {Array.from(Array(20).keys()).map((item) => (
         <ContextMenu key={item} trigger={<File onClick={() => console.log(`${item} clicked`)}>{item}</File>}>
-          <MenuItem name="Add Component" shortcuts={["A", "C"]} onClick={() => console.log(`Add Component ${item}`)} />
+          <MenuItem name="Add Component" shortcuts={['A', 'C']} onClick={() => console.log(`Add Component ${item}`)} />
           <SubMenuItem name="Animation">
             <MenuItem name="Sprite Mask" />
             <MenuItem name="Sprite Renderer" />
@@ -117,7 +117,7 @@ export const ContextMenuInList = (args) => {
             <MenuItem name="Spine Animation" />
           </SubMenuItem>
           <SubMenuItem name="Create Entity">
-            <MenuItem name="Camera" shortcuts={["C"]} />
+            <MenuItem name="Camera" shortcuts={['C']} />
             <MenuGroup label="Light" divider="both">
               <MenuItem name="Direction light" />
               <MenuItem name="Point light" />
@@ -145,11 +145,11 @@ export const ContextMenuInList = (args) => {
               <MenuItem name="Create" />
             </MenuGroup>
           </SubMenuItem>
-          <MenuItem name="Duplicated" shortcuts={["⇧", "⌘", "D"]} />
+          <MenuItem name="Duplicated" shortcuts={['⇧', '⌘', 'D']} />
           <MenuSeparator />
-          <MenuItem critical name="Delete" shortcuts={["⌥", "⌘", "D"]} />
+          <MenuItem critical name="Delete" shortcuts={['⌥', '⌘', 'D']} />
         </ContextMenu>
       ))}
     </Flex>
-  );
-};
+  )
+}
