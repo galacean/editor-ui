@@ -71,7 +71,6 @@ const contentFadeOut = keyframes({
 
 const StyledOverlay = styled(DialogPrimitive.Overlay, {
   position: 'fixed',
-  background: 'rgba(0,0,0,.1)',
   inset: 0,
   animation: `${overlayShow} 150ms cubic-bezier(0.16, 1, 0.3, 1)`,
 })
@@ -84,26 +83,25 @@ const StyledContent = styled(DialogPrimitive.Content, {
   minWidth: '440px',
   maxHeight: '85vh',
   padding: '$3',
-  borderRadius: '$4',
+  borderRadius: '$5',
   overflow: 'hidden',
-  border: '1px solid $grayA4',
   backgroundColor: '$subbg',
   boxShadow: `
-  0px 4.5px 3.8px -27px rgba(0, 0, 0, 0.035),
-  0px 12.5px 10.5px -27px rgba(0, 0, 0, 0.05),
-  0px 30.1px 25.3px -27px rgba(0, 0, 0, 0.065),
-  0px 100px 84px -27px rgba(0, 0, 0, 0.1)`,
+    0px 0px 0.5px 0px rgba(0,0,0,0.5),
+    0px 1px 5px 0px rgba(0,0,0,0.4),
+    inset 0px .5px 0px 0.5px rgba(255,255,255,.1),
+    inset 0px 0px .5px 0px rgba(255,255,255,0.3)`,
   // zIndex: 2,
   animation: `${contentShow} 150ms cubic-bezier(0.16, 1, 0.3, 1)`,
 
   '&:focus': { outline: 'none' },
 
-  // "&[data-state=open]": {
-  //   animation: `${contentFadeIn} 250ms ease`
-  // },
-  // "&[data-state=closed]": {
-  //   animation: `${contentFadeOut} 250ms ease`
-  // }
+  "&[data-state=open]": {
+    animation: `${contentFadeIn} 250ms ease`
+  },
+  "&[data-state=closed]": {
+    animation: `${contentFadeOut} 250ms ease`
+  }
 })
 
 const StyledCloseButton = styled(DialogPrimitive.DialogClose, basicStyle, {

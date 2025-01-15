@@ -48,8 +48,10 @@ const SelectTrigger = styled(SelectPrimitive.SelectTrigger, {
   //   boxShadow: 'inset 0 0 0 1px $colors$blue10',
   // },
   '& > span:first-child': {
-    display: 'block',
+    display: 'flex',
     flex: 1,
+    height: "100%",
+    alignItems: 'center',
     minWidth: 0,
     lineHeight: 0,
     overflow: 'hidden',
@@ -88,6 +90,7 @@ const SelectIcon = styled(SelectPrimitive.SelectIcon, {
 const SelectContent = styled(SelectPrimitive.Content, {
   overflow: "hidden",
   backgroundColor: "$gray3",
+  minWidth: "var(--radix-select-trigger-width)",
   borderRadius: "$2",
   boxShadow: "0 5px 10px rgba(0,0,0,0.08)",
   border: "1px solid $grayA4"
