@@ -78,3 +78,25 @@ export const radii = {
 
   round: '9999px',
 }
+
+export const shadows = {
+  2: `
+    0px 0px .5px rgba(0, 0, 0, .5),
+    0px 1px 5px rgba(0, 0, 0, .4),
+    inset 0px .5px 0px rgba(255, 255, 255, .1),
+    inset 0px 0px .5px rgba(255, 255, 255, .3)
+  `,
+  3: `
+    0px 0px .5px rgba(0, 0, 0, .5),
+    0px 1px 5px rgba(0, 0, 0, .4),
+    inset 0px .5px 0px rgba(255, 255, 255, .1),
+    inset 0px 0px .5px rgba(255, 255, 255, .3)
+  `,
+  popContainer: `
+    0px 0px .5px rgba(0, 0, 0, .5),
+    0px 1px 5px rgba(0, 0, 0, .4),
+    inset 0px .5px 0px rgba(255, 255, 255, .1),
+    inset 0px 0px .5px rgba(255, 255, 255, .3)
+  `,
+  prepend: '0 0 0 0 transparent',
+}

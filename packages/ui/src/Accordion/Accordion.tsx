@@ -12,9 +12,8 @@ import { styled } from '../design-system'
 const StyledAccordion = styled(AccordionPrimitive.Root, {
   borderRadius: '$3',
   width: '100%',
-  // border: '1px solid $border',
   overflow: 'hidden',
-  boxShadow: '0px 0px .5px rgba(0, 0, 0, .5), 0px 1px 5px rgba(0, 0, 0, .4), inset 0px .5px 0px rgba(255, 255, 255, .1), inset 0px 0px .5px rgba(255, 255, 255, .3)',
+  boxShadow: "$popContainer"
 })
 
 const StyledChevron = styled(IconChevronRight, {
@@ -55,9 +54,9 @@ const StyledContent = styled(AccordionPrimitive.Content, {
   padding: '$2 $1',
   backgroundColor: '$grayA2',
   color: '$gray11',
-  // '&[data-state="open"]': {
-  //   borderBottom: "1px solid $border"
-  // },
+  '&[data-state="open"]': {
+    borderBottom: "1px solid $grayA3"
+  },
   '&:empty': {
     padding: 0,
     borderTop: 'none',
