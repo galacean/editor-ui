@@ -12,6 +12,7 @@ export {
 } from './stitches.config'
 
 export * as recipes from './recipes'
+export * as animations from './keyframes'
 
 export type { StitchesComponent, VariantProps } from './stitches.config'
 export type { CSS } from '@stitches/react'

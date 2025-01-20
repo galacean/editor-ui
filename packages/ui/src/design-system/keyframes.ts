@@ -84,3 +84,38 @@ export const keyframes = {
     },
   }),
 }
+
+
+export const overlayFadeIn = defineKeyframes({
+  '0%': { opacity: 0 },
+  '100%': { opacity: 1 },
+})
+
+export const overlayFadeOut = defineKeyframes({
+  '0%': { opacity: 1 },
+  '100%': { opacity: 0 },
+})
+
+export const contentShow = defineKeyframes({
+  from: {
+    opacity: 0,
+    transform: 'translate(-50%, -48%) scale(0.96)',
+  },
+  to: {
+    opacity: 1,
+    transform: 'translate(-50%, -50%) scale(1)',
+  },
+})
+
+export const contentFadeIn = defineKeyframes({
+  from: {
+    opacity: 0,
+    transform: 'translate(-50%, -48%) scale(.96)',
+  },
+  to: { opacity: 1, transform: 'translate(-50%, -50%) scale(1)' },
+})
+
+export const contentFadeOut = defineKeyframes({
+  from: { opacity: 1, transform: 'translate(-50%, -50%) scale(1)' },
+  to: { opacity: 0, transform: 'translate(-50%, -48%) scale(.96)' },
+})

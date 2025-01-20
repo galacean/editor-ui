@@ -1,9 +1,9 @@
 import * as DialogPrimitive from '@radix-ui/react-dialog'
 import * as VisuallyHidden from '@radix-ui/react-visually-hidden'
 import { IconX } from '@tabler/icons-react'
-import React, { ComponentProps, forwardRef } from 'react'
+import React from 'react'
 
-import { CSS, keyframes, styled } from '../design-system'
+import { CSS, animations, styled } from '../design-system'
 
 export const basicStyle = styled(null, {
   all: 'unset',
@@ -24,55 +24,10 @@ export const basicStyle = styled(null, {
   },
 })
 
-/* ------------------- Styled Primitive Headless Component ------------------ */
-
-const overlayFadeIn = keyframes({
-  '0%': { opacity: 0 },
-  '100%': { opacity: 1 },
-})
-
-const overlayFadeOut = keyframes({
-  '0%': { opacity: 1 },
-  '100%': { opacity: 0 },
-})
-
-const contentShow = keyframes({
-  from: {
-    opacity: 0,
-    transform: 'translate(-50%, -48%) scale(0.96)',
-  },
-  to: {
-    opacity: 1,
-    transform: 'translate(-50%, -50%) scale(1)',
-  },
-})
-
-const overlayShow = keyframes({
-  from: {
-    opacity: 0,
-  },
-  to: {
-    opacity: 1,
-  },
-})
-
-const contentFadeIn = keyframes({
-  from: {
-    opacity: 0,
-    transform: 'translate(-50%, -48%) scale(.96)',
-  },
-  to: { opacity: 1, transform: 'translate(-50%, -50%) scale(1)' },
-})
-
-const contentFadeOut = keyframes({
-  from: { opacity: 1, transform: 'translate(-50%, -50%) scale(1)' },
-  to: { opacity: 0, transform: 'translate(-50%, -48%) scale(.96)' },
-})
-
 const StyledOverlay = styled(DialogPrimitive.Overlay, {
   position: 'fixed',
   inset: 0,
-  animation: `${overlayShow} 150ms cubic-bezier(0.16, 1, 0.3, 1)`,
+  animation: `${animations.overlayFadeIn} 150ms cubic-bezier(0.16, 1, 0.3, 1)`,
 })
 
 const StyledContent = styled(DialogPrimitive.Content, {
@@ -86,21 +41,17 @@ const StyledContent = styled(DialogPrimitive.Content, {
   borderRadius: '$5',
   overflow: 'hidden',
   backgroundColor: '$subbg',
-  boxShadow: `
-    0px 0px 0.5px 0px rgba(0,0,0,0.5),
-    0px 1px 5px 0px rgba(0,0,0,0.4),
-    inset 0px .5px 0px 0.5px rgba(255,255,255,.1),
-    inset 0px 0px .5px 0px rgba(255,255,255,0.3)`,
+  boxShadow: `$popContent`,
   // zIndex: 2,
-  animation: `${contentShow} 150ms cubic-bezier(0.16, 1, 0.3, 1)`,
+  animation: `${animations.contentShow} 150ms cubic-bezier(0.16, 1, 0.3, 1)`,
 
   '&:focus': { outline: 'none' },
 
   "&[data-state=open]": {
-    animation: `${contentFadeIn} 250ms ease`
+    animation: `${animations.contentFadeIn} 250ms ease`
   },
   "&[data-state=closed]": {
-    animation: `${contentFadeOut} 250ms ease`
+    animation: `${animations.contentFadeOut} 250ms ease`
   }
 })
 
