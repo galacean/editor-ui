@@ -79,7 +79,7 @@ export function FormItemVector3(props: FormItemVector3Props) {
         disabled={disabled}
         min={min}
         max={max}
-        startSlot="W"
+        startSlot="Z"
         value={value.z}
         onValueChange={handleOnChange("z")}
       />
