@@ -212,7 +212,7 @@ function _BezierCurveEditor(props: BezierCurveEditorProps, forwardedRef: React.R
               />
             ))}
           </g>
-          <CurveAnimation points={points} ref={player} />
+          <CurveAnimation points={points} algo={algo} ref={player} />
         </Grid>
       </StyledSvgRoot>
       <Flex gap="xs" style={{ position: 'absolute', bottom: 10, right: 10 }}>

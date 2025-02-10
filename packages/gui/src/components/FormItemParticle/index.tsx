@@ -201,7 +201,7 @@ export function FormItemParticle(props: FormItemParticleProps) {
       <Select
         defaultValue="constant"
         position="item-aligned"
-        arrow={false}
+        cornerArrow
         value={propType}
         valueRenderer={renderTypeIcon}
         onValueChange={(v) => setPropType(v as ParticlePropertyType)}

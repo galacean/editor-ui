@@ -51,7 +51,7 @@ const StyledTitle = styled(AccordionPrimitive.Trigger, {
 
 const StyledContent = styled(AccordionPrimitive.Content, {
   fontSize: '$1',
-  padding: '$2 $1',
+  padding: '$1 $1',
   backgroundColor: '$grayA2',
   color: '$gray11',
   '&[data-state="open"]': {
@@ -74,7 +74,7 @@ const StyledItem = styled(AccordionPrimitive.Item, {
     left: 0,
     width: '100%',
     height: '1px',
-    backgroundColor: '$border',
+    backgroundColor: '$grayA3',
   },
   '&:first-child': {
     [`& ${StyledTitle}`]: {

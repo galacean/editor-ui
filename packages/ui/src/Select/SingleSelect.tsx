@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react'
+import React, { forwardRef, Fragment } from 'react'
 import * as SelectPrimitive from '@radix-ui/react-select'
 import type {
   SelectGroupProps as PrimitiveSelectGroupProps,
@@ -10,9 +10,11 @@ import { useControllableState } from '@radix-ui/react-use-controllable-state'
 
 import { styled } from '../design-system'
 import { checkboxItemStyle, contentStyle, indicatorStyle, labelStyle } from '../design-system/recipes'
+import { IconRightBottomCorner } from '../Icons'
 
 const SelectTrigger = styled(SelectPrimitive.SelectTrigger, {
   all: 'unset',
+  position: "relative",
   display: 'inline-flex',
   alignItems: 'center',
   justifyContent: 'space-between',
@@ -77,14 +79,26 @@ const SelectTrigger = styled(SelectPrimitive.SelectTrigger, {
 })
 
 const SelectIcon = styled(SelectPrimitive.SelectIcon, {
-  color: 'CurrentColor',
+  position: "absolute",
   display: 'inline-flex',
+  color: 'CurrentColor',
   alignItems: 'center',
+  bottom: 3,
+  right: 3,
   lineHeight: 1,
   '& > svg': {
     height: '14px',
     width: '14px',
   },
+})
+
+const CornerIcon = styled(IconRightBottomCorner, {
+  position: 'absolute',
+  width: '4px !important',
+  height: '4px !important',
+  color: 'var(CurrentColor, $gray8)',
+  bottom: 1,
+  right: 1,
 })
 
 const SelectContent = styled(SelectPrimitive.Content, {
@@ -189,6 +203,7 @@ function SelectGroup(props: SelectGroupProps) {
   )
 }
 
+
 export interface SelectProps extends Omit<PrimitiveSelectProps, 'value' | 'defaultValue'> {
   placeholder?: string
   position?: SelectContentProps['position']
@@ -203,6 +218,7 @@ export interface SelectProps extends Omit<PrimitiveSelectProps, 'value' | 'defau
   sideOffset?: number
   children?: React.ReactNode
   arrow?: boolean
+  cornerArrow?: boolean
 }
 
 function Select(props: SelectProps) {
@@ -215,6 +231,7 @@ function Select(props: SelectProps) {
     valueRenderer,
     size = 'sm',
     arrow = true,
+    cornerArrow = false,
     width,
     id,
     sideOffset = 4,
@@ -255,9 +272,9 @@ function Select(props: SelectProps) {
       <SelectPrimitive.Root {...rest} value={value} onValueChange={setValue}>
         <SelectTrigger size={size} id={id}>
           <SelectPrimitive.Value placeholder={placeholder}>{renderedValue}</SelectPrimitive.Value>
-          {arrow && 
+          {arrow &&
             <SelectIcon>
-              <IconChevronDown />
+              {cornerArrow ? <CornerIcon /> : <IconChevronDown />}
             </SelectIcon>
           }
         </SelectTrigger>

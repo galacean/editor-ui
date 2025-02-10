@@ -107,6 +107,28 @@ function factorial(num) {
   return result;
 }
 
+export function getPointOnLinear(points: IPoint[], t: number): IPoint {
+  if (points.length < 2) {
+    throw new Error('At least 2 points are required to calculate the point on a linear curve');
+  }
+
+  t = Math.max(0, Math.min(1, t));
+
+  const segments = points.length - 1;
+  
+  const segment = Math.min(Math.floor(t * segments), segments - 1);
+  
+  const segmentT = (t * segments) - segment;
+  
+  const p0 = points[segment];
+  const p1 = points[segment + 1];
+  
+  return {
+    x: p0.x + (p1.x - p0.x) * segmentT,
+    y: p0.y + (p1.y - p0.y) * segmentT
+  };
+}
+
 export function getPointOnCurve(points: IPoint[], t: number): IPoint {
   const n = points.length - 1; // Degree of the curve
   let x = 0;

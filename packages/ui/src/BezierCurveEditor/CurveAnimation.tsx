@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useImperativeHandle, forwardRef } from 'react'
 import { IBezierPoint, IPoint } from './types'
-import { convertBezierPointToPoint, getPointOnCurve } from './helper'
+import { convertBezierPointToPoint, getPointOnCurve, getPointOnLinear } from './helper'
 import { styled } from '../design-system'
 
 const AnmiatedCircle = styled('circle', {
@@ -22,6 +22,7 @@ const AnmiatedCircle = styled('circle', {
 
 interface CurveAnimationProps {
   points: IBezierPoint[]
+  algo: 'bezier' | 'linear'
 }
 
 export interface CurveAnimationRef {
@@ -32,14 +33,14 @@ export interface CurveAnimationRef {
 
 export const CurveAnimation = forwardRef<CurveAnimationRef, CurveAnimationProps>(
   function CurveAnimation(props, forwardedRef) {
-    const { points: propPoints } = props
+    const { points: propPoints, algo } = props
     const progressRef = React.useRef<number>(0)
     const circleRef = React.useRef<SVGCircleElement>(null)
     const rafRef = React.useRef<number>(0)
     const [playing, setPlaying] = React.useState(false)
 
     const points = useMemo(() => {
-      return convertBezierPointToPoint(propPoints)
+      return convertBezierPointToPoint(propPoints, algo)
     }, [propPoints])
 
     useImperativeHandle(
@@ -65,7 +66,8 @@ export const CurveAnimation = forwardRef<CurveAnimationRef, CurveAnimationProps>
         const now = Date.now()
         const progress = (now - startTime) / duration
         progressRef.current = progress
-        const point = getPointOnCurve(points, progress)
+        // const point = getPointOnCurve(points, progress)
+        const point = algo === 'bezier' ? getPointOnCurve(points, progress) : getPointOnLinear(points, progress)
         circleRef.current?.setAttribute('cx', point.x.toString())
         circleRef.current?.setAttribute('cy', point.y.toString())
         if (progress < 1) {

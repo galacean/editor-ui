@@ -1,6 +1,6 @@
 import React from "react";
 import { useControllableState } from "@radix-ui/react-use-controllable-state";
-import { IconEaseIn, IconEqual, IconVectorBezier2, IconPlusMinus } from "@tabler/icons-react";
+import { IconEaseIn, IconEqual, IconVectorBezier2, IconPlusMinus, IconHexagonLetterEFilled } from "@tabler/icons-react";
 
 import { Button, ColorPicker, type ParticleColor, Select, SelectItem } from "@galacean/editor-ui";
 import { FormItem } from "../FormItem";
@@ -221,8 +221,12 @@ export function FormItemGradient(props: FormItemGradientProps) {
     }
   });
 
-  function renderTypeIcon(type) {
-    return particlePropertyTypeOptions.find((option) => option.type === type)?.icon;
+  function renderTypeIcon(type, location) {
+    if(location === "trigger") {
+      return particlePropertyTypeOptions.find((option) => option.type === type)?.icon;
+    }
+    return type;
+
   }
 
   const handleConstantValueChange = (value) => {
@@ -360,15 +364,14 @@ export function FormItemGradient(props: FormItemGradientProps) {
       })}
       <Select
         defaultValue="constant"
+        position="item-aligned"
+        cornerArrow
         value={propType}
         valueRenderer={renderTypeIcon}
         onValueChange={(v) => setPropType(v as GradientPropertyType)}
-        position="item-aligned"
-        arrow={false}
       >
         {valueMap.map((option) => (
           <SelectItem
-            // icon={particlePropertyTypeOptions.find((o) => o.type === option.type)?.icon}
             value={option.type}
             key={option.type}
           >
