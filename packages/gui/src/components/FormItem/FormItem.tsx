@@ -87,7 +87,7 @@ export interface FormItemSelectableProps<T> extends BaseFormItemProps<T> {
   options: { value: T, label: ReactNode }[];
 }
 
-export interface FormItemProps extends BaseFormItemProps<any> {
+export interface FormItemProps<T = any> extends BaseFormItemProps<T> {
   children?: React.ReactNode;
   css?: CSS;
   labelCss?: CSS;

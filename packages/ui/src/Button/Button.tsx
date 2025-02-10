@@ -37,8 +37,8 @@ const StyledButton = styled('button', button, {
       },
       s: {
         height: '$s',
-        fontSize: '$sm',
-        fontWeight: 400,
+        fontSize: '$2',
+        fontWeight: 500,
         borderRadius: '$2',
         padding: '0 $2',
         [`& ${Spin}`]: {

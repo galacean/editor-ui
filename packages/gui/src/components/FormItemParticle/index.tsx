@@ -4,7 +4,7 @@ import { IconEaseIn, IconEqual, IconVectorBezier2, IconPlusMinus } from "@tabler
 
 import { InputNumber, Select, SelectItem, BezierCurveEditor, Button } from "@galacean/editor-ui";
 import { FormItem } from "../FormItem";
-import { BaseFormItemProps } from "../FormItem/FormItem";
+import { BaseFormItemProps, FormItemProps } from "../FormItem/FormItem";
 import { BezierCurveEditorProps } from "@galacean/editor-ui/src/BezierCurveEditor/types";
 
 type ParticlePropertyType = "constant" | "curve" | "two-constant" | "two-curve";
@@ -32,7 +32,7 @@ type ParticleValue = {
   step?: number;
 }[]
 
-export interface FormItemParticleProps extends BaseFormItemProps<ParticleValue> {
+export interface FormItemParticleProps extends FormItemProps<ParticleValue> {
   type?: ParticlePropertyType;
   algo?: BezierCurveEditorProps["algo"];
   onValueChange?: (value: FormItemParticleProps["value"], type: ParticlePropertyType) => void;
