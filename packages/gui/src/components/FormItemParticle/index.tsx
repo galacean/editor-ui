@@ -2,7 +2,7 @@ import React from "react";
 import { useControllableState } from "@radix-ui/react-use-controllable-state";
 import { IconEaseIn, IconEqual, IconVectorBezier2, IconPlusMinus } from "@tabler/icons-react";
 
-import { InputNumber, Select, SelectItem, BezierCurveEditor } from "@galacean/editor-ui";
+import { InputNumber, Select, SelectItem, BezierCurveEditor, Button } from "@galacean/editor-ui";
 import { FormItem } from "../FormItem";
 import { BaseFormItemProps } from "../FormItem/FormItem";
 import { BezierCurveEditorProps } from "@galacean/editor-ui/src/BezierCurveEditor/types";
@@ -10,10 +10,10 @@ import { BezierCurveEditorProps } from "@galacean/editor-ui/src/BezierCurveEdito
 type ParticlePropertyType = "constant" | "curve" | "two-constant" | "two-curve";
 
 const particlePropertyTypeOptions = [
-  { type: "constant", icon: <IconEqual size="14px" />, columns: "minmax(0, 12fr) minmax(30px, 1fr)" },
-  { type: "curve", icon: <IconEaseIn size="14px" />, columns: "minmax(0, 12fr) minmax(30px, 1fr)" },
-  { type: "two-constant", icon: <IconPlusMinus size="14px" />, columns: "repeat(2, minmax(0, 12fr)) minmax(30px, 1fr)" },
-  { type: "two-curve", icon: <IconVectorBezier2 size="14px" />, columns: "repeat(2, minmax(0, 12fr)) minmax(30px, 1fr)" }
+  { type: "constant", icon: <IconEqual size="14px" />, columns: "minmax(0, 12fr) 32px" },
+  { type: "curve", icon: <IconEaseIn size="14px" />, columns: "minmax(0, 12fr) 32px" },
+  { type: "two-constant", icon: <IconPlusMinus size="14px" />, columns: "repeat(2, minmax(0, 12fr)) 32px" },
+  { type: "two-curve", icon: <IconVectorBezier2 size="14px" />, columns: "repeat(2, minmax(0, 12fr)) 32px" }
 ] as const;
 
 const defaultPoints = [
@@ -200,6 +200,7 @@ export function FormItemParticle(props: FormItemParticleProps) {
       })}
       <Select
         defaultValue="constant"
+        position="item-aligned"
         arrow={false}
         value={propType}
         valueRenderer={renderTypeIcon}
