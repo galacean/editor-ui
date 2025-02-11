@@ -103,9 +103,9 @@ const CornerIcon = styled(IconRightBottomCorner, {
 
 const SelectContent = styled(SelectPrimitive.Content, {
   overflow: "hidden",
-  backgroundColor: "$gray3",
+  backgroundColor: "$gray2",
   minWidth: "var(--radix-select-trigger-width)",
-  borderRadius: "$2",
+  borderRadius: "$4",
   boxShadow: "0 5px 10px rgba(0,0,0,0.08)",
   border: "1px solid $grayA4"
 })
