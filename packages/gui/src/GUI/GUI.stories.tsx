@@ -16,6 +16,7 @@ import {
 
 import { Meta } from '@storybook/react'
 import { GUIItemConfig, GUIItemTypeEnum, GUI } from './GUI'
+import { FormItemVector2 } from '../components'
 
 export default {
   title: 'Commands',
@@ -209,6 +210,18 @@ function start() {
           },
         },
       ])
+
+      gui.add({
+        odd: {}
+      }, 'odd', {
+        type: GUIItemTypeEnum.Vector2
+      })
+
+      gui.add({
+        even: 'even name'
+      }, 'even', {
+        type: GUIItemTypeEnum.Input
+      })
     }
   })
 }
@@ -218,5 +231,7 @@ export const Overview = (args) => {
     start()
   }, [])
 
-  return <canvas id="canvas" style={{ width: '100%', height: '100%', position: 'absolute', top: 0, left: 0 }} />
+  return (
+    <canvas id="canvas" style={{ width: '100%', height: '100%', position: 'absolute', top: 0, left: 0 }} />
+  ) 
 }

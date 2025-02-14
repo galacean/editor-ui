@@ -1,6 +1,6 @@
 import { InputNumber } from '@galacean/editor-ui'
-import { type ReactNode } from 'react'
-import { FormItem, type BaseFormItemProps } from '../FormItem'
+import { Fragment, type ReactNode } from 'react'
+import { withFormItem, type BaseFormItemProps } from '../FormItem'
 
 export type Vector2 = { x: number; y: number }
 
@@ -11,7 +11,7 @@ export interface FormItemVector2Props extends Omit<BaseFormItemProps<Vector2>, '
   slotMapping?: Record<keyof Vector2, ReactNode>
 }
 
-export function FormItemVector2(props: FormItemVector2Props) {
+export function _FormItemVector2(props: FormItemVector2Props) {
   const { label, info, value, onChange, min, max, disabled, ...rest } = props
   const {
     slotMapping = {
@@ -27,7 +27,7 @@ export function FormItemVector2(props: FormItemVector2Props) {
   }
 
   return (
-    <FormItem label={label} info={info} fieldColumn={2}>
+    [
       <InputNumber
         min={min}
         max={max}
@@ -35,7 +35,8 @@ export function FormItemVector2(props: FormItemVector2Props) {
         disabled={disabled}
         value={value.x}
         onValueChange={handleOnChange('x')}
-      />
+        key="x"
+      />,
       <InputNumber
         min={min}
         max={max}
@@ -43,7 +44,10 @@ export function FormItemVector2(props: FormItemVector2Props) {
         disabled={disabled}
         value={value.y}
         onValueChange={handleOnChange('y')}
+        key="y"
       />
-    </FormItem>
+    ]
   )
 }
+
+export const FormItemVector2 = withFormItem(_FormItemVector2, '2')

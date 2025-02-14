@@ -6,6 +6,7 @@ import { ColorPicker, Input, Kbd, styled } from '@galacean/editor-ui'
 import { normalizeColor, denormalizeColor, toNormalizeHexStr, type Color } from "@galacean/editor-ui";
 import { BaseFormItemProps } from "../FormItem/FormItem";
 import { useControllableState } from "@radix-ui/react-use-controllable-state";
+import { withFormItem } from "../FormItem/withFormItem";
 
 export interface FormItemColorProps extends BaseFormItemProps<Color> {}
 
@@ -69,18 +70,22 @@ function HorizontalSlider() {
 
 const defaultColor: Color = denormalizeColor({ r: 0, g: 0, b: 0, a: 1 });
 
-export function FormItemColor(props: FormItemColorProps) {
-  // const { label, info, value, disabled, onChange, ...rest } = props;
-  const { label, info, value, disabled, onChange } = props;
+// 定义纯组件的props类型
+interface ColorComponentProps {
+  value?: Color;
+  onChange?: (value: Color) => void;
+  disabled?: boolean;
+}
+
+// 提取核心逻辑到一个纯组件
+function ColorComponent({ value, onChange, disabled }: ColorComponentProps) {
   const [color, setColor] = useControllableState({
-    prop: denormalizeColor(props.value),
+    prop: denormalizeColor(value),
     defaultProp: defaultColor,
     onChange: (value) => {
-      if(onChange) {
-        onChange(normalizeColor(value))
-      }
+      onChange?.(normalizeColor(value));
     },
-  })
+  });
 
   const [colorStr, setColorStr] = useState(toNormalizeHexStr(color));
   const [dirty, setDirty] = useState(false);
@@ -106,38 +111,44 @@ export function FormItemColor(props: FormItemColorProps) {
     setColorStr(toNormalizeHexStr(value));
   }, [value]);
 
-  return (
-    <FormItem
-      label={label}
-      info={info}
-      fieldColumn="color"
-      // {...rest}
-    >
-      <ColorPicker
-        mode="constant"
-        disabled={disabled}
-        value={color}
-        onValueChange={(color) => setColor && setColor(color)}
-      />
-      <Input
-        disabled={disabled}
-        startSlot="#"
-        size="sm"
-        onChange={inputOnChange}
-        onKeyDown={onKeyDown}
-        value={colorStr}
-        code
-        endSlot={
-          dirty ? (
-            <Kbd css={{ verticalAlign: "text-top" }} size="xs">
-              ↵
-            </Kbd>
-          ) : (
-            "HEX"
-          )
-        }
-      />
-      <Input code disabled={disabled} endSlot={<HorizontalSlider />} readOnly size="sm" value={`${Math.round(value.a * 100)}`} />
-    </FormItem>
-  );
+  return [
+    <ColorPicker
+      mode="constant"
+      disabled={disabled}
+      key="color-picker"
+      value={color}
+      onValueChange={(color) => setColor(color)}
+    />,
+    <Input
+      disabled={disabled}
+      startSlot="#"
+      size="sm"
+      key="input"
+      onChange={inputOnChange}
+      onKeyDown={onKeyDown}
+      value={colorStr}
+      code
+      endSlot={
+        dirty ? (
+          <Kbd css={{ verticalAlign: "text-top" }} size="xs">
+            ↵
+          </Kbd>
+        ) : (
+          "HEX"
+        )
+      }
+    />,
+    <Input 
+      code 
+      key="input-alpha"
+      disabled={disabled} 
+      endSlot={<HorizontalSlider />} 
+      readOnly 
+      size="sm" 
+      value={`${Math.round(value?.a ?? 1 * 100)}`} 
+    />
+  ]
 }
+
+// 使用HOC创建最终组件
+export const FormItemColor = withFormItem<Color, ColorComponentProps>(ColorComponent, 'color');

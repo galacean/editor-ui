@@ -3,7 +3,7 @@ import { useControllableState } from "@radix-ui/react-use-controllable-state";
 import { IconEaseIn, IconEqual, IconVectorBezier2, IconPlusMinus, IconHexagonLetterEFilled } from "@tabler/icons-react";
 
 import { Button, ColorPicker, type ParticleColor, Select, SelectItem } from "@galacean/editor-ui";
-import { FormItem } from "../FormItem";
+import { FormItem, withFormItem } from "../FormItem";
 import { type Color, normalizeColor, denormalizeColor } from "@galacean/editor-ui";
 
 export type GradientPropertyType = "constant" | "gradient" | "two-constant" | "two-gradient";

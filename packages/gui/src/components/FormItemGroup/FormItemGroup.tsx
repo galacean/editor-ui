@@ -10,7 +10,6 @@ export interface FormItemGroupProps extends Omit<CollapsibleProps, 'defaultValue
   onOpenChange?: (open: boolean) => void;
   collapsible?: boolean;
   nesting?: boolean;
-  // children: React.ReactNode;
   children: any;
 }
 
@@ -26,7 +25,8 @@ function FormItemGroup(props: FormItemGroupProps) {
       onOpenChange={onOpenChange}
       collapsible={collapsible}
       css={{
-        marginTop: '$0_5',
+        marginTop: '$1',
+        $$collapsibleBgColor: "$colors$grayA2",
         '&:first-child': {
           marginTop: 0,
           borderTopLeftRadius: 0,

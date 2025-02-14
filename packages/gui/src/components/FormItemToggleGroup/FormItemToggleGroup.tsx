@@ -1,4 +1,4 @@
-import { FormItem, type FormItemSelectableProps } from "../FormItem";
+import { FormItem, withFormItem, type FormItemSelectableProps } from "../FormItem";
 import { ToggleGroupItem, ToggleGroup } from "@galacean/editor-ui";
 
 type SingleProps = {
@@ -15,24 +15,24 @@ type MultiProps = {
 
 export type FormItemToggleGroupProps = (SingleProps | MultiProps) & Omit<FormItemSelectableProps<string>, 'value' | 'onChange'>;
 
-export function FormItemToggleGroup(props: FormItemToggleGroupProps) {
-  const { label, info, type, value, defaultValue, onChange: onValueChange, disabled, options } = props;
+function _FormItemToggleGroup(props: FormItemToggleGroupProps) {
+  const { type, value, defaultValue, onChange: onValueChange, disabled, options } = props;
 
   const groupProps: any = { type, value, onValueChange, defaultValue }
   
   return (
-    <FormItem label={label} info={info} fieldColumn={1}>
-      <ToggleGroup {...groupProps}>
-        {options.map((option) => (
-          <ToggleGroupItem
-            key={option.value}
-            value={option.value}
-            disabled={disabled}
-          >
-            {option.label}
-          </ToggleGroupItem>
-        ))}
-      </ToggleGroup>
-    </FormItem>
+    <ToggleGroup {...groupProps}>
+      {options.map((option) => (
+        <ToggleGroupItem
+          key={option.value}
+          value={option.value}
+          disabled={disabled}
+        >
+          {option.label}
+        </ToggleGroupItem>
+      ))}
+    </ToggleGroup>
   );
 }
+
+export const FormItemToggleGroup = withFormItem(_FormItemToggleGroup);

@@ -113,8 +113,6 @@ const FormItem = forwardRef<HTMLDivElement, FormItemProps>(
       ...rest
     } = props;
 
-    // const defaultSize = "sm";
-
     const name = propLabel;
 
     const label = `${(name ?? "").replace(/\s/g, "-")}-${uuidv4()}`;
@@ -126,7 +124,7 @@ const FormItem = forwardRef<HTMLDivElement, FormItemProps>(
           id: label,
           size,
           label: name,
-          // ...controlledProp,
+          key: child.key ?? label,
         });
       }
       return null;

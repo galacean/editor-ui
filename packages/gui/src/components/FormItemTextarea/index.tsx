@@ -1,12 +1,12 @@
 import { Fragment, useCallback } from "react";
 import { Textarea } from "@galacean/editor-ui";
-import { FormItem } from "../FormItem";
+import { FormItem, withFormItem } from "../FormItem";
 import { BaseFormItemProps } from "../FormItem/FormItem";
 
 export interface FormItemTextareaProps extends BaseFormItemProps<string> {
 }
 
-export function FormItemTextarea(props: FormItemTextareaProps) {
+function _FormItemTextarea(props: FormItemTextareaProps) {
   const { label, info, formStartSlot, formEndSlot, value, defaultValue, onChange } = props;
 
   const handleOnChange = useCallback((e) => {
@@ -25,3 +25,5 @@ export function FormItemTextarea(props: FormItemTextareaProps) {
     </FormItem>
   )
 }
+
+export const FormItemTextarea = withFormItem(_FormItemTextarea);

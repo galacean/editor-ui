@@ -1,7 +1,7 @@
-import { ReactNode, useEffect, useState } from "react";
+import { Fragment, ReactNode, useEffect, useState } from "react";
 import { ActionButton, InputNumber } from "@galacean/editor-ui";
 import { ConstrainIcon } from "../../Icons/ConstrainIcon";
-import { FormItem, type BaseFormItemProps } from "../FormItem";
+import { FormItem, withFormItem, type BaseFormItemProps } from "../FormItem";
 
 export type Vector3 = { x: number; y: number; z: number; };
 
@@ -20,7 +20,7 @@ export interface FormItemVector3Props extends Omit<BaseFormItemProps<Vector3>, '
   constrainable?: boolean;
 };
 
-export function FormItemVector3(props: FormItemVector3Props) {
+export function _FormItemVector3(props: FormItemVector3Props) {
   const { label, info, value, onChange, disabled, min, max, constrainable = false, formEndSlot, ...rest } = props;
   const [constrainMode, setConstrainMode] = useState(false);
 
@@ -57,32 +57,35 @@ export function FormItemVector3(props: FormItemVector3Props) {
     }
   }
 
-  return (
-    <FormItem label={label} info={info} {...rest} formEndSlot={endSlot} fieldColumn={3}>
-      <InputNumber
-        disabled={disabled}
-        startSlot="X"
-        min={min}
-        max={max}
-        value={value.x}
-        onValueChange={handleOnChange("x")}
-      />
-      <InputNumber
-        disabled={disabled}
-        min={min}
-        max={max}
-        startSlot="Y"
-        value={value.y}
-        onValueChange={handleOnChange("y")}
-      />
-      <InputNumber
-        disabled={disabled}
-        min={min}
-        max={max}
-        startSlot="Z"
-        value={value.z}
-        onValueChange={handleOnChange("z")}
-      />
-    </FormItem>
-  );
+  return [
+    <InputNumber
+      disabled={disabled}
+      startSlot="X"
+      key="x"
+      min={min}
+      max={max}
+      value={value.x}
+      onValueChange={handleOnChange("x")}
+    />,
+    <InputNumber
+      disabled={disabled}
+      min={min}
+      max={max}
+      startSlot="Y"
+      key="y"
+      value={value.y}
+      onValueChange={handleOnChange("y")}
+    />,
+    <InputNumber
+      disabled={disabled}
+      min={min}
+      max={max}
+      startSlot="Z"
+      key="z"
+      value={value.z}
+      onValueChange={handleOnChange("z")}
+    />
+  ]
 }
+
+export const FormItemVector3 = withFormItem(_FormItemVector3, "3");

@@ -1,7 +1,7 @@
-import { Fragment, useCallback } from "react";
+import { forwardRef, Fragment, useCallback } from "react";
 import { IconPlus, IconMinus } from "@tabler/icons-react";
 
-import { FormItem } from "../FormItem";
+import { FormItem, withFormItem } from "../FormItem";
 import { Input, InputProps } from '@galacean/editor-ui'
 import { BaseFormItemProps } from "../FormItem/FormItem";
 
@@ -9,7 +9,7 @@ export interface FormItemInputProps extends BaseFormItemProps<string>, Omit<Inpu
 }
 
 
-export function FormItemInput(props: FormItemInputProps) {
+function _FormItemInput(props: FormItemInputProps) {
   const { label, info, value, defaultValue, onChange, ...rest } = props;
 
   const handleOnChange = useCallback((e) => {
@@ -17,13 +17,13 @@ export function FormItemInput(props: FormItemInputProps) {
   }, [onChange]);
 
   return (
-    <FormItem label={label} info={info}>
-      <Input
-        value={value}
-        defaultValue={defaultValue}
-        onChange={handleOnChange}
-        {...rest}
-      />
-    </FormItem>
+    <Input
+      value={value}
+      defaultValue={defaultValue}
+      onChange={handleOnChange}
+      {...rest}
+    />
   )
 }
+
+export const FormItemInput = withFormItem(_FormItemInput)

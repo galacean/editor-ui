@@ -7,7 +7,7 @@ import { styled, StitchesComponent } from '../design-system'
 const StyledContent = styled(CollapsiblePrimitive.Content, {
   borderRadius: '0 0 $2 $2',
   padding: '0 $1 $1 $1',
-  backgroundColor: '$panelBg',
+  backgroundColor: 'var(---collapsibleBgColor)',
   '&:empty': {
     padding: 0,
   },
@@ -40,7 +40,7 @@ const StyledTitle = styled('div', {
   minHeight: '$8',
   fontSize: '$sm',
   userSelect: 'none',
-  backgroundColor: '$panelBg',
+  backgroundColor: 'var(---collapsibleBgColor)',
 })
 
 const StyledTitleContent = styled('div', {

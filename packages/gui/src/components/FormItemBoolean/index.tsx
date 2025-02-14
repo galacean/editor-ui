@@ -1,0 +1,1 @@
+export { FormItemToggle as FormItemBoolean, type FormItemToggleProps as FormItemBooleanProps } from '../FormItemToggle'

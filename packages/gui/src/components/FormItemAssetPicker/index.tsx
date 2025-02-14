@@ -4,7 +4,7 @@ import { IconCurrentLocation, IconFileFilled } from "@tabler/icons-react";
 import { BasicAssetType, AssetPickerPopoverProps } from "./AssetPickerPopover";
 import { AssetPickerContent } from "./AssetPickerContent";
 
-import { FormItem } from "../FormItem";
+import { FormItem, withFormItem } from "../FormItem";
 import { ActionButton ,Button, styled, Popover, PopoverCloseTrigger, useDrop } from '@galacean/editor-ui'
 import { BaseFormItemProps } from "../FormItem/FormItem";
 
@@ -57,7 +57,7 @@ const Placeholder = styled("span", {
   lineHeight: 2
 });
 
-function _FormItemAssetPicker<T extends BasicAssetType>(props: FormItemAssetPickerProps<T>, ref) {
+function _FormItemAssetPicker<T extends BasicAssetType>(props: FormItemAssetPickerProps<T>) {
   const {
     label,
     info,
@@ -137,9 +137,7 @@ function _FormItemAssetPicker<T extends BasicAssetType>(props: FormItemAssetPick
   );
 }
 
-export const FormItemAssetPicker = React.forwardRef(_FormItemAssetPicker) as <T extends BasicAssetType>(
-  props: FormItemAssetPickerProps<T> & { ref?: ForwardedRef<HTMLInputElement> }
-) => ReturnType<typeof _FormItemAssetPicker>;
+export const FormItemAssetPicker = withFormItem(_FormItemAssetPicker);
 
 export { PickableAssetItem } from "./PickableAssetItem";
 export { type BasicAssetType, type AssetPickerPopoverProps } from "./AssetPickerPopover";

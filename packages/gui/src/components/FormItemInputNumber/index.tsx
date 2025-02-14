@@ -1,7 +1,7 @@
 import { Fragment, useCallback } from 'react'
 import { IconPlus, IconMinus } from '@tabler/icons-react'
 
-import { FormItem } from '../FormItem'
+import { FormItem, withFormItem } from '../FormItem'
 import { Button, InputNumber, type InputNumberProps } from '@galacean/editor-ui'
 import { BaseFormItemProps } from '../FormItem/FormItem'
 import { clamp } from '../../utils'
@@ -9,7 +9,6 @@ import { clamp } from '../../utils'
 export interface FormItemInputNumberProps
   extends BaseFormItemProps<number>,
     Pick<InputNumberProps, 'step' | 'dragStep' | 'min' | 'max' | 'endSlot' | 'startSlot'> {
-  additionalControl?: boolean
   onChange?: (value: number) => void
 }
 
@@ -18,7 +17,7 @@ function round(value, precision = 10) {
   return Math.round(value * power + Number.EPSILON * power) / power
 }
 
-export function FormItemInputNumber(props: FormItemInputNumberProps) {
+function _FormItemInputNumber(props: FormItemInputNumberProps) {
   const {
     label,
     info,
@@ -33,7 +32,6 @@ export function FormItemInputNumber(props: FormItemInputNumberProps) {
     dragStep = 1,
     min = -Infinity,
     max = Infinity,
-    additionalControl = true,
   } = props
 
   const handleOnBlur = (e) => {
@@ -56,35 +54,27 @@ export function FormItemInputNumber(props: FormItemInputNumberProps) {
     }
   }
 
-  return (
-    <FormItem
-      label={label}
-      info={info}
-      fieldColumn={additionalControl ? 'number' : 1}
-      formStartSlot={formStartSlot}
-      formEndSlot={formEndSlot}>
-      <InputNumber
-        startSlot={startSlot}
-        endSlot={endSlot}
-        disabled={disabled}
-        min={props.min}
-        max={props.max}
-        step={props.step}
-        dragStep={props.dragStep}
-        value={props.value}
-        onBlur={handleOnBlur}
-        onValueChange={onChange}
-      />
-      {additionalControl && (
-        <Fragment>
-          <Button size="sm" variant="secondary" onClick={handleDecrease} disabled={disabled}>
-            <IconMinus size="14px" />
-          </Button>
-          <Button size="sm" variant="secondary" onClick={handleIncrease} disabled={disabled}>
-            <IconPlus size="14px" />
-          </Button>
-        </Fragment>
-      )}
-    </FormItem>
-  )
+  return [
+    <InputNumber
+      startSlot={startSlot}
+      endSlot={endSlot}
+      disabled={disabled}
+      min={props.min}
+      max={props.max}
+      step={props.step}
+      dragStep={props.dragStep}
+      value={props.value}
+      onBlur={handleOnBlur}
+      onValueChange={onChange}
+      key="input-number"
+    />,
+    <Button size="sm" variant="secondary" onClick={handleDecrease} disabled={disabled} key="decrease-button">
+      <IconMinus size="14px" />
+    </Button>,
+    <Button size="sm" variant="secondary" onClick={handleIncrease} disabled={disabled} key="increase-button">
+      <IconPlus size="14px" />
+    </Button>
+  ]
 }
+
+export const FormItemInputNumber = withFormItem(_FormItemInputNumber, "number");

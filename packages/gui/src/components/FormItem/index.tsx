@@ -5,3 +5,5 @@ export {
   type FormItemRangeProps,
   type FormItemSelectableProps,
 } from './FormItem'
+
+export { withFormItem } from './withFormItem'

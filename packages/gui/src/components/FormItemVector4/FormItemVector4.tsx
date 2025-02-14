@@ -28,40 +28,42 @@ export function FormItemVector4(props: FormItemVector4Props) {
     onChange && onChange(result, prefix);
   };
 
-  return (
-    <FormItem {...rest} fieldColumn={4}>
-      <InputNumber
-        disabled={disabled}
-        startSlot={slotMapping?.x}
-        min={min}
-        max={max}
-        value={value.x}
-        onValueChange={handleOnChange("x")}
-      />
-      <InputNumber
-        disabled={disabled}
-        min={min}
-        max={max}
-        startSlot={slotMapping?.y}
-        value={value.y}
-        onValueChange={handleOnChange("y")}
-      />
-      <InputNumber
-        disabled={disabled}
-        min={min}
-        max={max}
-        startSlot={slotMapping?.z}
-        value={value.z}
-        onValueChange={handleOnChange("z")}
-      />
-      <InputNumber
-        disabled={disabled}
-        min={min}
-        max={max}
-        startSlot={slotMapping?.w}
-        value={value.w}
-        onValueChange={handleOnChange("w")}
-      />
-    </FormItem>
-  );
+  return [
+    <InputNumber
+      disabled={disabled}
+      startSlot={slotMapping?.x}
+      key="x"
+      min={min}
+      max={max}
+      value={value.x}
+      onValueChange={handleOnChange("x")}
+    />,
+    <InputNumber
+      disabled={disabled}
+      min={min}
+      max={max}
+      key="y"
+      startSlot={slotMapping?.y}
+      value={value.y}
+      onValueChange={handleOnChange("y")}
+    />,
+    <InputNumber
+      disabled={disabled}
+      min={min}
+      max={max}
+      key="z"
+      startSlot={slotMapping?.z}
+      value={value.z}
+      onValueChange={handleOnChange("z")}
+    />,
+    <InputNumber
+      disabled={disabled}
+      min={min}
+      max={max}
+      key="w"
+      startSlot={slotMapping?.w}
+      value={value.w}
+      onValueChange={handleOnChange("w")}
+    />,
+  ]
 }
