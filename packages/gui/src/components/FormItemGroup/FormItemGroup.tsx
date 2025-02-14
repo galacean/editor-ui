@@ -26,7 +26,6 @@ function FormItemGroup(props: FormItemGroupProps) {
       onOpenChange={onOpenChange}
       collapsible={collapsible}
       css={{
-        marginTop: '$0_5',
         '&:first-child': {
           marginTop: 0,
           borderTopLeftRadius: 0,
