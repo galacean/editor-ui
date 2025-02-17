@@ -8,7 +8,7 @@ import type {
 import { IconCheck, IconChevronDown, IconChevronUp } from '@tabler/icons-react'
 import { useControllableState } from '@radix-ui/react-use-controllable-state'
 
-import { styled } from '../design-system'
+import { CSS, styled } from '../design-system'
 import { checkboxItemStyle, contentStyle, indicatorStyle, labelStyle } from '../design-system/recipes'
 import { IconRightBottomCorner } from '../Icons'
 
@@ -80,11 +80,11 @@ const SelectTrigger = styled(SelectPrimitive.SelectTrigger, {
 
 const SelectIcon = styled(SelectPrimitive.SelectIcon, {
   position: "absolute",
+  height: "100%",
   display: 'inline-flex',
   color: 'CurrentColor',
   alignItems: 'center',
-  bottom: 3,
-  right: 3,
+  right: 4,
   lineHeight: 1,
   '& > svg': {
     height: '14px',
@@ -157,12 +157,13 @@ const StyledSelectItemContent = styled('span', {
 })
 
 export interface SelectItemProps extends React.HTMLAttributes<HTMLDivElement> {
-  value: any
-  children?: React.ReactNode
+  value: any;
+  children?: React.ReactNode;
+  icon?: React.ReactNode;
 }
 
 const SelectItem = forwardRef<HTMLDivElement, SelectItemProps>(function SelectItem(
-  { children, value, ...props },
+  { children, value, icon, ...props },
   forwardedRef
 ) {
   const { size, valueType, valueRenderer } = React.useContext(SelectContext)
@@ -177,6 +178,7 @@ const SelectItem = forwardRef<HTMLDivElement, SelectItemProps>(function SelectIt
         <IconCheck />
       </StyledItemIndicator>
       <StyledSelectItemContent>
+        {icon}
         <SelectPrimitive.ItemText>{renderedValue ?? children}</SelectPrimitive.ItemText>
       </StyledSelectItemContent>
     </StyledItem>
@@ -218,7 +220,8 @@ export interface SelectProps extends Omit<PrimitiveSelectProps, 'value' | 'defau
   sideOffset?: number
   children?: React.ReactNode
   arrow?: boolean
-  cornerArrow?: boolean
+  cornerArrow?: boolean;
+  triggerCss?: CSS;
 }
 
 function Select(props: SelectProps) {
@@ -235,6 +238,7 @@ function Select(props: SelectProps) {
     width,
     id,
     sideOffset = 4,
+    triggerCss,
     ...rest
   } = props
 
@@ -270,7 +274,7 @@ function Select(props: SelectProps) {
   return (
     <SelectContext.Provider value={{ size, valueType: valueType as unknown as 'string' | 'number', valueRenderer }}>  
       <SelectPrimitive.Root {...rest} value={value} onValueChange={setValue}>
-        <SelectTrigger size={size} id={id}>
+        <SelectTrigger size={size} id={id} css={triggerCss}>
           <SelectPrimitive.Value placeholder={placeholder}>{renderedValue}</SelectPrimitive.Value>
           {arrow &&
             <SelectIcon>
