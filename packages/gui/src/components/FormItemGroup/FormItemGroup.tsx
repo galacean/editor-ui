@@ -25,13 +25,7 @@ function FormItemGroup(props: FormItemGroupProps) {
       nesting={nesting}
       onOpenChange={onOpenChange}
       collapsible={collapsible}
-      css={{
-        '&:first-child': {
-          marginTop: 0,
-          borderTopLeftRadius: 0,
-          borderTopRightRadius: 0,
-        }
-      }}
+      css={{ marginBottom: "2px" }}
     >
       {props.children}
     </Collapsible>
