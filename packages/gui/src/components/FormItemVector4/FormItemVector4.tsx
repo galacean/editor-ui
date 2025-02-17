@@ -14,14 +14,13 @@ export interface FormItemVector4Props extends Omit<BaseFormItemProps<Vector4>, '
 };
 
 export function FormItemVector4(props: FormItemVector4Props) {
-  const { onChange, min, max, disabled, value, ...rest } = props;
-  const { slotMapping = {
+  const { onChange, min, max, disabled, value, slotMapping = {
     x: "X",
     y: "Y",
     z: "Z",
     w: "W"
-  } } = rest;
-
+  }, ...rest } = props;
+  
   const handleOnChange = (prefix: keyof Vector4) => (v: number) => {
     if (!onChange) return;
     const result = { ...value, [prefix]: v };
