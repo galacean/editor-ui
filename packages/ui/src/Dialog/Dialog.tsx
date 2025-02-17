@@ -41,7 +41,7 @@ const StyledContent = styled(DialogPrimitive.Content, {
   borderRadius: '$5',
   overflow: 'hidden',
   backgroundColor: '$subbg',
-  boxShadow: `$popContent`,
+  boxShadow: `$popContainer`,
   // zIndex: 2,
   animation: `${animations.contentShow} 150ms cubic-bezier(0.16, 1, 0.3, 1)`,
 
