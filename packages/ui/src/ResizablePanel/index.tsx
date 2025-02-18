@@ -141,7 +141,6 @@ const ResizablePanel = forwardRef<HTMLDivElement, ResizablePanelProps>(function 
       } else {
         if (direction === 'horizontal') {
           width = clamp(size.width + (clientX - origin.x), range.min, range.max)
-          console.log('widht', width)
           // height = size.height;
         }
         if (direction === 'vertical') {
