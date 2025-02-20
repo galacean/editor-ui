@@ -6,9 +6,9 @@ import { BaseFormItemProps } from "./FormItem/FormItem";
 function generateGUI<T>() {
   return <C extends React.JSXElementConstructor<any>>(Component: C, defaultProps?: React.ComponentProps<C>) => {
     return function GUIComponent(props: React.ComponentProps<C> & BaseFormItemProps<T>) {
-      const { label, info, formStartSlot, formEndSlot, ...rest } = props;
+      const { label, info, formStartSlot, formEndSlot, direction, ...rest } = props;
       return (
-        <FormItem label={label} info={info} formStartSlot={formStartSlot} formEndSlot={formEndSlot}>
+        <FormItem label={label} info={info} formStartSlot={formStartSlot} formEndSlot={formEndSlot} direction={direction}>
           <Component {...defaultProps} {...rest as typeof defaultProps} />
         </FormItem>
       );
@@ -18,7 +18,7 @@ function generateGUI<T>() {
 
 export type FormItemButtonProps = PropsWithChildren<Omit<BaseFormItemProps<string>, 'value' | 'onChange'>>;
 export const FormItemButton = generateGUI<string>()(Button, {
-  variant: "secondary"
+  variant: "classic"
 }); 
 
 export type FormItemCascadeSliderProps = BaseFormItemProps<number[]>;

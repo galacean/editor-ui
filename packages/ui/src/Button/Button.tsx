@@ -128,6 +128,21 @@ const StyledButton = styled('button', button, {
           backgroundColor: '$gray12',
         },
       },
+      classic: {
+        position: 'relative',
+        width: '100%',
+        border: 'none',
+        whiteSpace: 'pre-wrap',
+        boxShadow: '$2',
+        backgroundColor: '$secondaryBg',
+        color: '$gray11',
+        '&:hover': {
+          backgroundColor: '$grayA4',
+        },
+        '&:active': {
+          backgroundColor: '$secondaryBg',
+        },
+      }
     },
     fullWidth: {
       true: {

@@ -9,9 +9,16 @@ const SCROLLBAR_SIZE = 4
 const ScrollAreaRoot = styled(ScrollAreaPrimitive.Root, {
   position: 'relative',
   width: '100%',
-  height: '100%',
   overflow: 'hidden',
-})
+  variants: {
+    fullHeight: {
+      true: { height: '100%' },
+    }
+  },
+  defaultVariants: {
+    fullHeight: true,
+  }
+},)
 
 const ScrollAreaViewport = styled(ScrollAreaPrimitive.Viewport, {
   width: '100%',
@@ -63,12 +70,14 @@ const StyledCorner = styled(ScrollAreaPrimitive.Corner, {
 interface ScrollAreaProps extends ScrollAreaViewportProps {
   children: React.ReactNode
   css?: CSS
+  fullHeight?: boolean
 }
 
 export function ScrollArea(props: ScrollAreaProps) {
+  const { fullHeight, ...rest } = props;
   return (
-    <ScrollAreaRoot>
-      <ScrollAreaViewport {...props} />
+    <ScrollAreaRoot fullHeight={fullHeight}>
+      <ScrollAreaViewport {...rest} />
       <ScrollAreaScrollbar orientation="horizontal">
         <ScrollAreaThumb />
       </ScrollAreaScrollbar>
