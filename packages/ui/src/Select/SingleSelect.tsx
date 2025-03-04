@@ -103,7 +103,7 @@ const CornerIcon = styled(IconRightBottomCorner, {
 
 const SelectContent = styled(SelectPrimitive.Content, {
   overflow: 'auto',
-  maxHeight: 'var(--radix-select-content-available-height)',
+  maxHeight: 'min(300px, var(--radix-select-content-available-height))',
   backgroundColor: '$gray2',
   minWidth: 'var(--radix-select-trigger-width)',
   borderRadius: '$4',
@@ -279,13 +279,7 @@ function Select(props: SelectProps) {
           {arrow && <SelectIcon>{cornerArrow ? <CornerIcon /> : <IconChevronDown />}</SelectIcon>}
         </SelectTrigger>
         <SelectPrimitive.Portal>
-          <SelectContent
-            position={position}
-            sideOffset={sideOffset}
-            collisionPadding={4}
-            css={{
-              maxHeight: 'min(300px, var(--radix-select-content-available-height))',
-            }}>
+          <SelectContent position={position} sideOffset={sideOffset} collisionPadding={4}>
             <SelectScrollUpButton>
               <IconChevronUp size="14px" />
             </SelectScrollUpButton>
