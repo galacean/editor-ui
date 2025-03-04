@@ -1,4 +1,4 @@
-import React, { createContext, useContext, forwardRef, useState, useCallback } from 'react'
+import React, { createContext, useContext, forwardRef, useState, useCallback, useRef, useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import { useControllableState } from '@radix-ui/react-use-controllable-state'
 import { IconSearch, IconCheck, IconChevronDown, IconX } from '@tabler/icons-react'
@@ -51,10 +51,65 @@ const StyledPlaceholder = styled('span', {
   color: '$gray11',
 })
 
+const StyledComboboxContent = styled(Flex, {
+  padding: '$1',
+  minHeight: '60px',
+  maxHeight: '300px',
+  overflowY: 'auto',
+  position: 'relative',
+  flex: 1,
+  flexWrap: 'nowrap !important',
+  '&[data-state="open"]': {
+    animation: 'none',
+  },
+  '&::-webkit-scrollbar': {
+    width: '8px',
+  },
+  '&::-webkit-scrollbar-track': {
+    background: 'transparent',
+  },
+  '&::-webkit-scrollbar-thumb': {
+    background: '$grayA5',
+    borderRadius: '4px',
+  },
+  '&::-webkit-scrollbar-thumb:hover': {
+    background: '$grayA6',
+  },
+})
+
+const StyledComboboxSearchInput = styled('input', {
+  all: 'unset',
+  width: '100%',
+  padding: '$1',
+  fontSize: '$1',
+  color: '$gray11',
+  boxSizing: 'border-box',
+})
+
+const StyledComboBoxItem = styled('button', basicItemStyle, {
+  userSelect: 'none',
+  width: '100%',
+  flexShrink: 0,
+  variants: {
+    focused: {
+      true: {
+        backgroundColor: '$grayA3',
+      },
+    },
+    selected: {
+      true: {
+        '&:hover': {
+          backgroundColor: '$grayA3',
+        },
+      },
+    },
+  },
+})
+
 interface ComboboxContextProps {
   autoClose: boolean
   placeholder?: string
-  valueRenderer?: (value: string, location?: "item" | "trigger") => React.ReactNode
+  valueRenderer?: (value: string, location?: 'item' | 'trigger') => React.ReactNode
 
   value: string[]
   selectValue?: (val: string) => void
@@ -105,20 +160,6 @@ export const ComboboxTrigger = forwardRef<HTMLButtonElement, ComboboxTriggerProp
   }
 )
 
-const StyledComboboxContent = styled(Flex, {
-  padding: '$1',
-  minHeight: '60px',
-})
-
-const StyledComboboxSearchInput = styled('input', {
-  all: 'unset',
-  width: '100%',
-  padding: '$1',
-  fontSize: '$1',
-  color: '$gray11',
-  boxSizing: 'border-box',
-})
-
 export interface ComboboxSearchInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   onSearch?: (value: string) => void
 }
@@ -143,6 +184,7 @@ function ComboboxSearchInput(props: ComboboxSearchInputProps) {
       css={{
         borderBottom: '1px solid $border',
         padding: '0 $2 0 $1',
+        flexShrink: 0,
       }}>
       <SearchIcon />
       <StyledComboboxSearchInput {...rest} value={searchValue} onChange={handleOnChange} />
@@ -150,25 +192,6 @@ function ComboboxSearchInput(props: ComboboxSearchInputProps) {
     </Flex>
   )
 }
-
-const StyledComboBoxItem = styled('button', basicItemStyle, {
-  userSelect: 'none',
-  width: '100%',
-  variants: {
-    focused: {
-      true: {
-        backgroundColor: '$grayA3',
-      },
-    },
-    selected: {
-      true: {
-        '&:hover': {
-          backgroundColor: '$grayA3',
-        },
-      },
-    },
-  },
-})
 
 export interface ComboboxItemProps extends React.HTMLAttributes<HTMLButtonElement> {
   value: string
@@ -222,9 +245,7 @@ export function ComboboxItem(props: ComboboxItemProps) {
           {...rest}
           selected={isSelected}
           onPointerUp={handleSelect}
-          focused={focusedIndex === index}
-          // onPointerMove={handlePointerMove}
-        >
+          focused={focusedIndex === index}>
           {valueRenderer ? valueRenderer(value) : children}
           {isSelected && <IconCheck size="12px" />}
         </StyledComboBoxItem>
@@ -278,7 +299,8 @@ export interface ComboboxProps {
 export function Combobox(props: ComboboxProps) {
   const { searchable = true, autoClose = true, children, onSearch, valueRenderer, placeholder } = props
   const [open, setOpen] = useState(false)
-  const closeRef = React.useRef<HTMLButtonElement>(null)
+  const closeRef = useRef<HTMLButtonElement>(null)
+  const contentRef = useRef<HTMLDivElement>(null)
   const [valueNode, setValueNode] = React.useState(null)
   const [focusedIndex, setFocusedIndex] = React.useState(-1)
   const [searchValue, setSearchValue] = React.useState('')
@@ -301,6 +323,15 @@ export function Combobox(props: ComboboxProps) {
   function close() {
     closeRef.current && closeRef.current.click()
   }
+
+  useEffect(() => {
+    if (contentRef.current) {
+      const content = contentRef.current
+      if (content.scrollHeight > content.clientHeight) {
+        content.style.overflowY = 'auto'
+      }
+    }
+  }, [children])
 
   return (
     <ComboboxContext.Provider
@@ -329,12 +360,29 @@ export function Combobox(props: ComboboxProps) {
         sideOffset={4}
         forceRender
         constrainSize
+        css={{
+          maxHeight: 'var(--radix-popover-content-available-height)',
+          display: 'flex',
+          flexDirection: 'column',
+        }}
         trigger={<ComboboxTrigger placeholder={placeholder} />}
         onOpenChange={setOpen}>
-        {searchable && <ComboboxSearchInput onSearch={onSearch} />}
-        <StyledComboboxContent direction="column" role="listbox">
-          {children}
-        </StyledComboboxContent>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            overflow: 'hidden',
+            maxHeight: 'inherit',
+          }}>
+          {searchable && (
+            <div style={{ flexShrink: 0 }}>
+              <ComboboxSearchInput onSearch={onSearch} />
+            </div>
+          )}
+          <StyledComboboxContent ref={contentRef} direction="column" role="listbox">
+            {children}
+          </StyledComboboxContent>
+        </div>
         <PopoverCloseTrigger ref={closeRef} style={{ display: 'none' }} />
       </Popover>
     </ComboboxContext.Provider>
