@@ -5,9 +5,10 @@ import { RgbaColorPicker, RgbColorPicker } from 'react-colorful'
 import { overrideStyle } from './override_style'
 import { GradientSlider } from '../ColorSlider/GradientSlider'
 import { ParticleSlider } from '../ColorSlider/ParticleSlider'
+import { HDRSlider } from '../ColorSlider/HDRSlider'
 import { ColorPickerInputGroup } from './ColorPickerInputGroup'
 import { ColorPickerTools } from './ColorPickerTools'
-import { type Color, type GradientColor, type ParticleColor } from './helper'
+import { type Color, type GradientColor, type ParticleColor, type HDRColor } from './helper'
 
 import { styled } from '../design-system'
 
@@ -39,14 +40,28 @@ interface ParticleColorPickerProps {
   onValueChange: (color: ParticleColor) => void
 }
 
-export type ColorPickerRootProps = ConstantColorPickerProps | GradientColorPickerProps | ParticleColorPickerProps
+interface HDRColorPickerProps {
+  mode: 'HDR'
+  value: HDRColor
+  defaultValue?: HDRColor
+  onValueChange: (color: HDRColor) => void
+}
+
+export type ColorPickerRootProps =
+  | ConstantColorPickerProps
+  | GradientColorPickerProps
+  | ParticleColorPickerProps
+  | HDRColorPickerProps
 
 const ColorPickerRoot = function ColorPickerRoot(
-  props: ColorPickerRootProps & { onChangePreviewStr: (color: Color | GradientColor | ParticleColor) => void }
+  props: ColorPickerRootProps & {
+    onChangePreviewStr: (color: Color | GradientColor | ParticleColor | HDRColor) => void
+  }
 ) {
   const gProps = props as GradientColorPickerProps
   const cProps = props as ConstantColorPickerProps
   const pProps = props as ParticleColorPickerProps
+  const hProps = props as HDRColorPickerProps
 
   const { mode, onChangePreviewStr, defaultValue } = props
 
@@ -68,6 +83,16 @@ const ColorPickerRoot = function ColorPickerRoot(
     },
   })
 
+  const [HDRColor, setHDRColor] = useControllableState<HDRColor>({
+    prop: mode === 'HDR' ? hProps.value : undefined,
+    defaultProp:
+      mode === 'HDR' && hProps.defaultValue ? hProps.defaultValue : { color: { r: 0, g: 0, b: 0, a: 1 }, intensity: 0 },
+    onChange: (v) => {
+      onChangePreviewStr(v)
+      hProps.onValueChange && hProps.onValueChange(v)
+    },
+  })
+
   const [selectedIndex, setSelectedIndex] = useState(0)
   const [selectedType, setSelectedType] = useState<'color' | 'alpha'>('color')
 
@@ -80,6 +105,9 @@ const ColorPickerRoot = function ColorPickerRoot(
     }
     if (mode === 'particle') {
       return pProps.value[selectedType][selectedIndex].value
+    }
+    if (mode === 'HDR') {
+      return hProps.value.value
     }
   }
 
@@ -96,6 +124,9 @@ const ColorPickerRoot = function ColorPickerRoot(
     }
     if (mode === 'particle' && particleColor && particleColor.color && particleColor.color.length > 0) {
       return particleColor[selectedType][selectedIndex].value
+    }
+    if (mode === 'HDR') {
+      return hProps.defaultValue.value
     }
     return constantDefaultValue
   }
@@ -115,6 +146,11 @@ const ColorPickerRoot = function ColorPickerRoot(
       newParticleColor[selectedType][selectedIndex].value = color
       setParticleColor(newParticleColor)
       pProps.onValueChange && pProps.onValueChange(newParticleColor)
+    }
+    if (mode === 'HDR') {
+      const newHDRColor = { value: color, intensity: HDRColor.intensity }
+      setHDRColor(newHDRColor)
+      hProps.onValueChange && hProps.onValueChange(newHDRColor)
     }
   }
 
@@ -136,6 +172,19 @@ const ColorPickerRoot = function ColorPickerRoot(
 
   const handlePickColor = (color: Color) => {
     setColor(color)
+  }
+
+  const renderColorPicker = () => {
+    if (mode === 'particle') {
+      if (selectedType === 'alpha') {
+        return <RgbaColorPicker color={color} onChange={setColor} />
+      }
+      if (selectedType === 'color') {
+        return <RgbColorPicker color={color} onChange={(c) => setColor({ ...c, a: 1 })} />
+      }
+    }
+
+    return <RgbaColorPicker color={color} onChange={setColor} />
   }
 
   useEffect(() => {
@@ -170,13 +219,10 @@ const ColorPickerRoot = function ColorPickerRoot(
         />
       )}
       <ConstantColorPickerRoot className="galacecan-color-picker" data-readonly={readonly}>
-        {mode === 'particle' && selectedType === 'alpha' && <RgbaColorPicker color={color} onChange={setColor} />}
-        {mode === 'particle' && selectedType === 'color' && (
-          <RgbColorPicker color={color} onChange={(c) => setColor({ ...c, a: 1 })} />
-        )}
-        {mode !== 'particle' && <RgbaColorPicker color={color} onChange={setColor} />}
+        {renderColorPicker()}
         <ColorPickerInputGroup alpha={mode !== 'particle'} value={color!} onChange={setColor} readonly={readonly} />
         <ColorPickerTools color={color!} onPickColor={handlePickColor} readonly={readonly} />
+        {mode === 'HDR' && <HDRSlider HDRColor={HDRColor} onChange={setHDRColor} />}
       </ConstantColorPickerRoot>
     </div>
   )
