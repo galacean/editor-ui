@@ -127,6 +127,8 @@ interface ComboboxContextProps {
 
   valueNode: any
   onValueNodeChange: (valueNode: any) => void
+  maxDisplayCount?: number
+  maxDisplayText?: string
 }
 
 const ComboboxContext = createContext<ComboboxContextProps>({
@@ -137,6 +139,8 @@ const ComboboxContext = createContext<ComboboxContextProps>({
 
   valueNode: null,
   onValueNodeChange: () => {},
+  maxDisplayCount: 0,
+  maxDisplayText: '{count} items selected',
 })
 
 export interface ComboboxTriggerProps {
@@ -147,13 +151,21 @@ export interface ComboboxTriggerProps {
 
 export const ComboboxTrigger = forwardRef<HTMLButtonElement, ComboboxTriggerProps>(
   function ComboboxTrigger(props, forwardedRef) {
-    const { value, onValueNodeChange, placeholder } = useContext(ComboboxContext)
+    const { value, onValueNodeChange, placeholder, maxDisplayCount, maxDisplayText } = useContext(ComboboxContext)
     const { valueRenderer, ...rest } = props
+
+    const valueArray = Array.isArray(value) ? value : value ? [value] : []
+
+    const shouldShowSummary = maxDisplayCount > 0 && valueArray.length > maxDisplayCount
+
+    const summaryText = maxDisplayText.replace('{count}', valueArray.length.toString())
 
     return (
       <StyledComboboxTrigger {...rest} ref={forwardedRef}>
-        <Flex gap="xxs" ref={onValueNodeChange}></Flex>
-        {value && value.length === 0 && <StyledPlaceholder>{placeholder}</StyledPlaceholder>}
+        <Flex gap="xxs" ref={onValueNodeChange}>
+          {shouldShowSummary && <Badge>{summaryText}</Badge>}
+        </Flex>
+        {valueArray.length === 0 && <StyledPlaceholder>{placeholder}</StyledPlaceholder>}
         <StyledChevronDown />
       </StyledComboboxTrigger>
     )
@@ -206,6 +218,7 @@ export function ComboboxItem(props: ComboboxItemProps) {
   const { value, children, index, ...rest } = props
   const {
     value: selectedValue,
+    maxDisplayCount,
     focusedIndex,
     selectValue,
     close,
@@ -215,6 +228,7 @@ export function ComboboxItem(props: ComboboxItemProps) {
     searchValue,
     autoClose,
   } = useContext(ComboboxContext)
+  const selectedValueArray = Array.isArray(selectedValue) ? selectedValue : selectedValue ? [selectedValue] : []
   const isSelected = selectedValue.indexOf(value) !== -1
   const ivVisible = searchValue ? value.toLowerCase().indexOf(searchValue.toLowerCase()) !== -1 : true
 
@@ -236,6 +250,9 @@ export function ComboboxItem(props: ComboboxItemProps) {
     autoClose && close && close()
   }
 
+  const shouldCreateBadge =
+    isSelected && valueNode && (maxDisplayCount === 0 || selectedValueArray.length <= maxDisplayCount)
+
   return (
     <>
       {ivVisible && (
@@ -250,10 +267,10 @@ export function ComboboxItem(props: ComboboxItemProps) {
           {isSelected && <IconCheck size="12px" />}
         </StyledComboBoxItem>
       )}
-      {isSelected && valueNode
+      {shouldCreateBadge
         ? createPortal(
             <Badge onClick={preventDefault} closeable onClose={handleRemove}>
-              {valueRenderer ? valueRenderer(value) : children}
+              {valueRenderer ? valueRenderer(value, 'trigger') : children}
             </Badge>,
             valueNode
           )
@@ -294,10 +311,36 @@ export interface ComboboxProps {
    * @default true
    */
   autoClose?: boolean
+
+  /**
+   * Maximum number of selected items to display in the trigger.
+   * If more items are selected, a summary badge will be shown instead.
+   * Set to 0 or null to always show all selected items.
+   *
+   * @default 0
+   */
+  maxDisplayCount?: number
+
+  /**
+   * Text to display when more items are selected than maxDisplayCount
+   * Use {count} as a placeholder for the number of selected items
+   *
+   * @default "{count} items selected"
+   */
+  maxDisplayText?: string
 }
 
 export function Combobox(props: ComboboxProps) {
-  const { searchable = true, autoClose = true, children, onSearch, valueRenderer, placeholder } = props
+  const {
+    searchable = true,
+    autoClose = true,
+    children,
+    onSearch,
+    valueRenderer,
+    placeholder,
+    maxDisplayCount = 0,
+    maxDisplayText = '{count} items selected',
+  } = props
   const [open, setOpen] = useState(false)
   const closeRef = useRef<HTMLButtonElement>(null)
   const contentRef = useRef<HTMLDivElement>(null)
@@ -354,6 +397,8 @@ export function Combobox(props: ComboboxProps) {
         onValueNodeChange: setValueNode,
         autoClose,
         placeholder,
+        maxDisplayCount,
+        maxDisplayText,
       }}>
       <Popover
         compact

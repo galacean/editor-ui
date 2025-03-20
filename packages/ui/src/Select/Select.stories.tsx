@@ -125,7 +125,7 @@ export const CustomValueRenderer: StoryFn<typeof Select> = () => {
 export const Multiple: StoryFn<typeof Select> = (args: any) => {
   return (
     <Flex style={{ width: '300px' }}>
-      <Select defaultValue="apple" placeholder="Select Fruits..." multiple {...args}>
+      <Select valueRenderer={(val) => val} defaultValue={['apple']} placeholder="Select Fruits..." multiple {...args}>
         <SelectItem value="apple">Apple</SelectItem>
         <SelectItem value="banana">Banana</SelectItem>
         <SelectItem value="blueberry">Blueberry</SelectItem>
@@ -153,4 +153,8 @@ Multiple.args = {
   searchable: false,
 
   autoClose: false,
+
+  maxDisplayCount: 2,
+
+  maxDisplayText: '已选择{count}项',
 }
