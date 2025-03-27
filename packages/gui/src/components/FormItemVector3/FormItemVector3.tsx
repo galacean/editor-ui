@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect, useRef, useState } from "react";
 import { ActionButton, InputNumber } from "@galacean/editor-ui";
 import { ConstrainIcon } from "../../Icons/ConstrainIcon";
 import { FormItem, type BaseFormItemProps } from "../FormItem";
@@ -24,24 +24,35 @@ export function FormItemVector3(props: FormItemVector3Props) {
   const { label, info, value, onChange, disabled, min, max, constrainable = false, formEndSlot, ...rest } = props;
   const [constrainMode, setConstrainMode] = useState(false);
 
+  const masterAxisRef = useRef<keyof Vector3>("x");
+  const originalValueRef = useRef<Vector3>();
+  
+  const handleFocus = (prefix: keyof Vector3) => () => {
+    originalValueRef.current = { x: value.x, y: value.y, z: value.z };
+    masterAxisRef.current = prefix;
+  }
+
   const handleOnChange = (prefix: keyof Vector3) => (v: number) => {
     if (!onChange) return;
-    const result = { ...value, [prefix]: v };
-    let currentValue = value[prefix];
-    if (value[prefix] === 0) {
-      currentValue = 1;
+    if(!constrainMode) {
+      onChange({ ...value, [prefix]: v }, prefix);
+      return;
     }
-    const ratio = v / currentValue;
 
-    if (constrainMode && v !== 0) {
-      for (const key in result) {
-        if (key !== prefix) {
-          result[key] = value[key] * ratio;
+    const newValue = Object.fromEntries(
+      Object.entries(value)
+        .map(([key]) => {
+        if (key === prefix) {
+          return [key, v];
         }
-      }
-    }
 
-    onChange && onChange(result, prefix);
+        const ratio = originalValueRef.current[key] / originalValueRef.current[masterAxisRef.current];
+        const newValue = v * ratio;
+        return [key, newValue];
+      }) 
+    ) as Vector3;
+
+    onChange(newValue, prefix);
   };
 
   const handleToggleConstrain = (e) => {
@@ -59,30 +70,15 @@ export function FormItemVector3(props: FormItemVector3Props) {
 
   return (
     <FormItem label={label} info={info} {...rest} formEndSlot={endSlot} fieldColumn={3}>
-      <InputNumber
-        disabled={disabled}
-        startSlot="X"
-        min={min}
-        max={max}
-        value={value.x}
-        onValueChange={handleOnChange("x")}
-      />
-      <InputNumber
-        disabled={disabled}
-        min={min}
-        max={max}
-        startSlot="Y"
-        value={value.y}
-        onValueChange={handleOnChange("y")}
-      />
-      <InputNumber
-        disabled={disabled}
-        min={min}
-        max={max}
-        startSlot="Z"
-        value={value.z}
-        onValueChange={handleOnChange("z")}
-      />
+      {(['x', 'y', 'z'] as const).map((axis) => (
+        <InputNumber
+          key={axis}
+          startSlot={axis.toUpperCase()}
+          value={value[axis]}
+          onFocus={handleFocus(axis)}
+          onValueChange={handleOnChange(axis)}
+        />
+      ))}
     </FormItem>
   );
 }
