@@ -1,20 +1,24 @@
-import React, { forwardRef, useEffect, useState, useCallback, PropsWithChildren } from 'react'
+import React, { forwardRef, useEffect, useState, useCallback, PropsWithChildren, Fragment } from 'react'
 import { IconX } from '@tabler/icons-react'
 
 import { styled, StitchesComponent } from '../design-system'
 
 const StyledCloseButton = styled('div', {
-  height: '$3',
-  width: '$3',
+  display: 'flex',
+  alignItems: 'center',
+  height: '$5',
+  // width: '$3',
+  padding: '0 $0_5',
   lineHeight: '14px',
-  borderRadius: '$round',
+  borderRadius: '0 4px 4px 0',
+  marginLeft: '1px',
   textAlign: 'center',
-  color: 'currentColor',
+  color: '$$color',
+  backgroundColor: '$$bgColor',
   cursor: 'pointer',
-  marginRight: '-$0_5',
   '&:hover': {
-    backgroundColor: '$grayA6',
-    color: '$gray12',
+    color: '$$highlightColor',
+    backgroundColor: '$$highlightBgColor',
   },
   variants: {
     pill: {
@@ -34,9 +38,7 @@ const StyledBadge = styled('span', {
   userSelect: 'none',
   whiteSpace: 'nowrap',
   fontWeight: 500,
-  gap: '$1',
   fontSize: '$sm',
-  padding: '$0_5 $2',
   variants: {
     size: {
       xs: {
@@ -44,6 +46,7 @@ const StyledBadge = styled('span', {
         padding: '2px 10px',
       },
     },
+
     pill: {
       true: {
         borderRadius: '$round',
@@ -51,8 +54,9 @@ const StyledBadge = styled('span', {
     },
     active: {
       true: {
-        backgroundColor: '$blue10',
-        color: 'white',
+        $$bgColor: '$blue10',
+        $$color: '$white',
+        $$highlightColor: '$blue12',
       },
     },
     dot: {
@@ -68,37 +72,67 @@ const StyledBadge = styled('span', {
         fontFamily: '$mono',
       },
     },
-    status: {
-      idle: {
-        color: '$grayA11',
-        backgroundColor: '$grayA4',
+    color: {
+      gray: {
+        $$color: '$colors$grayA11',
+        $$bgColor: '$colors$grayA4',
+        $$highlightColor: '$colors$grayA12',
+        $$highlightBgColor: '$colors$grayA5',
       },
-      success: {
-        color: '$greenA11',
-        backgroundColor: '$greenA3',
+      green: {
+        $$color: '$colors$greenA11',
+        $$bgColor: '$colors$greenA4',
+        $$highlightColor: '$colors$greenA12',
+        $$highlightBgColor: '$colors$greenA5',
       },
-      failed: {
-        color: '$redA11',
-        backgroundColor: '$redA3',
+      red: {
+        $$color: '$colors$redA11',
+        $$bgColor: '$colors$redA4',
+        $$highlightColor: '$colors$redA12',
+        $$highlightBgColor: '$colors$redA5',
       },
-      info: {
-        color: '$blueA11',
-        backgroundColor: '$blueA3',
+      blue: {
+        $$color: '$colors$blueA11',
+        $$bgColor: '$colors$blueA4',
+        $$highlightColor: '$colors$blueA12',
+        $$highlightBgColor: '$colors$blueA5',
       },
-      warning: {
-        color: '$orange11',
-        backgroundColor: '$orangeA3',
+      orange: {
+        $$color: '$colors$orangeA11',
+        $$bgColor: '$colors$orangeA4',
+        $$highlightColor: '$colors$orangeA12',
+        $$highlightBgColor: '$colors$orangeA5',
       },
-      vip: {
-        color: '$goldA11',
-        backgroundColor: '$gold5',
+      gold: {
+        $$color: '$colors$goldA11',
+        $$bgColor: '$colors$goldA4',
+        $$highlightColor: '$colors$goldA12',
+        $$highlightBgColor: '$colors$goldA5',
       },
     },
   },
   defaultVariants: {
-    status: 'idle',
+    color: 'gray',
   },
 })
+
+const StyledBadgeInner = styled('div', {
+  display: 'flex',
+  height: '$5',
+  alignItems: 'center',
+  color: '$$color',
+  backgroundColor: '$$bgColor',
+  padding: '$0_5 $1_5',
+  gap: '$1',
+  borderRadius: '4px',
+  variants: {
+    closeable: {
+      true: {
+        borderRadius: '4px 0 0 4px',
+      }
+    },
+  }
+});
 
 type BadgeCloseButtonProps = React.ComponentProps<typeof StyledCloseButton>
 
@@ -139,7 +173,9 @@ const Badge = forwardRef<HTMLSpanElement, BadgeProps>(function Badge(
 
   return (
     <StyledBadge ref={ref} {...rest}>
-      {children}
+      <StyledBadgeInner closeable={closeable}>
+        {children}
+      </StyledBadgeInner>
       {closeable && <BadgeCloseButton onClick={handleClose} pill={rest.pill} />}
     </StyledBadge>
   )

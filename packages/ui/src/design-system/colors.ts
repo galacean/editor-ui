@@ -16,6 +16,7 @@ import { gold, goldDark, goldDarkA } from '@radix-ui/colors'
 import { cyan, cyanDark, cyanDarkA } from '@radix-ui/colors'
 import { teal, tealDark } from '@radix-ui/colors'
 import { violet, violetDark } from '@radix-ui/colors'
+import { lime, limeDark } from '@radix-ui/colors'
 
 const conver2StandardGrayColors = (colors: Record<string, string>): typeof gray & typeof grayA => {
   const standardColors: any = {}
@@ -26,8 +27,8 @@ const conver2StandardGrayColors = (colors: Record<string, string>): typeof gray 
 }
 
 // Radix UI provide 7 types of gray.
-export const lightStandardGrayColor = conver2StandardGrayColors({ ...gray, ...grayA })
-export const darkStandardGrayColor = conver2StandardGrayColors({ ...grayDark, ...grayDarkA })
+export const lightStandardGrayColor = conver2StandardGrayColors({ ...slate, ...slateA })
+export const darkStandardGrayColor = conver2StandardGrayColors({ ...slateDark, ...slateDarkA })
 
 const darkColors = {
   ...darkStandardGrayColor,
@@ -49,6 +50,7 @@ const darkColors = {
   ...cyanDarkA,
   ...tealDark,
   ...violetDark,
+  ...limeDark,
 }
 
 const lightColors = {
@@ -68,6 +70,7 @@ const lightColors = {
   ...cyan,
   ...teal,
   ...violet,
+  ...lime,
 }
 
 export const semanticColors = {

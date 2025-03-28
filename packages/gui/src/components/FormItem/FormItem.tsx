@@ -29,7 +29,7 @@ const StyledField = styled("div", {
         gridTemplateColumns: "minmax(0, 8fr) repeat(2, 1fr)",
       },
       asset: {
-        gridTemplateColumns: "minmax(0, 8fr) $6 $6",
+        gridTemplateColumns: "minmax(0, 8fr) $sm $sm",
       },
     }
   }
