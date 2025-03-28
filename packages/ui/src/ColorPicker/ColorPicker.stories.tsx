@@ -1,36 +1,36 @@
-import React, { useState } from "react";
-import { Meta, StoryFn } from "@storybook/react";
+import React, { useState } from 'react'
+import { Meta, StoryFn } from '@storybook/react'
 
-import { Flex } from "../Flex";
-import { Textarea } from "../Textarea";
+import { Flex } from '../Flex'
+import { Textarea } from '../Textarea'
 
-import { ColorPicker } from "./";
+import { ColorPicker } from './'
 
 const argTypes = {
   disabled: {
     control: 'boolean',
   },
   fullsize: {
-    control: "boolean",
-  }
-};
+    control: 'boolean',
+  },
+}
 
 export default {
-  title: "Inputs/ColorPicker",
+  title: 'Inputs/ColorPicker',
   tags: ['autodocs'],
   component: ColorPicker,
   argTypes,
   args: {
     disabled: false,
     fullsize: true,
-  }
-} as Meta;
+  },
+} as Meta
 
 export const Overview = (args) => {
-  const [color, setColor] = useState({ r: 200, g: 150, b: 35, a: 0.5 });
+  const [color, setColor] = useState({ r: 200, g: 150, b: 35, a: 0.5 })
 
   function handleOnChange(nextColor) {
-    setColor(nextColor);
+    setColor(nextColor)
   }
 
   return (
@@ -38,19 +38,19 @@ export const Overview = (args) => {
       <ColorPicker mode="constant" value={color} onValueChange={handleOnChange} {...args} />
       <Textarea value={JSON.stringify(color)} />
     </Flex>
-  );
-};
+  )
+}
 
-Overview.argTypes = argTypes;
+Overview.argTypes = argTypes
 
 export const GradientMode = (args) => {
   const [color, setColor] = useState([
     { value: { r: 200, g: 150, b: 35, a: 0.5 }, position: 0 },
-    { value: { r: 200, g: 150, b: 35, a: 1 }, position: 1 }
-  ]);
+    { value: { r: 200, g: 150, b: 35, a: 1 }, position: 1 },
+  ])
 
   function handleOnChange(nextColor) {
-    setColor(nextColor);
+    setColor(nextColor)
   }
 
   return (
@@ -58,31 +58,51 @@ export const GradientMode = (args) => {
       <ColorPicker mode="gradient" value={color} onValueChange={handleOnChange} {...args} />
       <Textarea value={JSON.stringify(color)} />
     </Flex>
-  );
-};
+  )
+}
 
-GradientMode.argTypes = argTypes;
+GradientMode.argTypes = argTypes
 
 export const ParticleMode = (args) => {
   const [color, setColor] = useState({
     color: [
       { value: { r: 200, g: 150, b: 35, a: 0.5 }, position: 0 },
-      { value: { r: 200, g: 150, b: 35, a: 1 }, position: 1 }
+      { value: { r: 200, g: 150, b: 35, a: 1 }, position: 1 },
     ],
     alpha: [
       { value: { r: 255, g: 255, b: 255, a: 0.5 }, position: 0 },
-      { value: { r: 255, g: 255, b: 255, a: 1 }, position: 1 }
-    ]
-  });
+      { value: { r: 255, g: 255, b: 255, a: 1 }, position: 1 },
+    ],
+  })
 
   function handleOnChange(nextColor) {
-    setColor(nextColor);
+    setColor(nextColor)
   }
 
   return (
-    <Flex  gap="sm" style={{ width: '300px' }} align="v">
+    <Flex gap="sm" style={{ width: '300px' }} align="v">
       <Textarea value={JSON.stringify(color)} />
       <ColorPicker mode="particle" value={color} onValueChange={handleOnChange} {...args} />
     </Flex>
-  );
-};
+  )
+}
+
+GradientMode.argTypes = argTypes
+
+export const HDRMode = (args) => {
+  const [color, setColor] = useState({
+    value: { r: 200, g: 150, b: 35, a: 0.5 },
+    intensity: 1,
+  })
+
+  function handleOnChange(nextColor) {
+    setColor(nextColor)
+  }
+
+  return (
+    <Flex gap="sm" style={{ width: '300px' }} align="v">
+      <Textarea value={JSON.stringify(color)} />
+      <ColorPicker mode="HDR" value={color} onValueChange={handleOnChange} {...args} />
+    </Flex>
+  )
+}
