@@ -55,6 +55,10 @@ export function FormItemVector3(props: FormItemVector3Props) {
     onChange(newValue, prefix);
   };
 
+  useEffect(() => {
+    originalValueRef.current = { x: value.x, y: value.y, z: value.z };
+  }, [])
+
   const handleToggleConstrain = (e) => {
     setConstrainMode(!constrainMode);
   };
