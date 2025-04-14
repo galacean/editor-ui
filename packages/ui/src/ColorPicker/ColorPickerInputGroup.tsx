@@ -108,6 +108,12 @@ function ColorPickerInput(props: ColorPickerInputProps) {
     [onChangeCallback, onBlurCallback]
   )
 
+  const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.currentTarget.blur()
+    }
+  }, [])
+
   useEffect(() => {
     setValue(String(props.value))
   }, [props.value])
@@ -123,6 +129,7 @@ function ColorPickerInput(props: ColorPickerInputProps) {
         value={value}
         onChange={handleChange}
         onBlur={handleBlur}
+        onKeyDown={handleKeyDown}
       />
       <label htmlFor={id}>{label}</label>
     </InputItem>
@@ -159,12 +166,18 @@ function RGBAColorInput(props: ColorInputProps<RgbaColor>) {
     onChange && onChange({ ...value, [prefix]: prefixValue })
   }
 
+  const handleBlur = (prefix: keyof RgbaColor) => (prefixValue: number) => {
+    if (prefix !== 'a' && prefixValue > 255) {
+      onChange({ ...value, [prefix]: 255 })
+    }
+  }
+
   return (
     <>
-      <ColorPickerInput label="R" value={value.r} onChange={handleOnChange('r')} />
-      <ColorPickerInput label="G" value={value.g} onChange={handleOnChange('g')} />
-      <ColorPickerInput label="B" value={value.b} onChange={handleOnChange('b')} />
-      {alpha && <ColorPickerInput label="A" value={value.a} onChange={handleOnChange('a')} />}
+      <ColorPickerInput label="R" value={value.r} max={255} onBlur={handleBlur('r')} onChange={handleOnChange('r')} />
+      <ColorPickerInput label="G" value={value.g} max={255} onBlur={handleBlur('g')} onChange={handleOnChange('g')} />
+      <ColorPickerInput label="B" value={value.b} max={255} onBlur={handleBlur('b')} onChange={handleOnChange('b')} />
+      {alpha && <ColorPickerInput label="A" value={value.a} max={1} onChange={handleOnChange('a')} />}
     </>
   )
 }
