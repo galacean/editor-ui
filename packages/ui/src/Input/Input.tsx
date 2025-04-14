@@ -159,11 +159,6 @@ export const StyledInputRoot = styled('div', {
         lineHeight: '$sizes$sm',
         fontSize: '$sm',
         borderRadius: '$2',
-        [`& ${StyledInput}`]: {
-          '&::placeholder': {
-            fontSize: '10px',
-          },
-        },
       },
       md: {
         height: '$md',
