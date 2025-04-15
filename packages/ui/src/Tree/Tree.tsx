@@ -45,6 +45,11 @@ const TreeItemContentRoot = styled('div', {
   },
   // borderRadius: '$2',
   variants: {
+    isHovered: {
+      true: {
+        boxShadow: '0 0 0 1px var(--colors-blue11)',
+      },
+    },
     selected: {
       true: {
         color: '$white',
@@ -118,6 +123,11 @@ export const TreeItemRoot = styled('div', {
     borderRadius: '$2',
   },
   variants: {
+    isHovered: {
+      true: {
+        backgroundColor: '$grayA2',
+      },
+    },
     isSelected: {
       true: {
         color: '$white',
@@ -151,6 +161,7 @@ export const TreeItemRoot = styled('div', {
 })
 
 interface TreeItemContentProps {
+  isHovered?: boolean
   id: string
   name: string
   isActive?: boolean
@@ -170,6 +181,7 @@ interface TreeItemContentProps {
 export function TreeItemContent(props: TreeItemContentProps) {
   const input = useRef<HTMLInputElement>()
   const {
+    isHovered,
     id,
     name: propName,
     prefabRemoved,
@@ -247,6 +259,7 @@ export function TreeItemContent(props: TreeItemContentProps) {
       style={{ paddingLeft: `${(isExpandable ? 0 : 16) + 6 + level * 6}px` }}
       onContextMenu={handleContextMenu}
       selected={isSelected}
+      isHovered={isHovered}
       isActive={isActive}>
       {isExpandable && (
         <>
