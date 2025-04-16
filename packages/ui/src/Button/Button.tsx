@@ -130,7 +130,6 @@ const StyledButton = styled('button', button, {
       },
       classic: {
         position: 'relative',
-        width: '100%',
         border: 'none',
         whiteSpace: 'pre-wrap',
         boxShadow: '$2',
