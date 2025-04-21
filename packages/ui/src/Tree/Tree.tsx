@@ -176,6 +176,8 @@ interface TreeItemContentProps {
   startSlot?: React.ReactNode
   endSlot?: React.ReactNode
   onRename?: (id: string, name: string) => void
+  handleMouseEnter?: () => void
+  handleMouseLeave?: () => void
 }
 
 export function TreeItemContent(props: TreeItemContentProps) {
@@ -258,6 +260,8 @@ export function TreeItemContent(props: TreeItemContentProps) {
     <TreeItemContentRoot
       style={{ paddingLeft: `${(isExpandable ? 0 : 16) + 6 + level * 6}px` }}
       onContextMenu={handleContextMenu}
+      onMouseEnter={props.handleMouseEnter}
+      onMouseLeave={props.handleMouseLeave}
       selected={isSelected}
       isHovered={isHovered}
       isActive={isActive}>
