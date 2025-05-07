@@ -24,8 +24,8 @@ const StyledButton = styled('button', button, {
   variants: {
     size: {
       xs: {
-        height: '$5',
-        fontSize: '$sm',
+        height: '$xs',
+        fontSize: '$xs',
         lineHeight: '$sizes$5',
         fontWeight: 400,
         borderRadius: '$2',
@@ -37,8 +37,8 @@ const StyledButton = styled('button', button, {
       },
       s: {
         height: '$s',
-        fontSize: '$sm',
-        fontWeight: 400,
+        fontSize: '$2',
+        fontWeight: 500,
         borderRadius: '$2',
         padding: '0 $2',
         [`& ${Spin}`]: {
@@ -48,7 +48,7 @@ const StyledButton = styled('button', button, {
       },
       sm: {
         height: '$sm',
-        fontSize: '11px',
+        fontSize: '$sm',
         fontWeight: 400,
         borderRadius: '$2',
         padding: '0 $2',
@@ -127,6 +127,25 @@ const StyledButton = styled('button', button, {
         '&:active': {
           backgroundColor: '$gray12',
         },
+      },
+      classic: {
+        position: 'relative',
+        border: 'none',
+        whiteSpace: 'pre-wrap',
+        boxShadow: '$2',
+        backgroundColor: '$secondaryBg',
+        color: '$gray11',
+        '&:hover': {
+          backgroundColor: '$grayA4',
+        },
+        '&:active': {
+          backgroundColor: '$secondaryBg',
+        },
+      }
+    },
+    fullWidth: {
+      true: {
+        width: '100%',
       },
     },
     uppercase: {
@@ -304,7 +323,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(props,
     onClick,
   })
 
-  const spin = <Spin color="default" size="xs" css={{ marginRight: '$1_5' }} />
+  const spin = <Spin color="inherit" size="xs" css={{ marginRight: '$1_5' }} />
   const Comp = asChild ? Slot : StyledButton
 
   return (

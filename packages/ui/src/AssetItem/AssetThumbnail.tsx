@@ -48,8 +48,8 @@ const AssetThumbnailRoot = styled(Flex, {
     },
     mini: {
       true: {
-        width: '$5',
-        height: '$5',
+        width: '$7',
+        height: '$7',
         borderRadius: '$2',
       },
     },

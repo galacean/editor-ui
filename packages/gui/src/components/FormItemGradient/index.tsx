@@ -1,8 +1,8 @@
 import React from "react";
 import { useControllableState } from "@radix-ui/react-use-controllable-state";
-import { IconEaseIn, IconEqual, IconVectorBezier2, IconPlusMinus } from "@tabler/icons-react";
+import { IconEaseIn, IconEqual, IconVectorBezier2, IconPlusMinus, IconHexagonLetterEFilled } from "@tabler/icons-react";
 
-import { ColorPicker, type ParticleColor } from "@galacean/editor-ui";
+import { Button, ColorPicker, type ParticleColor, Select, SelectItem } from "@galacean/editor-ui";
 import { FormItem } from "../FormItem";
 import { type Color, normalizeColor, denormalizeColor } from "@galacean/editor-ui";
 
@@ -62,10 +62,10 @@ export interface FormItemGradientProps {
 }
 
 const particlePropertyTypeOptions = [
-  { type: "constant", icon: <IconEqual />, columns: "minmax(0, 12fr) 1fr" },
-  { type: "gradient", icon: <IconEaseIn />, columns: "minmax(0, 12fr) 1fr" },
-  { type: "two-constant", icon: <IconPlusMinus />, columns: "repeat(2, minmax(0, 12fr)) 1fr" },
-  { type: "two-gradient", icon: <IconVectorBezier2 />, columns: "repeat(2, minmax(0, 12fr)) 1fr" }
+  { type: "constant", icon: <IconEqual size="14px" />, columns: "1fr 32px" },
+  { type: "gradient", icon: <IconEaseIn size="14px" />, columns: "1fr 32px" },
+  { type: "two-constant", icon: <IconPlusMinus size="14px" />, columns: "repeat(2, minmax(0, 12fr)) 32px" },
+  { type: "two-gradient", icon: <IconVectorBezier2 size="14px" />, columns: "repeat(2, minmax(0, 12fr)) 32px" }
 ] as const;
 
 // IParticleColor -> IEngineParticleColor
@@ -221,8 +221,12 @@ export function FormItemGradient(props: FormItemGradientProps) {
     }
   });
 
-  function renderTypeIcon(type) {
-    return particlePropertyTypeOptions.find((option) => option.type === type)?.icon;
+  function renderTypeIcon(type, location) {
+    if(location === "trigger") {
+      return particlePropertyTypeOptions.find((option) => option.type === type)?.icon;
+    }
+    return type;
+
   }
 
   const handleConstantValueChange = (value) => {
@@ -358,22 +362,23 @@ export function FormItemGradient(props: FormItemGradientProps) {
             return null;
         }
       })}
-      {/* <SimpleSelect
+      <Select
         defaultValue="constant"
+        position="item-aligned"
+        cornerArrow
         value={propType}
         valueRenderer={renderTypeIcon}
         onValueChange={(v) => setPropType(v as GradientPropertyType)}
       >
         {valueMap.map((option) => (
-          <SimpleSelectItem
-            icon={particlePropertyTypeOptions.find((o) => o.type === option.type)?.icon}
+          <SelectItem
             value={option.type}
             key={option.type}
           >
             {option.label || option.type}
-          </SimpleSelectItem>
+          </SelectItem>
         ))}
-      </SimpleSelect> */}
+      </Select>
     </FormItem>
   );
 }

@@ -12,8 +12,8 @@ import { styled } from '../design-system'
 const StyledAccordion = styled(AccordionPrimitive.Root, {
   borderRadius: '$3',
   width: '100%',
-  border: '1px solid $border',
   overflow: 'hidden',
+  boxShadow: "$popContainer"
 })
 
 const StyledChevron = styled(IconChevronRight, {
@@ -24,7 +24,7 @@ const StyledChevron = styled(IconChevronRight, {
   transition: 'transform .2s ease',
 })
 
-const StyledTrigger = styled(AccordionPrimitive.Trigger, {
+const StyledTitle = styled(AccordionPrimitive.Trigger, {
   all: 'unset',
   display: 'flex',
   width: '100%',
@@ -51,11 +51,11 @@ const StyledTrigger = styled(AccordionPrimitive.Trigger, {
 
 const StyledContent = styled(AccordionPrimitive.Content, {
   fontSize: '$1',
-  padding: '$1',
-  backgroundColor: '$grayA1',
+  padding: '$1 $1',
+  backgroundColor: '$grayA2',
   color: '$gray11',
   '&[data-state="open"]': {
-    // borderBottom: "1px solid $gray2"
+    borderBottom: "1px solid $grayA3"
   },
   '&:empty': {
     padding: 0,
@@ -74,15 +74,15 @@ const StyledItem = styled(AccordionPrimitive.Item, {
     left: 0,
     width: '100%',
     height: '1px',
-    backgroundColor: '$border',
+    backgroundColor: '$grayA3',
   },
   '&:first-child': {
-    [`& ${StyledTrigger}`]: {
+    [`& ${StyledTitle}`]: {
       borderRadius: '$2 $2 0 0 !important',
     },
   },
   // '&:last-of-type': {
-  //   [`& ${StyledTrigger}`]: {
+  //   [`& ${StyledTitle}`]: {
   //     borderRadius: "",
   //     borderBottom: '1px solid $border',
   //   }
@@ -91,8 +91,8 @@ const StyledItem = styled(AccordionPrimitive.Item, {
     display: 'none',
   },
   '&[data-state="open"]:last-child': {
-    [`& ${StyledTrigger}`]: {
-      borderRadius: '0',
+    [`& ${StyledTitle}`]: {
+      borderRadius: 0,
     },
   },
 })
@@ -117,10 +117,10 @@ export function AccordionItem(props: AccordionItemProps) {
   const { children, title, arrow = true, ...rest } = props
   return (
     <StyledItem {...rest}>
-      <StyledTrigger>
+      <StyledTitle>
         {arrow && <StyledChevron aria-hidden />}
         {title}
-      </StyledTrigger>
+      </StyledTitle>
       <StyledContent>{children}</StyledContent>
     </StyledItem>
   )

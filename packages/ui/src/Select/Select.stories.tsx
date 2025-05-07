@@ -1,94 +1,94 @@
-import React from "react";
-import { Meta, StoryFn } from "@storybook/react";
-import { IconApple, IconCherry } from "@tabler/icons-react";
+import React from 'react'
+import { Meta, StoryFn } from '@storybook/react'
+import { IconApple, IconCherry } from '@tabler/icons-react'
 
-import { Flex } from "../Flex";
-import { Button } from "../Button";
+import { Flex } from '../Flex'
+import { Button } from '../Button'
 
-import { Select, SelectItem } from "./";
+import { Select, SelectItem } from './'
 
 export default {
-  title: "Inputs/Select",
-  tags: ["autodocs"],
-} as Meta<typeof Select>;
+  title: 'Inputs/Select',
+  tags: ['autodocs'],
+} as Meta<typeof Select>
 
 const mock_data = [
-  { value: "apple", label: "Apple" },
-  { value: "banana", label: "Banana" },
-  { value: "blueberry", label: "Blueberry" },
-  { value: "grapes", label: "Grapes" },
-  { value: "pineapple", label: "Pineapple" }
+  { value: 'apple', label: 'Apple' },
+  { value: 'banana', label: 'Banana' },
+  { value: 'blueberry', label: 'Blueberry' },
+  { value: 'grapes', label: 'Grapes' },
+  { value: 'pineapple', label: 'Pineapple' },
 ]
 
 /**
  * The Select component consist of `<Select>` and `<SelectItem />`, allow users to select one or multiple options from a list of options.
- * 
+ *
  * A part of this component built on top of the `@radix-ui/react-select`
- * 
+ *
  * This component provide controlled and uncontrolled modes.
  */
 export const Overview: StoryFn<typeof Select> = () => {
   return (
     <div>
-      <Flex css={{ width: "260px" }} direction="column" gap="sm">
+      <Flex css={{ width: '260px' }} direction="column" gap="sm">
         <Select defaultValue="apple" placeholder="Select Fruits...">
-          {
-            mock_data.map((item, index) => (
-              <SelectItem key={index} value={item.value}>{item.label}</SelectItem>
-            ))
-          }
+          {mock_data.map((item, index) => (
+            <SelectItem key={index} value={item.value}>
+              {item.label}
+            </SelectItem>
+          ))}
         </Select>
       </Flex>
     </div>
-  );
-};
+  )
+}
 
 export const Uncontrolled: StoryFn<typeof Select> = () => {
   return (
     <div>
-      <Flex css={{ width: "260px" }} direction="column" gap="sm">
+      <Flex css={{ width: '260px' }} direction="column" gap="sm">
         <Select defaultValue="apple" placeholder="Select Fruits...">
-          {
-            mock_data.map((item, index) => (
-              <SelectItem key={index} value={item.value}>{item.label}</SelectItem>
-            ))
-          }
+          {mock_data.map((item, index) => (
+            <SelectItem key={index} value={item.value}>
+              {item.label}
+            </SelectItem>
+          ))}
         </Select>
       </Flex>
     </div>
-  );
-};
+  )
+}
 
 export const Controlled: StoryFn<typeof Select> = () => {
-  const [value, setValue] = React.useState("apple");
+  const [value, setValue] = React.useState('apple')
 
   return (
     <div>
-      <Flex css={{ width: "260px" }} direction="column" gap="sm">
+      <Flex css={{ width: '260px' }} direction="column" gap="sm">
         <Button onClick={() => setValue('banana')}>Select Banana</Button>
         <Select value={value} onValueChange={setValue} placeholder="Select Fruits...">
-          {
-            mock_data.map((item, index) => (
-              <SelectItem key={index} value={item.value}>{item.label}</SelectItem>
-            ))
-          }
+          {mock_data.map((item, index) => (
+            <SelectItem key={index} value={item.value}>
+              {item.label}
+            </SelectItem>
+          ))}
         </Select>
       </Flex>
     </div>
-  );
-};
+  )
+}
 
 /**
  * `Select` support both `string` and `number` value types. It will detect the type of the value by default, but we suggest to explicitly define the `valueType` prop for better control.
  */
 export const ValueType: StoryFn<typeof Select> = () => {
-  const [value0, setValue0] = React.useState(0);
-  const [value1, setValue1] = React.useState("apple");
+  const [value0, setValue0] = React.useState(0)
+  const [value1, setValue1] = React.useState('apple')
 
   return (
     <Flex style={{ width: '300px' }} direction="column" gap="xs">
       <Select placeholder="Select Fruits..." valueType="number" value={value0} onValueChange={setValue0}>
-        <SelectItem value={0}>Apple  - value 0</SelectItem>
+        <SelectItem value={0}>Apple - value 0</SelectItem>
         <SelectItem value={1}>Cherry - value 1</SelectItem>
       </Select>
 
@@ -97,7 +97,7 @@ export const ValueType: StoryFn<typeof Select> = () => {
         <SelectItem value="cherry">Cherry</SelectItem>
       </Select>
     </Flex>
-  );
+  )
 }
 
 /**
@@ -119,19 +119,13 @@ export const CustomValueRenderer: StoryFn<typeof Select> = () => {
         </SelectItem>
       </Select>
     </Flex>
-  );
+  )
 }
 
 export const Multiple: StoryFn<typeof Select> = (args: any) => {
   return (
     <Flex style={{ width: '300px' }}>
-      <Select
-        defaultValue="apple"
-        placeholder="Select Fruits..."
-        multiple
-        valueRenderer={(value) => `Selected: ${value}`}
-        {...args}
-      >
+      <Select valueRenderer={(val) => val} defaultValue={['apple']} placeholder="Select Fruits..." multiple {...args}>
         <SelectItem value="apple">Apple</SelectItem>
         <SelectItem value="banana">Banana</SelectItem>
         <SelectItem value="blueberry">Blueberry</SelectItem>
@@ -139,24 +133,28 @@ export const Multiple: StoryFn<typeof Select> = (args: any) => {
         <SelectItem value="pineapple">Pineapple</SelectItem>
       </Select>
     </Flex>
-  );
+  )
 }
 
 Multiple.argTypes = {
-  searchable:{
+  searchable: {
     control: {
-      type: 'boolean'
-    }
+      type: 'boolean',
+    },
   },
   autoClose: {
     control: {
-      type: 'boolean'
-    }
+      type: 'boolean',
+    },
   },
 }
 
 Multiple.args = {
   searchable: false,
-  
+
   autoClose: false,
+
+  maxDisplayCount: 2,
+
+  maxDisplayText: '已选择{count}项',
 }

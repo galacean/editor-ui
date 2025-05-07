@@ -1,12 +1,12 @@
-import React, { useState } from "react";
-import { Meta, StoryFn } from "@storybook/react";
-import { AssetItem } from "./"
-import { Flex } from "../Flex";
-import { styled } from "../../design-system";
+import React, { useState } from 'react'
+import { Meta, StoryFn } from '@storybook/react'
+import { AssetItem } from './'
+import { Flex } from '../Flex'
+import { styled } from '../design-system'
 
 export default {
   component: AssetItem,
-} as Meta<typeof AssetItem>;
+} as Meta<typeof AssetItem>
 
 const Grid = styled('div', {
   display: 'grid',
@@ -17,24 +17,24 @@ const Grid = styled('div', {
 })
 
 function wait(ms: number) {
-  return new Promise(resolve => setTimeout(resolve, ms));
+  return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
 export const Overview: StoryFn<typeof AssetItem> = (args) => {
-  const [selectedMap, setSelectedMap] = useState<{ [key: string]: boolean }>({});
+  const [selectedMap, setSelectedMap] = useState<{ [key: string]: boolean }>({})
   return (
     <Grid>
       <AssetItem
         id="1"
         name="spine_person"
         onRename={async (name) => {
-          await wait(1000);
-          console.log('rename', name);
+          await wait(1000)
+          console.log('rename', name)
         }}
         loadingStatus="success"
         thumbnail="https://mdn.alipayobjects.com/huamei_dc3kgb/afts/img/A*q7BUSabi8scAAAAAAAAAAAAADuiaAQ/original"
-        selected={selectedMap["1"]}
-        onSelectedChange={() => setSelectedMap({ ...selectedMap, "1": true })}
+        selected={selectedMap['1']}
+        onSelectedChange={() => setSelectedMap({ ...selectedMap, '1': true })}
         onDoubleClick={() => {
           console.log('double click')
         }}
@@ -44,8 +44,8 @@ export const Overview: StoryFn<typeof AssetItem> = (args) => {
         name="helper.ts"
         loadingStatus="success"
         thumbnail="https://mdn.alipayobjects.com/huamei_dc3kgb/afts/img/A*rMekSIWSS4oAAAAAAAAAAAAADuiaAQ/original"
-        selected={selectedMap["2"]}
-        onSelectedChange={() => setSelectedMap({ ...selectedMap, "2": true })}
+        selected={selectedMap['2']}
+        onSelectedChange={() => setSelectedMap({ ...selectedMap, '2': true })}
       />
       <AssetItem
         name="spine_skeleton"
@@ -58,5 +58,5 @@ export const Overview: StoryFn<typeof AssetItem> = (args) => {
         thumbnail="https://mdn.alipayobjects.com/huamei_dc3kgb/afts/img/A*HQs2QrqBTawAAAAAAAAAAAAADuiaAQ/original"
       />
     </Grid>
-  );
+  )
 }

@@ -25,7 +25,12 @@ function FormItemGroup(props: FormItemGroupProps) {
       nesting={nesting}
       onOpenChange={onOpenChange}
       collapsible={collapsible}
-      css={{ marginTop: '$0_5' }}
+      css={{
+        marginBottom:'$0_5',
+        "&:last-child": {
+          marginBottom: 0,
+        },
+      }}
     >
       {props.children}
     </Collapsible>

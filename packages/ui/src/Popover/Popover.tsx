@@ -4,19 +4,16 @@ import * as PopoverPrimitive from '@radix-ui/react-popover'
 import type { PopoverContentProps as PrimitiveContentProps } from '@radix-ui/react-popover'
 import { useControllableState } from '@radix-ui/react-use-controllable-state'
 
-import { styled } from '../design-system'
+import { CSS, styled } from '../design-system'
 import { keyframes } from '../design-system/keyframes'
 import { contentStyle } from '../design-system/recipes'
 
-const StyledContent = styled(PopoverPrimitive.Content, {
+const StyledContent = styled(PopoverPrimitive.Content, contentStyle, {
   padding: '$2',
   fontSize: '$1',
   color: '$text',
   minWidth: '160px',
   outline: 'none',
-  backgroundColor: '$gray1',
-  borderRadius: '$4',
-  border: '1px solid $border',
   animationDuration: '300ms',
   animationTimingFunction: 'ubic-bezier(0.25, 0.8, 0.25, 1)',
   '&[data-state="open"]': {
@@ -57,7 +54,8 @@ export type PopoverProps = PopoverContentProps & {
   onOpenChange?: (open: boolean) => void
   open?: boolean
   compact?: boolean
-  constrainSize?: boolean
+  constrainSize?: boolean;
+  css?: CSS
 }
 
 interface PopoverContentProps extends PrimitiveContentProps {

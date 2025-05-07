@@ -13,7 +13,6 @@ import { BezierCurvePresets } from './Preset'
 const BezierCurveEditorTrigger = styled('div', {
   display: 'flex',
   height: '$6',
-  width: '100px',
   background: '$grayA3',
   borderRadius: '$2',
   overflow: 'hidden',
@@ -123,7 +122,7 @@ export const BezierCurveEditor = function BezierCurveEditor(props: BezierCurveEd
   }
 
   return (
-    <Popover trigger={<EditorTrigger points={points} algo={algo} />} sideOffset={2}>
+    <Popover trigger={<EditorTrigger points={points} algo={algo} />} sideOffset={2} compact>
       <CurveWrapper>
         <Editor
           algo={algo}

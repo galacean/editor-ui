@@ -123,7 +123,7 @@ function _BezierCurveEditor(props: BezierCurveEditorProps, forwardedRef: React.R
 
   const handleWheel = (e: WheelEvent) => {
     e.preventDefault()
-    let newZoom = e.deltaY > 0 ? zoom - zoomSpeed : zoom + zoomSpeed
+    let newZoom = e.deltaY > 0 ?  zoom + zoomSpeed : zoom - zoomSpeed
     newZoom = clamp(newZoom, zoomLimit[0], zoomLimit[1])
     setZoom(newZoom)
   }
@@ -212,7 +212,7 @@ function _BezierCurveEditor(props: BezierCurveEditorProps, forwardedRef: React.R
               />
             ))}
           </g>
-          <CurveAnimation points={points} ref={player} />
+          <CurveAnimation points={points} algo={algo} ref={player} />
         </Grid>
       </StyledSvgRoot>
       <Flex gap="xs" style={{ position: 'absolute', bottom: 10, right: 10 }}>

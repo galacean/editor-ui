@@ -2,17 +2,18 @@ import React from "react";
 import { useControllableState } from "@radix-ui/react-use-controllable-state";
 import { IconEaseIn, IconEqual, IconVectorBezier2, IconPlusMinus } from "@tabler/icons-react";
 
-import { InputNumber, Select, SelectItem, BezierCurveEditor } from "@galacean/editor-ui";
+import { InputNumber, Select, SelectItem, BezierCurveEditor, Button } from "@galacean/editor-ui";
 import { FormItem } from "../FormItem";
-import { BaseFormItemProps } from "../FormItem/FormItem";
+import { BaseFormItemProps, FormItemProps } from "../FormItem/FormItem";
+import { BezierCurveEditorProps } from "@galacean/editor-ui/src/BezierCurveEditor/types";
 
 type ParticlePropertyType = "constant" | "curve" | "two-constant" | "two-curve";
 
 const particlePropertyTypeOptions = [
-  { type: "constant", icon: <IconEqual />, columns: "minmax(0, 12fr) 1fr" },
-  { type: "curve", icon: <IconEaseIn />, columns: "minmax(0, 12fr) 1fr" },
-  { type: "two-constant", icon: <IconPlusMinus />, columns: "repeat(2, minmax(0, 12fr)) 1fr" },
-  { type: "two-curve", icon: <IconVectorBezier2 />, columns: "repeat(2, minmax(0, 12fr)) 1fr" }
+  { type: "constant", icon: <IconEqual size="14px" />, columns: "minmax(0, 12fr) 32px" },
+  { type: "curve", icon: <IconEaseIn size="14px" />, columns: "minmax(0, 12fr) 32px" },
+  { type: "two-constant", icon: <IconPlusMinus size="14px" />, columns: "repeat(2, minmax(0, 12fr)) 32px" },
+  { type: "two-curve", icon: <IconVectorBezier2 size="14px" />, columns: "repeat(2, minmax(0, 12fr)) 32px" }
 ] as const;
 
 const defaultPoints = [
@@ -31,14 +32,14 @@ type ParticleValue = {
   step?: number;
 }[]
 
-export interface FormItemParticleProps extends BaseFormItemProps<ParticleValue> {
+export interface FormItemParticleProps extends FormItemProps<ParticleValue> {
   type?: ParticlePropertyType;
-  labelFirst?: boolean;
+  algo?: BezierCurveEditorProps["algo"];
   onValueChange?: (value: FormItemParticleProps["value"], type: ParticlePropertyType) => void;
 }
 
 export function FormItemParticle(props: FormItemParticleProps) {
-  const { label, labelFirst, info, value, onValueChange, ...rest } = props;
+  const { label, info, value, onValueChange, algo = "bezier", ...rest } = props;
   const [propType, setPropType] = useControllableState<ParticlePropertyType>({
     prop: props.type,
     defaultProp: "constant",
@@ -63,8 +64,11 @@ export function FormItemParticle(props: FormItemParticleProps) {
     ]
   });
 
-  function renderTypeIcon(type) {
-    return particlePropertyTypeOptions.find((option) => option.type === type)?.icon;
+  function renderTypeIcon(value, location) {
+    if(location === "trigger") {
+      return particlePropertyTypeOptions.find((option) => option.type === value)?.icon;
+    }
+    return value;
   }
 
   const handleConstantValueChange = (value) => {
@@ -196,6 +200,8 @@ export function FormItemParticle(props: FormItemParticleProps) {
       })}
       <Select
         defaultValue="constant"
+        position="item-aligned"
+        cornerArrow
         value={propType}
         valueRenderer={renderTypeIcon}
         onValueChange={(v) => setPropType(v as ParticlePropertyType)}

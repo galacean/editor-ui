@@ -18,7 +18,7 @@ export function FormItemToggle(props: FormItemToggleProps) {
     >
       <Checkbox
         withLabel={withLabel}
-        checked={value}
+        checked={!!value}
         disabled={disabled}
         onCheckedChange={onChange}
       />

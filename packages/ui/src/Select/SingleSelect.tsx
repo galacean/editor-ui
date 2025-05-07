@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react'
+import React, { forwardRef, Fragment } from 'react'
 import * as SelectPrimitive from '@radix-ui/react-select'
 import type {
   SelectGroupProps as PrimitiveSelectGroupProps,
@@ -8,11 +8,13 @@ import type {
 import { IconCheck, IconChevronDown, IconChevronUp } from '@tabler/icons-react'
 import { useControllableState } from '@radix-ui/react-use-controllable-state'
 
-import { styled } from '../design-system'
+import { CSS, styled } from '../design-system'
 import { checkboxItemStyle, contentStyle, indicatorStyle, labelStyle } from '../design-system/recipes'
+import { IconRightBottomCorner } from '../Icons'
 
 const SelectTrigger = styled(SelectPrimitive.SelectTrigger, {
   all: 'unset',
+  position: 'relative',
   display: 'inline-flex',
   alignItems: 'center',
   justifyContent: 'space-between',
@@ -48,9 +50,12 @@ const SelectTrigger = styled(SelectPrimitive.SelectTrigger, {
   //   boxShadow: 'inset 0 0 0 1px $colors$blue10',
   // },
   '& > span:first-child': {
-    display: 'block',
+    display: 'flex',
     flex: 1,
+    height: '100%',
+    alignItems: 'center',
     minWidth: 0,
+    lineHeight: 0,
     overflow: 'hidden',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
@@ -74,9 +79,12 @@ const SelectTrigger = styled(SelectPrimitive.SelectTrigger, {
 })
 
 const SelectIcon = styled(SelectPrimitive.SelectIcon, {
-  color: 'CurrentColor',
+  position: 'absolute',
+  height: '100%',
   display: 'inline-flex',
+  color: 'CurrentColor',
   alignItems: 'center',
+  right: 4,
   lineHeight: 1,
   '& > svg': {
     height: '14px',
@@ -84,23 +92,32 @@ const SelectIcon = styled(SelectPrimitive.SelectIcon, {
   },
 })
 
-const SelectContent = styled(SelectPrimitive.Content, contentStyle, {
-  overflow: 'hidden',
-  borderRadius: '$3',
-  width: 'var(--radix-select-trigger-width)',
-  minWidth: 'initial !important',
-  maxHeight: 'var(--radix-select-content-available-height)',
-  variants: {
-    width: {
-      initial: {
-        width: 'initial !important',
-      },
-    },
-  },
+const CornerIcon = styled(IconRightBottomCorner, {
+  position: 'absolute',
+  width: '4px !important',
+  height: '4px !important',
+  color: 'var(CurrentColor, $gray8)',
+  bottom: 1,
+  right: 1,
+})
+
+const SelectContent = styled(SelectPrimitive.Content, {
+  overflow: 'auto',
+  maxHeight: 'min(300px, var(--radix-select-content-available-height))',
+  backgroundColor: '$gray2',
+  minWidth: 'var(--radix-select-trigger-width)',
+  borderRadius: '$4',
+  boxShadow: '0 5px 10px rgba(0,0,0,0.08)',
+  border: '1px solid $grayA4',
 })
 
 const SelectViewport = styled(SelectPrimitive.Viewport, {
-  padding: 0,
+  padding: '$1',
+  maxHeight: '300px',
+  overflowY: 'auto',
+  '@media (prefers-reduced-motion: no-preference)': {
+    scrollBehavior: 'smooth',
+  },
 })
 
 const StyledItem = styled(SelectPrimitive.Item, checkboxItemStyle)
@@ -126,11 +143,13 @@ const SelectScrollDownButton = styled(SelectPrimitive.ScrollDownButton, scrollBu
 type SelectContextProps = {
   size: 'xs' | 'sm' | 'md'
   valueType: 'string' | 'number'
+  valueRenderer?: (value: string | number, location?: 'item' | 'trigger') => React.ReactNode
 }
 
 const SelectContext = React.createContext<SelectContextProps>({
   size: 'sm',
   valueType: 'string',
+  valueRenderer: undefined,
 })
 
 const StyledSelectItemContent = styled('span', {
@@ -146,20 +165,25 @@ const StyledSelectItemContent = styled('span', {
 export interface SelectItemProps extends React.HTMLAttributes<HTMLDivElement> {
   value: any
   children?: React.ReactNode
+  icon?: React.ReactNode
 }
 
 const SelectItem = forwardRef<HTMLDivElement, SelectItemProps>(function SelectItem(
-  { children, value, ...props },
+  { children, value, icon, ...props },
   forwardedRef
 ) {
-  const { size, valueType } = React.useContext(SelectContext)
+  const { size, valueType, valueRenderer } = React.useContext(SelectContext)
+
+  const renderedValue = valueRenderer ? valueRenderer(value, 'item') : children
+
   return (
     <StyledItem {...props} value={valueType === 'number' ? String(value) : value} ref={forwardedRef} size={size}>
       <StyledItemIndicator>
         <IconCheck />
       </StyledItemIndicator>
       <StyledSelectItemContent>
-        <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
+        {icon}
+        <SelectPrimitive.ItemText>{renderedValue ?? children}</SelectPrimitive.ItemText>
       </StyledSelectItemContent>
     </StyledItem>
   )
@@ -192,11 +216,15 @@ export interface SelectProps extends Omit<PrimitiveSelectProps, 'value' | 'defau
   width?: 'initial'
   valueType?: 'string' | 'number'
   value?: string | number
+  valueRenderer?: (value: string | number, location?: 'item' | 'trigger') => React.ReactNode
   defaultValue?: string | number
   onValueChange?: (value: any) => void
   id?: string
   sideOffset?: number
   children?: React.ReactNode
+  arrow?: boolean
+  cornerArrow?: boolean
+  triggerCss?: CSS
 }
 
 function Select(props: SelectProps) {
@@ -206,10 +234,14 @@ function Select(props: SelectProps) {
     defaultValue: propDefaultValue,
     valueType: propValueType,
     position = 'popper',
+    valueRenderer,
     size = 'sm',
+    arrow = true,
+    cornerArrow = false,
     width,
     id,
     sideOffset = 4,
+    triggerCss,
     ...rest
   } = props
 
@@ -237,17 +269,17 @@ function Select(props: SelectProps) {
     },
   })
 
+  const renderedValue = valueRenderer ? valueRenderer(value, 'trigger') : undefined
+
   return (
-    <SelectContext.Provider value={{ size, valueType: valueType as unknown as 'string' | 'number' }}>
+    <SelectContext.Provider value={{ size, valueType: valueType as unknown as 'string' | 'number', valueRenderer }}>
       <SelectPrimitive.Root {...rest} value={value} onValueChange={setValue}>
-        <SelectTrigger size={size} id={id}>
-          <SelectPrimitive.Value placeholder={placeholder} />
-          <SelectIcon>
-            <IconChevronDown />
-          </SelectIcon>
+        <SelectTrigger size={size} id={id} css={triggerCss}>
+          <SelectPrimitive.Value placeholder={placeholder}>{renderedValue}</SelectPrimitive.Value>
+          {arrow && <SelectIcon>{cornerArrow ? <CornerIcon /> : <IconChevronDown />}</SelectIcon>}
         </SelectTrigger>
         <SelectPrimitive.Portal>
-          <SelectContent position={position} width={width} sideOffset={sideOffset} collisionPadding={0}>
+          <SelectContent position={position} sideOffset={sideOffset} collisionPadding={4}>
             <SelectScrollUpButton>
               <IconChevronUp size="14px" />
             </SelectScrollUpButton>

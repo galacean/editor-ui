@@ -3,7 +3,7 @@ import { AlertDialogProps } from '@radix-ui/react-alert-dialog'
 import React, { forwardRef, PropsWithChildren, ReactElement, useImperativeHandle, useState } from 'react'
 import { createRoot } from 'react-dom/client'
 
-import { styled } from '../design-system'
+import { styled, animations } from '../design-system'
 import { Button } from '../Button'
 import { Flex } from '../Flex'
 import { contentStyle, overlayStyle } from '../design-system/recipes'
@@ -11,7 +11,11 @@ import { Text, Title } from '../Typography'
 
 const { Root, Trigger, Portal, Overlay, Content, Title: AlertTitle, Description, Cancel, Action } = AlertDialogPrimitive
 
-const StyledOverlay = styled(Overlay, overlayStyle)
+const StyledOverlay = styled(Overlay, {
+  position: 'fixed',
+  inset: 0,
+  animation: `${animations.overlayFadeIn} 150ms cubic-bezier(0.16, 1, 0.3, 1)`,
+})
 const StyledContent = styled(Content, {
   position: 'fixed',
   padding: '$5',
@@ -21,13 +25,21 @@ const StyledContent = styled(Content, {
   width: '100%',
   transform: 'translate(-50%, -50%)',
   backgroundColor: '$gray1',
-  borderRadius: '$3',
+  borderRadius: '$5',
   border: '1px solid $gray4',
-  boxShadow:
-    'rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.1) 0px 4px 6px -4px',
   zIndex: 50,
   outline: 'none',
   boxSizing: 'content-box',
+  animation: `${animations.contentShow} 150ms cubic-bezier(0.16, 1, 0.3, 1)`,
+
+  '&:focus': { outline: 'none' },
+
+  "&[data-state=open]": {
+    animation: `${animations.contentFadeIn} 250ms ease`
+  },
+  "&[data-state=closed]": {
+    animation: `${animations.contentFadeOut} 250ms ease`
+  }
 })
 
 const StyledFooter = styled(Flex, {

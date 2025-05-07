@@ -8,6 +8,8 @@ const StyledContent = styled(HoverCardPrimitive.Content, {
   display: 'block',
   borderRadius: '$4',
   backgroundColor: '$gray2',
+  padding: "$1",
+  fontSize: "$1",
   border: '1px solid $gray5',
   animationName: `${keyframes.slideRightAndFade}`,
   animationDuration: '400ms',

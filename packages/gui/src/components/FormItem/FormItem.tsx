@@ -29,11 +29,8 @@ const StyledField = styled("div", {
         gridTemplateColumns: "minmax(0, 8fr) repeat(2, 1fr)",
       },
       asset: {
-        gridTemplateColumns: "minmax(0, 8fr) $6 $6",
+        gridTemplateColumns: "minmax(0, 8fr) $sm $sm",
       },
-      gradient: {
-
-      }
     }
   }
 });
@@ -90,7 +87,7 @@ export interface FormItemSelectableProps<T> extends BaseFormItemProps<T> {
   options: { value: T, label: ReactNode }[];
 }
 
-export interface FormItemProps extends BaseFormItemProps<any> {
+export interface FormItemProps<T = any> extends BaseFormItemProps<T> {
   children?: React.ReactNode;
   css?: CSS;
   labelCss?: CSS;

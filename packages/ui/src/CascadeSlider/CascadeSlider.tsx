@@ -28,10 +28,11 @@ const StyledThumb = styled(SliderPrimitive.Thumb, {
   position: 'relative',
   display: 'flex',
   width: '1px',
-  height: 'calc($sm - 2px)',
+  height: '$sm',
   backgroundColor: '$grayA3',
   cursor: 'ew-resize',
-  transition: 'opacity .2s ease, background-color .2s ease',
+  transition: 'background-color .2s ease',
+  // expand the hit area
   '&::after': {
     content: '',
     position: 'absolute',
@@ -73,11 +74,15 @@ const StyledSlider = styled(SliderPrimitive.Root, {
 const StyledColoredRange = styled('div', {
   height: '100%',
   display: 'flex',
-  fontSize: '$sm',
+  fontSize: '10px',
   alignItems: 'center',
   justifyContent: 'center',
   overflow: 'hidden',
-  color: '$gray11',
+  color: '$grayA11',
+  cursor: 'default',
+  '&:hover': {
+    color: '$grayA12',
+  },
   variants: {
     level: {
       0: {

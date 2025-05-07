@@ -29,7 +29,6 @@ export function FormItemInputNumber(props: FormItemInputNumberProps) {
     value,
     disabled,
     onChange,
-    step,
     dragStep = 1,
     min = -Infinity,
     max = Infinity,

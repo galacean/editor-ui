@@ -1,3 +1,4 @@
+import { type ReactNode } from "react";
 import { FormItem } from "../FormItem";
 import { InputNumber } from "@galacean/editor-ui";
 import { BaseFormItemProps } from "../FormItem/FormItem";
@@ -9,11 +10,17 @@ export interface FormItemVector4Props extends Omit<BaseFormItemProps<Vector4>, '
   max?: number;
   disabled?: boolean;
   onChange?: (value: Vector4, key: keyof Vector4) => void;
+  slotMapping?: Record<keyof Vector4, ReactNode>;
 };
 
 export function FormItemVector4(props: FormItemVector4Props) {
-  const { onChange, min, max, disabled, value, ...rest } = props;
-
+  const { onChange, min, max, disabled, value, slotMapping = {
+    x: "X",
+    y: "Y",
+    z: "Z",
+    w: "W"
+  }, ...rest } = props;
+  
   const handleOnChange = (prefix: keyof Vector4) => (v: number) => {
     if (!onChange) return;
     const result = { ...value, [prefix]: v };
@@ -24,7 +31,7 @@ export function FormItemVector4(props: FormItemVector4Props) {
     <FormItem {...rest} fieldColumn={4}>
       <InputNumber
         disabled={disabled}
-        startSlot="X"
+        startSlot={slotMapping?.x}
         min={min}
         max={max}
         value={value.x}
@@ -34,7 +41,7 @@ export function FormItemVector4(props: FormItemVector4Props) {
         disabled={disabled}
         min={min}
         max={max}
-        startSlot="Y"
+        startSlot={slotMapping?.y}
         value={value.y}
         onValueChange={handleOnChange("y")}
       />
@@ -42,7 +49,7 @@ export function FormItemVector4(props: FormItemVector4Props) {
         disabled={disabled}
         min={min}
         max={max}
-        startSlot="Z"
+        startSlot={slotMapping?.z}
         value={value.z}
         onValueChange={handleOnChange("z")}
       />
@@ -50,7 +57,7 @@ export function FormItemVector4(props: FormItemVector4Props) {
         disabled={disabled}
         min={min}
         max={max}
-        startSlot="W"
+        startSlot={slotMapping?.w}
         value={value.w}
         onValueChange={handleOnChange("w")}
       />

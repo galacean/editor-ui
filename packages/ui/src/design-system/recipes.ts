@@ -15,7 +15,7 @@ export const button = styled('button', {
     boxShadow: '0 0 0 3px $colors$blueA7',
   },
   '&:disabled': {
-    backgroundColor: '$grayA3',
+    backgroundColor: '$grayA2',
     color: '$grayA9',
     cursor: 'not-allowed',
   },
@@ -122,7 +122,7 @@ export const basicItemStyle = styled('div', {
   '&:focus': {
     // backgroundColor: "$grayA3",
     // color: "$grayA11"
-    backgroundColor: '$blue10',
+    backgroundColor: '$blue9',
     color: '$white',
   },
 
@@ -173,10 +173,10 @@ export const selectContent: CSS = {
 
 export const contentStyle = styled('div', {
   position: 'relative',
-  backgroundColor: '$listBg',
+  backgroundColor: '$gray2',
   borderRadius: '$3',
   padding: '$1',
-  boxShadow: '0 5px 10px rgba(0,0,0,0.08)',
+  boxShadow: "0px 0px .5px rgba(0, 0, 0, .5), 0px 1px 5px rgba(0, 0, 0, .4), inset 0px .5px 0px rgba(255, 255, 255, .1), inset 0px 0px .5px rgba(255, 255, 255, .3)",
   transformOrigin: 'var(--radix-context-menu-content-transform-origin)',
   border: '1px solid $grayA4',
   minWidth: '200px',
@@ -292,4 +292,13 @@ export const overlayStyle = styled(null, {
       animation: `${overlayShow} .15s cubic-bezier(0.16, 1, 0.3, 1) forwards`,
     },
   },
+})
+
+
+export const flexTextOverflow = css({
+  flex: 1,
+  minWidth: 0,
+  whiteSpace: "nowrap",
+  overflow: "hidden",
+  textOverflow: "ellipsis"
 })

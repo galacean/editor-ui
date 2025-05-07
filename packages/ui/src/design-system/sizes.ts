@@ -33,6 +33,7 @@ export const fontSizes = {
   8: '35px',
   9: '60px',
   sm: '$1',
+  xs: '$0_5',
 }
 
 export const space = {
@@ -76,4 +77,26 @@ export const radii = {
   5: '10px',
 
   round: '9999px',
+}
+
+export const shadows = {
+  2: `
+    0px 0px .5px rgba(0, 0, 0, .5),
+    0px 2px 6px 0px rgba(0, 0, 0, .2),
+    inset 0px .5px 0px rgba(255, 255, 255, .1),
+    inset 0px 0px .5px rgba(255, 255, 255, .3)
+  `,
+  3: `
+    0px 0px .5px rgba(0, 0, 0, .5),
+    0px 2px 6px 0px rgba(0, 0, 0, .2),
+    inset 0px .5px 0px rgba(255, 255, 255, .1),
+    inset 0px 0px .5px rgba(255, 255, 255, .3)
+  `,
+  popContainer: `
+    0px 0px .5px rgba(0, 0, 0, .5),
+    0px 2px 6px 0px rgba(0, 0, 0, .2),
+    inset 0px .5px 0px rgba(255, 255, 255, .1),
+    inset 0px 0px .5px rgba(255, 255, 255, .3)
+  `,
+  prepend: '0 0 0 0 transparent',
 }

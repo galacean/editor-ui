@@ -42,6 +42,11 @@ const Spin = styled('div', {
           borderColor: 'transparent transparent transparent $blueA11',
         },
       },
+      inherit: {
+        '&::after': {
+          borderColor: 'transparent transparent transparent CurrentColor',
+        },
+      },
       default: {
         '&::after': {
           borderColor: 'transparent transparent transparent $white',

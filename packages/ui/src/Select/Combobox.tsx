@@ -1,4 +1,4 @@
-import React, { createContext, useContext, forwardRef, useState, useCallback } from 'react'
+import React, { createContext, useContext, forwardRef, useState, useCallback, useRef, useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import { useControllableState } from '@radix-ui/react-use-controllable-state'
 import { IconSearch, IconCheck, IconChevronDown, IconX } from '@tabler/icons-react'
@@ -51,10 +51,65 @@ const StyledPlaceholder = styled('span', {
   color: '$gray11',
 })
 
+const StyledComboboxContent = styled(Flex, {
+  padding: '$1',
+  minHeight: '60px',
+  maxHeight: '300px',
+  overflowY: 'auto',
+  position: 'relative',
+  flex: 1,
+  flexWrap: 'nowrap !important',
+  '&[data-state="open"]': {
+    animation: 'none',
+  },
+  '&::-webkit-scrollbar': {
+    width: '8px',
+  },
+  '&::-webkit-scrollbar-track': {
+    background: 'transparent',
+  },
+  '&::-webkit-scrollbar-thumb': {
+    background: '$grayA5',
+    borderRadius: '4px',
+  },
+  '&::-webkit-scrollbar-thumb:hover': {
+    background: '$grayA6',
+  },
+})
+
+const StyledComboboxSearchInput = styled('input', {
+  all: 'unset',
+  width: '100%',
+  padding: '$1',
+  fontSize: '$1',
+  color: '$gray11',
+  boxSizing: 'border-box',
+})
+
+const StyledComboBoxItem = styled('button', basicItemStyle, {
+  userSelect: 'none',
+  width: '100%',
+  flexShrink: 0,
+  variants: {
+    focused: {
+      true: {
+        backgroundColor: '$grayA3',
+      },
+    },
+    selected: {
+      true: {
+        '&:hover': {
+          backgroundColor: '$grayA3',
+        },
+      },
+    },
+  },
+})
+
 interface ComboboxContextProps {
   autoClose: boolean
   placeholder?: string
-  valueRenderer?: (value: string) => React.ReactNode
+  valueRenderer?: (value: string, location?: 'item' | 'trigger') => React.ReactNode
 
   value: string[]
   selectValue?: (val: string) => void
@@ -72,6 +127,8 @@ interface ComboboxContextProps {
 
   valueNode: any
   onValueNodeChange: (valueNode: any) => void
+  maxDisplayCount?: number
+  maxDisplayText?: string
 }
 
 const ComboboxContext = createContext<ComboboxContextProps>({
@@ -82,6 +139,8 @@ const ComboboxContext = createContext<ComboboxContextProps>({
 
   valueNode: null,
   onValueNodeChange: () => {},
+  maxDisplayCount: 0,
+  maxDisplayText: '{count} items selected',
 })
 
 export interface ComboboxTriggerProps {
@@ -92,32 +151,26 @@ export interface ComboboxTriggerProps {
 
 export const ComboboxTrigger = forwardRef<HTMLButtonElement, ComboboxTriggerProps>(
   function ComboboxTrigger(props, forwardedRef) {
-    const { value, selectValue, onValueNodeChange, placeholder } = useContext(ComboboxContext)
+    const { value, onValueNodeChange, placeholder, maxDisplayCount, maxDisplayText } = useContext(ComboboxContext)
     const { valueRenderer, ...rest } = props
+
+    const valueArray = Array.isArray(value) ? value : value ? [value] : []
+
+    const shouldShowSummary = maxDisplayCount > 0 && valueArray.length > maxDisplayCount
+
+    const summaryText = maxDisplayText.replace('{count}', valueArray.length.toString())
 
     return (
       <StyledComboboxTrigger {...rest} ref={forwardedRef}>
-        <Flex gap="xxs" ref={onValueNodeChange}></Flex>
-        {value && value.length === 0 && <StyledPlaceholder>{placeholder}</StyledPlaceholder>}
+        <Flex gap="xxs" ref={onValueNodeChange}>
+          {shouldShowSummary && <Badge>{summaryText}</Badge>}
+        </Flex>
+        {valueArray.length === 0 && <StyledPlaceholder>{placeholder}</StyledPlaceholder>}
         <StyledChevronDown />
       </StyledComboboxTrigger>
     )
   }
 )
-
-const StyledComboboxContent = styled(Flex, {
-  padding: '$1',
-  minHeight: '60px',
-})
-
-const StyledComboboxSearchInput = styled('input', {
-  all: 'unset',
-  width: '100%',
-  padding: '$1',
-  fontSize: '$1',
-  color: '$gray11',
-  boxSizing: 'border-box',
-})
 
 export interface ComboboxSearchInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   onSearch?: (value: string) => void
@@ -143,6 +196,7 @@ function ComboboxSearchInput(props: ComboboxSearchInputProps) {
       css={{
         borderBottom: '1px solid $border',
         padding: '0 $2 0 $1',
+        flexShrink: 0,
       }}>
       <SearchIcon />
       <StyledComboboxSearchInput {...rest} value={searchValue} onChange={handleOnChange} />
@@ -150,25 +204,6 @@ function ComboboxSearchInput(props: ComboboxSearchInputProps) {
     </Flex>
   )
 }
-
-const StyledComboBoxItem = styled('button', basicItemStyle, {
-  userSelect: 'none',
-  width: '100%',
-  variants: {
-    focused: {
-      true: {
-        backgroundColor: '$grayA3',
-      },
-    },
-    selected: {
-      true: {
-        '&:hover': {
-          backgroundColor: '$grayA3',
-        },
-      },
-    },
-  },
-})
 
 export interface ComboboxItemProps extends React.HTMLAttributes<HTMLButtonElement> {
   value: string
@@ -183,14 +218,17 @@ export function ComboboxItem(props: ComboboxItemProps) {
   const { value, children, index, ...rest } = props
   const {
     value: selectedValue,
+    maxDisplayCount,
     focusedIndex,
     selectValue,
     close,
     setFocusedIndex,
+    valueRenderer,
     valueNode,
     searchValue,
     autoClose,
   } = useContext(ComboboxContext)
+  const selectedValueArray = Array.isArray(selectedValue) ? selectedValue : selectedValue ? [selectedValue] : []
   const isSelected = selectedValue.indexOf(value) !== -1
   const ivVisible = searchValue ? value.toLowerCase().indexOf(searchValue.toLowerCase()) !== -1 : true
 
@@ -212,6 +250,9 @@ export function ComboboxItem(props: ComboboxItemProps) {
     autoClose && close && close()
   }
 
+  const shouldCreateBadge =
+    isSelected && valueNode && (maxDisplayCount === 0 || selectedValueArray.length <= maxDisplayCount)
+
   return (
     <>
       {ivVisible && (
@@ -221,17 +262,15 @@ export function ComboboxItem(props: ComboboxItemProps) {
           {...rest}
           selected={isSelected}
           onPointerUp={handleSelect}
-          focused={focusedIndex === index}
-          // onPointerMove={handlePointerMove}
-        >
-          {children}
+          focused={focusedIndex === index}>
+          {valueRenderer ? valueRenderer(value) : children}
           {isSelected && <IconCheck size="12px" />}
         </StyledComboBoxItem>
       )}
-      {isSelected && valueNode
+      {shouldCreateBadge
         ? createPortal(
             <Badge onClick={preventDefault} closeable onClose={handleRemove}>
-              {children}
+              {valueRenderer ? valueRenderer(value, 'trigger') : children}
             </Badge>,
             valueNode
           )
@@ -272,12 +311,39 @@ export interface ComboboxProps {
    * @default true
    */
   autoClose?: boolean
+
+  /**
+   * Maximum number of selected items to display in the trigger.
+   * If more items are selected, a summary badge will be shown instead.
+   * Set to 0 or null to always show all selected items.
+   *
+   * @default 0
+   */
+  maxDisplayCount?: number
+
+  /**
+   * Text to display when more items are selected than maxDisplayCount
+   * Use {count} as a placeholder for the number of selected items
+   *
+   * @default "{count} items selected"
+   */
+  maxDisplayText?: string
 }
 
 export function Combobox(props: ComboboxProps) {
-  const { searchable = true, autoClose = true, children, onSearch, valueRenderer, placeholder } = props
+  const {
+    searchable = true,
+    autoClose = true,
+    children,
+    onSearch,
+    valueRenderer,
+    placeholder,
+    maxDisplayCount = 0,
+    maxDisplayText = '{count} items selected',
+  } = props
   const [open, setOpen] = useState(false)
-  const closeRef = React.useRef<HTMLButtonElement>(null)
+  const closeRef = useRef<HTMLButtonElement>(null)
+  const contentRef = useRef<HTMLDivElement>(null)
   const [valueNode, setValueNode] = React.useState(null)
   const [focusedIndex, setFocusedIndex] = React.useState(-1)
   const [searchValue, setSearchValue] = React.useState('')
@@ -301,6 +367,15 @@ export function Combobox(props: ComboboxProps) {
     closeRef.current && closeRef.current.click()
   }
 
+  useEffect(() => {
+    if (contentRef.current) {
+      const content = contentRef.current
+      if (content.scrollHeight > content.clientHeight) {
+        content.style.overflowY = 'auto'
+      }
+    }
+  }, [children])
+
   return (
     <ComboboxContext.Provider
       value={{
@@ -322,18 +397,37 @@ export function Combobox(props: ComboboxProps) {
         onValueNodeChange: setValueNode,
         autoClose,
         placeholder,
+        maxDisplayCount,
+        maxDisplayText,
       }}>
       <Popover
         compact
         sideOffset={4}
         forceRender
         constrainSize
+        css={{
+          maxHeight: 'var(--radix-popover-content-available-height)',
+          display: 'flex',
+          flexDirection: 'column',
+        }}
         trigger={<ComboboxTrigger placeholder={placeholder} />}
         onOpenChange={setOpen}>
-        {searchable && <ComboboxSearchInput onSearch={onSearch} />}
-        <StyledComboboxContent direction="column" role="listbox">
-          {children}
-        </StyledComboboxContent>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            overflow: 'hidden',
+            maxHeight: 'inherit',
+          }}>
+          {searchable && (
+            <div style={{ flexShrink: 0 }}>
+              <ComboboxSearchInput onSearch={onSearch} />
+            </div>
+          )}
+          <StyledComboboxContent ref={contentRef} direction="column" role="listbox">
+            {children}
+          </StyledComboboxContent>
+        </div>
         <PopoverCloseTrigger ref={closeRef} style={{ display: 'none' }} />
       </Popover>
     </ComboboxContext.Provider>

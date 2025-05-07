@@ -27,6 +27,7 @@ const StyledItem = styled(
     color: '$gray11',
     backgroundColor: 'rgba(0, 0, 0, 0)',
     transition: 'background-color 0.2s, color .2s, transform 0.2s ease',
+    cursor: 'pointer',
     variants: {
       size: {
         sm: {

@@ -2,7 +2,7 @@ import { createStitches } from '@stitches/react'
 import type { VariantProps, CSS, ComponentProps } from '@stitches/react'
 
 import { colors } from './colors'
-import { fontSizes, sizes, space, radii } from './sizes'
+import { fontSizes, sizes, space, radii, shadows } from './sizes'
 import { resetCSS } from './reset.css'
 
 export const { styled, css, keyframes, getCssText, theme, globalCss, createTheme } = createStitches({
@@ -36,9 +36,7 @@ export const { styled, css, keyframes, getCssText, theme, globalCss, createTheme
       8: '40px',
       9: '60px',
     },
-    shadows: {
-      prepend: '0 0 0 0 transparent',
-    },
+    shadows,
     transitions: {
       shadow: 'box-shadow .2s ease',
       backgroundColor: 'background-color .2s ease',
