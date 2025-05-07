@@ -90,6 +90,9 @@ const StyledComboBoxItem = styled('button', basicItemStyle, {
   userSelect: 'none',
   width: '100%',
   flexShrink: 0,
+  '&:hover': {
+    backgroundColor: '$grayA3',
+  },
   variants: {
     focused: {
       true: {
@@ -172,6 +175,12 @@ export const ComboboxTrigger = forwardRef<HTMLButtonElement, ComboboxTriggerProp
   }
 )
 
+const StyledComboboxSearchInputContainer = styled(Flex, {
+  borderBottom: '1px solid $border',
+  padding: '0 $2 0 $1',
+  flexShrink: 0,
+})
+
 export interface ComboboxSearchInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   onSearch?: (value: string) => void
 }
@@ -190,18 +199,11 @@ function ComboboxSearchInput(props: ComboboxSearchInputProps) {
   }
 
   return (
-    <Flex
-      wrap={false}
-      align="v"
-      css={{
-        borderBottom: '1px solid $border',
-        padding: '0 $2 0 $1',
-        flexShrink: 0,
-      }}>
+    <StyledComboboxSearchInputContainer wrap={false} align="v">
       <SearchIcon />
       <StyledComboboxSearchInput {...rest} value={searchValue} onChange={handleOnChange} />
       <IconX size="12px" />
-    </Flex>
+    </StyledComboboxSearchInputContainer>
   )
 }
 
@@ -249,6 +251,7 @@ export function ComboboxItem(props: ComboboxItemProps) {
     selectValue && selectValue(value)
     autoClose && close && close()
   }
+
 
   const shouldCreateBadge =
     isSelected && valueNode && (maxDisplayCount === 0 || selectedValueArray.length <= maxDisplayCount)

@@ -4,7 +4,6 @@ import type { ScrollAreaViewportProps, ScrollAreaProps as PrimitiveScrollAreaPro
 
 import { CSS, styled } from '../design-system'
 
-const SCROLLBAR_SIZE = 4
 
 const ScrollAreaRoot = styled(ScrollAreaPrimitive.Root, {
   position: 'relative',
@@ -39,23 +38,37 @@ const ScrollAreaViewport = styled(ScrollAreaPrimitive.Viewport, {
   }
 })
 
+const SCROLLBAR_SIZE = 4
+
 const ScrollAreaScrollbar = styled(ScrollAreaPrimitive.Scrollbar, {
   display: 'flex',
   userSelect: 'none',
   touchAction: 'none',
   margin: '$0_5',
-  transition: 'background 160ms ease-out',
   background: '$grayA3',
   '&[data-orientation="vertical"]': { width: SCROLLBAR_SIZE },
   '&[data-orientation="horizontal"]': {
     flexDirection: 'column',
     height: SCROLLBAR_SIZE,
   },
+  variants: {
+    subtle: {
+      true: {
+        padding: '$0_5 0 $0_5 $0_5',
+        margin: 0,
+        background: 'transparent',
+        '&:hover': { background: '$grayA5' },
+      }
+    }
+  },
+  defaultVariants: {
+    subtle: true,
+  },
 })
 
 const ScrollAreaThumb = styled(ScrollAreaPrimitive.Thumb, {
   flex: 1,
-  background: '$grayA8',
+  background: '$grayA7',
   borderRadius: SCROLLBAR_SIZE,
   // increase target size for touch devices https://www.w3.org/WAI/WCAG21/Understanding/target-size.html
   position: 'relative',
@@ -81,17 +94,18 @@ interface ScrollAreaProps extends PrimitiveScrollAreaProps {
   css?: CSS
   fullHeight?: boolean
   asContainer?: boolean
+  subtle?: boolean
 }
 
 export function ScrollArea(props: ScrollAreaProps) {
-  const { fullHeight, css, asContainer, ...rest } = props;
+  const { fullHeight, subtle, css, asContainer, ...rest } = props;
   return (
     <ScrollAreaRoot fullHeight={fullHeight}>
       <ScrollAreaViewport css={css} asContainer={asContainer} {...rest} />
-      <ScrollAreaScrollbar orientation="horizontal">
+      <ScrollAreaScrollbar orientation="horizontal" subtle={subtle}>
         <ScrollAreaThumb />
       </ScrollAreaScrollbar>
-      <ScrollAreaScrollbar orientation="vertical">
+      <ScrollAreaScrollbar orientation="vertical" subtle={subtle}>
         <ScrollAreaThumb />
       </ScrollAreaScrollbar>
       <StyledCorner />

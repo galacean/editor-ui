@@ -198,7 +198,7 @@ function SubMenuItem(props: PropsWithChildren<ISubMenuItemProps>) {
       </SubItem>
       <Portal>
         <SubContent>
-          <ScrollArea type="always" asContainer>
+          <ScrollArea type="always" subtle={false} asContainer>
             {children}  
           </ScrollArea>
         </SubContent>
@@ -320,7 +320,7 @@ function DropdownMenu(props: PropsWithChildren<IDropdownMenuProps>) {
         </DropdownMenuPrimitive.Trigger>
         <DropdownMenuPrimitive.Portal>
           <Content side={side} sideOffset={sideOffset} align={align} alignOffset={alignOffset}>
-            <ScrollArea type="always" asContainer>{children}</ScrollArea>
+            <ScrollArea type="always" subtle={false} asContainer>{children}</ScrollArea>
           </Content>
         </DropdownMenuPrimitive.Portal>
       </DropdownMenuPrimitive.Root>
@@ -349,7 +349,7 @@ function ContextMenu(props: IContextMenuProps) {
         </ContextMenuPrimitive.Trigger>
         <ContextMenuPrimitive.Portal>
           <Content hidden={hidden} onPointerDownOutside={onPointerDownOutside}>
-            <ScrollArea type="always" asContainer>{children}</ScrollArea>
+            <ScrollArea type="always" subtle={false} asContainer>{children}</ScrollArea>
           </Content>
         </ContextMenuPrimitive.Portal>
       </ContextMenuPrimitive.Root>
