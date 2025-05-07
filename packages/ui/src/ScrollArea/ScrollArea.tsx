@@ -1,6 +1,6 @@
 import React from 'react'
 import * as ScrollAreaPrimitive from '@radix-ui/react-scroll-area'
-import type { ScrollAreaViewportProps } from '@radix-ui/react-scroll-area'
+import type { ScrollAreaViewportProps, ScrollAreaProps as PrimitiveScrollAreaProps } from '@radix-ui/react-scroll-area'
 
 import { CSS, styled } from '../design-system'
 
@@ -10,6 +10,7 @@ const ScrollAreaRoot = styled(ScrollAreaPrimitive.Root, {
   position: 'relative',
   width: '100%',
   overflow: 'hidden',
+  maxHeight: 'inherit',
   variants: {
     fullHeight: {
       true: { height: '100%' },
@@ -23,20 +24,28 @@ const ScrollAreaRoot = styled(ScrollAreaPrimitive.Root, {
 const ScrollAreaViewport = styled(ScrollAreaPrimitive.Viewport, {
   width: '100%',
   height: '100%',
+  maxHeight: 'inherit',
   borderRadius: 'inherit',
   // https://github.com/radix-ui/primitives/issues/926
   '& > div[style]': {
     display: 'block !important',
   },
+  variants: {
+    asContainer: {
+      true: {
+        padding: '$1_5'
+      }
+    }
+  }
 })
 
 const ScrollAreaScrollbar = styled(ScrollAreaPrimitive.Scrollbar, {
   display: 'flex',
   userSelect: 'none',
   touchAction: 'none',
-  padding: '$0_5 0 $0_5 $0_5',
+  margin: '$0_5',
   transition: 'background 160ms ease-out',
-  '&:hover': { background: '$grayA5' },
+  background: '$grayA3',
   '&[data-orientation="vertical"]': { width: SCROLLBAR_SIZE },
   '&[data-orientation="horizontal"]': {
     flexDirection: 'column',
@@ -46,7 +55,7 @@ const ScrollAreaScrollbar = styled(ScrollAreaPrimitive.Scrollbar, {
 
 const ScrollAreaThumb = styled(ScrollAreaPrimitive.Thumb, {
   flex: 1,
-  background: '$gray7',
+  background: '$grayA8',
   borderRadius: SCROLLBAR_SIZE,
   // increase target size for touch devices https://www.w3.org/WAI/WCAG21/Understanding/target-size.html
   position: 'relative',
@@ -67,17 +76,18 @@ const StyledCorner = styled(ScrollAreaPrimitive.Corner, {
   backgroundColor: '$grayA5',
 })
 
-interface ScrollAreaProps extends ScrollAreaViewportProps {
+interface ScrollAreaProps extends PrimitiveScrollAreaProps {
   children: React.ReactNode
   css?: CSS
   fullHeight?: boolean
+  asContainer?: boolean
 }
 
 export function ScrollArea(props: ScrollAreaProps) {
-  const { fullHeight, ...rest } = props;
+  const { fullHeight, css, asContainer, ...rest } = props;
   return (
     <ScrollAreaRoot fullHeight={fullHeight}>
-      <ScrollAreaViewport {...rest} />
+      <ScrollAreaViewport css={css} asContainer={asContainer} {...rest} />
       <ScrollAreaScrollbar orientation="horizontal">
         <ScrollAreaThumb />
       </ScrollAreaScrollbar>

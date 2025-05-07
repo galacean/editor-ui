@@ -53,8 +53,8 @@ const anatomy = {
     RadioGroup: ContextMenuPrimitive.RadioGroup,
     MenuLabel: styled(ContextMenuPrimitive.Label, listStyle.labelStyle),
     MenuItem: styled(ContextMenuPrimitive.Item, listStyle.basicItemStyle),
-    Content: styled(ContextMenuPrimitive.Content, listStyle.contentStyle),
-    SubContent: styled(ContextMenuPrimitive.SubContent, listStyle.contentStyle),
+    Content: styled(ContextMenuPrimitive.Content, listStyle.contentStyle, listStyle.contextMenuContentStyle),
+    SubContent: styled(ContextMenuPrimitive.SubContent, listStyle.contentStyle, listStyle.contextMenuContentStyle),
     SubMenuItem: styled(ContextMenuPrimitive.SubTrigger, listStyle.subMenuItemStyle),
     Separator: styled(ContextMenuPrimitive.Separator, listStyle.separatorStyle),
     CheckboxItem: styled(ContextMenuPrimitive.CheckboxItem, listStyle.checkboxItemStyle),
@@ -69,8 +69,8 @@ const anatomy = {
     Portal: DropdownMenuPrimitive.Portal,
     MenuLabel: styled(DropdownMenuPrimitive.Label, listStyle.labelStyle),
     MenuItem: styled(DropdownMenuPrimitive.Item, listStyle.basicItemStyle),
-    Content: styled(DropdownMenuPrimitive.Content, listStyle.contentStyle),
-    SubContent: styled(DropdownMenuPrimitive.SubContent, listStyle.contentStyle),
+    Content: styled(DropdownMenuPrimitive.Content, listStyle.contentStyle, listStyle.dropdownMenuContentStyle),
+    SubContent: styled(DropdownMenuPrimitive.SubContent, listStyle.contentStyle, listStyle.dropdownMenuContentStyle),
     SubMenuItem: styled(DropdownMenuPrimitive.SubTrigger, listStyle.subMenuItemStyle),
     Separator: styled(DropdownMenuPrimitive.Separator, listStyle.separatorStyle),
     CheckboxItem: styled(DropdownMenuPrimitive.CheckboxItem, listStyle.checkboxItemStyle),
@@ -197,7 +197,11 @@ function SubMenuItem(props: PropsWithChildren<ISubMenuItemProps>) {
         <IconChevronRight size="12px" />
       </SubItem>
       <Portal>
-        <SubContent loop>{children}</SubContent>
+        <SubContent>
+          <ScrollArea type="always" asContainer>
+            {children}  
+          </ScrollArea>
+        </SubContent>
       </Portal>
     </Sub>
   )
@@ -316,7 +320,7 @@ function DropdownMenu(props: PropsWithChildren<IDropdownMenuProps>) {
         </DropdownMenuPrimitive.Trigger>
         <DropdownMenuPrimitive.Portal>
           <Content side={side} sideOffset={sideOffset} align={align} alignOffset={alignOffset}>
-            <ScrollArea>{children}</ScrollArea>
+            <ScrollArea type="always" asContainer>{children}</ScrollArea>
           </Content>
         </DropdownMenuPrimitive.Portal>
       </DropdownMenuPrimitive.Root>
@@ -345,7 +349,7 @@ function ContextMenu(props: IContextMenuProps) {
         </ContextMenuPrimitive.Trigger>
         <ContextMenuPrimitive.Portal>
           <Content hidden={hidden} onPointerDownOutside={onPointerDownOutside}>
-            {children}
+            <ScrollArea type="always" asContainer>{children}</ScrollArea>
           </Content>
         </ContextMenuPrimitive.Portal>
       </ContextMenuPrimitive.Root>

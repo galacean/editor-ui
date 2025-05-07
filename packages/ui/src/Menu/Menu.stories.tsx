@@ -71,6 +71,13 @@ export const DropdownMenuDemo: StoryFn<any> = () => {
           <MenuItem name="Mars" />
           <MenuItem name="Spine Animation" />
         </SubMenuItem>
+        <SubMenuItem name="So many submenus">
+          {
+            Array.from(Array(30).keys()).map((item) => (
+              <MenuItem key={item} name={`Layer ${item}`} />
+            ))
+          }
+        </SubMenuItem>
         <MenuItem name="Remove" critical />
       </DropdownMenu>
     </Flex>

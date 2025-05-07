@@ -171,6 +171,18 @@ export const selectContent: CSS = {
   border: '1px solid $grayA4',
 }
 
+export const dropdownMenuContentStyle = styled('div', {
+  maxHeight: 'var(--radix-dropdown-menu-content-available-height)',
+  transformOrigin: 'var(--radix-dropdown-menu-content-transform-origin)',
+  padding: 0,
+});
+
+export const contextMenuContentStyle = styled('div', {
+  maxHeight: 'var(--radix-context-menu-content-available-height)',
+  transformOrigin: 'var(--radix-context-menu-content-transform-origin)',
+  padding: 0,
+});
+
 export const contentStyle = styled('div', {
   position: 'relative',
   backgroundColor: '$gray2',
