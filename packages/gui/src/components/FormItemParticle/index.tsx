@@ -161,7 +161,7 @@ export function FormItemParticle(props: FormItemParticleProps) {
               />
             );
           case "curve":
-            return <BezierCurveEditor key="curve" algo={algo} value={value} onChange={handleCurveValueChange} />;
+            return <BezierCurveEditor algo="linear" key="curve" value={value} onChange={handleCurveValueChange} />;
           case "two-constant":
             return (
               <React.Fragment key="two-constant">
@@ -190,8 +190,8 @@ export function FormItemParticle(props: FormItemParticleProps) {
           case "two-curve":
             return (
               <React.Fragment key="two-curve">
-                <BezierCurveEditor value={value[0]} algo={algo} onChange={handleRdCurveValueChange(0)} />
-                <BezierCurveEditor value={value[1]} algo={algo} onChange={handleRdCurveValueChange(1)} />
+                <BezierCurveEditor algo="linear" value={value[0]} onChange={handleRdCurveValueChange(0)} />
+                <BezierCurveEditor algo="linear" value={value[1]} onChange={handleRdCurveValueChange(1)} />
               </React.Fragment>
             );
           default:
