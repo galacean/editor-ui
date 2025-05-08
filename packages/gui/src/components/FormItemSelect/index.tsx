@@ -4,13 +4,16 @@ import { FormItem, type FormItemSelectableProps } from "../FormItem";
 export interface FormItemSelectProps<T extends number | string> extends FormItemSelectableProps<T> {
   open?: boolean;
   multiple?: boolean;
+  selectAllText?: string;
+  showCloseButton?: boolean;
 };
 
 export function FormItemSelect<T extends number | string>(props: FormItemSelectProps<T>) {
-  const { value, label, info, disabled, onChange, options, multiple, formEndSlot, formStartSlot } = props;
+  const { value, label, info, disabled, onChange, options, multiple, formEndSlot, formStartSlot, selectAllText, showCloseButton } = props;
+
   return (
     <FormItem label={label} info={info} formEndSlot={formEndSlot} formStartSlot={formStartSlot}>
-      <Select value={value as string} disabled={disabled} onValueChange={onChange} multiple={multiple}>
+      <Select value={value as string} disabled={disabled} onValueChange={onChange} multiple={multiple} selectAllText={selectAllText} showCloseButton={showCloseButton}>
         {options.map((option) => (
           <SelectItem key={option.value} value={option.value}>
             {option.label}

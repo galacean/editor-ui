@@ -155,6 +155,7 @@ interface ComboboxContextProps {
   onValueNodeChange: (valueNode: any) => void
   maxDisplayCount?: number
   maxDisplayText?: string
+  showCloseButton?: boolean
 }
 
 const ComboboxContext = createContext<ComboboxContextProps>({
@@ -167,6 +168,7 @@ const ComboboxContext = createContext<ComboboxContextProps>({
   onValueNodeChange: () => {},
   maxDisplayCount: 0,
   maxDisplayText: '{count} items selected',
+  showCloseButton: true,
 })
 
 export interface ComboboxTriggerProps {
@@ -246,6 +248,7 @@ export function ComboboxItem(props: ComboboxItemProps) {
     valueNode,
     searchValue,
     autoClose,
+    showCloseButton,
   } = useContext(ComboboxContext)
   const selectedValueArray = Array.isArray(selectedValue) ? selectedValue : selectedValue ? [selectedValue] : []
   const isSelected = selectedValue.indexOf(value) !== -1
@@ -288,7 +291,7 @@ export function ComboboxItem(props: ComboboxItemProps) {
       )}
       {shouldCreateBadge
         ? createPortal(
-            <Badge onClick={preventDefault} closeable onClose={handleRemove}>
+            <Badge onClick={preventDefault} closeable={showCloseButton} onClose={showCloseButton ? handleRemove : undefined}>
               {valueRenderer ? valueRenderer(value, 'trigger') : children}
             </Badge>,
             valueNode
@@ -353,6 +356,12 @@ export interface ComboboxProps {
    * @default "Select All"
    */
   selectAllText?: string
+  
+  /**
+   * If true, show close button for selected items
+   * @default true
+   */
+  showCloseButton?: boolean
 }
 
 export function Combobox(props: ComboboxProps) {
@@ -367,6 +376,7 @@ export function Combobox(props: ComboboxProps) {
     maxDisplayCount = 0,
     maxDisplayText = '{count} items selected',
     selectAllText = 'Select All',
+    showCloseButton = true,
   } = props
   const [open, setOpen] = useState(false)
   const closeRef = useRef<HTMLButtonElement>(null)
@@ -447,6 +457,7 @@ export function Combobox(props: ComboboxProps) {
         placeholder,
         maxDisplayCount,
         maxDisplayText,
+        showCloseButton,
       }}>
       <Popover
         compact
