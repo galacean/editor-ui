@@ -8,6 +8,7 @@ import { Flex } from '../Flex'
 import { Badge } from '../Badge'
 import { styled } from '../design-system'
 import { basicItemStyle } from '../design-system/recipes'
+import { Checkbox } from '../Checkbox'
 
 const StyledComboboxTrigger = styled('button', {
   all: 'unset',
@@ -109,6 +110,29 @@ const StyledComboBoxItem = styled('button', basicItemStyle, {
   },
 })
 
+const StyledComboboxHeader = styled(Flex, {
+  borderBottom: '1px solid $border',
+  padding: '0 $2 0 $1',
+  flexShrink: 0,
+  gap: '$2',
+})
+
+const StyledSelectAllWrapper = styled('div', {
+  display: 'flex',
+  alignItems: 'center',
+  gap: '$1',
+  padding: '$1 0',
+  marginLeft: 'auto',
+  cursor: 'pointer',
+})
+
+const SelectAllText = styled('span', {
+  fontSize: '$1',
+  color: '$gray11',
+  cursor: 'pointer',
+  userSelect: 'none',
+})
+
 interface ComboboxContextProps {
   autoClose: boolean
   placeholder?: string
@@ -175,12 +199,6 @@ export const ComboboxTrigger = forwardRef<HTMLButtonElement, ComboboxTriggerProp
   }
 )
 
-const StyledComboboxSearchInputContainer = styled(Flex, {
-  borderBottom: '1px solid $border',
-  padding: '0 $2 0 $1',
-  flexShrink: 0,
-})
-
 export interface ComboboxSearchInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   onSearch?: (value: string) => void
 }
@@ -199,11 +217,11 @@ function ComboboxSearchInput(props: ComboboxSearchInputProps) {
   }
 
   return (
-    <StyledComboboxSearchInputContainer wrap={false} align="v">
+    <Flex wrap={false} align="v" style={{ flex: 1 }}>
       <SearchIcon />
       <StyledComboboxSearchInput {...rest} value={searchValue} onChange={handleOnChange} />
       <IconX size="12px" />
-    </StyledComboboxSearchInputContainer>
+    </Flex>
   )
 }
 
@@ -251,7 +269,6 @@ export function ComboboxItem(props: ComboboxItemProps) {
     selectValue && selectValue(value)
     autoClose && close && close()
   }
-
 
   const shouldCreateBadge =
     isSelected && valueNode && (maxDisplayCount === 0 || selectedValueArray.length <= maxDisplayCount)
@@ -331,18 +348,26 @@ export interface ComboboxProps {
    * @default "{count} items selected"
    */
   maxDisplayText?: string
+
+  /**
+   * Text to display for the select all option
+   * @default "Select All"
+   */
+  selectAllText?: string
 }
 
 export function Combobox(props: ComboboxProps) {
   const {
-    searchable = true,
-    autoClose = true,
+    searchable = false,
+    multiple = false,
+    autoClose = multiple ? false : true,
     children,
     onSearch,
     valueRenderer,
     placeholder,
     maxDisplayCount = 0,
     maxDisplayText = '{count} items selected',
+    selectAllText = 'Select All',
   } = props
   const [open, setOpen] = useState(false)
   const closeRef = useRef<HTMLButtonElement>(null)
@@ -357,12 +382,33 @@ export function Combobox(props: ComboboxProps) {
     onChange: props.onValueChange,
   })
 
+  // Get all available options from children
+  const options = React.useMemo(() => {
+    const options: string[] = []
+    React.Children.forEach(children, (child) => {
+      if (React.isValidElement(child) && child.props.value) {
+        options.push(child.props.value)
+      }
+    })
+    return options
+  }, [children])
+
   const selectValue = (val) => {
     if (!value) return
-    if (value.includes(val)) {
-      setValue(value!.filter((v) => v !== val))
+    if (val === 'select-all') {
+      // If all options are selected, unselect all
+      if (value.length === options.length) {
+        setValue([])
+      } else {
+        // Otherwise select all options
+        setValue([...options])
+      }
     } else {
-      setValue([...value, val])
+      if (value.includes(val)) {
+        setValue(value.filter((v) => v !== val))
+      } else {
+        setValue([...value, val])
+      }
     }
   }
 
@@ -422,11 +468,28 @@ export function Combobox(props: ComboboxProps) {
             overflow: 'hidden',
             maxHeight: 'inherit',
           }}>
-          {searchable && (
-            <div style={{ flexShrink: 0 }}>
-              <ComboboxSearchInput onSearch={onSearch} />
-            </div>
-          )}
+          <div style={{ flexShrink: 0 }}>
+            <StyledComboboxHeader wrap={false} align="v">
+              {searchable && (
+                <ComboboxSearchInput onSearch={onSearch} />
+              )}
+              {options.length > 0 && (
+                <StyledSelectAllWrapper
+                  onClick={() => {
+                    selectValue('select-all')
+                  }}
+                >
+                  <Checkbox 
+                    checked={value.length === options.length}
+                    onCheckedChange={() => {
+                      selectValue('select-all')
+                    }}
+                  />
+                  <SelectAllText>{selectAllText}</SelectAllText>
+                </StyledSelectAllWrapper>
+              )}
+            </StyledComboboxHeader>
+          </div>
           <StyledComboboxContent ref={contentRef} direction="column" role="listbox">
             {children}
           </StyledComboboxContent>
