@@ -112,7 +112,7 @@ const StyledComboBoxItem = styled('button', basicItemStyle, {
 
 const StyledComboboxHeader = styled(Flex, {
   borderBottom: '1px solid $border',
-  padding: '0 $2 0 $1',
+  padding: '$1 $2',
   flexShrink: 0,
   gap: '$2',
 })
