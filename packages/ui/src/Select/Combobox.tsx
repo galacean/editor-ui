@@ -122,7 +122,6 @@ const StyledSelectAllWrapper = styled('div', {
   alignItems: 'center',
   gap: '$1',
   padding: '$1 0',
-  marginLeft: 'auto',
   cursor: 'pointer',
 })
 
