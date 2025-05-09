@@ -15,8 +15,8 @@ export function rgb2HexWithAlpha1(color: Color) {
  * @param rgba Color
  * @returns Color
  */
-export function normalizeColor(rgba: Color): Color {
-  return { r: rgba.r / 255, g: rgba.g / 255, b: rgba.b / 255, a: rgba.a }
+export function normalizeColor<T extends Color = Color>(rgba: T): T {
+  return { ...rgba, r: rgba.r / 255, g: rgba.g / 255, b: rgba.b / 255, a: rgba.a }
 }
 
 /**
@@ -24,7 +24,7 @@ export function normalizeColor(rgba: Color): Color {
  * @param rgba Color
  * @returns Color
  */
-export function denormalizeColor(rgba: Color): Color {
+export function denormalizeColor<T extends Color = Color>(rgba: T): T {
   return { ...rgba, r: rgba.r * 255, g: rgba.g * 255, b: rgba.b * 255, a: rgba.a }
 }
 

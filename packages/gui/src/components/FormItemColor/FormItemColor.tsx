@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { colord } from "colord";
 
 import { FormItem } from "../FormItem";
-import { ColorPicker, Input, Kbd, styled } from '@galacean/editor-ui'
+import { ColorPicker, HDRColor, Input, Kbd, styled } from '@galacean/editor-ui'
 import { normalizeColor, denormalizeColor, toNormalizeHexStr, type Color } from "@galacean/editor-ui";
 import { BaseFormItemProps } from "../FormItem/FormItem";
 import { useControllableState } from "@radix-ui/react-use-controllable-state";
@@ -70,6 +70,7 @@ function HorizontalSlider() {
 }
 
 const defaultColor: Color = denormalizeColor({ r: 0, g: 0, b: 0, a: 1 });
+const defaultHDRColor: HDRColor = denormalizeColor({ r: 0, g: 0, b: 0, a: 1, intensity: 0 });
 
 export function FormItemColor(props: FormItemColorProps) {
   // const { label, info, value, disabled, onChange, ...rest } = props;
