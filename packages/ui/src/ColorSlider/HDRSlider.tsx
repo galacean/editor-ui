@@ -101,6 +101,7 @@ function mixColorWithIntensity(color: Color, intensity: number) {
 }
 
 export function HDRSlider(props: HDRSliderProps) {
+  console.log('props', props)
   const { HDRColor, min = -10, max = 10, step = 0.1, onChange } = props
   const { r, g, b, a, intensity } = HDRColor
   const colorstr = useMemo(() => {

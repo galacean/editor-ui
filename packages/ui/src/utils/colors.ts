@@ -25,7 +25,7 @@ export function normalizeColor(rgba: Color): Color {
  * @returns Color
  */
 export function denormalizeColor(rgba: Color): Color {
-  return { r: rgba.r * 255, g: rgba.g * 255, b: rgba.b * 255, a: rgba.a }
+  return { ...rgba, r: rgba.r * 255, g: rgba.g * 255, b: rgba.b * 255, a: rgba.a }
 }
 
 export function toNormalizeHexStr(color: Color) {

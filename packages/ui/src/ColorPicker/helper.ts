@@ -1,4 +1,4 @@
-export type ColorPickerMode = 'constant' | 'gradient' | 'particle' | 'HDR'
+export type ColorPickerMode = 'constant' | 'gradient' | 'particle' | 'hdr'
 
 export type Color = { r: number; g: number; b: number; a: number }
 
@@ -61,7 +61,7 @@ export function generatePreviewColor(
       value.color.map((v) => v.position)
     )
   }
-  if (mode === 'HDR') {
+  if (mode === 'hdr') {
     return generateHDR(value as HDRColor)
   }
 

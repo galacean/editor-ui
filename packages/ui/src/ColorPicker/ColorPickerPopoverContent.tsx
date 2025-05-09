@@ -41,7 +41,7 @@ interface ParticleColorPickerProps {
 }
 
 interface HDRColorPickerProps {
-  mode: 'HDR'
+  mode: 'hdr'
   value: HDRColor
   defaultValue?: HDRColor
   onValueChange: (color: HDRColor) => void
@@ -84,9 +84,9 @@ const ColorPickerRoot = function ColorPickerRoot(
   })
 
   const [HDRColor, setHDRColor] = useControllableState<HDRColor>({
-    prop: mode === 'HDR' ? hProps.value : undefined,
+    prop: mode === 'hdr' ? hProps.value : undefined,
     defaultProp:
-      mode === 'HDR' && hProps.defaultValue ? hProps.defaultValue : { r: 0, g: 0, b: 0, a: 1, intensity: 0 },
+      mode === 'hdr' && hProps.defaultValue ? hProps.defaultValue : { r: 0, g: 0, b: 0, a: 1, intensity: 0 },
     onChange: (v) => {
       onChangePreviewStr(v)
       hProps.onValueChange && hProps.onValueChange(v)
@@ -106,7 +106,7 @@ const ColorPickerRoot = function ColorPickerRoot(
     if (mode === 'particle') {
       return pProps.value[selectedType][selectedIndex].value
     }
-    if (mode === 'HDR') {
+    if (mode === 'hdr') {
       return hProps.value
     }
   }
@@ -125,7 +125,7 @@ const ColorPickerRoot = function ColorPickerRoot(
     if (mode === 'particle' && particleColor && particleColor.color && particleColor.color.length > 0) {
       return particleColor[selectedType][selectedIndex].value
     }
-    if (mode === 'HDR') {
+    if (mode === 'hdr') {
       return hProps.defaultValue
     }
     return constantDefaultValue
@@ -147,7 +147,7 @@ const ColorPickerRoot = function ColorPickerRoot(
       setParticleColor(newParticleColor)
       pProps.onValueChange && pProps.onValueChange(newParticleColor)
     }
-    if (mode === 'HDR') {
+    if (mode === 'hdr') {
       const newHDRColor = { ...color, intensity: HDRColor.intensity }
       setHDRColor(newHDRColor)
       hProps.onValueChange && hProps.onValueChange(newHDRColor)
@@ -222,7 +222,7 @@ const ColorPickerRoot = function ColorPickerRoot(
         {renderColorPicker()}
         <ColorPickerInputGroup alpha={mode !== 'particle'} value={color!} onChange={setColor} readonly={readonly} />
         <ColorPickerTools color={color!} onPickColor={handlePickColor} readonly={readonly} />
-        {mode === 'HDR' && <HDRSlider HDRColor={HDRColor} onChange={setHDRColor} />}
+        {mode === 'hdr' && <HDRSlider HDRColor={HDRColor} onChange={setHDRColor} />}
       </ConstantColorPickerRoot>
     </div>
   )
