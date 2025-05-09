@@ -91,8 +91,8 @@ GradientMode.argTypes = argTypes
 
 export const HDRMode = (args) => {
   const [color, setColor] = useState({
-    value: { r: 200, g: 150, b: 35, a: 0.5 },
-    intensity: 1,
+    r: 200, g: 150, b: 35, a: 0.5,
+    intensity: 0,
   })
 
   function handleOnChange(nextColor) {

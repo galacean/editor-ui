@@ -86,7 +86,7 @@ const ColorPickerRoot = function ColorPickerRoot(
   const [HDRColor, setHDRColor] = useControllableState<HDRColor>({
     prop: mode === 'HDR' ? hProps.value : undefined,
     defaultProp:
-      mode === 'HDR' && hProps.defaultValue ? hProps.defaultValue : { value: { r: 0, g: 0, b: 0, a: 1 }, intensity: 0 },
+      mode === 'HDR' && hProps.defaultValue ? hProps.defaultValue : { r: 0, g: 0, b: 0, a: 1, intensity: 0 },
     onChange: (v) => {
       onChangePreviewStr(v)
       hProps.onValueChange && hProps.onValueChange(v)
@@ -107,7 +107,7 @@ const ColorPickerRoot = function ColorPickerRoot(
       return pProps.value[selectedType][selectedIndex].value
     }
     if (mode === 'HDR') {
-      return hProps.value.value
+      return hProps.value
     }
   }
 
@@ -126,7 +126,7 @@ const ColorPickerRoot = function ColorPickerRoot(
       return particleColor[selectedType][selectedIndex].value
     }
     if (mode === 'HDR') {
-      return hProps.defaultValue.value
+      return hProps.defaultValue
     }
     return constantDefaultValue
   }
@@ -148,7 +148,7 @@ const ColorPickerRoot = function ColorPickerRoot(
       pProps.onValueChange && pProps.onValueChange(newParticleColor)
     }
     if (mode === 'HDR') {
-      const newHDRColor = { value: color, intensity: HDRColor.intensity }
+      const newHDRColor = { ...color, intensity: HDRColor.intensity }
       setHDRColor(newHDRColor)
       hProps.onValueChange && hProps.onValueChange(newHDRColor)
     }

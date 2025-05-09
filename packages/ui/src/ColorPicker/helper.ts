@@ -9,8 +9,7 @@ export type ParticleColor = {
   alpha: GradientColor
 }
 
-export type HDRColor = {
-  value: Color
+export interface HDRColor extends Color {
   intensity: number
 }
 
@@ -28,8 +27,8 @@ export function generateLinearGradient(colors: Color[], positions: number[]) {
   return `linear-gradient(to right, rgba(255,255,255,0), ${stopStrings.join(', ')})`
 }
 
-export function generateHDR(color: Color, intensity: number) {
-  const multiplier = Math.pow(2, intensity)
+export function generateHDR(color: HDRColor) {
+  const multiplier = Math.pow(2, color.intensity)
   const newColor: Color = {
     r: Math.round(color.r * multiplier),
     g: Math.round(color.g * multiplier),
@@ -63,8 +62,7 @@ export function generatePreviewColor(
     )
   }
   if (mode === 'HDR') {
-    value = value as HDRColor
-    return generateHDR(value.value, value.intensity)
+    return generateHDR(value as HDRColor)
   }
 
   return ''
