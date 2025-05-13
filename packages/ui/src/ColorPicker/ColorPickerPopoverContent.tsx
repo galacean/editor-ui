@@ -86,7 +86,7 @@ const ColorPickerRoot = function ColorPickerRoot(
   const [HDRColor, setHDRColor] = useControllableState<HDRColor>({
     prop: mode === 'HDR' ? hProps.value : undefined,
     defaultProp:
-      mode === 'HDR' && hProps.defaultValue ? hProps.defaultValue : { color: { r: 0, g: 0, b: 0, a: 1 }, intensity: 0 },
+      mode === 'HDR' && hProps.defaultValue ? hProps.defaultValue : { value: { r: 0, g: 0, b: 0, a: 1 }, intensity: 0 },
     onChange: (v) => {
       onChangePreviewStr(v)
       hProps.onValueChange && hProps.onValueChange(v)
