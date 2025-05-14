@@ -26,52 +26,37 @@ function safeTimes(a, b) {
 }
 
 const StyledNumController = styled('div', {
-  visibility: 'hidden',
+  visibility: 'visible',
   display: 'flex',
-  height: '100%',
   alignItems: 'center',
-  color: '$gray7',
+  justifyContent: 'center',
   cursor: 'ew-resize',
+  '&::before': {
+    left: '10px',
+  },
   '&::after': {
-    content: ' ',
-    height: '68%',
-    width: '2px',
-    backgroundColor: '$grayA5',
-    borderRadius: '1px',
-    transition: 'height .1s ease',
-  },
-  '&:hover': {
-    visibility: 'visible',
-    '&::after': {
-      backgroundColor: '$grayA9',
-    },
-  },
-  '& > svg': {
-    flex: 1,
+    right: '10px',
   },
   variants: {
     active: {
       true: {
-        '&::after': {
-          visibility: 'visible',
-          backgroundColor: '$gray11',
+        '&::before, &::after': {
+          backgroundColor: '$blue10',
         },
       },
     },
     tight: {
       true: {
-        '&::after': {
-          height: '50%',
+        '&::before, &::after': {
+          height: '30%',
         },
       },
     },
   },
-  defaultVariants: {
-    tight: false,
-  },
 })
 
 const StyledInputNumberRoot = styled('div', {
+  position: 'relative',
   '&:hover': {
     [`& ${StyledNumController}`]: {
       visibility: 'visible',
@@ -123,14 +108,6 @@ export const InputNumber = forwardRef<HTMLInputElement, InputNumberProps>(functi
     max,
   })
 
-  const handleMouseDown = (e) => {
-    e.stopPropagation()
-    e.preventDefault()
-    if (e.ctrlKey || e.metaKey) setAccurateMode(true)
-    setDragging(true)
-    setStartX(e.clientX)
-  }
-
   const handleMouseMove = (e: MouseEvent) => {
     e.stopPropagation()
     e.preventDefault()
@@ -142,11 +119,6 @@ export const InputNumber = forwardRef<HTMLInputElement, InputNumberProps>(functi
     if (onChange) {
       onChange({ target: { value: newValue.toString() } } as React.ChangeEvent<HTMLInputElement>)
     }
-  }
-
-  const handleMouseUp = () => {
-    setDragging(false)
-    setAccurateMode(false)
   }
 
   useEffect(() => {
@@ -163,15 +135,44 @@ export const InputNumber = forwardRef<HTMLInputElement, InputNumberProps>(functi
     }
   }, [dragging, accurateMode])
 
+  const [isHovering, setIsHovering] = useState(false)
+
+  const handleMouseDown = (e) => {
+    e.stopPropagation()
+    e.preventDefault()
+
+    if (ref.current) {
+      ref.current.focus()
+    }
+
+    if (e.ctrlKey || e.metaKey) setAccurateMode(true)
+    setDragging(true)
+    setStartX(e.clientX)
+  }
+
+  const handleMouseUp = () => {
+    setDragging(false)
+    setAccurateMode(false)
+
+    if (ref.current) {
+      ref.current.focus()
+    }
+  }
+
   return (
-    <StyledInputNumberRoot>
+    <StyledInputNumberRoot
+      onMouseEnter={() => {
+        setIsHovering(true)
+      }}
+      onMouseLeave={() => {
+        setIsHovering(false)
+      }}>
       <Input
         ref={mergeRefs([ref, forwardedRef])}
         {...rest}
         value={value}
         defaultValue={defaultValue}
         onChange={onChange}
-        onBlur={onBlur}
         disabled={disabled}
         size={size}
         min={min}
@@ -179,10 +180,22 @@ export const InputNumber = forwardRef<HTMLInputElement, InputNumberProps>(functi
         step={step}
         type="number"
         startSlot={startSlot}
-        endSlot={
-          !disabled && <StyledNumController active={dragging} tight={accurateMode} onMouseDown={handleMouseDown} />
-        }
       />
+      {!disabled && isHovering && (
+        <StyledNumController
+          active={dragging}
+          tight={accurateMode}
+          onMouseDown={handleMouseDown}
+          css={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            zIndex: 1,
+          }}
+        />
+      )}
     </StyledInputNumberRoot>
   )
 })
