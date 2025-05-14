@@ -10,6 +10,8 @@ import { styled } from '../design-system'
 import { basicItemStyle } from '../design-system/recipes'
 import { Checkbox } from '../Checkbox'
 
+const SELECT_ALL_VALUE = '$$SELECT_ALL$$'
+
 const StyledComboboxTrigger = styled('button', {
   all: 'unset',
   position: 'relative',
@@ -404,7 +406,7 @@ export function Combobox(props: ComboboxProps) {
 
   const selectValue = (val) => {
     if (!value) return
-    if (val === 'select-all') {
+    if (val === SELECT_ALL_VALUE) {
       // If all options are selected, unselect all
       if (value.length === options.length) {
         setValue([])
@@ -486,13 +488,13 @@ export function Combobox(props: ComboboxProps) {
               {options.length > 0 && (
                 <StyledSelectAllWrapper
                   onClick={() => {
-                    selectValue('select-all')
+                    selectValue(SELECT_ALL_VALUE)
                   }}
                 >
                   <Checkbox 
                     checked={value.length === options.length}
                     onCheckedChange={() => {
-                      selectValue('select-all')
+                      selectValue(SELECT_ALL_VALUE)
                     }}
                   />
                   <SelectAllText>{selectAllText}</SelectAllText>
