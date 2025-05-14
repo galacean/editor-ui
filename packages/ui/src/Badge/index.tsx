@@ -29,7 +29,7 @@ const StyledCloseButton = styled('div', {
   padding: '0 $0_5',
   lineHeight: '14px',
   borderRadius: '0 4px 4px 0',
-  marginLeft: '1px',
+  marginLeft: '0.5px',
   textAlign: 'center',
   color: '$$color',
   backgroundColor: '$$bgColor',
