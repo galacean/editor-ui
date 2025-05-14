@@ -1,4 +1,4 @@
-import React, { useState, useEffect, forwardRef } from 'react'
+import React, { useState, useEffect, forwardRef, useRef } from 'react'
 
 import { useInputNumberState } from './useInputNumberState'
 import { clamp } from '../utils/math'
@@ -7,6 +7,8 @@ import type { VariantProps } from '../design-system'
 import { styled } from '../design-system'
 import { Input } from '../Input'
 import { mergeRefs } from '../utils/merge-refs'
+
+const CLICK_THRESHOLD = 150
 
 function round(value, precision = 2) {
   const power = Math.pow(10, precision)
@@ -25,58 +27,22 @@ function safeTimes(a, b) {
   return round(a * b)
 }
 
+function compound<T extends (...args: any[]) => any>(fn1?: T, fn2?: T): T | undefined {
+  if (!fn1 && !fn2) return undefined
+  return ((...args: Parameters<T>) => {
+    fn1?.(...args)
+    fn2?.(...args)
+  }) as T
+}
+
 const StyledNumController = styled('div', {
-  visibility: 'hidden',
-  display: 'flex',
-  height: '100%',
-  alignItems: 'center',
-  color: '$gray7',
+  position: 'absolute',
   cursor: 'ew-resize',
-  '&::after': {
-    content: ' ',
-    height: '68%',
-    width: '2px',
-    backgroundColor: '$grayA5',
-    borderRadius: '1px',
-    transition: 'height .1s ease',
-  },
-  '&:hover': {
-    visibility: 'visible',
-    '&::after': {
-      backgroundColor: '$grayA9',
-    },
-  },
-  '& > svg': {
-    flex: 1,
-  },
-  variants: {
-    active: {
-      true: {
-        '&::after': {
-          visibility: 'visible',
-          backgroundColor: '$gray11',
-        },
-      },
-    },
-    tight: {
-      true: {
-        '&::after': {
-          height: '50%',
-        },
-      },
-    },
-  },
-  defaultVariants: {
-    tight: false,
-  },
+  inset: 0,
 })
 
 const StyledInputNumberRoot = styled('div', {
-  '&:hover': {
-    [`& ${StyledNumController}`]: {
-      visibility: 'visible',
-    },
-  },
+  position: 'relative',
 })
 
 export interface InputNumberProps
@@ -114,6 +80,8 @@ export const InputNumber = forwardRef<HTMLInputElement, InputNumberProps>(functi
 
   const [accurateMode, setAccurateMode] = useState(false)
   const [dragging, setDragging] = useState(false)
+  const [focused, setFocused] = useState(false)
+  const downTimeRef = useRef<number>(0)
   const [startX, setStartX] = useState(0)
   const { ref, value, defaultValue, onBlur, onChange } = useInputNumberState({
     onChange: onValueChange,
@@ -123,14 +91,6 @@ export const InputNumber = forwardRef<HTMLInputElement, InputNumberProps>(functi
     max,
   })
 
-  const handleMouseDown = (e) => {
-    e.stopPropagation()
-    e.preventDefault()
-    if (e.ctrlKey || e.metaKey) setAccurateMode(true)
-    setDragging(true)
-    setStartX(e.clientX)
-  }
-
   const handleMouseMove = (e: MouseEvent) => {
     e.stopPropagation()
     e.preventDefault()
@@ -139,14 +99,10 @@ export const InputNumber = forwardRef<HTMLInputElement, InputNumberProps>(functi
     if (!dragging) return
     const diff = safeTimes(safePlus(e.clientX, -startX), step)
     const newValue = clamp(safePlus(props.value, diff), min, max)
+    const valueString = newValue.toString()
     if (onChange) {
-      onChange({ target: { value: newValue.toString() } } as React.ChangeEvent<HTMLInputElement>)
+      onChange({ target: { value: valueString } } as React.ChangeEvent<HTMLInputElement>)
     }
-  }
-
-  const handleMouseUp = () => {
-    setDragging(false)
-    setAccurateMode(false)
   }
 
   useEffect(() => {
@@ -163,6 +119,36 @@ export const InputNumber = forwardRef<HTMLInputElement, InputNumberProps>(functi
     }
   }, [dragging, accurateMode])
 
+  const handleMouseDown = (e) => {
+    e.stopPropagation()
+    e.preventDefault()
+    downTimeRef.current = Date.now()
+    if (e.ctrlKey || e.metaKey) setAccurateMode(true)
+    setDragging(true)
+    setStartX(e.clientX)
+  }
+
+  const handleMouseUp = () => {
+    const upTime = Date.now()
+    const interval = upTime - downTimeRef.current
+
+    if (interval < CLICK_THRESHOLD) {
+      setDragging(false)
+      if (ref.current) {
+        ref.current.focus()
+        setFocused(true)
+      }
+      return
+    }
+
+    setDragging(false)
+    setAccurateMode(false)
+  }
+
+  function handleBlur() {
+    setFocused(false)
+  }
+
   return (
     <StyledInputNumberRoot>
       <Input
@@ -171,18 +157,16 @@ export const InputNumber = forwardRef<HTMLInputElement, InputNumberProps>(functi
         value={value}
         defaultValue={defaultValue}
         onChange={onChange}
-        onBlur={onBlur}
         disabled={disabled}
+        onBlur={compound(onBlur, handleBlur)}
         size={size}
         min={min}
         max={max}
         step={step}
         type="number"
         startSlot={startSlot}
-        endSlot={
-          !disabled && <StyledNumController active={dragging} tight={accurateMode} onMouseDown={handleMouseDown} />
-        }
       />
+      {!disabled && !focused && <StyledNumController onMouseDown={handleMouseDown} onMouseUp={handleMouseUp} />}
     </StyledInputNumberRoot>
   )
 })
