@@ -3,6 +3,24 @@ import { IconX } from '@tabler/icons-react'
 
 import { styled, StitchesComponent } from '../design-system'
 
+const StyledBadgeInner = styled('div', {
+  display: 'flex',
+  height: '$5',
+  alignItems: 'center',
+  color: '$$color',
+  backgroundColor: '$$bgColor',
+  padding: '$0_5 $1_5',
+  gap: '$1',
+  borderRadius: '4px',
+  variants: {
+    closeable: {
+      true: {
+        borderRadius: '4px 0 0 4px',
+      },
+    },
+  },
+})
+
 const StyledCloseButton = styled('div', {
   display: 'flex',
   alignItems: 'center',
@@ -50,6 +68,15 @@ const StyledBadge = styled('span', {
     pill: {
       true: {
         borderRadius: '$round',
+        backgroundColor: '$$bgColor',
+        paddingRight: '$1',
+        [`& ${StyledCloseButton}`]: {
+          background: 'transparent',
+        },
+        [`& ${StyledBadgeInner}`]: {
+          backgroundColor: 'transparent',
+          paddingRight: 0,
+        },
       },
     },
     active: {
@@ -116,24 +143,6 @@ const StyledBadge = styled('span', {
   },
 })
 
-const StyledBadgeInner = styled('div', {
-  display: 'flex',
-  height: '$5',
-  alignItems: 'center',
-  color: '$$color',
-  backgroundColor: '$$bgColor',
-  padding: '$0_5 $1_5',
-  gap: '$1',
-  borderRadius: '4px',
-  variants: {
-    closeable: {
-      true: {
-        borderRadius: '4px 0 0 4px',
-      }
-    },
-  }
-});
-
 type BadgeCloseButtonProps = React.ComponentProps<typeof StyledCloseButton>
 
 function BadgeCloseButton(props: BadgeCloseButtonProps) {
@@ -173,9 +182,7 @@ const Badge = forwardRef<HTMLSpanElement, BadgeProps>(function Badge(
 
   return (
     <StyledBadge ref={ref} {...rest}>
-      <StyledBadgeInner closeable={closeable}>
-        {children}
-      </StyledBadgeInner>
+      <StyledBadgeInner closeable={closeable}>{children}</StyledBadgeInner>
       {closeable && <BadgeCloseButton onClick={handleClose} pill={rest.pill} />}
     </StyledBadge>
   )
