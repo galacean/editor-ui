@@ -14,7 +14,7 @@ const StyledHDRSliderRoot = styled('div', {
   display: 'grid',
   gridTemplateColumns: '48px 1fr',
   alignItems: 'center',
-  gap: '$2',
+  gap: '$1_5',
   flexWrap: 'nowrap',
 })
 
@@ -31,7 +31,6 @@ const HDRPreviewItem = styled(Flex, {
   position: 'relative',
   height: '100%',
   fontSize: '10px',
-  color: '$grayA10',
   lineHeight: 1,
   cursor: 'pointer',
   userSelect: 'none',
@@ -44,6 +43,10 @@ const HDRPreviewItem = styled(Flex, {
     position: 'absolute',
     inset: 0,
     backgroundColor: 'transparent',
+  },
+  '& > span' :{
+    color: '$grayA12',
+    mixBlendMode: 'color-dodge',
   },
   variants: {
     level: {
@@ -87,7 +90,7 @@ interface HDRSliderProps {
   min?: number
   max?: number
   step?: number
-  HDRColor: Partial<HDRColor>
+  HDRColor: HDRColor
   onChange: (color: HDRColor) => void
 }
 
@@ -98,29 +101,30 @@ function mixColorWithIntensity(color: Color, intensity: number) {
 }
 
 export function HDRSlider(props: HDRSliderProps) {
+  console.log('props', props)
   const { HDRColor, min = -10, max = 10, step = 0.1, onChange } = props
-  const { value, intensity } = HDRColor
+  const { r, g, b, a, intensity } = HDRColor
   const colorstr = useMemo(() => {
     const multiplier = Math.pow(2, intensity)
     const newColor: Color = {
-      r: Math.round(value.r * multiplier),
-      g: Math.round(value.g * multiplier),
-      b: Math.round(value.b * multiplier),
-      a: value.a,
+      r: Math.round(r * multiplier),
+      g: Math.round(g * multiplier),
+      b: Math.round(b * multiplier),
+      a: a,
     }
     return `rgba(${newColor.r}, ${newColor.g}, ${newColor.b}, ${newColor.a})`
-  }, [value, intensity])
+  }, [r, g, b, a, intensity])
 
   const [range, setRange] = useState<number[]>([min, max])
 
   const handleIntensityChange = (intensity: number) => {
-    if (!isNaN(intensity)) {
-      const clampedValue = Math.max(min, Math.min(max, intensity))
-      onChange({
-        value,
-        intensity: clampedValue,
-      })
-    }
+    if (isNaN(intensity)) return;
+
+    const clampedValue = Math.max(min, Math.min(max, intensity))
+    onChange({
+      ...HDRColor,
+      intensity: clampedValue,
+    })
   }
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -138,7 +142,7 @@ export function HDRSlider(props: HDRSliderProps) {
     const newIntensity = intensity + levelChange
     const clampedIntensity = Math.max(min, Math.min(max, newIntensity))
     onChange({
-      value,
+      ...HDRColor,
       intensity: clampedIntensity,
     })
   }
@@ -161,9 +165,6 @@ export function HDRSlider(props: HDRSliderProps) {
 
   return (
     <Flex gap="sm" direction="column" css={{ marginTop: '$3' }}>
-      <Text size="1" code secondary>
-        Intensity
-      </Text>
       <StyledHDRSliderRoot>
         <InputNumber
           value={intensity}
@@ -193,8 +194,11 @@ export function HDRSlider(props: HDRSliderProps) {
             align="both"
             level={item.level}
             style={{ backgroundColor: item.bgColor }}
-            onClick={() => handlePreviewItemClick(item.change)}>
-            {item.text}
+            onClick={() => handlePreviewItemClick(item.change)}
+          >
+            <span>
+              {item.text}
+            </span>
           </HDRPreviewItem>
         ))}
       </StyledHDRPreviewRoot>

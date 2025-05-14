@@ -2,12 +2,14 @@ import React, { useState, useEffect } from "react";
 import { colord } from "colord";
 
 import { FormItem } from "../FormItem";
-import { ColorPicker, Input, Kbd, styled } from '@galacean/editor-ui'
+import { ColorPicker, HDRColor, Input, Kbd, styled } from '@galacean/editor-ui'
 import { normalizeColor, denormalizeColor, toNormalizeHexStr, type Color } from "@galacean/editor-ui";
 import { BaseFormItemProps } from "../FormItem/FormItem";
 import { useControllableState } from "@radix-ui/react-use-controllable-state";
 
-export interface FormItemColorProps extends BaseFormItemProps<Color> {}
+export interface FormItemColorProps extends BaseFormItemProps<Color> {
+  mode: "constant" | "hdr";
+}
 
 interface HorizontalSliderProps {
 }
@@ -68,10 +70,11 @@ function HorizontalSlider() {
 }
 
 const defaultColor: Color = denormalizeColor({ r: 0, g: 0, b: 0, a: 1 });
+const defaultHDRColor: HDRColor = denormalizeColor({ r: 0, g: 0, b: 0, a: 1, intensity: 0 });
 
 export function FormItemColor(props: FormItemColorProps) {
   // const { label, info, value, disabled, onChange, ...rest } = props;
-  const { label, info, value, disabled, onChange } = props;
+  const { label, info, value, disabled, onChange, mode = 'constant' } = props;
   const [color, setColor] = useControllableState({
     prop: denormalizeColor(props.value),
     defaultProp: defaultColor,
@@ -114,7 +117,7 @@ export function FormItemColor(props: FormItemColorProps) {
       // {...rest}
     >
       <ColorPicker
-        mode="constant"
+        mode={mode as 'constant'}
         disabled={disabled}
         value={color}
         onValueChange={(color) => setColor && setColor(color)}

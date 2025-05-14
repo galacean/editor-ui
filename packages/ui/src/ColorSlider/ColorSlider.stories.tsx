@@ -21,7 +21,7 @@ export default {
 
 export const Overview: StoryFn = (args) => {
   const [hdrColor, setHdrColor] = useState({
-    value: { r: 255, g: 100, b: 50, a: 1 },
+    r: 255, g: 100, b: 50, a: 1,
     intensity: 0,
   })
 
@@ -90,7 +90,7 @@ export const ParticleSlider: StoryFn = (args) => {
  */
 export const HDRSlider: StoryFn = (args) => {
   const [hdrColor, setHdrColor] = useState({
-    value: { r: 255, g: 100, b: 50, a: 1 },
+    r: 255, g: 100, b: 50, a: 1,
     intensity: 0,
   })
 
