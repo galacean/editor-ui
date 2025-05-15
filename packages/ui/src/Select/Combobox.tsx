@@ -157,7 +157,6 @@ interface ComboboxContextProps {
   onValueNodeChange: (valueNode: any) => void
   maxDisplayCount?: number
   maxDisplayText?: string
-  showOptionCloseButton?: boolean
 }
 
 const ComboboxContext = createContext<ComboboxContextProps>({
@@ -170,7 +169,6 @@ const ComboboxContext = createContext<ComboboxContextProps>({
   onValueNodeChange: () => {},
   maxDisplayCount: 0,
   maxDisplayText: '{count} items selected',
-  showOptionCloseButton: true,
 })
 
 export interface ComboboxTriggerProps {
@@ -250,7 +248,6 @@ export function ComboboxItem(props: ComboboxItemProps) {
     valueNode,
     searchValue,
     autoClose,
-    showOptionCloseButton,
   } = useContext(ComboboxContext)
   const selectedValueArray = Array.isArray(selectedValue) ? selectedValue : selectedValue ? [selectedValue] : []
   const isSelected = selectedValue.indexOf(value) !== -1
@@ -293,7 +290,7 @@ export function ComboboxItem(props: ComboboxItemProps) {
       )}
       {shouldCreateBadge
         ? createPortal(
-            <Badge onClick={preventDefault} closeable={showOptionCloseButton} onClose={showOptionCloseButton ? handleRemove : undefined}>
+            <Badge onClick={preventDefault} closeable onClose={handleRemove}>
               {valueRenderer ? valueRenderer(value, 'trigger') : children}
             </Badge>,
             valueNode
@@ -358,12 +355,12 @@ export interface ComboboxProps {
    * @default "Select All"
    */
   selectAllText?: string
-  
+
   /**
-   * If true, show close button for selected items
-   * @default true
+   * If true, the select all option will be shown
+   * @default false
    */
-  showOptionCloseButton?: boolean
+  showSelectAll?: boolean
 }
 
 export function Combobox(props: ComboboxProps) {
@@ -377,8 +374,8 @@ export function Combobox(props: ComboboxProps) {
     placeholder,
     maxDisplayCount = 0,
     maxDisplayText = '{count} items selected',
+    showSelectAll = false,
     selectAllText = 'Select All',
-    showOptionCloseButton = true,
   } = props
   const [open, setOpen] = useState(false)
   const closeRef = useRef<HTMLButtonElement>(null)
@@ -459,7 +456,6 @@ export function Combobox(props: ComboboxProps) {
         placeholder,
         maxDisplayCount,
         maxDisplayText,
-        showOptionCloseButton,
       }}>
       <Popover
         compact
@@ -485,7 +481,7 @@ export function Combobox(props: ComboboxProps) {
               {searchable && (
                 <ComboboxSearchInput onSearch={onSearch} />
               )}
-              {options.length > 0 && (
+              {options.length > 0 && showSelectAll && (
                 <StyledSelectAllWrapper
                   onClick={() => {
                     selectValue(SELECT_ALL_VALUE)
