@@ -28,11 +28,10 @@ export function generateLinearGradient(colors: Color[], positions: number[]) {
 }
 
 export function generateHDR(color: HDRColor) {
-  const multiplier = Math.pow(2, color.intensity)
   const newColor: Color = {
-    r: Math.round(color.r * multiplier),
-    g: Math.round(color.g * multiplier),
-    b: Math.round(color.b * multiplier),
+    r: Math.round(color.r * color.intensity),
+    g: Math.round(color.g * color.intensity),
+    b: Math.round(color.b * color.intensity),
     a: color.a,
   }
 

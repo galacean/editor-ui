@@ -44,7 +44,7 @@ const HDRPreviewItem = styled(Flex, {
     inset: 0,
     backgroundColor: 'transparent',
   },
-  '& > span' :{
+  '& > span': {
     color: '$grayA12',
     mixBlendMode: 'color-dodge',
   },
@@ -101,15 +101,13 @@ function mixColorWithIntensity(color: Color, intensity: number) {
 }
 
 export function HDRSlider(props: HDRSliderProps) {
-  console.log('props', props)
-  const { HDRColor, min = -10, max = 10, step = 0.1, onChange } = props
+  const { HDRColor, min = 0, max = 10, step = 0.1, onChange } = props
   const { r, g, b, a, intensity } = HDRColor
   const colorstr = useMemo(() => {
-    const multiplier = Math.pow(2, intensity)
     const newColor: Color = {
-      r: Math.round(r * multiplier),
-      g: Math.round(g * multiplier),
-      b: Math.round(b * multiplier),
+      r: Math.round(r * intensity),
+      g: Math.round(g * intensity),
+      b: Math.round(b * intensity),
       a: a,
     }
     return `rgba(${newColor.r}, ${newColor.g}, ${newColor.b}, ${newColor.a})`
@@ -118,7 +116,7 @@ export function HDRSlider(props: HDRSliderProps) {
   const [range, setRange] = useState<number[]>([min, max])
 
   const handleIntensityChange = (intensity: number) => {
-    if (isNaN(intensity)) return;
+    if (isNaN(intensity)) return
 
     const clampedValue = Math.max(min, Math.min(max, intensity))
     onChange({
@@ -194,11 +192,8 @@ export function HDRSlider(props: HDRSliderProps) {
             align="both"
             level={item.level}
             style={{ backgroundColor: item.bgColor }}
-            onClick={() => handlePreviewItemClick(item.change)}
-          >
-            <span>
-              {item.text}
-            </span>
+            onClick={() => handlePreviewItemClick(item.change)}>
+            <span>{item.text}</span>
           </HDRPreviewItem>
         ))}
       </StyledHDRPreviewRoot>
