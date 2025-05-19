@@ -71,7 +71,7 @@ const SelectTrigger = styled(SelectPrimitive.SelectTrigger, {
         borderRadius: '$2',
       },
       md: {
-        height: '$8',
+        height: '$md',
         borderRadius: '$4',
       },
     },
