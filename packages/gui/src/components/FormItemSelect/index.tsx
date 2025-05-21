@@ -7,15 +7,16 @@ export interface FormItemSelectProps<T extends number | string> extends FormItem
   selectAllText?: string;
   maxDisplayCount?: number;
   maxDisplayText?: string;
+  noneText?: string;
   showSelectAll?: boolean;
 };
 
 export function FormItemSelect<T extends number | string>(props: FormItemSelectProps<T>) {
-  const { value, label, info, disabled, onChange, options, multiple, formEndSlot, formStartSlot, selectAllText, maxDisplayCount, maxDisplayText, showSelectAll } = props;
+  const { value, label, info, disabled, onChange, options, multiple, formEndSlot, formStartSlot, selectAllText, maxDisplayCount, maxDisplayText, noneText, showSelectAll } = props;
 
   return (
     <FormItem label={label} info={info} formEndSlot={formEndSlot} formStartSlot={formStartSlot}>
-      <Select value={value as string} disabled={disabled} onValueChange={onChange} multiple={multiple} selectAllText={selectAllText} maxDisplayCount={maxDisplayCount} maxDisplayText={maxDisplayText} showSelectAll={showSelectAll}>
+      <Select value={value as string} disabled={disabled} onValueChange={onChange} multiple={multiple} selectAllText={selectAllText} maxDisplayCount={maxDisplayCount} maxDisplayText={maxDisplayText} noneText={noneText} showSelectAll={showSelectAll}>
         {options.map((option) => (
           <SelectItem key={option.value} value={option.value}>
             {option.label}

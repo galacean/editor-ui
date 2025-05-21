@@ -9,6 +9,7 @@ import { Badge } from '../Badge'
 import { styled } from '../design-system'
 import { basicItemStyle } from '../design-system/recipes'
 import { Checkbox } from '../Checkbox'
+import { Text } from '../Typography'
 
 const SELECT_ALL_VALUE = '$$SELECT_ALL$$'
 
@@ -157,6 +158,7 @@ interface ComboboxContextProps {
   onValueNodeChange: (valueNode: any) => void
   maxDisplayCount?: number
   maxDisplayText?: string
+  noneText?: string
 }
 
 const ComboboxContext = createContext<ComboboxContextProps>({
@@ -169,6 +171,7 @@ const ComboboxContext = createContext<ComboboxContextProps>({
   onValueNodeChange: () => {},
   maxDisplayCount: 0,
   maxDisplayText: '{count} items selected',
+  noneText: '',
 })
 
 export interface ComboboxTriggerProps {
@@ -179,21 +182,23 @@ export interface ComboboxTriggerProps {
 
 export const ComboboxTrigger = forwardRef<HTMLButtonElement, ComboboxTriggerProps>(
   function ComboboxTrigger(props, forwardedRef) {
-    const { value, onValueNodeChange, placeholder, maxDisplayCount, maxDisplayText } = useContext(ComboboxContext)
+    const { value, onValueNodeChange, placeholder, maxDisplayCount, maxDisplayText, noneText } = useContext(ComboboxContext)
     const { valueRenderer, ...rest } = props
 
     const valueArray = Array.isArray(value) ? value : value ? [value] : []
 
     const shouldShowSummary = maxDisplayCount > 0 && valueArray.length > maxDisplayCount
+    const shouldShowNoneText = valueArray.length === 0 && noneText
 
     const summaryText = maxDisplayText.replace('{count}', valueArray.length.toString())
 
     return (
       <StyledComboboxTrigger {...rest} ref={forwardedRef}>
         <Flex gap="xxs" ref={onValueNodeChange}>
-          {shouldShowSummary && <Badge>{summaryText}</Badge>}
+          {shouldShowSummary && <Text size="sm" secondary css={{ padding: "0 $1_5" }}>{summaryText}</Text>}
+          {shouldShowNoneText && <Text size="sm" secondary css={{ padding: "0 $1_5" }}>{noneText}</Text>}
         </Flex>
-        {valueArray.length === 0 && <StyledPlaceholder>{placeholder}</StyledPlaceholder>}
+        {valueArray.length === 0 && !noneText && <StyledPlaceholder>{placeholder}</StyledPlaceholder>}
         <StyledChevronDown />
       </StyledComboboxTrigger>
     )
@@ -351,6 +356,12 @@ export interface ComboboxProps {
   maxDisplayText?: string
 
   /**
+   * Text to display when no items are selected
+   * @default ""
+   */
+  noneText?: string
+
+  /**
    * Text to display for the select all option
    * @default "Select All"
    */
@@ -374,6 +385,7 @@ export function Combobox(props: ComboboxProps) {
     placeholder,
     maxDisplayCount = 0,
     maxDisplayText = '{count} items selected',
+    noneText = '',
     showSelectAll = false,
     selectAllText = 'Select All',
   } = props
@@ -456,6 +468,7 @@ export function Combobox(props: ComboboxProps) {
         placeholder,
         maxDisplayCount,
         maxDisplayText,
+        noneText,
       }}>
       <Popover
         compact
