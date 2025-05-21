@@ -1,24 +1,23 @@
-import React, { useState, useEffect } from "react";
-import { colord } from "colord";
+import React, { useState, useEffect } from 'react'
+import { colord } from 'colord'
 
-import { FormItem } from "../FormItem";
+import { FormItem } from '../FormItem'
 import { ColorPicker, HDRColor, Input, Kbd, styled } from '@galacean/editor-ui'
-import { normalizeColor, denormalizeColor, toNormalizeHexStr, type Color } from "@galacean/editor-ui";
-import { BaseFormItemProps } from "../FormItem/FormItem";
-import { useControllableState } from "@radix-ui/react-use-controllable-state";
+import { normalizeColor, denormalizeColor, toNormalizeHexStr, type Color } from '@galacean/editor-ui'
+import { BaseFormItemProps } from '../FormItem/FormItem'
+import { useControllableState } from '@radix-ui/react-use-controllable-state'
 
 export interface FormItemColorProps extends BaseFormItemProps<Color> {
-  mode: "constant" | "hdr";
+  mode: 'constant' | 'hdr'
 }
 
-interface HorizontalSliderProps {
-}
+interface HorizontalSliderProps {}
 
 const StyledSliderInner = styled('div', {
   height: '20%',
   width: '100%',
   backgroundColor: '$grayA11',
-});
+})
 
 const StyledSlider = styled('div', {
   height: '100%',
@@ -33,7 +32,7 @@ const StyledSliderRoot = styled('div', {
   maxHeight: '100%',
   marginRight: '$0_5',
   padding: '$1 0',
-  cursor: "ns-resize",
+  cursor: 'ns-resize',
   '&::after': {
     content: '%',
     position: 'absolute',
@@ -50,15 +49,15 @@ const StyledSliderRoot = styled('div', {
     },
     [`& ${StyledSlider}`]: {
       opacity: 1,
-    }
+    },
   },
 })
 
 function HorizontalSlider() {
-  const containerRef = React.useRef<HTMLDivElement>(null);
-  const [dragging, setDragging] = useState(false);
-  const [startY, setStartY] = useState(0);
-  const thumbRef = React.useRef<HTMLDivElement>(null);
+  const containerRef = React.useRef<HTMLDivElement>(null)
+  const [dragging, setDragging] = useState(false)
+  const [startY, setStartY] = useState(0)
+  const thumbRef = React.useRef<HTMLDivElement>(null)
 
   return (
     <StyledSliderRoot ref={containerRef}>
@@ -66,81 +65,93 @@ function HorizontalSlider() {
         <StyledSliderInner />
       </StyledSlider>
     </StyledSliderRoot>
-  );
+  )
 }
 
-const defaultColor: Color = denormalizeColor({ r: 0, g: 0, b: 0, a: 1 });
-const defaultHDRColor: HDRColor = denormalizeColor({ r: 0, g: 0, b: 0, a: 1, intensity: 0 });
+const defaultColor: Color = denormalizeColor({ r: 0, g: 0, b: 0, a: 1 })
+const defaultHDRColor: HDRColor = denormalizeColor({ r: 0, g: 0, b: 0, a: 1, intensity: 0 })
 
 export function FormItemColor(props: FormItemColorProps) {
   // const { label, info, value, disabled, onChange, ...rest } = props;
-  const { label, info, value, disabled, onChange, mode = 'constant' } = props;
+  const { label, info, value, disabled, onChange, mode = 'constant' } = props
   const [color, setColor] = useControllableState({
     prop: denormalizeColor(props.value),
     defaultProp: defaultColor,
     onChange: (value) => {
-      if(onChange) {
+      if (onChange) {
         onChange(normalizeColor(value))
       }
     },
   })
 
-  const [colorStr, setColorStr] = useState(toNormalizeHexStr(color));
-  const [dirty, setDirty] = useState(false);
+  const [colorStr, setColorStr] = useState(toNormalizeHexStr(color))
+  const [dirty, setDirty] = useState(false)
 
   const inputOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setColorStr(e.target.value);
-    setDirty(true);
-  };
+    setColorStr(e.target.value)
+    setDirty(true)
+  }
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      const colordValue = colord(`#${colorStr.replace("#", "")}`);
+    if (e.key === 'Enter') {
+      const colordValue = colord(`#${colorStr.replace('#', '')}`)
       if (colordValue.isValid()) {
-        onChange && onChange(normalizeColor(colordValue.toRgb()));
-        setDirty(false);
+        onChange && onChange(normalizeColor(colordValue.toRgb()))
+        setDirty(false)
       } else {
-        setColorStr(toNormalizeHexStr(color));
+        setColorStr(toNormalizeHexStr(color))
       }
     }
-  };
+  }
 
   useEffect(() => {
-    setColorStr(toNormalizeHexStr(value));
-  }, [value]);
+    setColorStr(toNormalizeHexStr(value))
+  }, [value])
+
+  const isHdrMode = mode === 'hdr'
 
   return (
     <FormItem
       label={label}
       info={info}
-      fieldColumn="color"
+      fieldColumn={isHdrMode ? 'HDRcolor' : 'color'}
       // {...rest}
     >
       <ColorPicker
         mode={mode as 'constant'}
+        fullsize={isHdrMode}
         disabled={disabled}
         value={color}
         onValueChange={(color) => setColor && setColor(color)}
       />
+      {!isHdrMode && (
+        <Input
+          disabled={disabled}
+          startSlot="#"
+          size="sm"
+          onChange={inputOnChange}
+          onKeyDown={onKeyDown}
+          value={colorStr}
+          code
+          endSlot={
+            dirty ? (
+              <Kbd css={{ verticalAlign: 'text-top' }} size="xs">
+                ↵
+              </Kbd>
+            ) : (
+              'HEX'
+            )
+          }
+        />
+      )}
       <Input
-        disabled={disabled}
-        startSlot="#"
-        size="sm"
-        onChange={inputOnChange}
-        onKeyDown={onKeyDown}
-        value={colorStr}
         code
-        endSlot={
-          dirty ? (
-            <Kbd css={{ verticalAlign: "text-top" }} size="xs">
-              ↵
-            </Kbd>
-          ) : (
-            "HEX"
-          )
-        }
+        disabled={disabled}
+        endSlot={<HorizontalSlider />}
+        readOnly
+        size="sm"
+        value={`${Math.round(value.a * 100)}`}
       />
-      <Input code disabled={disabled} endSlot={<HorizontalSlider />} readOnly size="sm" value={`${Math.round(value.a * 100)}`} />
     </FormItem>
-  );
+  )
 }

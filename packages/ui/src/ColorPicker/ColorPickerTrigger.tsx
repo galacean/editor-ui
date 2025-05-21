@@ -2,6 +2,7 @@ import React, { forwardRef } from 'react'
 
 import { styled } from '../design-system'
 import { TransparentPattern } from './TransparentPattern'
+import { Flex } from '../Flex'
 
 const StyledTrigger = styled('button', {
   all: 'unset',
@@ -58,9 +59,9 @@ const StyledTransparentPattern = styled(TransparentPattern, {
   },
 })
 
-export const ColorPickerTrigger = forwardRef<HTMLButtonElement, { color: string; fullsize?: boolean }>(
+export const ColorPickerTrigger = forwardRef<HTMLButtonElement, { color: string; fullsize?: boolean; mode?: string }>(
   function Trigger(props, ref) {
-    const { color, fullsize, ...rest } = props
+    const { color, mode, fullsize, ...rest } = props
 
     return (
       <StyledTrigger ref={ref} fullsize={fullsize} {...rest}>
@@ -70,7 +71,16 @@ export const ColorPickerTrigger = forwardRef<HTMLButtonElement, { color: string;
             borderColor: color,
           }}
         />
-        <div style={{ background: color }} />
+        <Flex
+          style={{
+            background: color,
+            fontSize: '12px',
+            textShadow: '0px 0px 2px rgba(0, 0, 0, 0.9), 0px 0px 4px rgba(0, 0, 0, 0.7)',
+          }}
+          align="v"
+          justifyContent="center">
+          {mode === 'hdr' ? 'HDR' : null}
+        </Flex>
       </StyledTrigger>
     )
   }

@@ -30,6 +30,9 @@ const StyledField = styled('div', {
       color: {
         gridTemplateColumns: '24px 1fr 52px',
       },
+      HDRcolor: {
+        gridTemplateColumns: '1fr 52px',
+      },
       number: {
         gridTemplateColumns: 'minmax(0, 8fr) repeat(2, 1fr)',
       },
