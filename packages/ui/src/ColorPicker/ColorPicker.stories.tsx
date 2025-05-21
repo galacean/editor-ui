@@ -91,8 +91,11 @@ GradientMode.argTypes = argTypes
 
 export const HDRMode = (args) => {
   const [color, setColor] = useState({
-    r: 200, g: 150, b: 35, a: 0.5,
-    intensity: 0,
+    r: 200,
+    g: 150,
+    b: 35,
+    a: 0.5,
+    intensity: 1,
   })
 
   function handleOnChange(nextColor) {
@@ -102,7 +105,7 @@ export const HDRMode = (args) => {
   return (
     <Flex gap="sm" style={{ width: '300px' }} align="v">
       <Textarea value={JSON.stringify(color)} />
-      <ColorPicker mode="HDR" value={color} onValueChange={handleOnChange} {...args} />
+      <ColorPicker mode="hdr" value={color} onValueChange={handleOnChange} {...args} />
     </Flex>
   )
 }
