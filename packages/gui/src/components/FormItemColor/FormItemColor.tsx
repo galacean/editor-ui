@@ -114,7 +114,7 @@ export function FormItemColor(props: FormItemColorProps) {
     <FormItem
       label={label}
       info={info}
-      fieldColumn={isHdrMode ? 'HDRcolor' : 'color'}
+      fieldColumn={isHdrMode ? '1' : 'color'}
       // {...rest}
     >
       <ColorPicker
@@ -125,33 +125,35 @@ export function FormItemColor(props: FormItemColorProps) {
         onValueChange={(color) => setColor && setColor(color)}
       />
       {!isHdrMode && (
-        <Input
-          disabled={disabled}
-          startSlot="#"
-          size="sm"
-          onChange={inputOnChange}
-          onKeyDown={onKeyDown}
-          value={colorStr}
-          code
-          endSlot={
-            dirty ? (
-              <Kbd css={{ verticalAlign: 'text-top' }} size="xs">
-                ↵
-              </Kbd>
-            ) : (
-              'HEX'
-            )
-          }
-        />
+        <>
+          <Input
+            disabled={disabled}
+            startSlot="#"
+            size="sm"
+            onChange={inputOnChange}
+            onKeyDown={onKeyDown}
+            value={colorStr}
+            code
+            endSlot={
+              dirty ? (
+                <Kbd css={{ verticalAlign: 'text-top' }} size="xs">
+                  ↵
+                </Kbd>
+              ) : (
+                'HEX'
+              )
+            }
+          />
+          <Input
+            code
+            disabled={disabled}
+            endSlot={<HorizontalSlider />}
+            readOnly
+            size="sm"
+            value={`${Math.round(value.a * 100)}`}
+          />
+        </>
       )}
-      <Input
-        code
-        disabled={disabled}
-        endSlot={<HorizontalSlider />}
-        readOnly
-        size="sm"
-        value={`${Math.round(value.a * 100)}`}
-      />
     </FormItem>
   )
 }
