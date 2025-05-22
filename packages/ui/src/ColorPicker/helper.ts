@@ -1,7 +1,5 @@
 export type ColorPickerMode = 'constant' | 'gradient' | 'particle' | 'hdr'
 
-export type ColorSpace = 'sRGB' | 'Linear'
-
 export type Color = { r: number; g: number; b: number; a: number }
 
 export type GradientColor = { value: Color; position: number }[]
@@ -67,48 +65,4 @@ export function generatePreviewColor(
   }
 
   return ''
-}
-
-export function srgbToLinearChannel255(c_srgb: number): number {
-  const c = c_srgb / 255
-  let linear: number
-  if (c <= 0.04045) {
-    linear = c / 12.92
-  } else {
-    linear = Math.pow((c + 0.055) / 1.055, 2.4)
-  }
-  return Math.round(linear * 255)
-}
-
-export function linearToSrgbChannel255(c_linear: number): number {
-  const c = c_linear / 255
-  let srgb: number
-  if (c <= 0.0031308) {
-    srgb = 12.92 * c
-  } else {
-    srgb = 1.055 * Math.pow(c, 1 / 2.4) - 0.055
-  }
-  return Math.round(srgb * 255)
-}
-
-export function srgbToLinear255(color: Color): Color {
-  if (!color) return color
-  return {
-    ...color,
-    r: srgbToLinearChannel255(color.r),
-    g: srgbToLinearChannel255(color.g),
-    b: srgbToLinearChannel255(color.b),
-    a: color.a,
-  }
-}
-
-export function linearToSrgb255(color: Color): Color {
-  if (!color) return color
-  return {
-    ...color,
-    r: linearToSrgbChannel255(color.r),
-    g: linearToSrgbChannel255(color.g),
-    b: linearToSrgbChannel255(color.b),
-    a: color.a,
-  }
 }

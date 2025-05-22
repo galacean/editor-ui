@@ -1,21 +1,14 @@
 import React, { useState, useMemo } from 'react'
+import { IconBrightness } from '@tabler/icons-react'
 import { colord } from 'colord'
 
-import {
-  ColorSpace,
-  linearToSrgb255,
-  linearToSrgbChannel255,
-  srgbToLinear255,
-  type Color,
-  type HDRColor,
-} from '../ColorPicker/helper'
+import { type Color, type HDRColor } from '../ColorPicker/helper'
 
 import { Slider } from '../Slider'
 import { Flex } from '../Flex'
 import { styled } from '../design-system'
 import { InputNumber } from '../InputNumber'
-import { useColorPickerContext } from '../ColorPicker/ColorPickerProvider'
-import { clamp } from '../utils'
+import { Text } from '../Typography'
 
 const StyledHDRSliderRoot = styled('div', {
   display: 'grid',
@@ -53,7 +46,7 @@ const HDRPreviewItem = styled(Flex, {
   },
   '& > span': {
     color: '$grayA12',
-    mixBlendMode: 'difference',
+    mixBlendMode: 'color-dodge',
   },
   variants: {
     level: {
@@ -87,6 +80,12 @@ const HDRPreviewItem = styled(Flex, {
   },
 })
 
+const IconIntensity = styled(IconBrightness, {
+  color: '$gray10',
+  height: '$4',
+  width: '$4',
+})
+
 interface HDRSliderProps {
   min?: number
   max?: number
@@ -96,26 +95,25 @@ interface HDRSliderProps {
 }
 
 function mixColorWithIntensity(color: Color, intensity: number) {
-  const nextLinearColor = {
-    r: Math.round(color.r * intensity),
-    g: Math.round(color.g * intensity),
-    b: Math.round(color.b * intensity),
-    a: color.a,
-  }
-  return linearToSrgb255(nextLinearColor)
-}
-
-function colorStringify(color: Color) {
-  color = linearToSrgb255(color)
-  return `rgba(${color.r}, ${color.g}, ${color.b}, ${color.a})`
+  const { r, g, b, a } = color
+  const col = colord({ r, g, b, a })
+  return col.mix(colord('white'), intensity).toRgb()
 }
 
 export function HDRSlider(props: HDRSliderProps) {
   const { HDRColor, min = 0, max = 10, step = 0.1, onChange } = props
   const { r, g, b, a, intensity } = HDRColor
-  const linearColor = useMemo(() => srgbToLinear255({ r, g, b, a }), [r, g, b])
+  const colorstr = useMemo(() => {
+    const newColor: Color = {
+      r: Math.round(r * intensity),
+      g: Math.round(g * intensity),
+      b: Math.round(b * intensity),
+      a: a,
+    }
+    return `rgba(${newColor.r}, ${newColor.g}, ${newColor.b}, ${newColor.a})`
+  }, [r, g, b, a, intensity])
 
-  const [range] = useState<number[]>([min, max])
+  const [range, setRange] = useState<number[]>([min, max])
 
   const handleIntensityChange = (intensity: number) => {
     if (isNaN(intensity)) return
@@ -139,7 +137,7 @@ export function HDRSlider(props: HDRSliderProps) {
   }
 
   const handlePreviewItemClick = (levelChange: number) => {
-    const newIntensity = clamp(intensity + levelChange, min, max)
+    const newIntensity = intensity + levelChange
     const clampedIntensity = Math.max(min, Math.min(max, newIntensity))
     onChange({
       ...HDRColor,
@@ -147,27 +145,20 @@ export function HDRSlider(props: HDRSliderProps) {
     })
   }
 
-  const colorstr = colorStringify(linearToSrgb255(linearColor))
+  const lightenColor = useMemo(() => {
+    return [colord(colorstr).lighten(0.1).toRgbString(), colord(colorstr).lighten(0.2).toRgbString()]
+  }, [colorstr])
 
-  const lightenColor = [
-    colorStringify(mixColorWithIntensity(linearColor, intensity - 2)),
-    colorStringify(mixColorWithIntensity(linearColor, intensity - 1)),
-  ]
-
-  const darkenColor = [
-    colorStringify(mixColorWithIntensity(linearColor, intensity + 1)),
-    colorStringify(mixColorWithIntensity(linearColor, intensity + 2)),
-  ]
-
-  console.log('lightenColor', lightenColor)
-  console.log('darkenColor', darkenColor)
+  const darkenColor = useMemo(() => {
+    return [colord(colorstr).darken(0.2).toRgbString(), colord(colorstr).darken(0.1).toRgbString()]
+  }, [colorstr])
 
   const previewItems = [
-    { level: -2, text: '-2', bgColor: darkenColor[0], change: clamp(intensity - 1, min, max) },
-    { level: -1, text: '-1', bgColor: darkenColor[1], change: clamp(intensity - 2, min, max) },
+    { level: -2, text: '-2', bgColor: darkenColor[0], change: -2 },
+    { level: -1, text: '-1', bgColor: darkenColor[1], change: -1 },
     { level: 0, text: '', bgColor: colorstr, change: 0 },
-    { level: +1, text: '+1', bgColor: lightenColor[0], change: clamp(intensity + 1, min, max) },
-    { level: +2, text: '+2', bgColor: lightenColor[1], change: clamp(intensity + 2, min, max) },
+    { level: +1, text: '+1', bgColor: lightenColor[0], change: 1 },
+    { level: +2, text: '+2', bgColor: lightenColor[1], change: 2 },
   ]
 
   return (
@@ -201,7 +192,7 @@ export function HDRSlider(props: HDRSliderProps) {
             align="both"
             level={item.level}
             style={{ backgroundColor: item.bgColor }}
-            onClick={() => handlePreviewItemClick(item.level)}>
+            onClick={() => handlePreviewItemClick(item.change)}>
             <span>{item.text}</span>
           </HDRPreviewItem>
         ))}
