@@ -94,7 +94,7 @@ export const HDRMode = (args) => {
     r: 200,
     g: 150,
     b: 35,
-    a: 0.5,
+    a: 0.8,
     intensity: 1,
   })
 
@@ -105,7 +105,7 @@ export const HDRMode = (args) => {
   return (
     <Flex gap="sm" style={{ width: '300px' }} align="v">
       <Textarea value={JSON.stringify(color)} />
-      <ColorPicker mode="hdr" value={color} onValueChange={handleOnChange} {...args} />
+      <ColorPicker colorSpace="Linear" mode="hdr" value={color} onValueChange={handleOnChange} />
     </Flex>
   )
 }

@@ -199,7 +199,7 @@ function SubMenuItem(props: PropsWithChildren<ISubMenuItemProps>) {
       <Portal>
         <SubContent>
           <ScrollArea type="always" subtle={false} asContainer>
-            {children}  
+            {children}
           </ScrollArea>
         </SubContent>
       </Portal>
@@ -243,7 +243,7 @@ function MenuCheckboxItem(props: ICheckboxItemProps) {
 
   return (
     <StyledCheckboxItem {...rest} size={size}>
-      <ItemIndicator>
+      <ItemIndicator size={size}>
         <IconCheck />
       </ItemIndicator>
       <StyledMenuItemContent>
@@ -320,7 +320,9 @@ function DropdownMenu(props: PropsWithChildren<IDropdownMenuProps>) {
         </DropdownMenuPrimitive.Trigger>
         <DropdownMenuPrimitive.Portal>
           <Content side={side} sideOffset={sideOffset} align={align} alignOffset={alignOffset}>
-            <ScrollArea type="always" subtle={false} asContainer>{children}</ScrollArea>
+            <ScrollArea type="always" subtle={false} asContainer>
+              {children}
+            </ScrollArea>
           </Content>
         </DropdownMenuPrimitive.Portal>
       </DropdownMenuPrimitive.Root>
@@ -349,7 +351,9 @@ function ContextMenu(props: IContextMenuProps) {
         </ContextMenuPrimitive.Trigger>
         <ContextMenuPrimitive.Portal>
           <Content hidden={hidden} onPointerDownOutside={onPointerDownOutside}>
-            <ScrollArea type="always" subtle={false} asContainer>{children}</ScrollArea>
+            <ScrollArea type="always" subtle={false} asContainer>
+              {children}
+            </ScrollArea>
           </Content>
         </ContextMenuPrimitive.Portal>
       </ContextMenuPrimitive.Root>

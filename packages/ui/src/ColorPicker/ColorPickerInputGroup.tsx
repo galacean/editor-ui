@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useCallback } from 'react'
-import { IconSelector } from '@tabler/icons-react'
+import React, { useState, useEffect, useCallback, Fragment } from 'react'
+import { IconSelector, IconLetterSSmall } from '@tabler/icons-react'
 import { HexColorInput } from 'react-colorful'
 import { colord, HslaColor, RgbaColor } from 'colord'
 import { styled } from '../design-system'
@@ -7,16 +7,55 @@ import { styled } from '../design-system'
 import { ActionButton } from '../ActionButton'
 import { useEventCallback } from '../hooks/useEventCallback'
 import { useCycleSwitch } from '../hooks/useCycleSwitch'
+import { ColorSpace, linearToSrgbChannel255, srgbToLinear255, srgbToLinearChannel255 } from './helper'
+import { useColorPickerContext } from './ColorPickerProvider'
 
 type HexaColor = string
 const colorModes = ['RGBA', 'HSLA', 'HEX'] as const
 
+const ColorSpaceTip = styled('div', {
+  position: 'absolute',
+  top: '-3px',
+  left: '-5px',
+  fontSize: '10px',
+  color: '$gray11',
+  fontWeight: 'medium',
+  lineHeight: '1.5',
+  height: '14px',
+  overflow: 'hidden',
+  transform: 'translateY(-50%) scale(0.8)',
+  borderRadius: '$round',
+  boxShadow: '0 0 0 1px $colors$gray8',
+  transition: 'line-height 0.2s ease-in-out, opacity 0.2s ease-in-out',
+  padding: '0 4px',
+  backgroundColor: '$gray2',
+  userSelect: 'none',
+  cursor: 'pointer',
+  opacity: 0,
+  '&[data-state="open"]': {
+    display: 'block',
+  },
+  '&:hover': {
+    color: '$gray12',
+    lineHeight: '1.2',
+    backgroundColor: '$gray5',
+  },
+  '&:active': {
+    lineHeight: '1.5',
+  },
+})
+
 const InputGrid = styled('div', {
+  position: 'relative',
   display: 'flex',
   gridTemplateRows: '1fr',
   gap: '$2',
   marginTop: '$4',
   alignItems: 'center',
+  [`&:hover > ${ColorSpaceTip}`]: {
+    display: 'flex',
+    opacity: 1,
+  },
   variants: {
     readonly: {
       true: {
@@ -182,6 +221,29 @@ function RGBAColorInput(props: ColorInputProps<RgbaColor>) {
   )
 }
 
+function RGBAColorLinearSpaceInput(props: ColorInputProps<RgbaColor>) {
+  const { value, onChange, alpha } = props
+
+  const linearRGB = srgbToLinear255(value)
+
+  const handleOnChange = (prefix: keyof RgbaColor) => (prefixValue: number) => {
+    onChange &&
+      onChange({
+        ...value,
+        [prefix]: linearToSrgbChannel255(prefixValue),
+      })
+  }
+
+  return (
+    <>
+      <ColorPickerInput label="R" value={linearRGB.r} max={255} onChange={handleOnChange('r')} />
+      <ColorPickerInput label="G" value={linearRGB.g} max={255} onChange={handleOnChange('g')} />
+      <ColorPickerInput label="B" value={linearRGB.b} max={255} onChange={handleOnChange('b')} />
+      {alpha && <ColorPickerInput label="A" value={value.a} max={1} onChange={handleOnChange('a')} />}
+    </>
+  )
+}
+
 function HEXAColorInput(props: ColorInputProps<HexaColor>) {
   const { value, onChange, alpha } = props
 
@@ -203,6 +265,8 @@ type ColorPickerInputGroupProps = {
 export function ColorPickerInputGroup(props: ColorPickerInputGroupProps) {
   const { value, onChange, alpha = true, readonly = false } = props
   const [mode, switchMode] = useCycleSwitch(colorModes, 'RGBA')
+  const { colorSpace: propColorSpace } = useColorPickerContext()
+  const [colorSpace, setColorSpace] = useState<ColorSpace>(propColorSpace)
 
   const rgba = value
   const hexa = colord(value).minify({ alphaHex: true })
@@ -220,11 +284,23 @@ export function ColorPickerInputGroup(props: ColorPickerInputGroupProps) {
     }
   }
 
+  function toggleRgbaMode() {
+    setColorSpace((prev) => (prev === 'sRGB' ? 'Linear' : 'sRGB'))
+  }
+
   return (
     <InputGrid readonly={readonly}>
       {mode === 'HEX' && <HEXAColorInput alpha={alpha} value={hexa} onChange={handleInputChange('HEX')} />}
       {mode === 'HSLA' && <HSLAColorInput alpha={alpha} value={hsla} onChange={handleInputChange('HSLA')} />}
-      {mode === 'RGBA' && <RGBAColorInput alpha={alpha} value={rgba} onChange={handleInputChange('RGBA')} />}
+      {mode === 'RGBA' && (
+        <Fragment>
+          <ColorSpaceTip onClick={toggleRgbaMode}>{colorSpace}</ColorSpaceTip>
+          {colorSpace === 'sRGB' && <RGBAColorInput alpha={alpha} value={rgba} onChange={handleInputChange('RGBA')} />}
+          {colorSpace === 'Linear' && (
+            <RGBAColorLinearSpaceInput alpha={alpha} value={rgba} onChange={handleInputChange('RGBA')} />
+          )}
+        </Fragment>
+      )}
       <ActionButton variant="subtle" onClick={() => switchMode()} css={{ alignSelf: 'baseline', borderRadius: '$3' }}>
         <IconSelector />
       </ActionButton>
