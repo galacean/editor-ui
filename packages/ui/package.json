@@ -44,6 +44,7 @@
       }
     }
   },
+  "sideEffects": false,
   "scripts": {
     "dev": "storybook dev -p 6006",
     "build": "tsup",

@@ -31,6 +31,7 @@
     "build-storybook": "storybook build",
     "chromatic": "npx chromatic --project-token=CHROMATIC_TOKEN"
   },
+  "sideEffects": false,
   "keywords": [
     "ui",
     "editor",

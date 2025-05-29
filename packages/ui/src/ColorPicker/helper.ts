@@ -1,6 +1,8 @@
+import type { Color } from '../utils'
+
 export type ColorPickerMode = 'constant' | 'gradient' | 'particle' | 'hdr'
 
-export type Color = { r: number; g: number; b: number; a: number }
+export type ColorSpace = 'sRGB' | 'Linear'
 
 export type GradientColor = { value: Color; position: number }[]
 
