@@ -3,9 +3,10 @@ import { IconX } from '@tabler/icons-react'
 
 import { styled, StitchesComponent } from '../design-system'
 
-const StyledBadgeInner = styled('div', {
+const StyledBadgeInner = styled('span', {
+  all: 'unset',
   display: 'flex',
-  height: '$5',
+  height: '100%',
   alignItems: 'center',
   color: '$$color',
   backgroundColor: '$$bgColor',
@@ -16,16 +17,17 @@ const StyledBadgeInner = styled('div', {
     closeable: {
       true: {
         borderRadius: '4px 0 0 4px',
+        padding: '0 $1_5',
       },
     },
   },
 })
 
-const StyledCloseButton = styled('div', {
+const StyledCloseButton = styled('span', {
+  all: 'unset',
   display: 'flex',
   alignItems: 'center',
-  height: '$5',
-  // width: '$3',
+  height: '100%',
   padding: '0 $0_5',
   lineHeight: '14px',
   borderRadius: '0 4px 4px 0',
@@ -51,7 +53,6 @@ const StyledBadge = styled('span', {
   display: 'inline-flex',
   alignItems: 'center',
   borderRadius: '4px',
-  height: 'fit-content',
   lineHeight: '16px',
   userSelect: 'none',
   whiteSpace: 'nowrap',
@@ -60,9 +61,16 @@ const StyledBadge = styled('span', {
   variants: {
     size: {
       xs: {
-        fontSize: '$1',
-        padding: '2px 10px',
+        fontSize: '$0_5',
+        height: '$4',
+        [`& ${StyledBadgeInner}`]: {
+          padding: '0 $1',
+        },
       },
+      sm: {
+        height: '$5',
+        fontSize: '$1',
+      }
     },
 
     pill: {
@@ -108,31 +116,37 @@ const StyledBadge = styled('span', {
       },
       green: {
         $$color: '$colors$greenA11',
-        $$bgColor: '$colors$greenA4',
+        $$bgColor: '$colors$greenA3',
         $$highlightColor: '$colors$greenA12',
         $$highlightBgColor: '$colors$greenA5',
       },
       red: {
         $$color: '$colors$redA11',
-        $$bgColor: '$colors$redA4',
+        $$bgColor: '$colors$redA3',
         $$highlightColor: '$colors$redA12',
         $$highlightBgColor: '$colors$redA5',
       },
       blue: {
         $$color: '$colors$blueA11',
-        $$bgColor: '$colors$blueA4',
+        $$bgColor: '$colors$blueA3',
         $$highlightColor: '$colors$blueA12',
         $$highlightBgColor: '$colors$blueA5',
       },
       orange: {
         $$color: '$colors$orangeA11',
-        $$bgColor: '$colors$orangeA4',
+        $$bgColor: '$colors$orangeA3',
         $$highlightColor: '$colors$orangeA12',
         $$highlightBgColor: '$colors$orangeA5',
       },
+      amber: {
+        $$color: '$colors$amberA11',
+        $$bgColor: '$colors$amberA3',
+        $$highlightColor: '$colors$amberA12',
+        $$highlightBgColor: '$colors$amberA5',
+      },
       gold: {
         $$color: '$colors$goldA11',
-        $$bgColor: '$colors$goldA4',
+        $$bgColor: '$colors$goldA3',
         $$highlightColor: '$colors$goldA12',
         $$highlightBgColor: '$colors$goldA5',
       },
@@ -140,6 +154,7 @@ const StyledBadge = styled('span', {
   },
   defaultVariants: {
     color: 'gray',
+    size: "sm"
   },
 })
 
