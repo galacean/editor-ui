@@ -61,6 +61,7 @@ function _FormItemAssetPicker<T extends BasicAssetType>(props: FormItemAssetPick
   const {
     label,
     info,
+    direction,
     disabled,
     value,
     onDelete,
@@ -99,7 +100,7 @@ function _FormItemAssetPicker<T extends BasicAssetType>(props: FormItemAssetPick
   );
 
   return (
-    <FormItem label={label} info={info} fieldColumn="asset">
+    <FormItem label={label} info={info} direction={direction} fieldColumn="asset">
       <Popover
         compact
         disabled={disabled}

@@ -1,4 +1,4 @@
-import React, { forwardRef, PropsWithChildren } from 'react'
+import React, { forwardRef, PropsWithChildren, cloneElement, ReactElement, Children } from 'react'
 import * as ToggleGroupPrimitive from '@radix-ui/react-toggle-group'
 import type {
   ToggleGroupItemProps as PrimitiveItemProps,
@@ -70,6 +70,7 @@ const StyledItem = styled(
           },
         },
         subtle: {
+          backgroundColor: '$grayA3',
           '&[data-state=on]': {
             backgroundColor: '$grayA3',
             color: '$gray11',
@@ -104,12 +105,12 @@ type ToggleGroupProps = ToggleGroupPrimitiveProps & { size?: 'sm' | 'md'; varian
 
 export const ToggleGroup = forwardRef<HTMLDivElement, ToggleGroupProps>(function ToggleGroup(props, forwardedRef) {
   const { size, variant, children: propChildren, ...rest } = props
-  const children = React.Children.toArray(propChildren)
+  const children = Children.toArray(propChildren)
 
   return (
     <StyledToggleGroup ref={forwardedRef} {...rest}>
       {children.map((child, key) => {
-        return React.cloneElement(child as React.ReactElement, { size, key, variant })
+        return cloneElement(child as ReactElement, { size, key, variant })
       })}
     </StyledToggleGroup>
   )

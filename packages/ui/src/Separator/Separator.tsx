@@ -1,6 +1,7 @@
+import { forwardRef } from 'react'
 import * as PrimitiveSeparator from '@radix-ui/react-separator'
 import { CSS, StitchesComponent, styled, VariantProps } from '../design-system'
-import { forwardRef } from 'react'
+import { Text } from '../Typography'
 
 const StyledCrosslineText = styled('div', {
   display: 'flex',
@@ -8,13 +9,13 @@ const StyledCrosslineText = styled('div', {
   width: '100%',
   userSelect: 'none',
   '&::before': {
-    borderBottom: '1px solid $grayA7',
+    borderBottom: '1px solid $grayA6',
     content: '',
     flex: '1 0 0',
     transform: 'translateY(-0.5px)',
   },
   '&::after': {
-    borderBottom: '1px solid $grayA7',
+    borderBottom: '1px solid $grayA6',
     content: '',
     flex: '1 0 0',
     transform: 'translateY(-0.5px)',
@@ -77,7 +78,9 @@ const Separator = forwardRef<HTMLDivElement, SeparatorProps>(function Separator(
   if (text) {
     return (
       <StyledCrosslineText {...rest} ref={forwardedRef}>
-        <div>{text}</div>
+        <div>
+          <Text size="1">{text}</Text>
+        </div>
       </StyledCrosslineText>
     )
   }

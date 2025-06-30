@@ -14,8 +14,8 @@ const StyledCallout = styled(Flex, {
         color: '$blueA11',
       },
       warning: {
-        backgroundColor: '$orange3',
-        color: '$orange11',
+        backgroundColor: '$amber3',
+        color: '$amber11',
       },
       error: {
         backgroundColor: '$red3',

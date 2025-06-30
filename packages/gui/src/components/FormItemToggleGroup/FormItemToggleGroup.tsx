@@ -22,7 +22,7 @@ export function FormItemToggleGroup(props: FormItemToggleGroupProps) {
   
   return (
     <FormItem label={label} info={info} fieldColumn={1}>
-      <ToggleGroup {...groupProps}>
+      <ToggleGroup {...groupProps} variant="subtle">
         {options.map((option) => (
           <ToggleGroupItem
             key={option.value}
