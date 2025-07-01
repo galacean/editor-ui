@@ -12,7 +12,7 @@ export default {
 
 export const Overview: StoryFn<typeof BezierCurveEditor> = (args) => {
   return (
-    <Flex gap="md">
+    <Flex gap="md" css={{ width: '100px' }}>
       <BezierCurveEditor algo="bezier" />
     </Flex>
   );
@@ -26,7 +26,7 @@ export const Controlled: StoryFn<typeof BezierCurveEditor> = (args) => {
     { x: 1, y: 1 }
   ]);
   return (
-    <Flex gap="md">
+    <Flex gap="md" css={{ width: '100px' }}>
       <BezierCurveEditor algo="bezier" value={points} onChange={setPoints} />
     </Flex>
   );
@@ -34,7 +34,7 @@ export const Controlled: StoryFn<typeof BezierCurveEditor> = (args) => {
 
 export const Uncontrolled: StoryFn<typeof BezierCurveEditor> = (args) => {
   return (
-    <Flex gap="md">
+    <Flex gap="md" css={{ width: '100px' }}>
       <BezierCurveEditor algo="bezier" />
     </Flex>
   );

@@ -13,6 +13,7 @@ import { BezierCurvePresets } from './Preset'
 const BezierCurveEditorTrigger = styled('div', {
   display: 'flex',
   height: '$6',
+  width: '100%',
   background: '$grayA3',
   borderRadius: '$2',
   overflow: 'hidden',
