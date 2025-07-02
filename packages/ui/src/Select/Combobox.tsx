@@ -27,7 +27,8 @@ const StyledComboboxTrigger = styled('button', {
   boxSizing: 'border-box',
   backgroundColor: '$grayA3',
   '&:hover': {
-    backgroundColor: '$gray4',
+    cursor: 'pointer',
+    backgroundColor: '$grayA4',
   },
 })
 
