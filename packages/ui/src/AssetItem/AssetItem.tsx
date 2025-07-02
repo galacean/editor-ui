@@ -79,7 +79,8 @@ export const AssetItem = forwardRef<HTMLDivElement, AssetItemProps>(function Ass
       aria-selected={selected}
       onClick={onSelectedChange}
       {...rest}
-      ref={forwardedRef}>
+      ref={forwardedRef}
+    >
       <AssetThumbnail
         thumbnail={thumbnail}
         mini={rest.displayMode === 'list'}

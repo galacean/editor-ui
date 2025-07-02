@@ -10,6 +10,7 @@ import { styled } from '../design-system'
 import { basicItemStyle } from '../design-system/recipes'
 import { Checkbox } from '../Checkbox'
 import { Text } from '../Typography'
+import { ScrollArea } from '../ScrollArea'
 
 const SELECT_ALL_VALUE = '$$SELECT_ALL$$'
 
@@ -67,7 +68,7 @@ const StyledComboboxContent = styled(Flex, {
     animation: 'none',
   },
   '&::-webkit-scrollbar': {
-    width: '8px',
+    width: '$0_5',
   },
   '&::-webkit-scrollbar-track': {
     background: 'transparent',
@@ -95,18 +96,21 @@ const StyledComboBoxItem = styled('button', basicItemStyle, {
   width: '100%',
   flexShrink: 0,
   '&:hover': {
-    backgroundColor: '$grayA3',
+    color: '$blue12',
+    backgroundColor: '$blue9',
   },
   variants: {
     focused: {
       true: {
-        backgroundColor: '$grayA3',
+        color: '$blue12',
+        backgroundColor: '$blue9',
       },
     },
     selected: {
       true: {
         '&:hover': {
-          backgroundColor: '$grayA3',
+          color: '$blue12',
+          backgroundColor: '$blue9',
         },
       },
     },

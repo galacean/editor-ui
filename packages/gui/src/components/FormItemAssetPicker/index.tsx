@@ -1,5 +1,5 @@
-import React, { ForwardedRef, useCallback } from "react";
-import { IconCurrentLocation, IconFileFilled } from "@tabler/icons-react";
+import React, { ForwardedRef, useCallback, useState } from "react";
+import { IconCurrentLocation, IconFileFilled, IconUnlink } from "@tabler/icons-react";
 
 import { BasicAssetType, AssetPickerPopoverProps } from "./AssetPickerPopover";
 import { AssetPickerContent } from "./AssetPickerContent";
@@ -7,31 +7,6 @@ import { AssetPickerContent } from "./AssetPickerContent";
 import { FormItem } from "../FormItem";
 import { ActionButton ,Button, styled, Popover, PopoverCloseTrigger, useDrop } from '@galacean/editor-ui'
 import { BaseFormItemProps } from "../FormItem/FormItem";
-
-function UnlinkIcon(props) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="16"
-      height="16"
-      viewBox="0 0 24 24"
-      strokeWidth="1.5"
-      stroke="currentColor"
-      fill="none"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      {...props}
-    >
-      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-      <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
-      <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
-      <line x1="16" y1="21" x2="16" y2="19" />
-      <line x1="19" y1="16" x2="21" y2="16" />
-      <line x1="3" y1="8" x2="5" y2="8" />
-      <line x1="8" y1="3" x2="8" y2="5" />
-    </svg>
-  );
-}
 
 const StyledIconFile = styled(IconFileFilled, {
   marginLeft: "-$1",
@@ -57,7 +32,20 @@ const Placeholder = styled("span", {
   lineHeight: 2
 });
 
+const StyledTriggerButton = styled(Button, {
+  variants: {
+    isDraggingOver: {
+      true: {
+        color: '$blue12',
+        outline: "2px solid $colors$blue10",
+        backgroundColor: "$blueA4",
+      },
+    },
+  }
+})
+
 function _FormItemAssetPicker<T extends BasicAssetType>(props: FormItemAssetPickerProps<T>, ref) {
+  const [isDraggingOver, setIsDraggingOver] = useState(false);
   const {
     label,
     info,
@@ -81,13 +69,16 @@ function _FormItemAssetPicker<T extends BasicAssetType>(props: FormItemAssetPick
   const dropRef = useDrop({
     accept: dropLayer,
     onDrop(_, item: any, dropElement) {
+      setIsDraggingOver(false);
       onSelect(item);
       dropElement.blur();
     },
     onEnter(_, __, dropElement) {
+      setIsDraggingOver(true);
       dropElement.focus();
     },
     onLeave(_, __, dropElement) {
+      setIsDraggingOver(false);
       dropElement.blur();
     }
   });
@@ -106,17 +97,20 @@ function _FormItemAssetPicker<T extends BasicAssetType>(props: FormItemAssetPick
         disabled={disabled}
         sideOffset={6}
         trigger={
-          <Button
+          <StyledTriggerButton
             ref={dropRef as any}
             size="sm"
             id={label}
             disabled={disabled}
             variant="secondary"
-            css={{ justifyContent: "initial" }}
+            isDraggingOver={isDraggingOver}
+            css={{ 
+              justifyContent: "initial",
+            }}
           >
             <StyledIconFile size="14px" />
             <Placeholder>{value ? value : placeholder}</Placeholder>
-          </Button>
+          </StyledTriggerButton>
         }
         onOpenChange={onOpenChange}
       >
@@ -132,7 +126,7 @@ function _FormItemAssetPicker<T extends BasicAssetType>(props: FormItemAssetPick
         <IconCurrentLocation />
       </ActionButton>
       <ActionButton size="sm" disabled={actionDisabled || !onDelete} onClick={onDelete} variant="secondary">
-        <UnlinkIcon />
+        <IconUnlink />
       </ActionButton>
     </FormItem>
   );
