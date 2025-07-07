@@ -77,9 +77,8 @@ const AssetThumbnailRoot = styled(Flex, {
   '& img': {
     display: 'block',
     objectFit: 'cover',
-    width: '60%',
-    maxWidth: '100%',
-    maxHeight: '100%',
+    maxWidth: '75%',
+    maxHeight: '75%',
     transform: 'scale(1)',
     transition: 'transform 0.16s ease-in-out',
   },
