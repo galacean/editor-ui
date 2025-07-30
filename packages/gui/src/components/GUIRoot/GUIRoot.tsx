@@ -1,5 +1,5 @@
-import React, { useEffect, useMemo, useRef } from 'react';
-import { Panel } from '../Panel';
+import React, { Fragment, useEffect, useMemo, useRef } from 'react'
+import { Panel } from '../Panel'
 
 import {
   FormItemColor,
@@ -10,8 +10,10 @@ import {
   FormItemVector2,
   FormItemVector3,
   FormItemVector4,
-  FormItemSlider, FormItemArray,
-  FormItemSelect, FormItemInput,
+  FormItemSlider,
+  FormItemArray,
+  FormItemSelect,
+  FormItemInput,
   FormItemTextarea,
   FormItemCascadeSlider,
   FormItemInputProps,
@@ -27,11 +29,11 @@ import {
   FormItemSelectProps,
   FormItemTextareaProps,
   FormItemCascadeSliderProps,
-  FormItemArrayProps
-} from '..';
-import { FormItemRectProps } from '../FormItemRect/FormItemRect';
-import { useControllableState } from '@radix-ui/react-use-controllable-state';
-import { resetStyle } from '@galacean/editor-ui';
+  FormItemArrayProps,
+} from '..'
+import { FormItemRectProps } from '../FormItemRect/FormItemRect'
+import { useControllableState } from '@radix-ui/react-use-controllable-state'
+import { resetStyle, styled } from '@galacean/editor-ui'
 
 export enum GUIItemTypeEnum {
   Input = 'Input',
@@ -53,66 +55,66 @@ export enum GUIItemTypeEnum {
 }
 
 // value will be injected by GUIRoot
-type BaseGUIItemConfig<T> = Omit<T, 'value'> & { bindPath?: string };
+type BaseGUIItemConfig<T> = Omit<T, 'value'> & { bindPath?: string }
 
 interface GUIItemInputConfig extends BaseGUIItemConfig<FormItemInputProps> {
-  type: GUIItemTypeEnum.Input;
+  type: GUIItemTypeEnum.Input
 }
 
 interface GUIItemNumberConfig extends BaseGUIItemConfig<FormItemInputNumberProps> {
-  type: GUIItemTypeEnum.Number;
+  type: GUIItemTypeEnum.Number
 }
 
 interface GUIItemTextareaConfig extends BaseGUIItemConfig<FormItemTextareaProps> {
-  type: GUIItemTypeEnum.Textarea;
+  type: GUIItemTypeEnum.Textarea
 }
 
 interface GUIItemSliderConfig extends BaseGUIItemConfig<FormItemSliderProps> {
-  type: GUIItemTypeEnum.Slider;
+  type: GUIItemTypeEnum.Slider
 }
 
 interface GUIItemColorConfig extends BaseGUIItemConfig<FormItemColorProps> {
-  type: GUIItemTypeEnum.Color;
+  type: GUIItemTypeEnum.Color
 }
 
 interface GUIItemRectConfig extends BaseGUIItemConfig<FormItemRectProps> {
-  type: GUIItemTypeEnum.Rect;
+  type: GUIItemTypeEnum.Rect
 }
 
 interface GUIItemToggleConfig extends BaseGUIItemConfig<FormItemToggleProps> {
-  type: GUIItemTypeEnum.Toggle;
+  type: GUIItemTypeEnum.Toggle
 }
 
 interface GUIItemVector2Config extends BaseGUIItemConfig<FormItemVector2Props> {
-  type: GUIItemTypeEnum.Vector2;
+  type: GUIItemTypeEnum.Vector2
 }
 
 interface GUIItemVector3Config extends BaseGUIItemConfig<FormItemVector3Props> {
-  type: GUIItemTypeEnum.Vector3;
+  type: GUIItemTypeEnum.Vector3
 }
 
 interface GUIItemVector4Config extends BaseGUIItemConfig<FormItemVector4Props> {
-  type: GUIItemTypeEnum.Vector4;
+  type: GUIItemTypeEnum.Vector4
 }
 
 interface GUIItemSegmentControlConfig extends BaseGUIItemConfig<FormItemSegmentControlProps> {
-  type: GUIItemTypeEnum.Select;
+  type: GUIItemTypeEnum.Select
 }
 
 interface GUIItemArrayConfig extends Omit<FormItemArrayProps, 'items'> {
-  type: GUIItemTypeEnum.Array;
-  bindPath: string;
-  items: GUIItemConfig[];
-  onChange?: (value: any) => void;
+  type: GUIItemTypeEnum.Array
+  bindPath: string
+  items: GUIItemConfig[]
+  onChange?: (value: any) => void
 }
 
 interface GUIItemGroupConfig extends Omit<BaseGUIItemConfig<FormItemGroupProps>, 'children'> {
-  type: GUIItemTypeEnum.Group;
-  items: GUIItemConfig[];
+  type: GUIItemTypeEnum.Group
+  items: GUIItemConfig[]
 }
 
 interface GUIItemSelectConfig extends BaseGUIItemConfig<FormItemSelectProps<any>> {
-  type: GUIItemTypeEnum.Select;
+  type: GUIItemTypeEnum.Select
 }
 
 // interface GUIItemButtonConfig extends {
@@ -120,11 +122,11 @@ interface GUIItemSelectConfig extends BaseGUIItemConfig<FormItemSelectProps<any>
 // }
 
 interface GUIItemCascadeSliderConfig extends BaseGUIItemConfig<FormItemCascadeSliderProps> {
-  type: GUIItemTypeEnum.CascadeSlider;
+  type: GUIItemTypeEnum.CascadeSlider
 }
 
-export type GUIItemConfig = (
-    GUIItemInputConfig
+export type GUIItemConfig =
+  | GUIItemInputConfig
   | GUIItemNumberConfig
   | GUIItemColorConfig
   | GUIItemTextareaConfig
@@ -139,126 +141,147 @@ export type GUIItemConfig = (
   | GUIItemCascadeSliderConfig
   | GUIItemArrayConfig
   | GUIItemGroupConfig
-);
-  // | GUIItemButtonConfig
+// | GUIItemButtonConfig
 
+export type SourceData = any
+export type KeyOrBindPath = string
 
-export type SourceData = any;
-export type KeyOrBindPath = string;
+export type GUIDefineItem = [SourceData, KeyOrBindPath, GUIItemConfig]
 
-export type GUIDefineItem = [SourceData, KeyOrBindPath, GUIItemConfig];
+const StyledGroupWrapper = styled('div', {
+  margin: '$0_5',
+  borderRadius: '$3',
+  boxShadow: '$border',
+})
 
 function renderGUIItem(item: GUIDefineItem, index: number) {
-  const [data, keyOrBindPath, config] = item;
-  const { type, onChange, bindPath, label,  ...rest } = config as Exclude<GUIItemConfig, GUIItemGroupConfig>;
-  const realKey = keyOrBindPath.split('.').pop();
+  const [data, keyOrBindPath, config] = item
+  const { type, onChange, bindPath, label, ...rest } = config as Exclude<GUIItemConfig, GUIItemGroupConfig>
+  const realKey = keyOrBindPath.split('.').pop()
 
-  let realLabel = label ?? realKey;
-  let value: any = data[keyOrBindPath];
-  let GUIComponent = null;
-  let nested = false;
+  let realLabel = label ?? realKey
+  let value: any = data[keyOrBindPath]
+  let GUIComponent = null
+  let nested = false
 
-  let extraProps: any = {};
+  let extraProps: any = {}
 
-
-  if(keyOrBindPath.indexOf('.') !== -1 && realKey) {
-    nested = true;
+  if (keyOrBindPath.indexOf('.') !== -1 && realKey) {
+    nested = true
   }
 
-  if(nested) {
-    const keys = keyOrBindPath.split('.');
-    const lastKey = keys.pop();
-    const lastObj = keys.reduce((acc, key) => acc[key], data);
-    value = lastObj[lastKey];
+  if (nested) {
+    const keys = keyOrBindPath.split('.')
+    const lastKey = keys.pop()
+    const lastObj = keys.reduce((acc, key) => acc[key], data)
+    value = lastObj[lastKey]
   }
 
   let preprocesser = function preprocesser(value: any) {
     return function (processFunc?) {
-      if(!processFunc) return value;
-      return processFunc(value);
+      if (!processFunc) return value
+      return processFunc(value)
     }
   }
 
-  let realValue = preprocesser(value)();
+  let realValue = preprocesser(value)()
 
   function handleOnChange(nextValue, ...args) {
-    let realNextValue = nextValue;
-    let nextData = data;
-    if(nested) {
-      const keys = keyOrBindPath.split('.');
-      const lastKey = keys.pop();
-      const lastObj = keys.reduce((acc, key) => acc[key], data);
-      lastObj[lastKey] = realNextValue;
+    let realNextValue = nextValue
+    let nextData = data
+    if (nested) {
+      const keys = keyOrBindPath.split('.')
+      const lastKey = keys.pop()
+      const lastObj = keys.reduce((acc, key) => acc[key], data)
+      lastObj[lastKey] = realNextValue
     } else {
-      nextData[keyOrBindPath] = realNextValue;
+      nextData[keyOrBindPath] = realNextValue
     }
     // TODO: have to find a solution to make `onChange` satisfied with the extra args
     // @ts-ignore
-    onChange && onChange(realNextValue, ...args);
+    onChange && onChange(realNextValue, ...args)
   }
 
-  switch(type as GUIItemTypeEnum) {
+  switch (type as GUIItemTypeEnum) {
     case GUIItemTypeEnum.Input:
-      GUIComponent = FormItemInput;
-      break;
+      GUIComponent = FormItemInput
+      break
     case GUIItemTypeEnum.Number:
-      GUIComponent = FormItemInputNumber;
-      break;
+      GUIComponent = FormItemInputNumber
+      break
     case GUIItemTypeEnum.Slider:
-      GUIComponent = FormItemSlider;
-      break;
+      GUIComponent = FormItemSlider
+      break
     case GUIItemTypeEnum.Color:
-      GUIComponent = FormItemColor;
-      break;
+      GUIComponent = FormItemColor
+      break
     case GUIItemTypeEnum.Toggle:
-      GUIComponent = FormItemToggle;
-      break;
+      GUIComponent = FormItemToggle
+      break
     case GUIItemTypeEnum.Vector2:
-      GUIComponent = FormItemVector2;
-      break;
+      GUIComponent = FormItemVector2
+      break
     case GUIItemTypeEnum.Vector3:
-      GUIComponent = FormItemVector3;
-      break;
+      GUIComponent = FormItemVector3
+      break
     case GUIItemTypeEnum.Vector4:
-      GUIComponent = FormItemVector4;
-      break;
+      GUIComponent = FormItemVector4
+      break
     case GUIItemTypeEnum.Rect:
-      GUIComponent = FormItemRect;
-      break;
+      GUIComponent = FormItemRect
+      break
     case GUIItemTypeEnum.Textarea:
-      GUIComponent = FormItemTextarea;
-      break;
+      GUIComponent = FormItemTextarea
+      break
     case GUIItemTypeEnum.Array: {
-      GUIComponent = FormItemArray;
+      GUIComponent = FormItemArray
       extraProps.items = (config as GUIItemArrayConfig).items.map((item, index) => {
         return {
           name: `${realLabel}${index}`,
           id: index,
-          children: renderGUIItem([data, item.bindPath, item], index)
-        };
+          children: renderGUIItem([data, item.bindPath, item], index),
+        }
       }) as unknown as FormItemArrayProps['items']
-      break;
-    };
+      break
+    }
     case GUIItemTypeEnum.Group: {
-      GUIComponent = FormItemGroup;
-      (extraProps as BaseGUIItemConfig<FormItemGroupProps>).children = (config as GUIItemGroupConfig).items.map((item, index) => {
-        return renderGUIItem([data, item.bindPath, item], index);
-      })
-      break;
+      GUIComponent = FormItemGroup
+      ;(extraProps as BaseGUIItemConfig<FormItemGroupProps>).children = (config as GUIItemGroupConfig).items.map(
+        (item, index) => {
+          return renderGUIItem([data, item.bindPath, item], index)
+        }
+      )
+      break
     }
     case GUIItemTypeEnum.CascadeSlider:
-      GUIComponent = FormItemCascadeSlider;
-      break;
+      GUIComponent = FormItemCascadeSlider
+      break
     case GUIItemTypeEnum.Select:
-      GUIComponent = FormItemSelect;
-      break;
+      GUIComponent = FormItemSelect
+      break
     // case GUIItemTypeEnum.Button:
     //   GUIComponent = FormItemButton;
     //   break;
   }
 
-  if(!GUIComponent) {
-    return null;
+  if (!GUIComponent) {
+    return null
+  }
+
+  if (GUIComponent === FormItemGroup) {
+    return (
+      <StyledGroupWrapper>
+        <UnControlledComponent
+          key={`label_${index}`}
+          label={realLabel}
+          value={realValue}
+          onChange={handleOnChange}
+          GUIComponent={GUIComponent}
+          {...rest}
+          {...extraProps}
+        />
+      </StyledGroupWrapper>
+    )
   }
 
   return (
@@ -271,23 +294,17 @@ function renderGUIItem(item: GUIDefineItem, index: number) {
       {...rest}
       {...extraProps}
     />
-  );
+  )
 }
 
-function UnControlledComponent({
-  value,
-  onChange,
-  label,
-  GUIComponent,
-  ...rest
-}) {
-  const onChangeRestParams = useRef([]);
+function UnControlledComponent({ value, onChange, label, GUIComponent, ...rest }) {
+  const onChangeRestParams = useRef([])
   const [controlledValue, setControlledValue] = useControllableState({
     prop: undefined,
     defaultProp: value,
     onChange: (v) => {
-      onChange(v, ...onChangeRestParams.current);
-      onChangeRestParams.current = [];
+      onChange(v, ...onChangeRestParams.current)
+      onChangeRestParams.current = []
     },
   })
 
@@ -296,8 +313,8 @@ function UnControlledComponent({
       label={label}
       value={controlledValue}
       onChange={(value, ...args) => {
-        onChangeRestParams.current = args;
-        setControlledValue(value);
+        onChangeRestParams.current = args
+        setControlledValue(value)
       }}
       {...rest}
     />
@@ -305,57 +322,51 @@ function UnControlledComponent({
 }
 
 type GUIContextType = {
-  items: GUIDefineItem[];
+  items: GUIDefineItem[]
   // onAdd: (item: GUIItemConfig) => void;
-  gui: any;
-};
+  gui: any
+}
 
 const GUIContext = React.createContext<GUIContextType>({
   gui: null,
-  items: []
-});
+  items: [],
+})
 
 interface GUIProviderProps {
-  children: React.ReactNode;
-  items: GUIDefineItem[];
-  gui: any;
+  children: React.ReactNode
+  items: GUIDefineItem[]
+  gui: any
 }
 
 function GUIProvider({ children, items, gui }: GUIProviderProps) {
-  return (
-    <GUIContext.Provider value={{ gui, items }}>{children}</GUIContext.Provider>
-  );
+  return <GUIContext.Provider value={{ gui, items }}>{children}</GUIContext.Provider>
 }
 
 export interface GUIRootProps {
-  data: Record<string, any>;
-  items?: GUIDefineItem[];
+  data: Record<string, any>
+  items?: GUIDefineItem[]
 }
 
 export function GUIRoot(props: GUIRootProps) {
-  const { items, data } = props;
-  const [guiItems, setGUIItems] = React.useState(items);
+  const { items, data } = props
+  const [guiItems, setGUIItems] = React.useState(items)
 
   const gui = useMemo(() => {
     return {
       items: guiItems,
       onAdd: (item) => {
-        setGUIItems((prev) => [...prev, item]);
-      }
-    };
-  }, [guiItems]);
+        setGUIItems((prev) => [...prev, item])
+      },
+    }
+  }, [guiItems])
 
   useEffect(() => {
-    resetStyle();
-  }, []);
-  
+    resetStyle()
+  }, [])
+
   return (
     <GUIProvider {...{ items, data, gui }}>
-      <Panel>
-        {guiItems.map(renderGUIItem).filter(Boolean)}
-      </Panel>
+      <Panel>{guiItems.map(renderGUIItem).filter(Boolean)}</Panel>
     </GUIProvider>
-  );
+  )
 }
-
-

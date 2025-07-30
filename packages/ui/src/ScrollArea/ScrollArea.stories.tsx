@@ -26,7 +26,6 @@ const TestContainer = styled('div', {
   borderRadius: '$3',
 })
 
-
 export default {
   title: 'Container/ScrollArea',
   component: ScrollArea,
@@ -35,7 +34,7 @@ export default {
 export const Overview: StoryFn<typeof ScrollArea> = (args) => {
   return (
     <TestContainer>
-      <ScrollArea {...args}>
+      <ScrollArea {...args} asContainer>
         {[...Array(8)].map((_, i) => (
           <Item key={i} align="both" />
         ))}

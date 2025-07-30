@@ -4,7 +4,6 @@ import type { ScrollAreaViewportProps, ScrollAreaProps as PrimitiveScrollAreaPro
 
 import { CSS, styled } from '../design-system'
 
-
 const ScrollAreaRoot = styled(ScrollAreaPrimitive.Root, {
   position: 'relative',
   width: '100%',
@@ -13,12 +12,12 @@ const ScrollAreaRoot = styled(ScrollAreaPrimitive.Root, {
   variants: {
     fullHeight: {
       true: { height: '100%' },
-    }
+    },
   },
   defaultVariants: {
     fullHeight: true,
-  }
-},)
+  },
+})
 
 const ScrollAreaViewport = styled(ScrollAreaPrimitive.Viewport, {
   width: '100%',
@@ -32,10 +31,10 @@ const ScrollAreaViewport = styled(ScrollAreaPrimitive.Viewport, {
   variants: {
     asContainer: {
       true: {
-        padding: '$1_5'
-      }
-    }
-  }
+        padding: '$1',
+      },
+    },
+  },
 })
 
 const SCROLLBAR_SIZE = 4
@@ -58,8 +57,8 @@ const ScrollAreaScrollbar = styled(ScrollAreaPrimitive.Scrollbar, {
         margin: 0,
         background: 'transparent',
         '&:hover': { background: '$grayA5' },
-      }
-    }
+      },
+    },
   },
   defaultVariants: {
     subtle: true,
@@ -98,7 +97,7 @@ interface ScrollAreaProps extends PrimitiveScrollAreaProps {
 }
 
 export function ScrollArea(props: ScrollAreaProps) {
-  const { fullHeight, subtle, css, asContainer, ...rest } = props;
+  const { fullHeight, subtle, css, asContainer, ...rest } = props
   return (
     <ScrollAreaRoot fullHeight={fullHeight}>
       <ScrollAreaViewport css={css} asContainer={asContainer} {...rest} />

@@ -1,4 +1,4 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 import * as ProgressPrimitive from '@radix-ui/react-progress'
 
 import { styled, VariantProps } from '../design-system'

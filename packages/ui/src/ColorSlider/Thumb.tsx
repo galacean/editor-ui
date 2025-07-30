@@ -5,33 +5,34 @@ import minifyPlugin from 'colord/plugins/minify'
 import mixPlugin from 'colord/plugins/mix'
 
 import { styled } from '../design-system'
-import { useControllableState } from '@radix-ui/react-use-controllable-state'
 
-import { isEqual, type Color, type GradientColor } from '../ColorPicker/helper'
+import { isEqual, type GradientColor } from '../ColorPicker/helper'
 import { Flex } from '../Flex'
 import { clamp } from '../utils/math'
+import { Color } from '../utils'
 
 extend([minifyPlugin, mixPlugin])
 
 const StyledThumb = styled('div', {
   position: 'relative',
   top: 3,
-  height: '14px',
-  width: '14px',
+  height: '$4',
+  width: '$2',
   borderRadius: '$1',
   border: '1px solid CurrentColor',
-  transform: 'translateX(-50%)',
+  transform: 'translateX(-$sizes$2)',
   meshBackground: 5,
   '&::after': {
     content: "''",
     display: 'block',
     position: 'absolute',
-    bottom: '$3',
+    bottom: '11.6px',
     width: 0,
+    right: -1,
     borderLeft: '4px solid transparent',
     borderRight: '4px solid transparent',
     borderBottom: '4px solid currentColor',
-    transform: 'translateX(2px)',
+    transform: 'translateY(-2px)',
   },
   '& > div': {
     content: "''",
@@ -54,12 +55,15 @@ const StyledThumbRoot = styled(Flex, {
   variants: {
     active: {
       true: {
-        color: '$green10',
+        color: '$gray12',
+        [`${StyledThumb}`]: {
+          transform: 'translateX(-$sizes$2) scale(1.1)',
+        },
       },
     },
   },
   '&:hover': {
-    color: '$green10',
+    color: '$gray12',
   },
 })
 
@@ -78,13 +82,6 @@ interface ThumbProps {
 function Thumb(props: ThumbProps) {
   const { range, position, onPositionChange, onRemove, active } = props
   const [dragging, setDragging] = React.useState(false)
-  // const [position, setPosition] = useControllableState<number>({
-  //   prop: props.position,
-  //   onChange: (p) => {
-  //     props.onPositionChange(p, props.index);
-  //   },
-  //   defaultProp: 0,
-  // })
   const [startX, setStartX] = React.useState(0)
   const [startY, setStartY] = React.useState(0)
   const ref = React.useRef<HTMLDivElement>(null)
@@ -107,7 +104,6 @@ function Thumb(props: ThumbProps) {
       const deltaY = clientY - startY
       const nextPosition = clamp((translateX + deltaX) / range.max, 0, 1)
       onPositionChange(nextPosition, props.index)
-      // setPosition(nextPosition);
       if (deltaY > 50) {
         setDragging(false)
         onRemove && onRemove(props.index)

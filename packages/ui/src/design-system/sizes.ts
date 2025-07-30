@@ -1,6 +1,7 @@
 export const sizes = {
   '0_5': '2px',
   1: '4px',
+  1_5: '6px',
   2: '8px',
   3: '12px',
   4: '16px',
@@ -92,6 +93,7 @@ export const shadows = {
     inset 0px .5px 0px rgba(255, 255, 255, .1),
     inset 0px 0px .5px rgba(255, 255, 255, .3)
   `,
+  border: `inset 0 0 0 1px $colors$grayA3`,
   popContainer: `
     0px 0px .5px rgba(0, 0, 0, .5),
     0px 2px 6px 0px rgba(0, 0, 0, .2),

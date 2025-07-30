@@ -13,7 +13,7 @@ const StyledAccordion = styled(AccordionPrimitive.Root, {
   borderRadius: '$3',
   width: '100%',
   overflow: 'hidden',
-  boxShadow: "$popContainer"
+  boxShadow: '$popContainer',
 })
 
 const StyledChevron = styled(IconChevronRight, {
@@ -29,7 +29,7 @@ const StyledTitle = styled(AccordionPrimitive.Trigger, {
   display: 'flex',
   width: '100%',
   padding: '0 $1',
-  height: '$7',
+  height: '$8',
   alignItems: 'center',
   justifyContent: 'space-between',
   fontSize: '$1',
@@ -55,7 +55,7 @@ const StyledContent = styled(AccordionPrimitive.Content, {
   backgroundColor: '$grayA2',
   color: '$gray11',
   '&[data-state="open"]': {
-    borderBottom: "1px solid $grayA3"
+    borderBottom: '1px solid $grayA3',
   },
   '&:empty': {
     padding: 0,

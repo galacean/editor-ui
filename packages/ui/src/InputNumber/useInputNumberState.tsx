@@ -25,7 +25,7 @@ export function useInputNumberState(props: InputNumberStateOptions): InputNumber
 
   const isControlled = props.value !== undefined && props.onChange !== undefined
 
-  const result: InputNumberProps = { ref, defaultValue: props.defaultValue }
+  const result: InputNumberProps = { ref, value, defaultValue: props.defaultValue }
 
   function triggerOnChange(value: number) {
     if (value !== props.value && onChangeProps) onChangeProps(value)

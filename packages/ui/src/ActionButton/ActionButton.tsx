@@ -77,7 +77,7 @@ const StyledActionButton = styled('button', button, {
       },
     },
     variant: {
-      outline: {
+      default: {
         border: '1px solid $gray6',
         borderColor: '$gray6',
         borderWidth: '1px',

@@ -1,5 +1,4 @@
-import { Meta, StoryFn } from '@storybook/react'
-import React, { useState } from 'react'
+import { Meta } from '@storybook/react'
 import {
   IconCodeFile,
   IconAnimationControllerFile,
@@ -18,6 +17,7 @@ import {
 } from '.'
 import { Flex } from '../Flex'
 import { styled } from '../design-system'
+import IconPending from './Files/Pending'
 
 export default {
   title: 'Symbols/Iconography',
@@ -41,6 +41,14 @@ const StyledIconItem = styled(Flex, {
   },
 })
 
+const Grid = styled('div', {
+  display: 'grid',
+  gridTemplateColumns: 'repeat(auto-fill, minmax(70px, 1fr))',
+  gap: '$3',
+  alignItems: 'self-start',
+  width: '600px',
+})
+
 const Text = styled('p', {
   fontSize: '$1',
   color: '$gray10',
@@ -57,12 +65,14 @@ function IconItem(props) {
 
 export const Overview = () => {
   return (
-    <Flex gap="lg" wrap>
+    <Grid>
+      <IconItem>
+        <IconPending />
+      </IconItem>
       <IconItem>
         <IconCodeFile />
         <Text>Typescript</Text>
       </IconItem>
-
       <IconItem>
         <IconAnimatorClipFile />
         <Text>Animator Clip</Text>
@@ -115,6 +125,6 @@ export const Overview = () => {
         <IconSpineSkeletonFile />
         <Text>Spine Skeleton</Text>
       </IconItem>
-    </Flex>
+    </Grid>
   )
 }

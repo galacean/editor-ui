@@ -5,6 +5,7 @@ import { styled, type CSS } from '../design-system'
 import { ActionButton } from '../ActionButton'
 import { mergeRefs } from '../utils/merge-refs'
 import { Flex } from '../Flex'
+import IconPendingFile from '../Icons/Files/Pending'
 
 const ExpandButton = styled(ActionButton, {
   position: 'absolute',
@@ -77,8 +78,8 @@ const AssetThumbnailRoot = styled(Flex, {
   '& img': {
     display: 'block',
     objectFit: 'cover',
-    maxWidth: '60%',
-    maxHeight: '60%',
+    maxWidth: '70%',
+    maxHeight: '70%',
     transform: 'scale(1)',
     transition: 'transform 0.16s ease-in-out',
   },
@@ -128,7 +129,9 @@ export const AssetThumbnail = forwardRef<HTMLDivElement, AssetThumbnailProps>(
         ref={mergeRefs([thumbnailRef, forwardedRef])}>
         {loadingStatus !== undefined && loadingStatus !== 'success' && (
           <Fragment>
-            {loadingStatus === 'loading' && <IconCloudDownload size="16px" />}
+            {loadingStatus === 'loading' && (
+              <IconPendingFile style={{ display: 'blobk', maxWidth: '70%', maxHeight: '70%' }} />
+            )}
             {loadingStatus === 'error' && <IconCloudX size="16px" />}
           </Fragment>
         )}

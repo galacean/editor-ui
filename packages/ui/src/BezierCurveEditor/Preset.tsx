@@ -170,7 +170,7 @@ export function BezierCurvePresets(props: BezierCurveEditorProps) {
         css={{ fontSize: '$1', marginTop: '$7', color: '$gray11', userSelect: 'none' }}>
         Pesets
         {presets.length > 0 && (
-          <Button variant="subsecondary" onClick={() => setDeletable(!deletable)}>
+          <Button variant="subtle" onClick={() => setDeletable(!deletable)}>
             {deletable ? 'Done' : 'Edit'}
           </Button>
         )}

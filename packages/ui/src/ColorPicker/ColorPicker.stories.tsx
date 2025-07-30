@@ -36,7 +36,7 @@ export const Overview = (args) => {
   return (
     <Flex gap="sm" style={{ width: '300px' }} align="v" justifyContent="center">
       <ColorPicker mode="constant" value={color} onValueChange={handleOnChange} {...args} />
-      <Textarea value={JSON.stringify(color)} />
+      <Textarea value={JSON.stringify(color)} readOnly />
     </Flex>
   )
 }
@@ -56,7 +56,7 @@ export const GradientMode = (args) => {
   return (
     <Flex gap="sm" style={{ width: '300px' }} align="v" justifyContent="center">
       <ColorPicker mode="gradient" value={color} onValueChange={handleOnChange} {...args} />
-      <Textarea value={JSON.stringify(color)} />
+      <Textarea value={JSON.stringify(color)} readOnly />
     </Flex>
   )
 }
@@ -81,7 +81,7 @@ export const ParticleMode = (args) => {
 
   return (
     <Flex gap="sm" style={{ width: '300px' }} align="v">
-      <Textarea value={JSON.stringify(color)} />
+      <Textarea value={JSON.stringify(color)} readOnly />
       <ColorPicker mode="particle" value={color} onValueChange={handleOnChange} {...args} />
     </Flex>
   )
@@ -104,7 +104,7 @@ export const HDRMode = (args) => {
 
   return (
     <Flex gap="sm" style={{ width: '300px' }} align="v">
-      <Textarea value={JSON.stringify(color)} />
+      <Textarea value={JSON.stringify(color)} readOnly />
       <ColorPicker mode="hdr" value={color} onValueChange={handleOnChange} {...args} />
     </Flex>
   )

@@ -32,7 +32,12 @@ export const Controlled: StoryFn<typeof Collapsible> = (args) => {
   const [open, setOpen] = useState(false)
   return (
     <Flex gap="md" style={{ width: '300px' }}>
-      <Button>toggle</Button>
+      <Button
+        onClick={() => {
+          setOpen(!open)
+        }}>
+        toggle
+      </Button>
       <Collapsible title="Section 1" open={open} onOpenChange={setOpen}>
         <StyledContent>Collapsible Content</StyledContent>
       </Collapsible>
