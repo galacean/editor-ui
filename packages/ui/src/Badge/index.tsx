@@ -70,6 +70,9 @@ const StyledBadge = styled('span', {
       sm: {
         height: '$5',
         fontSize: '$1',
+        [`& ${StyledBadgeInner}`]: {
+          padding: '0 $1_5',
+        },
       }
     },
 
@@ -110,7 +113,7 @@ const StyledBadge = styled('span', {
     color: {
       gray: {
         $$color: '$colors$grayA11',
-        $$bgColor: '$colors$grayA4',
+        $$bgColor: '$colors$grayA3',
         $$highlightColor: '$colors$grayA12',
         $$highlightBgColor: '$colors$grayA5',
       },

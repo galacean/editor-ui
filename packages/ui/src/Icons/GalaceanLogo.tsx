@@ -1,12 +1,12 @@
 import React from "react";
 
-export const GalaceanLogo = (props: React.SVGProps<SVGSVGElement>) => {
+export const GalaceanLogo = (props: React.SVGProps<SVGSVGElement> & { size?: string }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       xmlnsXlink="http://www.w3.org/1999/xlink"
-      width="100px"
-      height="100px"
+      width={props.size || 100}
+      height={props.size || 100}
       viewBox="0 0 446.39 458.52"
       version="1.1"
       fill="CurrentColor"
