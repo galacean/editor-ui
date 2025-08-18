@@ -9,5 +9,9 @@ export function useCycleSwitch<T>(modes: readonly T[], defaultMode?: T) {
     setMode(modes[nextIndex])
   }
 
-  return [mode, switchMode] as const
+  return {
+    mode,
+    switchMode,
+    setMode,
+  }
 }

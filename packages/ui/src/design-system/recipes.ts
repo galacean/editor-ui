@@ -251,6 +251,20 @@ export const indicatorStyle = styled('div', {
   },
 })
 
+export const radioGroupStyle = styled('div', {
+  variants: {
+    size: {
+      xs: {
+        [`& ${labelStyle}`]: {
+          paddingLeft: '$6',
+        },
+      },
+      sm: {},
+      md: {},
+    },
+  },
+})
+
 export const checkboxItemStyle = styled('div', basicItemStyle, {
   position: 'relative !important',
   paddingLeft: '$6 !important',
@@ -261,10 +275,17 @@ export const checkboxItemStyle = styled('div', basicItemStyle, {
 })
 
 export const radioItemStyle = styled('div', basicItemStyle, {
-  paddingLeft: '$7',
+  paddingLeft: '$6',
   '&[data-state=checked]': {
     display: 'flex',
     justifyContent: 'initial',
+  },
+  variants: {
+    size: {
+      xs: {
+        paddingLeft: '$5',
+      },
+    },
   },
 })
 

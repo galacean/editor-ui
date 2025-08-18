@@ -3,12 +3,12 @@ import { IconCopy, IconCheck } from '@tabler/icons-react'
 import { colord } from 'colord'
 import { styled } from '../design-system'
 
-import { type Color } from './helper'
 import { useEyeDropper } from '../hooks/useEyeDropper'
 
 import { Flex } from '../Flex'
 import { ActionButton } from '../ActionButton'
 import { EyeDropperIcon } from '../Icons'
+import { Color } from './helper'
 
 const StyledColorPickerTools = styled(Flex, {
   position: 'absolute',
@@ -96,7 +96,7 @@ export function ColorPickerTools(props: ColorPickerToolsProps) {
   return (
     <StyledColorPickerTools align="v" gap="sm" readonly={readonly}>
       {isSupported() && (
-        <ActionButton size="md" variant="subtle" onClick={pickColor}>
+        <ActionButton size="md" variant="transparent" onClick={pickColor}>
           <EyeDropperIcon />
         </ActionButton>
       )}

@@ -1,4 +1,6 @@
-import type { Color } from '../utils'
+import { colord } from 'colord';
+
+export type Color = { r: number; g: number; b: number; a: number }
 
 export type ColorPickerMode = 'constant' | 'gradient' | 'particle' | 'hdr'
 
@@ -13,6 +15,28 @@ export type ParticleColor = {
 
 export interface HDRColor extends Color {
   intensity: number
+}
+
+/**
+ * normalize color from 0-255 to 0-1
+ * @param rgba Color
+ * @returns Color
+ */
+export function normalizeColor<T extends Color = Color>(rgba: T): T {
+  return { ...rgba, r: rgba.r / 255, g: rgba.g / 255, b: rgba.b / 255, a: rgba.a }
+}
+
+/**
+ * denormalize color from 0-1 to 0-255
+ * @param rgba Color
+ * @returns Color
+ */
+export function denormalizeColor<T extends Color = Color>(rgba: T): T {
+  return { ...rgba, r: rgba.r * 255, g: rgba.g * 255, b: rgba.b * 255, a: rgba.a }
+}
+
+export function toNormalizeHexStr(color: Color) {
+  return colord({ ...color, a: 1 }).toHex().slice(1)
 }
 
 export function isEqual(color0: Color, color1: Color) {
@@ -67,4 +91,46 @@ export function generatePreviewColor(
   }
 
   return ''
+}
+
+// Convert sRGB channel to linear
+function srgbChannelToLinear(c: number, inputIsNormalized: boolean, outputDenormlized: boolean): number {
+  const normalized = inputIsNormalized ? c : c / 255
+  let linear: number
+  if (normalized <= 0.04045) {
+    linear = normalized / 12.92
+  } else {
+    linear = Math.pow((normalized + 0.055) / 1.055, 2.4)
+  }
+  return outputDenormlized ? linear * 255 : linear
+}
+
+// Convert linear channel to sRGB
+function linearChannelToSRGB(c: number, inputIsNormalized: boolean, outputDenormlized: boolean): number {
+  const normalized = inputIsNormalized ? c : c / 255
+  let srgb: number
+  if (normalized <= 0.0031308) {
+    srgb = normalized * 12.92
+  } else {
+    srgb = 1.055 * Math.pow(normalized, 1 / 2.4) - 0.055
+  }
+  return outputDenormlized ? srgb * 255 : srgb
+}
+
+export function srgbColorToLinear(color: Color, inputIsNormalized = true, outputDenormlized = false): Color {
+  return {
+    r: srgbChannelToLinear(color.r, inputIsNormalized, outputDenormlized),
+    g: srgbChannelToLinear(color.g, inputIsNormalized, outputDenormlized),
+    b: srgbChannelToLinear(color.b, inputIsNormalized, outputDenormlized),
+    a: color.a,
+  }
+}
+
+export function linearColorToSRGB(color: Color, inputIsNormalized = true, outputDenormlized = true): Color {
+  return {
+    r: linearChannelToSRGB(color.r, inputIsNormalized, outputDenormlized),
+    g: linearChannelToSRGB(color.g, inputIsNormalized, outputDenormlized),
+    b: linearChannelToSRGB(color.b, inputIsNormalized, outputDenormlized),
+    a: color.a,
+  }
 }

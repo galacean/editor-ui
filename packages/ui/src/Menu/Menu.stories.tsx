@@ -7,7 +7,7 @@ import { Flex } from '../Flex'
 import { Button } from '../Button'
 import { ActionButton } from '../ActionButton'
 
-import { ContextMenu, DropdownMenu, MenuItem, SubMenuItem, MenuGroup, MenuCheckboxItem, MenuSeparator } from './'
+import { ContextMenu, DropdownMenu, MenuItem, SubMenuItem, MenuGroup, MenuCheckboxItem, MenuSeparator, MenuRadioGroup } from './'
 
 const File = styled('div', {
   display: 'flex',
@@ -123,6 +123,15 @@ export const ContextMenuInList = (args) => {
             <MenuItem name="Mars" />
             <MenuItem name="Spine Animation" />
           </SubMenuItem>
+          <MenuRadioGroup
+            value="1"
+            onChange={(value) => console.log(`Radio group changed to ${value}`)}
+            items={[
+              { value: '1', name: 'Option 1' },
+              { value: '2', name: 'Option 2' },
+              { value: '3', name: 'Option 3' },
+            ]}
+          />
           <SubMenuItem name="Create Entity">
             <MenuItem name="Camera" shortcuts={['C']} />
             <MenuGroup label="Light" divider="both">

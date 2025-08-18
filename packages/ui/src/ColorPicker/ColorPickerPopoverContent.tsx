@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect } from 'react'
 import { useControllableState } from '@radix-ui/react-use-controllable-state'
 import { RgbaColorPicker, RgbColorPicker } from 'react-colorful'
 
@@ -8,7 +8,7 @@ import { ParticleSlider } from '../ColorSlider/ParticleSlider'
 import { HDRSlider } from '../ColorSlider/HDRSlider'
 import { ColorPickerInputGroup } from './ColorPickerInputGroup'
 import { ColorPickerTools } from './ColorPickerTools'
-import { type Color, type GradientColor, type ParticleColor, type HDRColor } from './helper'
+import { type Color, type GradientColor, type ParticleColor, type HDRColor, type ColorSpace } from './helper'
 
 import { styled } from '../design-system'
 
@@ -56,6 +56,9 @@ export type ColorPickerRootProps =
 const ColorPickerRoot = function ColorPickerRoot(
   props: ColorPickerRootProps & {
     onChangePreviewStr: (color: Color | GradientColor | ParticleColor | HDRColor) => void
+    colorSpace: ColorSpace
+    displayColorSpace?: ColorSpace
+    onDisplayColorSpaceChange?: (colorSpace: ColorSpace) => void
   }
 ) {
   const gProps = props as GradientColorPickerProps
@@ -63,8 +66,8 @@ const ColorPickerRoot = function ColorPickerRoot(
   const pProps = props as ParticleColorPickerProps
   const hProps = props as HDRColorPickerProps
 
-  const { mode, onChangePreviewStr, defaultValue } = props
-
+  const { mode, onChangePreviewStr, defaultValue, colorSpace, displayColorSpace, onDisplayColorSpaceChange } = props
+  
   const [gradientColor, setGradientColor] = useControllableState<GradientColor>({
     prop: mode === 'gradient' ? gProps.value : undefined,
     defaultProp: mode === 'gradient' && gProps.defaultValue ? gProps.defaultValue : [],
@@ -131,7 +134,7 @@ const ColorPickerRoot = function ColorPickerRoot(
     return constantDefaultValue
   }
 
-  function handleConstantColorChange(color) {
+  function handleConstantColorChange(color: Color) {
     if (mode === 'constant') {
       cProps.onValueChange && cProps.onValueChange(color)
     }
@@ -220,7 +223,15 @@ const ColorPickerRoot = function ColorPickerRoot(
       )}
       <ConstantColorPickerRoot className="galacecan-color-picker" data-readonly={readonly}>
         {renderColorPicker()}
-        <ColorPickerInputGroup alpha={mode !== 'particle'} value={color!} onChange={setColor} readonly={readonly} />
+        <ColorPickerInputGroup
+          colorSpace={colorSpace}
+          displayColorSpace={displayColorSpace}
+          onDisplayColorSpaceChange={onDisplayColorSpaceChange}
+          alpha={mode !== 'particle'}
+          value={color!}
+          onChange={setColor}
+          readonly={readonly}
+        />
         <ColorPickerTools color={color!} onPickColor={handlePickColor} readonly={readonly} />
         {mode === 'hdr' && <HDRSlider HDRColor={HDRColor} onChange={setHDRColor} />}
       </ConstantColorPickerRoot>
