@@ -65,7 +65,7 @@ export function FormItemColor(props: FormItemColorProps) {
 
   useEffect(() => {
     setColorStr(toNormalizeHexStr(displayValue))
-  }, [displayValue])
+  }, [displayColorSpace])
 
   const inputOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setColorStr(e.target.value)
@@ -89,10 +89,6 @@ export function FormItemColor(props: FormItemColorProps) {
       }
     }
   }
-
-  useEffect(() => {
-    setColorStr(toNormalizeHexStr(value))
-  }, [value])
 
   const isHdrMode = mode === 'hdr'
 
@@ -119,9 +115,9 @@ export function FormItemColor(props: FormItemColorProps) {
             disabled={disabled}
             startSlot="#"
             size="sm"
+            value={colorStr}
             onChange={inputOnChange}
             onKeyDown={onKeyDown}
-            value={colorStr}
             code
             endSlot={
               <ColorSpaceBadge

@@ -36,7 +36,8 @@ export function denormalizeColor<T extends Color = Color>(rgba: T): T {
 }
 
 export function toNormalizeHexStr(color: Color) {
-  return colord({ ...color, a: 1 }).toHex().slice(1)
+  const ret = colord({ ...color, a: 1 }).toHex().slice(1)
+  return ret;
 }
 
 export function isEqual(color0: Color, color1: Color) {
