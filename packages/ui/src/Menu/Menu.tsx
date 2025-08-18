@@ -50,7 +50,7 @@ const anatomy = {
     Group: ContextMenuPrimitive.Group,
     Sub: ContextMenuPrimitive.Sub,
     Portal: ContextMenuPrimitive.Portal,
-    RadioGroup: ContextMenuPrimitive.RadioGroup,
+    RadioGroup: styled(ContextMenuPrimitive.RadioGroup, listStyle.radioGroupStyle),
     MenuLabel: styled(ContextMenuPrimitive.Label, listStyle.labelStyle),
     MenuItem: styled(ContextMenuPrimitive.Item, listStyle.basicItemStyle),
     Content: styled(ContextMenuPrimitive.Content, listStyle.contentStyle, listStyle.contextMenuContentStyle),
@@ -64,7 +64,7 @@ const anatomy = {
   dropdown: {
     Root: DropdownMenuPrimitive.Root,
     Group: DropdownMenuPrimitive.Group,
-    RadioGroup: DropdownMenuPrimitive.RadioGroup,
+    RadioGroup: styled(DropdownMenuPrimitive.RadioGroup, listStyle.radioGroupStyle),
     Sub: DropdownMenuPrimitive.Sub,
     Portal: DropdownMenuPrimitive.Portal,
     MenuLabel: styled(DropdownMenuPrimitive.Label, listStyle.labelStyle),
@@ -80,7 +80,7 @@ const anatomy = {
   menubar: {
     Root: MenubarPrimitive.Root,
     Group: MenubarPrimitive.Group,
-    RadioGroup: MenubarPrimitive.RadioGroup,
+    RadioGroup: styled(MenubarPrimitive.RadioGroup, listStyle.radioGroupStyle),
     Sub: MenubarPrimitive.Sub,
     Portal: MenubarPrimitive.Portal,
     MenuLabel: styled(MenubarPrimitive.Label, listStyle.labelStyle),
@@ -280,15 +280,18 @@ function RadioItem(props: RadioItemProps) {
 }
 
 interface RadioGroupProps extends ContextMenuRadioGroupProps {
-  items: RadioItemProps[]
+  items: RadioItemProps[];
+  label?: string;
 }
 
 function MenuRadioGroup(props: RadioGroupProps) {
-  const { items, ...rest } = props
-  const { RadioGroup: RadioGroupPrimitive } = useResolveMenuAnatomy()
+  const { items, label, ...rest } = props
+  const { RadioGroup: RadioGroupPrimitive, MenuLabel } = useResolveMenuAnatomy()
+  const { size } = useContext(MenuContext)
 
   return (
-    <RadioGroupPrimitive {...rest}>
+    <RadioGroupPrimitive {...rest} size={size}>
+      {label && <MenuLabel>{label}</MenuLabel>}
       {items.map((item, index) => (
         <RadioItem key={index} {...item} />
       ))}
