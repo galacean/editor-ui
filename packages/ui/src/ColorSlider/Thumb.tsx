@@ -6,10 +6,9 @@ import mixPlugin from 'colord/plugins/mix'
 
 import { styled } from '../design-system'
 
-import { isEqual, type GradientColor } from '../ColorPicker/helper'
+import { isEqual, type GradientColor, type Color } from '../ColorPicker/helper'
 import { Flex } from '../Flex'
-import { clamp } from '../utils/math'
-import { Color } from '../utils'
+import { clamp } from '../utils'
 
 extend([minifyPlugin, mixPlugin])
 

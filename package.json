@@ -12,7 +12,10 @@
     "build:gui": "pnpm --filter \"@galacean/gui\" build",
     "build:app": "pnpm --filter app build",
     "analyze:app": "pnpm --filter app analyze",
-    "clear": "npx rimraf ./**/*/node_modules"
+    "clear": "npx rimraf ./**/*/node_modules",
+    "changeset": "changeset",
+    "version": "changeset version",
+    "release": "pnpm build && pnpm build:gui && changeset publish"
   },
   "keywords": [
     "ui",
@@ -33,6 +36,7 @@
     "@types/node": "^22.10.5",
     "@vitejs/plugin-react": "^4.3.4",
     "@vitejs/plugin-react-swc": "^3.7.2",
+    "bumpp": "^10.2.3",
     "chromatic": "^11.7.1",
     "eslint": "^9.9.0",
     "eslint-config-prettier": "^9.1.0",

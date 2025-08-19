@@ -1,33 +1,37 @@
 import { defineConfig } from 'tsup'
 
 export default defineConfig([
-  // build ES Module spec
   {
-    entry: ['src', '!src/**/*.stories.*'],
-    outDir: 'dist/es',
+    entry: ['src/**/*.ts', 'src/**/*.tsx', '!src/**/*.stories.*'],
+    outDir: 'es',
     format: 'esm',
     bundle: false,
-    target: 'esnext',
     dts: false,
-    outExtension: () => {
-      return {
-        js: '.js',
-      }
-    },
-    splitting: false,
     sourcemap: true,
     clean: true,
+    splitting: false,
+    outExtension: () => ({ js: '.js' }),
   },
-  // build CommonJS spec
   {
-    entry: ['src', '!src/**/*.stories.*'],
-    outDir: 'dist/cjs',
+    entry: ['src/**/*.ts', 'src/**/*.tsx', '!src/**/*.stories.*'],
+    outDir: 'lib',
     format: 'cjs',
     bundle: false,
-    target: 'esnext',
     dts: false,
-    splitting: false,
     sourcemap: true,
-    clean: true,
+    splitting: false,
+    outExtension: () => ({ js: '.js' }),
+  },
+  {
+    entry: ['src/index.ts'],
+    outDir: 'dist',
+    format: 'iife',
+    bundle: true,
+    globalName: 'GalaceanGUI',
+    dts: false,
+    sourcemap: true,
+    noExternal: ['react', 'react-dom', '@galacean/editor-ui'],
+    minify: true,
+    outExtension: () => ({ js: '.umd.js' }),
   },
 ])

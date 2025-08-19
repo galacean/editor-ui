@@ -20,7 +20,7 @@
     "resolveJsonModule": true,
     "strictNullChecks": false,
     "sourceMap": false,
-    "jsx": "react-jsx",
+    "jsx": "react-jsx"
   },
   "exclude": [
     "node_modules",
@@ -28,9 +28,10 @@
     "es",
     "dist",
     ".storybook",
+    "examples",
     "**/*.stories.tsx",
     "tsconfig.json",
     "tsup.config.ts",
-    "vite.config.ts",
+    "vite.config.ts"
   ]
 }

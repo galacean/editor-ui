@@ -138,3 +138,5 @@ styled-system
 styled-system-studio
 es/
 types/
+
+.DS_Store
