@@ -65,7 +65,7 @@ export function FormItemColor(props: FormItemColorProps) {
 
   useEffect(() => {
     setColorStr(toNormalizeHexStr(displayValue))
-  }, [displayColorSpace])
+  }, [value, displayColorSpace])
 
   const inputOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setColorStr(e.target.value)
