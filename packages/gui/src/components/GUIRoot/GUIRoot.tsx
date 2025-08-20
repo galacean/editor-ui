@@ -35,94 +35,92 @@ import { FormItemRectProps } from '../FormItemRect/FormItemRect'
 import { useControllableState } from '@radix-ui/react-use-controllable-state'
 import { resetStyle, styled } from '@galacean/editor-ui'
 
-export enum GUIItemTypeEnum {
-  Input = 'Input',
-  Number = 'Number',
-  Slider = 'Slider',
-  Color = 'Color',
-  Group = 'Group',
-  Array = 'Array',
-  Toggle = 'Toggle',
-  Vector2 = 'Vector2',
-  Vector3 = 'Vector3',
-  Vector4 = 'Vector4',
-  Rect = 'Rect',
-  Select = 'Select',
-  // SegmentControl = 'SegmentControl',
-  Button = 'Button',
-  Textarea = 'Textarea',
-  CascadeSlider = 'CascadeSlider',
-}
+export const GUIItemTypeEnum = {
+  Input: 'Input',
+  Number: 'Number',
+  Slider: 'Slider',
+  Color: 'Color',
+  Group: 'Group',
+  Array: 'Array',
+  Toggle: 'Toggle',
+  Vector2: 'Vector2',
+  Vector3: 'Vector3',
+  Vector4: 'Vector4',
+  Rect: 'Rect',
+  Select: 'Select',
+  Button: 'Button',
+  Textarea: 'Textarea',
+  CascadeSlider: 'CascadeSlider',
+} as const
+
+// 创建类型别名供内部使用
+export type GUIItemType = (typeof GUIItemTypeEnum)[keyof typeof GUIItemTypeEnum]
 
 // value will be injected by GUIRoot
 type BaseGUIItemConfig<T> = Omit<T, 'value'> & { bindPath?: string }
 
 interface GUIItemInputConfig extends BaseGUIItemConfig<FormItemInputProps> {
-  type: GUIItemTypeEnum.Input
+  type: typeof GUIItemTypeEnum.Input
 }
 
 interface GUIItemNumberConfig extends BaseGUIItemConfig<FormItemInputNumberProps> {
-  type: GUIItemTypeEnum.Number
+  type: typeof GUIItemTypeEnum.Number
 }
 
 interface GUIItemTextareaConfig extends BaseGUIItemConfig<FormItemTextareaProps> {
-  type: GUIItemTypeEnum.Textarea
+  type: typeof GUIItemTypeEnum.Textarea
 }
 
 interface GUIItemSliderConfig extends BaseGUIItemConfig<FormItemSliderProps> {
-  type: GUIItemTypeEnum.Slider
+  type: typeof GUIItemTypeEnum.Slider
 }
 
 interface GUIItemColorConfig extends BaseGUIItemConfig<FormItemColorProps> {
-  type: GUIItemTypeEnum.Color
+  type: typeof GUIItemTypeEnum.Color
 }
 
 interface GUIItemRectConfig extends BaseGUIItemConfig<FormItemRectProps> {
-  type: GUIItemTypeEnum.Rect
+  type: typeof GUIItemTypeEnum.Rect
 }
 
 interface GUIItemToggleConfig extends BaseGUIItemConfig<FormItemToggleProps> {
-  type: GUIItemTypeEnum.Toggle
+  type: typeof GUIItemTypeEnum.Toggle
 }
 
 interface GUIItemVector2Config extends BaseGUIItemConfig<FormItemVector2Props> {
-  type: GUIItemTypeEnum.Vector2
+  type: typeof GUIItemTypeEnum.Vector2
 }
 
 interface GUIItemVector3Config extends BaseGUIItemConfig<FormItemVector3Props> {
-  type: GUIItemTypeEnum.Vector3
+  type: typeof GUIItemTypeEnum.Vector3
 }
 
 interface GUIItemVector4Config extends BaseGUIItemConfig<FormItemVector4Props> {
-  type: GUIItemTypeEnum.Vector4
+  type: typeof GUIItemTypeEnum.Vector4
 }
 
 interface GUIItemSegmentControlConfig extends BaseGUIItemConfig<FormItemSegmentControlProps> {
-  type: GUIItemTypeEnum.Select
+  type: typeof GUIItemTypeEnum.Select
 }
 
 interface GUIItemArrayConfig extends Omit<FormItemArrayProps, 'items'> {
-  type: GUIItemTypeEnum.Array
+  type: typeof GUIItemTypeEnum.Array
   bindPath: string
   items: GUIItemConfig[]
   onChange?: (value: any) => void
 }
 
 interface GUIItemGroupConfig extends Omit<BaseGUIItemConfig<FormItemGroupProps>, 'children'> {
-  type: GUIItemTypeEnum.Group
+  type: typeof GUIItemTypeEnum.Group
   items: GUIItemConfig[]
 }
 
 interface GUIItemSelectConfig extends BaseGUIItemConfig<FormItemSelectProps<any>> {
-  type: GUIItemTypeEnum.Select
+  type: typeof GUIItemTypeEnum.Select
 }
 
-// interface GUIItemButtonConfig extends {
-//   type: GUIItemTypeEnum.Button;
-// }
-
 interface GUIItemCascadeSliderConfig extends BaseGUIItemConfig<FormItemCascadeSliderProps> {
-  type: GUIItemTypeEnum.CascadeSlider
+  type: typeof GUIItemTypeEnum.CascadeSlider
 }
 
 export type GUIItemConfig =
@@ -141,7 +139,6 @@ export type GUIItemConfig =
   | GUIItemCascadeSliderConfig
   | GUIItemArrayConfig
   | GUIItemGroupConfig
-// | GUIItemButtonConfig
 
 export type SourceData = any
 export type KeyOrBindPath = string
@@ -202,38 +199,38 @@ function renderGUIItem(item: GUIDefineItem, index: number) {
     onChange && onChange(realNextValue, ...args)
   }
 
-  switch (type as GUIItemTypeEnum) {
-    case GUIItemTypeEnum.Input:
+  switch (type as GUIItemType) {
+    case 'Input':
       GUIComponent = FormItemInput
       break
-    case GUIItemTypeEnum.Number:
+    case 'Number':
       GUIComponent = FormItemInputNumber
       break
-    case GUIItemTypeEnum.Slider:
+    case 'Slider':
       GUIComponent = FormItemSlider
       break
-    case GUIItemTypeEnum.Color:
+    case 'Color':
       GUIComponent = FormItemColor
       break
-    case GUIItemTypeEnum.Toggle:
+    case 'Toggle':
       GUIComponent = FormItemToggle
       break
-    case GUIItemTypeEnum.Vector2:
+    case 'Vector2':
       GUIComponent = FormItemVector2
       break
-    case GUIItemTypeEnum.Vector3:
+    case 'Vector3':
       GUIComponent = FormItemVector3
       break
-    case GUIItemTypeEnum.Vector4:
+    case 'Vector4':
       GUIComponent = FormItemVector4
       break
-    case GUIItemTypeEnum.Rect:
+    case 'Rect':
       GUIComponent = FormItemRect
       break
-    case GUIItemTypeEnum.Textarea:
+    case 'Textarea':
       GUIComponent = FormItemTextarea
       break
-    case GUIItemTypeEnum.Array: {
+    case 'Array': {
       GUIComponent = FormItemArray
       extraProps.items = (config as GUIItemArrayConfig).items.map((item, index) => {
         return {
@@ -244,7 +241,7 @@ function renderGUIItem(item: GUIDefineItem, index: number) {
       }) as unknown as FormItemArrayProps['items']
       break
     }
-    case GUIItemTypeEnum.Group: {
+    case 'Group': {
       GUIComponent = FormItemGroup
       ;(extraProps as BaseGUIItemConfig<FormItemGroupProps>).children = (config as GUIItemGroupConfig).items.map(
         (item, index) => {
@@ -253,15 +250,12 @@ function renderGUIItem(item: GUIDefineItem, index: number) {
       )
       break
     }
-    case GUIItemTypeEnum.CascadeSlider:
+    case 'CascadeSlider':
       GUIComponent = FormItemCascadeSlider
       break
-    case GUIItemTypeEnum.Select:
+    case 'Select':
       GUIComponent = FormItemSelect
       break
-    // case GUIItemTypeEnum.Button:
-    //   GUIComponent = FormItemButton;
-    //   break;
   }
 
   if (!GUIComponent) {
