@@ -13,8 +13,9 @@ const themeMap = {
 
 abstract class GUIBase {
   abstract render(): void
-  abstract add(keyName: string, item: any): void
-  abstract add(data: object, keyName: string, item: any): void
+  abstract add(keyName: string, item: GUIItemConfig): void
+  abstract add(data: object, keyName: string, item: GUIItemConfig): void
+  abstract add(sourceDataOrKeyName: object | string, keyNameOrItem: string | GUIItemConfig, item?: GUIItemConfig): void
 }
 
 const initContainerStyle = {
@@ -90,20 +91,41 @@ class GUI implements GUIBase {
     this.root.render(React.createElement(GUIRoot, { data: this.data, items: this.items }))
   }
 
-  add(sourceDataOrKeyName: object | string, keyNameOrItem: string | GUIItemConfig, item?: GUIItemConfig) {
+  add(keyName: string, item: GUIItemConfig): void
+  add(data: object, keyName: string, item: GUIItemConfig): void
+  add(sourceDataOrKeyName: object | string, keyNameOrItem: string | GUIItemConfig, item?: GUIItemConfig): void {
     if (typeof sourceDataOrKeyName === 'string') {
-      if (sourceDataOrKeyName in this.data) {
-        this.items.push([this.data, sourceDataOrKeyName, keyNameOrItem as GUIItemConfig])
+      const keyName = sourceDataOrKeyName
+      const itemConfig = keyNameOrItem as GUIItemConfig
+
+      if (keyName in this.data) {
+        this.items.push([this.data, keyName, itemConfig])
         this._update()
+      } else {
+        console.warn(`Key "${keyName}" not found in data object`)
       }
       return
     }
-    if (typeof sourceDataOrKeyName === 'object') {
-      if (typeof keyNameOrItem === 'string' && item) {
-        this.items.push([sourceDataOrKeyName, keyNameOrItem, item])
-        this._update()
+
+    if (typeof sourceDataOrKeyName === 'object' && sourceDataOrKeyName !== null) {
+      const data = sourceDataOrKeyName
+      const keyName = keyNameOrItem as string
+      const itemConfig = item
+
+      if (typeof keyName === 'string' && itemConfig) {
+        if (keyName in data) {
+          this.items.push([data, keyName, itemConfig])
+          this._update()
+        } else {
+          console.warn(`Key "${keyName}" not found in provided data object`)
+        }
+      } else {
+        console.warn('Invalid parameters for add method')
       }
+      return
     }
+
+    console.warn('Invalid parameters for add method')
   }
 
   addGroup(groupName: string, items: GUIItemConfig[]) {
@@ -125,7 +147,9 @@ class GUI implements GUIBase {
 
   dispose() {
     this._container = null
-    this.root.unmount()
+    if (this.root) {
+      this.root.unmount()
+    }
     this._root = null
     if (this.container) {
       document.body.removeChild(this.container)

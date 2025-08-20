@@ -1,6 +1,6 @@
 {
   "name": "@galacean/editor-ui",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Dedicated React component library for crafting user interfaces in 3D editor products.",
   "main": "src/index.ts",
   "module": "src/index.ts",

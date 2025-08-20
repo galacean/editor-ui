@@ -33,7 +33,7 @@ import {
 } from '..'
 import { FormItemRectProps } from '../FormItemRect/FormItemRect'
 import { useControllableState } from '@radix-ui/react-use-controllable-state'
-import { resetStyle, styled } from '@galacean/editor-ui'
+import { ColorSpace, resetStyle, styled } from '@galacean/editor-ui'
 
 export const GUIItemTypeEnum = {
   Input: 'Input',
@@ -77,6 +77,7 @@ interface GUIItemSliderConfig extends BaseGUIItemConfig<FormItemSliderProps> {
 
 interface GUIItemColorConfig extends BaseGUIItemConfig<FormItemColorProps> {
   type: typeof GUIItemTypeEnum.Color
+  colorSpace?: ColorSpace
 }
 
 interface GUIItemRectConfig extends BaseGUIItemConfig<FormItemRectProps> {
