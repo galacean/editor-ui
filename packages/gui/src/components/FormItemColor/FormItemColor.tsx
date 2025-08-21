@@ -37,7 +37,7 @@ const ColorSpaceBadge = styled('div', {
 const defaultColor: Color = denormalizeColor({ r: 0, g: 0, b: 0, a: 1 })
 
 export function FormItemColor(props: FormItemColorProps) {
-  const { label, info, value, disabled, onChange, mode = 'constant', colorSpace = 'sRGB' } = props
+  const { label, info, value, disabled, onChange, mode = 'constant', colorSpace = 'Linear' } = props
 
   const [displayColorSpace, setDisplayColorSpace] = useState<ColorSpace>(colorSpace);
 
