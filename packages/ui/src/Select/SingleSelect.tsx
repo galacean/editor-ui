@@ -1,15 +1,15 @@
-import React, { forwardRef, Fragment } from 'react'
-import * as SelectPrimitive from '@radix-ui/react-select'
 import type {
   SelectGroupProps as PrimitiveSelectGroupProps,
   SelectProps as PrimitiveSelectProps,
   SelectContentProps,
 } from '@radix-ui/react-select'
-import { IconCheck, IconChevronDown, IconChevronUp } from '@tabler/icons-react'
+import * as SelectPrimitive from '@radix-ui/react-select'
 import { useControllableState } from '@radix-ui/react-use-controllable-state'
+import { IconCheck, IconChevronDown, IconChevronUp } from '@tabler/icons-react'
+import React, { forwardRef } from 'react'
 
 import { CSS, styled } from '../design-system'
-import { checkboxItemStyle, contentStyle, indicatorStyle, labelStyle } from '../design-system/recipes'
+import { checkboxItemStyle, indicatorStyle, labelStyle } from '../design-system/recipes'
 import { IconRightBottomCorner } from '../Icons'
 
 const SelectTrigger = styled(SelectPrimitive.SelectTrigger, {
@@ -162,6 +162,33 @@ const StyledSelectItemContent = styled('span', {
   },
 })
 
+const StyledSelectSlot = styled('div', {
+  display: 'flex',
+  position: 'relative',
+  alignItems: 'center',
+  justifyContent: 'center',
+  flexShrink: 0,
+  color: '$gray9',
+  transition: 'color 0.2s ease',
+  userSelect: 'none',
+  variants: {
+    size: {
+      xs: {
+        padding: '0 $1',
+        fontSize: '$1',
+      },
+      sm: {
+        padding: '0 $1',
+        fontSize: '$1',
+      },
+      md: {
+        padding: '0 $2',
+        fontSize: '$1_5',
+      },
+    },
+  },
+})
+
 export interface SelectItemProps extends React.HTMLAttributes<HTMLDivElement> {
   value: any
   children?: React.ReactNode
@@ -225,6 +252,7 @@ export interface SelectProps extends Omit<PrimitiveSelectProps, 'value' | 'defau
   arrow?: boolean
   cornerArrow?: boolean
   triggerCss?: CSS
+  startSlot?: React.ReactNode
 }
 
 function Select(props: SelectProps) {
@@ -242,6 +270,7 @@ function Select(props: SelectProps) {
     id,
     sideOffset = 4,
     triggerCss,
+    startSlot,
     ...rest
   } = props
 
@@ -275,7 +304,14 @@ function Select(props: SelectProps) {
     <SelectContext.Provider value={{ size, valueType: valueType as unknown as 'string' | 'number', valueRenderer }}>
       <SelectPrimitive.Root {...rest} value={value} onValueChange={setValue}>
         <SelectTrigger size={size} id={id} css={triggerCss}>
-          <SelectPrimitive.Value placeholder={placeholder}>{renderedValue}</SelectPrimitive.Value>
+          {!!startSlot ? (
+            <div style={{ position: 'relative', display: 'flex' }}>
+              <StyledSelectSlot size={size}>{startSlot}</StyledSelectSlot>
+              <SelectPrimitive.Value placeholder={placeholder}>{renderedValue}</SelectPrimitive.Value>
+            </div>
+          ) : (
+            <SelectPrimitive.Value placeholder={placeholder}>{renderedValue}</SelectPrimitive.Value>
+          )}
           {arrow && <SelectIcon>{cornerArrow ? <CornerIcon /> : <IconChevronDown />}</SelectIcon>}
         </SelectTrigger>
         <SelectPrimitive.Portal>
@@ -294,4 +330,4 @@ function Select(props: SelectProps) {
   )
 }
 
-export { Select, SelectLabel, SelectGroup, SelectItem }
+export { Select, SelectGroup, SelectItem, SelectLabel }
