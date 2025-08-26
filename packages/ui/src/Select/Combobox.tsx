@@ -1,16 +1,15 @@
-import React, { createContext, useContext, forwardRef, useState, useCallback, useRef, useEffect } from 'react'
-import { createPortal } from 'react-dom'
 import { useControllableState } from '@radix-ui/react-use-controllable-state'
-import { IconSearch, IconCheck, IconChevronDown, IconX } from '@tabler/icons-react'
+import { IconCheck, IconChevronDown, IconSearch, IconX } from '@tabler/icons-react'
+import React, { createContext, forwardRef, useCallback, useContext, useEffect, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 
-import { PopoverCloseTrigger, Popover } from '../Popover'
-import { Flex } from '../Flex'
 import { Badge } from '../Badge'
+import { Checkbox } from '../Checkbox'
 import { styled } from '../design-system'
 import { basicItemStyle } from '../design-system/recipes'
-import { Checkbox } from '../Checkbox'
+import { Flex } from '../Flex'
+import { Popover, PopoverCloseTrigger } from '../Popover'
 import { Text } from '../Typography'
-import { ScrollArea } from '../ScrollArea'
 
 const SELECT_ALL_VALUE = '$$SELECT_ALL$$'
 
@@ -140,6 +139,19 @@ const SelectAllText = styled('span', {
   userSelect: 'none',
 })
 
+const StyledComboboxSlot = styled('div', {
+  display: 'flex',
+  position: 'relative',
+  alignItems: 'center',
+  justifyContent: 'center',
+  flexShrink: 0,
+  color: '$gray9',
+  transition: 'color 0.2s ease',
+  userSelect: 'none',
+  padding: '0 $1',
+  fontSize: '$1',
+})
+
 interface ComboboxContextProps {
   autoClose: boolean
   placeholder?: string
@@ -183,32 +195,44 @@ export interface ComboboxTriggerProps {
   placeholder?: string
   children?: React.ReactNode
   valueRenderer?: (value: string) => React.ReactNode
+  startSlot?: React.ReactNode
 }
 
-export const ComboboxTrigger = forwardRef<HTMLButtonElement, ComboboxTriggerProps>(
-  function ComboboxTrigger(props, forwardedRef) {
-    const { value, onValueNodeChange, placeholder, maxDisplayCount, maxDisplayText, noneText } = useContext(ComboboxContext)
-    const { valueRenderer, ...rest } = props
+export const ComboboxTrigger = forwardRef<HTMLButtonElement, ComboboxTriggerProps>(function ComboboxTrigger(
+  props,
+  forwardedRef
+) {
+  const { value, onValueNodeChange, placeholder, maxDisplayCount, maxDisplayText, noneText } =
+    useContext(ComboboxContext)
+  const { valueRenderer, startSlot, ...rest } = props
 
-    const valueArray = Array.isArray(value) ? value : value ? [value] : []
+  const valueArray = Array.isArray(value) ? value : value ? [value] : []
 
-    const shouldShowSummary = maxDisplayCount > 0 && valueArray.length > maxDisplayCount
-    const shouldShowNoneText = valueArray.length === 0 && noneText
+  const shouldShowSummary = maxDisplayCount > 0 && valueArray.length > maxDisplayCount
+  const shouldShowNoneText = valueArray.length === 0 && noneText
 
-    const summaryText = maxDisplayText.replace('{count}', valueArray.length.toString())
+  const summaryText = maxDisplayText.replace('{count}', valueArray.length.toString())
 
-    return (
-      <StyledComboboxTrigger {...rest} ref={forwardedRef}>
-        <Flex gap="xxs" ref={onValueNodeChange}>
-          {shouldShowSummary && <Text size="sm" secondary css={{ padding: "0 $1_5" }}>{summaryText}</Text>}
-          {shouldShowNoneText && <Text size="sm" secondary css={{ padding: "0 $1_5" }}>{noneText}</Text>}
-        </Flex>
-        {valueArray.length === 0 && !noneText && <StyledPlaceholder>{placeholder}</StyledPlaceholder>}
-        <StyledChevronDown />
-      </StyledComboboxTrigger>
-    )
-  }
-)
+  return (
+    <StyledComboboxTrigger {...rest} ref={forwardedRef}>
+      {startSlot && <StyledComboboxSlot>{startSlot}</StyledComboboxSlot>}
+      <Flex gap="xxs" ref={onValueNodeChange}>
+        {shouldShowSummary && (
+          <Text size="sm" secondary css={{ padding: '0 $1_5' }}>
+            {summaryText}
+          </Text>
+        )}
+        {shouldShowNoneText && (
+          <Text size="sm" secondary css={{ padding: '0 $1_5' }}>
+            {noneText}
+          </Text>
+        )}
+      </Flex>
+      {valueArray.length === 0 && !noneText && <StyledPlaceholder>{placeholder}</StyledPlaceholder>}
+      <StyledChevronDown />
+    </StyledComboboxTrigger>
+  )
+})
 
 export interface ComboboxSearchInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   onSearch?: (value: string) => void
@@ -377,6 +401,11 @@ export interface ComboboxProps {
    * @default false
    */
   showSelectAll?: boolean
+
+  /**
+   * Content to display at the start of the trigger
+   */
+  startSlot?: React.ReactNode
 }
 
 export function Combobox(props: ComboboxProps) {
@@ -485,7 +514,7 @@ export function Combobox(props: ComboboxProps) {
           display: 'flex',
           flexDirection: 'column',
         }}
-        trigger={<ComboboxTrigger placeholder={placeholder} />}
+        trigger={<ComboboxTrigger placeholder={placeholder} startSlot={props.startSlot} />}
         onOpenChange={setOpen}>
         <div
           style={{
@@ -496,16 +525,13 @@ export function Combobox(props: ComboboxProps) {
           }}>
           <div style={{ flexShrink: 0 }}>
             <StyledComboboxHeader wrap={false} align="v">
-              {searchable && (
-                <ComboboxSearchInput onSearch={onSearch} />
-              )}
+              {searchable && <ComboboxSearchInput onSearch={onSearch} />}
               {options.length > 0 && showSelectAll && (
                 <StyledSelectAllWrapper
                   onClick={() => {
                     selectValue(SELECT_ALL_VALUE)
-                  }}
-                >
-                  <Checkbox 
+                  }}>
+                  <Checkbox
                     checked={value.length === options.length}
                     onCheckedChange={() => {
                       selectValue(SELECT_ALL_VALUE)
