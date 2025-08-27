@@ -95,7 +95,7 @@ const StyledText = styled('p', {
     },
     primary: {
       true: {
-        color: '$grayA12',
+        color: '$gray12',
       },
     },
     error: {

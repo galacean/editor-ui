@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { clamp } from '../../utils'
+import { clamp } from '@galacean/editor-ui'
 
 // You could use different cache key for different panels if you have multiple GUI instances in your app
 export function useDraggablePanel(panelRef: React.RefObject<HTMLDivElement>, cacheKey = 'galacean-gui-panel-position') {

@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { colord } from 'colord'
 
-import { FormItem } from '../FormItem'
+import { FormItem, extractFormItemProps, type BaseFormItemProps } from '../FormItem'
 import { ColorPicker, Input, InputNumber, Text, styled, useColorSpaceConversion, type ColorSpace } from '@galacean/editor-ui'
 import { normalizeColor, denormalizeColor, toNormalizeHexStr, type Color } from '@galacean/editor-ui'
 
-import { BaseFormItemProps } from '../FormItem/FormItem'
 import { useControllableState } from '@radix-ui/react-use-controllable-state'
 
 export interface FormItemColorProps extends BaseFormItemProps<Color> {
@@ -37,7 +36,7 @@ const ColorSpaceBadge = styled('div', {
 const defaultColor: Color = denormalizeColor({ r: 0, g: 0, b: 0, a: 1 })
 
 export function FormItemColor(props: FormItemColorProps) {
-  const { label, info, value, disabled, onChange, mode = 'constant', colorSpace = 'Linear' } = props
+  const { value, disabled, onChange, mode = 'constant', colorSpace = 'Linear' } = props
 
   const [displayColorSpace, setDisplayColorSpace] = useState<ColorSpace>(colorSpace);
 
@@ -94,10 +93,8 @@ export function FormItemColor(props: FormItemColorProps) {
 
   return (
     <FormItem
-      label={label}
-      info={info}
+      {...extractFormItemProps(props)}
       fieldColumn={isHdrMode ? '1' : 'color'}
-      // {...rest}
     >
       <ColorPicker
         mode={mode as 'constant'}

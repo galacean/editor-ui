@@ -98,6 +98,22 @@ export interface FormItemProps<T = any> extends BaseFormItemProps<T> {
   fieldColumn?: VariantProps<typeof StyledField>['column']
 }
 
+export function extractFormItemProps<T>(props: Record<any, any>): FormItemProps<T> {
+  return {
+    label: props.label,
+    info: props.info,
+    disabled: props.disabled,
+    css: props.css,
+    labelCss: props.labelCss,
+    fieldCss: props.fieldCss,
+    size: props.size,
+    direction: props.direction,
+    fieldColumn: props.fieldColumn,
+    formEndSlot: props.formEndSlot,
+    formStartSlot: props.formStartSlot,
+  }
+}
+
 const FormItem = forwardRef<HTMLDivElement, FormItemProps>(function FormItem(props, forwardedRef) {
   const {
     label: propLabel,

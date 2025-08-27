@@ -1,7 +1,7 @@
 import { ReactNode, useEffect, useRef, useState } from "react";
 import { ActionButton, InputNumber } from "@galacean/editor-ui";
 import { ConstrainIcon } from "../../Icons/ConstrainIcon";
-import { FormItem, type BaseFormItemProps } from "../FormItem";
+import { FormItem, extractFormItemProps, type BaseFormItemProps } from "../FormItem";
 
 export type Vector3 = { x: number; y: number; z: number; };
 
@@ -21,7 +21,7 @@ export interface FormItemVector3Props extends Omit<BaseFormItemProps<Vector3>, '
 };
 
 export function FormItemVector3(props: FormItemVector3Props) {
-  const { label, info, value, onChange, disabled, min, max, constrainable = false, formEndSlot, ...rest } = props;
+  const { value, onChange, disabled, min, max, constrainable = false, formEndSlot } = props;
   const [constrainMode, setConstrainMode] = useState(false);
 
   const masterAxisRef = useRef<keyof Vector3>("x");
@@ -73,9 +73,12 @@ export function FormItemVector3(props: FormItemVector3Props) {
   }
 
   return (
-    <FormItem label={label} info={info} {...rest} formEndSlot={endSlot} fieldColumn={3}>
+    <FormItem {...extractFormItemProps(props)} formEndSlot={endSlot} fieldColumn={3}>
       {(['x', 'y', 'z'] as const).map((axis) => (
         <InputNumber
+          disabled={disabled}
+          min={min}
+          max={max}
           key={axis}
           startSlot={axis.toUpperCase()}
           value={value[axis]}

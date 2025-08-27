@@ -4,7 +4,7 @@ import { IconCurrentLocation, IconFileFilled, IconUnlink } from "@tabler/icons-r
 import { BasicAssetType, AssetPickerPopoverProps } from "./AssetPickerPopover";
 import { AssetPickerContent } from "./AssetPickerContent";
 
-import { FormItem } from "../FormItem";
+import { FormItem, extractFormItemProps } from "../FormItem";
 import { ActionButton ,Button, styled, Popover, PopoverCloseTrigger, useDrop } from '@galacean/editor-ui'
 import { BaseFormItemProps } from "../FormItem/FormItem";
 
@@ -48,8 +48,6 @@ function _FormItemAssetPicker<T extends BasicAssetType>(props: FormItemAssetPick
   const [isDraggingOver, setIsDraggingOver] = useState(false);
   const {
     label,
-    info,
-    direction,
     disabled,
     value,
     onDelete,
@@ -91,7 +89,7 @@ function _FormItemAssetPicker<T extends BasicAssetType>(props: FormItemAssetPick
   );
 
   return (
-    <FormItem label={label} info={info} direction={direction} fieldColumn="asset">
+    <FormItem {...extractFormItemProps(props)} fieldColumn="asset">
       <Popover
         compact
         disabled={disabled}

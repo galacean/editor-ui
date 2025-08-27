@@ -1,5 +1,6 @@
 export {
   FormItem,
+  extractFormItemProps,
   type FormItemProps,
   type BaseFormItemProps,
   type FormItemRangeProps,

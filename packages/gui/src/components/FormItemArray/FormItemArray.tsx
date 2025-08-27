@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import { IconTrash, IconPlus, IconEdit } from '@tabler/icons-react'
 import { Flex, ActionButton, Accordion, AccordionItem, Button, styled } from '@galacean/editor-ui'
 
-import { FormItem, type BaseFormItemProps } from '../FormItem'
+import { FormItem, extractFormItemProps, type BaseFormItemProps } from '../FormItem'
 
 interface AccordionTitleProps {
   title: string
@@ -94,8 +94,6 @@ export interface FormItemArrayProps extends Omit<BaseFormItemProps<any>, 'value'
 
 export function FormItemArray(props: FormItemArrayProps) {
   const {
-    label,
-    info,
     items = [],
     onAdd,
     onDelete,
@@ -116,7 +114,7 @@ export function FormItemArray(props: FormItemArrayProps) {
   }, [items])
 
   return (
-    <FormItem label={label} info={info} direction="column">
+    <FormItem {...extractFormItemProps(props)} direction="column">
       <Accordion type="multiple" defaultValue={propDefaultValue ?? defaultValue}>
         {items.map((item) => (
           <AccordionItem

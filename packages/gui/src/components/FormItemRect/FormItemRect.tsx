@@ -1,4 +1,4 @@
-import { FormItem, type BaseFormItemProps, } from "../FormItem";
+import { FormItem, extractFormItemProps, type BaseFormItemProps, } from "../FormItem";
 import { InputNumber } from "@galacean/editor-ui";
 
 export type Rect = { x: number; y: number; width: number; height: number };
@@ -20,7 +20,7 @@ export function FormItemRect(props: FormItemRectProps) {
   };
 
   return (
-    <FormItem label={props.label} info={props.info} fieldColumn={4}>
+    <FormItem {...extractFormItemProps(props)} fieldColumn={4}>
       <InputNumber
         disabled={disabled}
         startSlot="X"

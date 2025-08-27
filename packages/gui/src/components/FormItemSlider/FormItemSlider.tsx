@@ -1,5 +1,5 @@
 
-import { FormItem } from "../FormItem";
+import { FormItem, extractFormItemProps } from "../FormItem";
 import { InputNumber, Slider } from "@galacean/editor-ui";
 import { FormItemRangeProps } from "../FormItem/FormItem";
 
@@ -8,7 +8,7 @@ export interface FormItemSliderProps extends FormItemRangeProps {
 }
 
 export function FormItemSlider(props: FormItemSliderProps) {
-  const { label, info, min, max, value, dragStep, onChange, disabled, tooltip = true } = props;
+  const { min, max, value, dragStep, onChange, disabled, tooltip = true } = props;
 
   const handleSliderValueChange = (valueList: number[]) => {
     if (props.onChange) {
@@ -19,7 +19,7 @@ export function FormItemSlider(props: FormItemSliderProps) {
   const arrValue = Array.isArray(value) ? value : [value];
 
   return (
-    <FormItem label={label} info={info} fieldColumn={3}>
+    <FormItem {...extractFormItemProps(props)} fieldColumn={3}>
       <InputNumber
         min={min}
         max={max}

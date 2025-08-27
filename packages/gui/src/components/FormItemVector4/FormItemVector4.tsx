@@ -1,7 +1,7 @@
 import { type ReactNode } from "react";
 import { FormItem } from "../FormItem";
 import { InputNumber } from "@galacean/editor-ui";
-import { BaseFormItemProps } from "../FormItem/FormItem";
+import { type BaseFormItemProps, extractFormItemProps } from "../FormItem";
 
 export type Vector4 = { x: number; y: number; z: number; w: number };
 
@@ -19,7 +19,7 @@ export function FormItemVector4(props: FormItemVector4Props) {
     y: "Y",
     z: "Z",
     w: "W"
-  }, ...rest } = props;
+  } } = props;
   
   const handleOnChange = (prefix: keyof Vector4) => (v: number) => {
     if (!onChange) return;
@@ -28,7 +28,7 @@ export function FormItemVector4(props: FormItemVector4Props) {
   };
 
   return (
-    <FormItem {...rest} fieldColumn={4}>
+    <FormItem {...extractFormItemProps(props)} fieldColumn={4}>
       <InputNumber
         disabled={disabled}
         startSlot={slotMapping?.x}
