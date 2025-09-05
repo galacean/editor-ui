@@ -246,7 +246,7 @@ const StyledButton = styled('button', button, {
       variant: 'primary',
       positive: true,
       css: {
-        color: '$green12',
+        color: 'white',
         backgroundColor: '$green9',
         '&:hover': {
           backgroundColor: '$green10',
