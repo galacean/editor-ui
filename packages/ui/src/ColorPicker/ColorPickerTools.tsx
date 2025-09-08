@@ -8,7 +8,7 @@ import { useEyeDropper } from '../hooks/useEyeDropper'
 import { Flex } from '../Flex'
 import { ActionButton } from '../ActionButton'
 import { EyeDropperIcon } from '../Icons'
-import { Color } from './helper'
+import { Color, ColorSpace, linearColorToSRGB, srgbColorToLinear } from './helper'
 
 const StyledColorPickerTools = styled(Flex, {
   position: 'absolute',
@@ -58,10 +58,11 @@ interface ColorPickerToolsProps {
   onPickColor?: (color: Color) => void
   onCopyColor?: () => void
   readonly: boolean
+  colorSpace: ColorSpace
 }
 
 export function ColorPickerTools(props: ColorPickerToolsProps) {
-  const { color, onPickColor, onCopyColor, readonly } = props
+  const { color, onPickColor, onCopyColor, colorSpace, readonly } = props
   const { open, isSupported } = useEyeDropper()
   const colorStr = colord(color).toRgbString()
   const [copied, setCopied] = useState(false)
@@ -82,9 +83,14 @@ export function ColorPickerTools(props: ColorPickerToolsProps) {
     const openPicker = async () => {
       try {
         const color = await open()
-        const dcolor = colord(color.sRGBHex).toRgb()
+        let dcolor = colord(color.sRGBHex).toRgb()
+        if(colorSpace === 'Linear') {
+          dcolor = srgbColorToLinear(dcolor, false, true)
+        }
         if (onPickColor) {
-          onPickColor(dcolor)
+          onPickColor(
+            dcolor
+          )
         }
       } catch (e) {
         console.warn(e)

@@ -2,7 +2,7 @@ import { forwardRef, useEffect, useState } from 'react'
 import { overrideStyle } from './/override_style'
 import { ColorPickerRoot, type ColorPickerRootProps } from './ColorPickerPopoverContent'
 import { ColorPickerTrigger } from './ColorPickerTrigger'
-import { generatePreviewColor, type ColorSpace } from './helper'
+import { Color, generatePreviewColor, type ColorSpace } from './helper'
 
 import { Popover } from '../Popover'
 import { useControllableState } from '@radix-ui/react-use-controllable-state'
@@ -26,18 +26,18 @@ type ColorPickerProps = ColorPickerRootProps & {
 const ColorPicker = forwardRef<HTMLButtonElement, ColorPickerProps>(function ColorPicker(props, forwardedRef) {
   const { disabled, fullsize, colorSpace: originalColorSpace, displayColorSpace: propDisplayColorSpace, onDisplayColorSpaceChange: propOnDisplayColorSpaceChange, ...rest } = props
   const { mode, value } = props
-  const [_, setPreviewColor] = useState(generatePreviewColor(mode, value))
-
-  const handlePreviewChange = (nextColor: any) => {
-    const colorStr = generatePreviewColor(mode, nextColor)
-    setPreviewColor(colorStr)
-  }
-
   const [displayColorSpace, setDisplayColorSpace] = useControllableState({
     prop: propDisplayColorSpace,
     defaultProp: originalColorSpace,
     onChange: propOnDisplayColorSpaceChange,
   })
+
+  const [_, setPreviewColor] = useState(generatePreviewColor(mode, value, originalColorSpace, displayColorSpace))
+
+  const handlePreviewChange = (nextColor: any) => {
+    const colorStr = generatePreviewColor(mode, nextColor, originalColorSpace, displayColorSpace)
+    setPreviewColor(colorStr)
+  }
 
   useEffect(() => {
     overrideStyle()
@@ -53,7 +53,9 @@ const ColorPicker = forwardRef<HTMLButtonElement, ColorPickerProps>(function Col
         <ColorPickerTrigger
           ref={forwardedRef}
           fullsize={fullsize}
-          color={generatePreviewColor(mode, value)}
+          color={value as Color}
+          colorSpace={originalColorSpace}
+          displayColorSpace={displayColorSpace}
           mode={mode}
         />
       }>

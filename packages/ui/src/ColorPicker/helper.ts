@@ -67,10 +67,18 @@ export function generateHDR(color: HDRColor) {
 
 export function generatePreviewColor(
   mode: ColorPickerMode,
-  value: Color | GradientColor | ParticleColor | HDRColor
+  value: Color | GradientColor | ParticleColor | HDRColor,
+  componentColorSpace: ColorSpace,
+  displayColorSpace: ColorSpace
 ): string {
   if (mode === 'constant') {
     value = value as Color
+    if (componentColorSpace === 'sRGB' && displayColorSpace === 'Linear') {
+      value = srgbColorToLinear(value, false, true)
+    }
+    if (componentColorSpace === 'Linear' && displayColorSpace === 'sRGB') {
+      value = linearColorToSRGB(value, false , true)
+    }
     return `rgba(${value.r}, ${value.g}, ${value.b}, ${value.a})`
   }
   if (mode === 'gradient') {

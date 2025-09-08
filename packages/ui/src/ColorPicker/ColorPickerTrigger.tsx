@@ -3,6 +3,8 @@ import React, { forwardRef, SVGProps } from 'react'
 import { styled } from '../design-system'
 import { TransparentPattern } from './TransparentPattern'
 import { Flex } from '../Flex'
+import { Color, ColorSpace, toNormalizeHexStr } from './helper'
+import { useColorSpaceConversion } from './useColorSpaceConversion'
 
 function IconHDR(props: SVGProps<SVGSVGElement>) {
   return (
@@ -112,19 +114,35 @@ const StyledTransparentPattern = styled(TransparentPattern, {
   },
 })
 
-export const ColorPickerTrigger = forwardRef<HTMLButtonElement, { color: string; fullsize?: boolean; mode?: string }>(
-  function Trigger(props, ref) {
-    const { color, mode, fullsize, ...rest } = props
+interface ColorPickerTriggerProps {
+  color: Color
+  colorSpace: ColorSpace
+  displayColorSpace: ColorSpace
+  fullsize?: boolean
+  mode?: string
+}
 
+export const ColorPickerTrigger = forwardRef<HTMLButtonElement, ColorPickerTriggerProps>(
+  function Trigger(props, ref) {
+    const { color, colorSpace, mode, fullsize, ...rest } = props
+
+    const { displayValue } = useColorSpaceConversion(
+      color,
+      colorSpace,
+      "sRGB"
+    )
+
+    const valueStr = `#${toNormalizeHexStr(displayValue)}`
+    
     return (
       <StyledTrigger ref={ref} fullsize={fullsize} {...rest}>
         <StyledTransparentPattern
           fullsize={fullsize}
           style={{
-            borderColor: color,
+            borderColor: valueStr,
           }}
         />
-        <Flex style={{ background: color }} align="both">
+        <Flex style={{ background: valueStr }} align="both">
           {mode === 'hdr' && (
             <StyledHDRBadge>
               <IconHDR />

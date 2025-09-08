@@ -7,7 +7,7 @@ import { styled } from '../design-system'
 import { ActionButton } from '../ActionButton'
 import { useEventCallback } from '../hooks/useEventCallback'
 import { useCycleSwitch } from '../hooks/useCycleSwitch'
-import { type ColorSpace } from './helper'
+import { srgbColorToLinear, type ColorSpace } from './helper'
 import { useColorSpaceConversion, createDisplayColorSpaceToggle } from './useColorSpaceConversion'
 
 
@@ -277,6 +277,7 @@ export function ColorPickerInputGroup(props: ColorPickerInputGroupProps) {
     }
 
     const finalValue = convertInputToComponentSpace(rgbValue)
+    console.log('finalValue', finalValue)
     onChange(finalValue)
   }
 

@@ -232,7 +232,7 @@ const ColorPickerRoot = function ColorPickerRoot(
           onChange={setColor}
           readonly={readonly}
         />
-        <ColorPickerTools color={color!} onPickColor={handlePickColor} readonly={readonly} />
+        <ColorPickerTools color={color!} onPickColor={handlePickColor} readonly={readonly} colorSpace={colorSpace} />
         {mode === 'hdr' && <HDRSlider HDRColor={HDRColor} onChange={setHDRColor} />}
       </ConstantColorPickerRoot>
     </div>
