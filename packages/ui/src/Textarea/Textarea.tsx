@@ -10,7 +10,7 @@ const StyledTextarea = styled('textarea', {
   outline: 'none',
   border: 'none',
   color: '$gray11',
-  resize: 'vertical',
+  resize: 'none',
   variants: {
     variant: {
       default: {
@@ -21,6 +21,12 @@ const StyledTextarea = styled('textarea', {
         backgroundColor: '$secondaryBg',
       },
     },
+    size: {
+      sm: {},
+      md: {
+        borderRadius: '$4'
+      }
+    }
   },
   '&:focus-visible': {
     boxShadow: '0px 0px 0px 1px $colors$blue10',

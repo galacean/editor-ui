@@ -117,7 +117,6 @@ const StyledTransparentPattern = styled(TransparentPattern, {
 interface ColorPickerTriggerProps {
   color: Color
   colorSpace: ColorSpace
-  displayColorSpace: ColorSpace
   fullsize?: boolean
   mode?: string
 }

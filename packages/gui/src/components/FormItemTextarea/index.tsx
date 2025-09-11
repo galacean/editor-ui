@@ -17,7 +17,7 @@ export function FormItemTextarea(props: FormItemTextareaProps) {
     <FormItem
       {...extractFormItemProps(props)}
     >
-      <Textarea value={value} onChange={handleOnChange} defaultValue={defaultValue} />
+      <Textarea value={value} onChange={handleOnChange} defaultValue={defaultValue} variant="subtle" />
     </FormItem>
   )
 }
