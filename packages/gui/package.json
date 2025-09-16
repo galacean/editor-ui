@@ -1,6 +1,6 @@
 {
   "name": "@galacean/gui",
-  "version": "1.0.1-beta.0",
+  "version": "1.2.0",
   "description": "An opinionated UI library designed to create engaging and functional online tools with ease.",
   "licenses": [
     {
@@ -13,19 +13,20 @@
   "types": "src/index.ts",
   "publishConfig": {
     "access": "public",
-    "main": "es/index.js",
+    "main": "lib/index.js",
     "module": "es/index.js",
-    "types": "types/src/index.d.ts",
+    "types": "types/index.d.ts",
     "registry": "https://registry.npmjs.org"
   },
   "scripts": {
     "dev": "storybook dev -p 6006",
     "example": "vite dev",
-    "build": "vite build",
+    "build": "tsup",
     "analyze": "npx vite-bundle-visualizer",
-    "build:types": "npm run clean:dts && tsc --emitDeclarationOnly --declaration --skipLibCheck --outDir types",
-    "build:all": "npm run build && npm run build:types",
-    "prepublishOnly": "npm run build:all",
+    "build:types": "pnpm run clean:dts && tsc --emitDeclarationOnly --declaration --skipLibCheck --outDir types",
+    "build:all": "pnpm run build && pnpm run build:types",
+    "prepublishOnly": "pnpm run build:all",
+    "clean": "rimraf es lib dist types",
     "clean:dts": "rimraf types",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",

@@ -29,6 +29,20 @@ const StyledComboboxTrigger = styled('button', {
     cursor: 'pointer',
     backgroundColor: '$grayA4',
   },
+  variants: {
+    size: {
+      xs: {},
+      sm: {
+        height: '$sm',
+        borderRadius: '$2',
+      },
+      md: {
+        height: '$md',
+        borderRadius: '$4',
+        paddingLeft: '$2',
+      },
+    },
+  },
 })
 
 const StyledChevronDown = styled(IconChevronDown, {
@@ -196,43 +210,43 @@ export interface ComboboxTriggerProps {
   children?: React.ReactNode
   valueRenderer?: (value: string) => React.ReactNode
   startSlot?: React.ReactNode
+  size?: 'xs' | 'sm' | 'md'
 }
 
-export const ComboboxTrigger = forwardRef<HTMLButtonElement, ComboboxTriggerProps>(function ComboboxTrigger(
-  props,
-  forwardedRef
-) {
-  const { value, onValueNodeChange, placeholder, maxDisplayCount, maxDisplayText, noneText } =
-    useContext(ComboboxContext)
-  const { valueRenderer, startSlot, ...rest } = props
+export const ComboboxTrigger = forwardRef<HTMLButtonElement, ComboboxTriggerProps>(
+  function ComboboxTrigger(props, forwardedRef) {
+    const { value, onValueNodeChange, placeholder, maxDisplayCount, maxDisplayText, noneText } =
+      useContext(ComboboxContext)
+    const { valueRenderer, startSlot, ...rest } = props
 
-  const valueArray = Array.isArray(value) ? value : value ? [value] : []
+    const valueArray = Array.isArray(value) ? value : value ? [value] : []
 
-  const shouldShowSummary = maxDisplayCount > 0 && valueArray.length > maxDisplayCount
-  const shouldShowNoneText = valueArray.length === 0 && noneText
+    const shouldShowSummary = maxDisplayCount > 0 && valueArray.length > maxDisplayCount
+    const shouldShowNoneText = valueArray.length === 0 && noneText
 
-  const summaryText = maxDisplayText.replace('{count}', valueArray.length.toString())
+    const summaryText = maxDisplayText.replace('{count}', valueArray.length.toString())
 
-  return (
-    <StyledComboboxTrigger {...rest} ref={forwardedRef}>
-      {startSlot && <StyledComboboxSlot>{startSlot}</StyledComboboxSlot>}
-      <Flex gap="xxs" ref={onValueNodeChange}>
-        {shouldShowSummary && (
-          <Text size="sm" secondary css={{ padding: '0 $1_5' }}>
-            {summaryText}
-          </Text>
-        )}
-        {shouldShowNoneText && (
-          <Text size="sm" secondary css={{ padding: '0 $1_5' }}>
-            {noneText}
-          </Text>
-        )}
-      </Flex>
-      {valueArray.length === 0 && !noneText && <StyledPlaceholder>{placeholder}</StyledPlaceholder>}
-      <StyledChevronDown />
-    </StyledComboboxTrigger>
-  )
-})
+    return (
+      <StyledComboboxTrigger {...rest} ref={forwardedRef}>
+        {startSlot && <StyledComboboxSlot>{startSlot}</StyledComboboxSlot>}
+        <Flex gap="xxs" ref={onValueNodeChange}>
+          {shouldShowSummary && (
+            <Text size="sm" secondary css={{ padding: '0 $1_5' }}>
+              {summaryText}
+            </Text>
+          )}
+          {shouldShowNoneText && (
+            <Text size="sm" secondary css={{ padding: '0 $1_5' }}>
+              {noneText}
+            </Text>
+          )}
+        </Flex>
+        {valueArray.length === 0 && !noneText && <StyledPlaceholder>{placeholder}</StyledPlaceholder>}
+        <StyledChevronDown />
+      </StyledComboboxTrigger>
+    )
+  }
+)
 
 export interface ComboboxSearchInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   onSearch?: (value: string) => void
@@ -406,6 +420,7 @@ export interface ComboboxProps {
    * Content to display at the start of the trigger
    */
   startSlot?: React.ReactNode
+  size?: 'xs' | 'sm' | 'md'
 }
 
 export function Combobox(props: ComboboxProps) {
@@ -420,6 +435,7 @@ export function Combobox(props: ComboboxProps) {
     maxDisplayCount = 0,
     maxDisplayText = '{count} items selected',
     noneText = '',
+    size,
     showSelectAll = false,
     selectAllText = 'Select All',
   } = props
@@ -514,7 +530,7 @@ export function Combobox(props: ComboboxProps) {
           display: 'flex',
           flexDirection: 'column',
         }}
-        trigger={<ComboboxTrigger placeholder={placeholder} startSlot={props.startSlot} />}
+        trigger={<ComboboxTrigger placeholder={placeholder} startSlot={props.startSlot} size={size} />}
         onOpenChange={setOpen}>
         <div
           style={{
@@ -524,23 +540,26 @@ export function Combobox(props: ComboboxProps) {
             maxHeight: 'inherit',
           }}>
           <div style={{ flexShrink: 0 }}>
-            <StyledComboboxHeader wrap={false} align="v">
-              {searchable && <ComboboxSearchInput onSearch={onSearch} />}
-              {options.length > 0 && showSelectAll && (
-                <StyledSelectAllWrapper
-                  onClick={() => {
-                    selectValue(SELECT_ALL_VALUE)
-                  }}>
-                  <Checkbox
-                    checked={value.length === options.length}
-                    onCheckedChange={() => {
-                      selectValue(SELECT_ALL_VALUE)
-                    }}
-                  />
-                  <SelectAllText>{selectAllText}</SelectAllText>
-                </StyledSelectAllWrapper>
-              )}
-            </StyledComboboxHeader>
+            {searchable ||
+              (options.length > 0 && showSelectAll && (
+                <StyledComboboxHeader wrap={false} align="v">
+                  {searchable && <ComboboxSearchInput onSearch={onSearch} />}
+                  {options.length > 0 && showSelectAll && (
+                    <StyledSelectAllWrapper
+                      onClick={() => {
+                        selectValue(SELECT_ALL_VALUE)
+                      }}>
+                      <Checkbox
+                        checked={value.length === options.length}
+                        onCheckedChange={() => {
+                          selectValue(SELECT_ALL_VALUE)
+                        }}
+                      />
+                      <SelectAllText>{selectAllText}</SelectAllText>
+                    </StyledSelectAllWrapper>
+                  )}
+                </StyledComboboxHeader>
+              ))}
           </div>
           <StyledComboboxContent ref={contentRef} direction="column" role="listbox">
             {children}

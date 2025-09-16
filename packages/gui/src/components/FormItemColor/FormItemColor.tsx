@@ -1,81 +1,59 @@
 import React, { useState, useEffect } from 'react'
 import { colord } from 'colord'
 
-import { FormItem } from '../FormItem'
-import { ColorPicker, HDRColor, Input, Kbd, styled } from '@galacean/editor-ui'
+import { FormItem, extractFormItemProps, type BaseFormItemProps } from '../FormItem'
+import {
+  ColorPicker,
+  Input,
+  InputNumber,
+  Text,
+  styled,
+  useColorSpaceConversion,
+  type ColorSpace,
+} from '@galacean/editor-ui'
 import { normalizeColor, denormalizeColor, toNormalizeHexStr, type Color } from '@galacean/editor-ui'
-import { BaseFormItemProps } from '../FormItem/FormItem'
+
 import { useControllableState } from '@radix-ui/react-use-controllable-state'
 
 export interface FormItemColorProps extends BaseFormItemProps<Color> {
-  mode: 'constant' | 'hdr'
+  mode?: 'constant' | 'hdr'
+  colorSpace?: ColorSpace
+  onColorSpaceChange?: (colorSpace: ColorSpace) => void
 }
 
-interface HorizontalSliderProps {}
-
-const StyledSliderInner = styled('div', {
-  height: '20%',
-  width: '100%',
-  backgroundColor: '$grayA11',
-})
-
-const StyledSlider = styled('div', {
-  height: '100%',
-  width: '$2',
-  backgroundColor: '$grayA4',
-  opacity: 0,
-})
-
-const StyledSliderRoot = styled('div', {
-  position: 'relative',
-  height: '100%',
-  maxHeight: '100%',
-  marginRight: '$0_5',
-  padding: '$1 0',
-  cursor: 'ns-resize',
-  '&::after': {
-    content: '%',
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    color: '$gray11',
-    pointerEvents: 'none',
-  },
+const ColorSpaceBadge = styled('div', {
+  display: 'flex',
+  alignItems: 'center',
+  height: '$3',
+  fontSize: '8px',
+  borderRadius: '$round',
+  padding: '$1',
+  backgroundColor: '$gray3',
+  boxShadow: '0 0 0 1px $colors$grayA5',
+  strokeWidth: 1.2,
+  color: '$grayA11',
+  cursor: 'pointer',
+  userSelect: 'none',
+  transition: 'background-color 0.2s ease',
   '&:hover': {
-    '&::after': {
-      opacity: 0,
-    },
-    [`& ${StyledSlider}`]: {
-      opacity: 1,
-    },
+    backgroundColor: '$gray6',
+    color: '$grayA12',
   },
 })
-
-function HorizontalSlider() {
-  const containerRef = React.useRef<HTMLDivElement>(null)
-  const [dragging, setDragging] = useState(false)
-  const [startY, setStartY] = useState(0)
-  const thumbRef = React.useRef<HTMLDivElement>(null)
-
-  return (
-    <StyledSliderRoot ref={containerRef}>
-      <StyledSlider>
-        <StyledSliderInner />
-      </StyledSlider>
-    </StyledSliderRoot>
-  )
-}
 
 const defaultColor: Color = denormalizeColor({ r: 0, g: 0, b: 0, a: 1 })
-const defaultHDRColor: HDRColor = denormalizeColor({ r: 0, g: 0, b: 0, a: 1, intensity: 0 })
 
 export function FormItemColor(props: FormItemColorProps) {
-  // const { label, info, value, disabled, onChange, ...rest } = props;
-  const { label, info, value, disabled, onChange, mode = 'constant' } = props
+  const { value, disabled, onChange, mode = 'constant', colorSpace = 'Linear' } = props
+
+  const [displayColorSpace, setDisplayColorSpace] = useState<ColorSpace>(colorSpace)
+
+  useEffect(() => {
+    setDisplayColorSpace(colorSpace)
+  }, [colorSpace])
+
   const [color, setColor] = useControllableState({
-    prop: denormalizeColor(props.value),
+    prop: denormalizeColor(value),
     defaultProp: defaultColor,
     onChange: (value) => {
       if (onChange) {
@@ -84,45 +62,46 @@ export function FormItemColor(props: FormItemColorProps) {
     },
   })
 
-  const [colorStr, setColorStr] = useState(toNormalizeHexStr(color))
-  const [dirty, setDirty] = useState(false)
+  const { displayValue, convertInputToComponentSpace } = useColorSpaceConversion(color, colorSpace, displayColorSpace)
+
+  const [colorStr, setColorStr] = useState(toNormalizeHexStr(displayValue))
+
+  useEffect(() => {
+    setColorStr(toNormalizeHexStr(displayValue))
+  }, [value, displayColorSpace])
 
   const inputOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setColorStr(e.target.value)
-    setDirty(true)
+  }
+
+  const handleAlphaChange = (value: number) => {
+    setColor({ ...color, a: value / 100 })
   }
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       const colordValue = colord(`#${colorStr.replace('#', '')}`)
       if (colordValue.isValid()) {
-        onChange && onChange(normalizeColor(colordValue.toRgb()))
-        setDirty(false)
+        onChange && onChange(normalizeColor(convertInputToComponentSpace(colordValue.toRgb())))
       } else {
         setColorStr(toNormalizeHexStr(color))
       }
     }
   }
 
-  useEffect(() => {
-    setColorStr(toNormalizeHexStr(value))
-  }, [value])
-
   const isHdrMode = mode === 'hdr'
 
   return (
-    <FormItem
-      label={label}
-      info={info}
-      fieldColumn={isHdrMode ? '1' : 'color'}
-      // {...rest}
-    >
+    <FormItem {...extractFormItemProps(props)} fieldColumn={isHdrMode ? '1' : 'color'}>
       <ColorPicker
         mode={mode as 'constant'}
         fullsize={isHdrMode}
         disabled={disabled}
+        colorSpace={colorSpace}
+        displayColorSpace={displayColorSpace}
+        onDisplayColorSpaceChange={setDisplayColorSpace}
         value={color}
-        onValueChange={(color) => setColor && setColor(color)}
+        onValueChange={setColor}
       />
       {!isHdrMode && (
         <>
@@ -130,27 +109,28 @@ export function FormItemColor(props: FormItemColorProps) {
             disabled={disabled}
             startSlot="#"
             size="sm"
+            value={colorStr}
             onChange={inputOnChange}
             onKeyDown={onKeyDown}
-            value={colorStr}
             code
             endSlot={
-              dirty ? (
-                <Kbd css={{ verticalAlign: 'text-top' }} size="xs">
-                  ↵
-                </Kbd>
-              ) : (
-                'HEX'
-              )
+              <ColorSpaceBadge
+                onClick={() => {
+                  setDisplayColorSpace(displayColorSpace === 'sRGB' ? 'Linear' : 'sRGB')
+                }}>
+                {displayColorSpace}
+              </ColorSpaceBadge>
             }
           />
-          <Input
-            code
+          <InputNumber
+            name="color alpha"
             disabled={disabled}
-            endSlot={<HorizontalSlider />}
-            readOnly
             size="sm"
-            value={`${Math.round(value.a * 100)}`}
+            endSlot={<Text size="0_5">%</Text>}
+            value={Math.round(color.a * 100)}
+            onValueChange={handleAlphaChange}
+            min={0}
+            max={100}
           />
         </>
       )}

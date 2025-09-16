@@ -2,9 +2,8 @@ import { Fragment, useCallback } from 'react'
 import { IconPlus, IconMinus } from '@tabler/icons-react'
 
 import { FormItem } from '../FormItem'
-import { Button, InputNumber, type InputNumberProps } from '@galacean/editor-ui'
-import { BaseFormItemProps } from '../FormItem/FormItem'
-import { clamp } from '../../utils'
+import { Button, InputNumber, clamp, type InputNumberProps } from '@galacean/editor-ui'
+import { BaseFormItemProps, extractFormItemProps } from '../FormItem'
 
 export interface FormItemInputNumberProps
   extends BaseFormItemProps<number>,
@@ -56,12 +55,7 @@ export function FormItemInputNumber(props: FormItemInputNumberProps) {
   }
 
   return (
-    <FormItem
-      label={label}
-      info={info}
-      fieldColumn={additionalControl ? 'number' : 1}
-      formStartSlot={formStartSlot}
-      formEndSlot={formEndSlot}>
+    <FormItem {...extractFormItemProps(props)} fieldColumn={additionalControl ? 'number' : 2}>
       <InputNumber
         startSlot={startSlot}
         endSlot={endSlot}

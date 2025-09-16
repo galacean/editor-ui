@@ -1,55 +1,54 @@
-import React, { ForwardedRef, useCallback, useState } from "react";
-import { IconCurrentLocation, IconFileFilled, IconUnlink } from "@tabler/icons-react";
+import React, { ForwardedRef, useCallback, useState } from 'react'
+import { IconCurrentLocation, IconFileFilled, IconUnlink } from '@tabler/icons-react'
 
-import { BasicAssetType, AssetPickerPopoverProps } from "./AssetPickerPopover";
-import { AssetPickerContent } from "./AssetPickerContent";
+import { BasicAssetType, AssetPickerPopoverProps } from './AssetPickerPopover'
+import { AssetPickerContent } from './AssetPickerContent'
 
-import { FormItem } from "../FormItem";
-import { ActionButton ,Button, styled, Popover, PopoverCloseTrigger, useDrop } from '@galacean/editor-ui'
-import { BaseFormItemProps } from "../FormItem/FormItem";
+import { FormItem, extractFormItemProps } from '../FormItem'
+import { ActionButton, Button, styled, Popover, PopoverCloseTrigger, useDrop } from '@galacean/editor-ui'
+import { BaseFormItemProps } from '../FormItem/FormItem'
 
 const StyledIconFile = styled(IconFileFilled, {
-  marginLeft: "-$1",
-  flexShrink: 0
-});
+  marginLeft: '-$1',
+  flexShrink: 0,
+})
 
-export interface FormItemAssetPickerProps<T extends BasicAssetType> extends AssetPickerPopoverProps<T>, BaseFormItemProps<string> {
-  onDelete?: () => void;
-  onLocate?: (value: string) => void;
-  placeholder?: string;
-  onOpenChange?: (isOpen?: boolean) => void;
-  dropLayer: number;
-  onSelect?: (asset: T) => void;
-  customFilter?: (asset: T) => boolean;
-  groupBy?: (asset: T) => string;
-
+export interface FormItemAssetPickerProps<T extends BasicAssetType>
+  extends AssetPickerPopoverProps<T>,
+    BaseFormItemProps<string> {
+  onDelete?: () => void
+  onLocate?: (value: string) => void
+  placeholder?: string
+  onOpenChange?: (isOpen?: boolean) => void
+  dropLayer: number
+  onSelect?: (asset: T) => void
+  customFilter?: (asset: T) => boolean
+  groupBy?: (asset: T) => string
 }
 
-const Placeholder = styled("span", {
-  paddingLeft: "$1",
-  whiteSpace: "nowrap",
-  overflow: "hidden",
-  lineHeight: 2
-});
+const Placeholder = styled('span', {
+  paddingLeft: '$1',
+  whiteSpace: 'nowrap',
+  overflow: 'hidden',
+  lineHeight: 2,
+})
 
 const StyledTriggerButton = styled(Button, {
   variants: {
     isDraggingOver: {
       true: {
         color: '$blue12',
-        outline: "2px solid $colors$blue10",
-        backgroundColor: "$blueA4",
+        outline: '2px solid $colors$blue10',
+        backgroundColor: '$blueA4',
       },
     },
-  }
+  },
 })
 
 function _FormItemAssetPicker<T extends BasicAssetType>(props: FormItemAssetPickerProps<T>, ref) {
-  const [isDraggingOver, setIsDraggingOver] = useState(false);
+  const [isDraggingOver, setIsDraggingOver] = useState(false)
   const {
     label,
-    info,
-    direction,
     disabled,
     value,
     onDelete,
@@ -61,37 +60,37 @@ function _FormItemAssetPicker<T extends BasicAssetType>(props: FormItemAssetPick
     assets,
     asset,
     customFilter,
-    groupBy
-  } = props;
+    groupBy,
+  } = props
 
-  const actionDisabled = !!(disabled || !value);
+  const actionDisabled = !!(disabled || !value)
 
   const dropRef = useDrop({
     accept: dropLayer,
     onDrop(_, item: any, dropElement) {
-      setIsDraggingOver(false);
-      onSelect(item);
-      dropElement.blur();
+      setIsDraggingOver(false)
+      onSelect(item)
+      dropElement.blur()
     },
     onEnter(_, __, dropElement) {
-      setIsDraggingOver(true);
-      dropElement.focus();
+      setIsDraggingOver(true)
+      dropElement.focus()
     },
     onLeave(_, __, dropElement) {
-      setIsDraggingOver(false);
-      dropElement.blur();
-    }
-  });
+      setIsDraggingOver(false)
+      dropElement.blur()
+    },
+  })
 
   const handleLocate = useCallback(
     function handleLocate() {
-      onLocate && onLocate(value);
+      onLocate && onLocate(value)
     },
     [value]
-  );
+  )
 
   return (
-    <FormItem label={label} info={info} direction={direction} fieldColumn="asset">
+    <FormItem {...extractFormItemProps(props)} fieldColumn="asset">
       <Popover
         compact
         disabled={disabled}
@@ -104,16 +103,14 @@ function _FormItemAssetPicker<T extends BasicAssetType>(props: FormItemAssetPick
             disabled={disabled}
             variant="secondary"
             isDraggingOver={isDraggingOver}
-            css={{ 
-              justifyContent: "initial",
-            }}
-          >
+            css={{
+              justifyContent: 'initial',
+            }}>
             <StyledIconFile size="14px" />
             <Placeholder>{value ? value : placeholder}</Placeholder>
           </StyledTriggerButton>
         }
-        onOpenChange={onOpenChange}
-      >
+        onOpenChange={onOpenChange}>
         <AssetPickerContent
           assets={assets}
           selectedAssetId={asset?.id}
@@ -129,13 +126,12 @@ function _FormItemAssetPicker<T extends BasicAssetType>(props: FormItemAssetPick
         <IconUnlink />
       </ActionButton>
     </FormItem>
-  );
+  )
 }
 
 export const FormItemAssetPicker = React.forwardRef(_FormItemAssetPicker) as <T extends BasicAssetType>(
   props: FormItemAssetPickerProps<T> & { ref?: ForwardedRef<HTMLInputElement> }
-) => ReturnType<typeof _FormItemAssetPicker>;
+) => ReturnType<typeof _FormItemAssetPicker>
 
-export { PickableAssetItem } from "./PickableAssetItem";
-export { type BasicAssetType, type AssetPickerPopoverProps } from "./AssetPickerPopover";
-
+export { PickableAssetItem } from './PickableAssetItem'
+export { type BasicAssetType, type AssetPickerPopoverProps } from './AssetPickerPopover'

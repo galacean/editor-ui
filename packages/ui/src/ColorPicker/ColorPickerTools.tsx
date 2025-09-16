@@ -3,12 +3,12 @@ import { IconCopy, IconCheck } from '@tabler/icons-react'
 import { colord } from 'colord'
 import { styled } from '../design-system'
 
-import { type Color } from './helper'
 import { useEyeDropper } from '../hooks/useEyeDropper'
 
 import { Flex } from '../Flex'
 import { ActionButton } from '../ActionButton'
 import { EyeDropperIcon } from '../Icons'
+import { Color, ColorSpace, linearColorToSRGB, srgbColorToLinear } from './helper'
 
 const StyledColorPickerTools = styled(Flex, {
   position: 'absolute',
@@ -58,10 +58,11 @@ interface ColorPickerToolsProps {
   onPickColor?: (color: Color) => void
   onCopyColor?: () => void
   readonly: boolean
+  colorSpace: ColorSpace
 }
 
 export function ColorPickerTools(props: ColorPickerToolsProps) {
-  const { color, onPickColor, onCopyColor, readonly } = props
+  const { color, onPickColor, onCopyColor, colorSpace, readonly } = props
   const { open, isSupported } = useEyeDropper()
   const colorStr = colord(color).toRgbString()
   const [copied, setCopied] = useState(false)
@@ -82,7 +83,10 @@ export function ColorPickerTools(props: ColorPickerToolsProps) {
     const openPicker = async () => {
       try {
         const color = await open()
-        const dcolor = colord(color.sRGBHex).toRgb()
+        let dcolor = colord(color.sRGBHex).toRgb()
+        if (colorSpace === 'Linear') {
+          dcolor = srgbColorToLinear(dcolor, false, true)
+        }
         if (onPickColor) {
           onPickColor(dcolor)
         }
@@ -96,7 +100,7 @@ export function ColorPickerTools(props: ColorPickerToolsProps) {
   return (
     <StyledColorPickerTools align="v" gap="sm" readonly={readonly}>
       {isSupported() && (
-        <ActionButton size="md" variant="subtle" onClick={pickColor}>
+        <ActionButton size="md" variant="transparent" onClick={pickColor}>
           <EyeDropperIcon />
         </ActionButton>
       )}

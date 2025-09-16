@@ -47,7 +47,7 @@ const AssetNameInput = styled('input', {
   display: 'none',
   backgroundColor: 'transparent',
   fontSize: '$1',
-  color: '$gray11',
+  color: '$grayA11',
   lineHeight: '14px',
   minHeight: '$5',
   flexShrink: 0,
@@ -60,6 +60,7 @@ const AssetNameInput = styled('input', {
   borderRadius: '$2',
   '&:focus': {
     boxShadow: '0 0 0 1px $colors$blueA10',
+    color: '$grayA12',
   },
   variants: {
     editing: {

@@ -1,6 +1,6 @@
 import { InputNumber } from '@galacean/editor-ui'
 import { type ReactNode } from 'react'
-import { FormItem, type BaseFormItemProps } from '../FormItem'
+import { FormItem, extractFormItemProps, type BaseFormItemProps } from '../FormItem'
 
 export type Vector2 = { x: number; y: number }
 
@@ -12,13 +12,13 @@ export interface FormItemVector2Props extends Omit<BaseFormItemProps<Vector2>, '
 }
 
 export function FormItemVector2(props: FormItemVector2Props) {
-  const { label, info, value, onChange, min, max, disabled, ...rest } = props
+  const { value, onChange, min, max, disabled } = props
   const {
     slotMapping = {
       x: 'X',
       y: 'Y',
     },
-  } = rest
+  } = props
 
   const handleOnChange = (prefix: keyof Vector2) => (v: number) => {
     if (!onChange) return
@@ -27,7 +27,7 @@ export function FormItemVector2(props: FormItemVector2Props) {
   }
 
   return (
-    <FormItem label={label} info={info} fieldColumn={2}>
+    <FormItem {...extractFormItemProps(props)} fieldColumn={2}>
       <InputNumber
         min={min}
         max={max}

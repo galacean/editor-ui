@@ -1,9 +1,0 @@
-{
-  "mode": "pre",
-  "tag": "beta",
-  "initialVersions": {
-    "@galacean/gui": "1.0.0",
-    "@galacean/editor-ui": "1.0.0"
-  },
-  "changesets": []
-}

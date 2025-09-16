@@ -12,6 +12,7 @@ export interface FormItemSelectProps<T extends number | string> extends FormItem
   showSelectAll?: boolean
   startSlot?: ReactNode
   placeholder?: string
+  size?: 'xs' | 'sm' | 'md'
 }
 
 export function FormItemSelect<T extends number | string>(props: FormItemSelectProps<T>) {
@@ -32,6 +33,7 @@ export function FormItemSelect<T extends number | string>(props: FormItemSelectP
     showSelectAll,
     startSlot,
     placeholder,
+    size,
   } = props
 
   return (
@@ -49,7 +51,7 @@ export function FormItemSelect<T extends number | string>(props: FormItemSelectP
         showSelectAll={showSelectAll}
         startSlot={startSlot}>
         {options.map((option) => (
-          <SelectItem key={option.value} value={option.value}>
+          <SelectItem key={option.value} value={option.value} size={size}>
             {option.label}
           </SelectItem>
         ))}

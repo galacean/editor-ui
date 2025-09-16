@@ -10,7 +10,7 @@ const StyledTextarea = styled('textarea', {
   outline: 'none',
   border: 'none',
   color: '$gray11',
-  resize: 'vertical',
+  resize: 'none',
   variants: {
     variant: {
       default: {
@@ -19,6 +19,12 @@ const StyledTextarea = styled('textarea', {
       },
       subtle: {
         backgroundColor: '$secondaryBg',
+      },
+    },
+    size: {
+      sm: {},
+      md: {
+        borderRadius: '$4',
       },
     },
   },

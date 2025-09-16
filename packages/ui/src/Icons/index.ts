@@ -1,9 +1,9 @@
-export { GalaceanLogo } from "./GalaceanLogo";
-export { EyeDropperIcon } from "./EyeDropperIcon";
-export { MouseDoubleDownIcon } from "./MouseDoubleDownIcon";
-export { MouseLeftDownIcon } from "./MouseLeftDownIcon";
-export { MouseRightDownIcon } from "./MouseRightDownIcon";
-export { IconRightBottomCorner } from "./IconRightBottomCorner";
+export { GalaceanLogo } from './GalaceanLogo'
+export { EyeDropperIcon } from './EyeDropperIcon'
+export { MouseDoubleDownIcon } from './MouseDoubleDownIcon'
+export { MouseLeftDownIcon } from './MouseLeftDownIcon'
+export { MouseRightDownIcon } from './MouseRightDownIcon'
+export { IconRightBottomCorner } from './IconRightBottomCorner'
 
 export { default as IconCodeFile } from './Files/Code'
 export { default as IconAnimationControllerFile } from './Files/Controller'
@@ -19,3 +19,4 @@ export { default as IconSpriteFile } from './Files/Sprite'
 export { default as IconSpriteAltasFile } from './Files/SpriteAltas'
 export { default as IconUnknownFile } from './Files/Unknown'
 export { default as IconVrReferenceImageFile } from './Files/VRImage'
+export { default as IconPendingFile } from './Files/Pending'

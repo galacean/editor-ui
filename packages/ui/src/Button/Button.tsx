@@ -98,9 +98,9 @@ const StyledButton = styled('button', button, {
       },
       secondary: {
         backgroundColor: '$secondaryBg',
-        color: '$gray11',
+        color: '$grayA11',
         '&:hover': {
-          color: '$gray12',
+          color: '$grayA12',
           backgroundColor: '$grayA4',
         },
         '&:active': {
@@ -108,7 +108,7 @@ const StyledButton = styled('button', button, {
           backgroundColor: '$grayA5',
         },
       },
-      subsecondary: {
+      subtle: {
         color: '$gray11',
         '&:hover': {
           backgroundColor: '$grayA4',
@@ -141,7 +141,7 @@ const StyledButton = styled('button', button, {
         '&:active': {
           backgroundColor: '$secondaryBg',
         },
-      }
+      },
     },
     fullWidth: {
       true: {
@@ -246,7 +246,7 @@ const StyledButton = styled('button', button, {
       variant: 'primary',
       positive: true,
       css: {
-        color: '$green12',
+        color: 'white',
         backgroundColor: '$green9',
         '&:hover': {
           backgroundColor: '$green10',
@@ -287,7 +287,7 @@ const StyledButton = styled('button', button, {
       },
     },
     {
-      variant: 'subsecondary',
+      variant: 'subtle',
       critical: true,
       css: {
         color: '$redA9',

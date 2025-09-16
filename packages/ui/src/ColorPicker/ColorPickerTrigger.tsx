@@ -3,24 +3,44 @@ import React, { forwardRef, SVGProps } from 'react'
 import { styled } from '../design-system'
 import { TransparentPattern } from './TransparentPattern'
 import { Flex } from '../Flex'
+import { Color, ColorSpace, toNormalizeHexStr } from './helper'
+import { useColorSpaceConversion } from './useColorSpaceConversion'
 
 function IconHDR(props: SVGProps<SVGSVGElement>) {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="6" viewBox="0 0 15 6" fill="none" stroke="CurrentColor" {...props}>
-      <g clip-path="url(#clip0_28_2)">
-      <path d="M1 1V3.1875M1 3.1875V5.375M1 3.1875H3.8125M3.8125 3.1875V1M3.8125 3.1875V5.375" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M11 5.375V3.625M11 3.625V1H12.7857C13.2321 1 14.125 1 14.125 2.3125C14.125 3.625 13.2321 3.625 12.7857 3.625M11 3.625H12.7857M12.7857 3.625L14.125 5.375" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M6 3.1875V1C7.5625 1 9.125 1 9.125 3.1875C9.125 5.375 7.5625 5.375 6 5.375V3.1875Z" stroke-linecap="round" stroke-linejoin="round"/>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="15"
+      height="6"
+      viewBox="0 0 15 6"
+      fill="none"
+      stroke="CurrentColor"
+      {...props}>
+      <g clipPath="url(#clip0_28_2)">
+        <path
+          d="M1 1V3.1875M1 3.1875V5.375M1 3.1875H3.8125M3.8125 3.1875V1M3.8125 3.1875V5.375"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path
+          d="M11 5.375V3.625M11 3.625V1H12.7857C13.2321 1 14.125 1 14.125 2.3125C14.125 3.625 13.2321 3.625 12.7857 3.625M11 3.625H12.7857M12.7857 3.625L14.125 5.375"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path
+          d="M6 3.1875V1C7.5625 1 9.125 1 9.125 3.1875C9.125 5.375 7.5625 5.375 6 5.375V3.1875Z"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
       </g>
       <defs>
-      <clipPath id="clip0_28_2">
-      <rect width="15" height="6" fill="white"/>
-      </clipPath>
+        <clipPath id="clip0_28_2">
+          <rect width="15" height="6" fill="white" />
+        </clipPath>
       </defs>
     </svg>
   )
 }
-
 
 const StyledTrigger = styled('button', {
   all: 'unset',
@@ -57,14 +77,14 @@ const StyledTrigger = styled('button', {
 
 const StyledHDRBadge = styled('div', {
   position: 'absolute',
-  bottom: 0,
-  right: 0,
+  bottom: '1px',
+  right: '1px',
   fontSize: '$0_5',
   display: 'flex',
   alignItems: 'center',
   padding: '$0_5 $1',
   justifyContent: 'center',
-  borderRadius: '$2 0 0 0',
+  borderRadius: '$2 0 3px 0',
   backgroundColor: '$gray3',
   strokeWidth: 1.2,
   color: '$gray12',
@@ -94,26 +114,35 @@ const StyledTransparentPattern = styled(TransparentPattern, {
   },
 })
 
-export const ColorPickerTrigger = forwardRef<HTMLButtonElement, { color: string; fullsize?: boolean; mode?: string }>(
-  function Trigger(props, ref) {
-    const { color, mode, fullsize, ...rest } = props
+interface ColorPickerTriggerProps {
+  color: Color
+  colorSpace: ColorSpace
+  fullsize?: boolean
+  mode?: string
+}
 
-    return (
-      <StyledTrigger ref={ref} fullsize={fullsize} {...rest}>
-        <StyledTransparentPattern
-          fullsize={fullsize}
-          style={{
-            borderColor: color,
-          }}
-        />
-        <Flex style={{ background: color }} align="both">
-          {mode === 'hdr' &&
-            <StyledHDRBadge>
-              <IconHDR />
-            </StyledHDRBadge>
-          }
-        </Flex>
-      </StyledTrigger>
-    )
-  }
-)
+export const ColorPickerTrigger = forwardRef<HTMLButtonElement, ColorPickerTriggerProps>(function Trigger(props, ref) {
+  const { color, colorSpace, mode, fullsize, ...rest } = props
+
+  const { displayValue } = useColorSpaceConversion(color, colorSpace, 'sRGB')
+
+  const valueStr = `#${toNormalizeHexStr(displayValue)}`
+
+  return (
+    <StyledTrigger ref={ref} fullsize={fullsize} {...rest}>
+      <StyledTransparentPattern
+        fullsize={fullsize}
+        style={{
+          borderColor: valueStr,
+        }}
+      />
+      <Flex style={{ background: valueStr }} align="both">
+        {mode === 'hdr' && (
+          <StyledHDRBadge>
+            <IconHDR />
+          </StyledHDRBadge>
+        )}
+      </Flex>
+    </StyledTrigger>
+  )
+})

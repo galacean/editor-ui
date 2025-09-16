@@ -1,17 +1,16 @@
-import React from "react";
+import React from 'react'
 
-export const GalaceanLogo = (props: React.SVGProps<SVGSVGElement>) => {
+export const GalaceanLogo = (props: React.SVGProps<SVGSVGElement> & { size?: string }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       xmlnsXlink="http://www.w3.org/1999/xlink"
-      width="100px"
-      height="100px"
+      width={props.size || 100}
+      height={props.size || 100}
       viewBox="0 0 446.39 458.52"
       version="1.1"
       fill="CurrentColor"
-      {...props}
-    >
+      {...props}>
       <defs>
         <clipPath id="clip1">
           <path d="M 0 0 L 446.390625 0 L 446.390625 458.519531 L 0 458.519531 Z M 0 0 " />
@@ -24,5 +23,5 @@ export const GalaceanLogo = (props: React.SVGProps<SVGSVGElement>) => {
         </g>
       </g>
     </svg>
-  );
-};
+  )
+}

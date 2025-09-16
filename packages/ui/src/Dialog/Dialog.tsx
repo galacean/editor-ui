@@ -47,12 +47,12 @@ const StyledContent = styled(DialogPrimitive.Content, {
 
   '&:focus': { outline: 'none' },
 
-  "&[data-state=open]": {
-    animation: `${animations.contentFadeIn} 250ms ease`
+  '&[data-state=open]': {
+    animation: `${animations.contentFadeIn} 250ms ease`,
   },
-  "&[data-state=closed]": {
-    animation: `${animations.contentFadeOut} 250ms ease`
-  }
+  '&[data-state=closed]': {
+    animation: `${animations.contentFadeOut} 250ms ease`,
+  },
 })
 
 const StyledCloseButton = styled(DialogPrimitive.DialogClose, basicStyle, {
@@ -115,10 +115,11 @@ export interface DialogProps {
   css?: CSS
   zIndex?: number
   className?: string
+  id?: string
 }
 
 export function Dialog(props: DialogProps) {
-  const { trigger, children, closable, onOpenChange, disabled, css, zIndex, className, ...rest } = props
+  const { trigger, children, closable, onOpenChange, disabled, css, zIndex, className, id, ...rest } = props
 
   return (
     <DialogRoot onOpenChange={onOpenChange} {...rest}>
@@ -127,7 +128,7 @@ export function Dialog(props: DialogProps) {
           {trigger}
         </DialogPrimitive.Trigger>
       )}
-      <DialogContent css={css} zIndex={zIndex} className={className}>
+      <DialogContent id={id} css={css} zIndex={zIndex} className={className}>
         <VisuallyHidden.Root>
           <DialogPrimitive.Title />
           <DialogPrimitive.Description />

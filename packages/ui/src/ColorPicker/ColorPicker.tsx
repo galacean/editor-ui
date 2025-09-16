@@ -2,11 +2,18 @@ import { forwardRef, useEffect, useState } from 'react'
 import { overrideStyle } from './/override_style'
 import { ColorPickerRoot, type ColorPickerRootProps } from './ColorPickerPopoverContent'
 import { ColorPickerTrigger } from './ColorPickerTrigger'
-import { generatePreviewColor } from './helper'
+import { Color, generatePreviewColor, type ColorSpace } from './helper'
 
 import { Popover } from '../Popover'
+import { useControllableState } from '@radix-ui/react-use-controllable-state'
 
-type ColorPickerProps = ColorPickerRootProps & { disabled?: boolean; fullsize?: boolean }
+type ColorPickerProps = ColorPickerRootProps & {
+  disabled?: boolean
+  fullsize?: boolean
+  colorSpace?: ColorSpace
+  displayColorSpace?: ColorSpace
+  onDisplayColorSpaceChange?: (colorSpace: ColorSpace) => void
+}
 
 /**
  * ColorPicker is a comperhensive color picker component that support you to pick color in different `mode`:
@@ -17,12 +24,25 @@ type ColorPickerProps = ColorPickerRootProps & { disabled?: boolean; fullsize?: 
  * This component only provide **controlled** mode, which means that you have to control the color value by passing the `value` and `onValueChange` props.
  */
 const ColorPicker = forwardRef<HTMLButtonElement, ColorPickerProps>(function ColorPicker(props, forwardedRef) {
-  const { disabled, fullsize, ...rest } = props
+  const {
+    disabled,
+    fullsize,
+    colorSpace: originalColorSpace,
+    displayColorSpace: propDisplayColorSpace,
+    onDisplayColorSpaceChange: propOnDisplayColorSpaceChange,
+    ...rest
+  } = props
   const { mode, value } = props
-  const [_, setPreviewColor] = useState(generatePreviewColor(mode, value))
+  const [displayColorSpace, setDisplayColorSpace] = useControllableState({
+    prop: propDisplayColorSpace,
+    defaultProp: originalColorSpace,
+    onChange: propOnDisplayColorSpaceChange,
+  })
 
-  const handlePreviewChange = (nextColor) => {
-    const colorStr = generatePreviewColor(mode, nextColor)
+  const [_, setPreviewColor] = useState(generatePreviewColor(mode, value, originalColorSpace, displayColorSpace))
+
+  const handlePreviewChange = (nextColor: any) => {
+    const colorStr = generatePreviewColor(mode, nextColor, originalColorSpace, displayColorSpace)
     setPreviewColor(colorStr)
   }
 
@@ -40,11 +60,18 @@ const ColorPicker = forwardRef<HTMLButtonElement, ColorPickerProps>(function Col
         <ColorPickerTrigger
           ref={forwardedRef}
           fullsize={fullsize}
-          color={generatePreviewColor(mode, value)}
+          color={value as Color}
+          colorSpace={originalColorSpace}
           mode={mode}
         />
       }>
-      <ColorPickerRoot {...rest} onChangePreviewStr={handlePreviewChange} />
+      <ColorPickerRoot
+        {...rest}
+        onChangePreviewStr={handlePreviewChange}
+        colorSpace={originalColorSpace}
+        displayColorSpace={displayColorSpace}
+        onDisplayColorSpaceChange={setDisplayColorSpace}
+      />
     </Popover>
   )
 })

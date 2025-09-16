@@ -1,25 +1,24 @@
-
-import { FormItem } from "../FormItem";
-import { InputNumber, Slider } from "@galacean/editor-ui";
-import { FormItemRangeProps } from "../FormItem/FormItem";
+import { FormItem, extractFormItemProps } from '../FormItem'
+import { InputNumber, Slider } from '@galacean/editor-ui'
+import { FormItemRangeProps } from '../FormItem/FormItem'
 
 export interface FormItemSliderProps extends FormItemRangeProps {
-  tooltip?: boolean;
+  tooltip?: boolean
 }
 
 export function FormItemSlider(props: FormItemSliderProps) {
-  const { label, info, min, max, value, dragStep, onChange, disabled, tooltip = true } = props;
+  const { min, max, value, dragStep, onChange, disabled, tooltip = true } = props
 
   const handleSliderValueChange = (valueList: number[]) => {
     if (props.onChange) {
-      props.onChange(valueList[0]);
+      props.onChange(valueList[0])
     }
-  };
+  }
 
-  const arrValue = Array.isArray(value) ? value : [value];
+  const arrValue = Array.isArray(value) ? value : [value]
 
   return (
-    <FormItem label={label} info={info} fieldColumn={3}>
+    <FormItem {...extractFormItemProps(props)} fieldColumn={3}>
       <InputNumber
         min={min}
         max={max}
@@ -37,8 +36,8 @@ export function FormItemSlider(props: FormItemSliderProps) {
         step={dragStep}
         value={arrValue}
         onValueChange={handleSliderValueChange}
-        css={{ gridColumn: "2 / -1" }}
+        css={{ gridColumn: '2 / -1' }}
       />
     </FormItem>
-  );
+  )
 }
