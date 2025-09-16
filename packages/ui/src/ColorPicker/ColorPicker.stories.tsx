@@ -153,11 +153,15 @@ export const ColorSpaceMode = (args) => {
         Current Color Space: <strong>{colorSpace}</strong>
       </div>
       <Textarea
-        value={JSON.stringify({
-          color,
-          colorSpace,
-          note: "Values are always stored as sRGB (0-255), but displayed/edited in the selected color space"
-        }, null, 2)}
+        value={JSON.stringify(
+          {
+            color,
+            colorSpace,
+            note: 'Values are always stored as sRGB (0-255), but displayed/edited in the selected color space',
+          },
+          null,
+          2
+        )}
         readOnly
         rows={8}
       />
@@ -166,5 +170,3 @@ export const ColorSpaceMode = (args) => {
 }
 
 ColorSpaceMode.argTypes = argTypes
-
-

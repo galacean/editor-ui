@@ -1,6 +1,6 @@
 import React from 'react'
 import { Meta, StoryFn } from '@storybook/react'
-import { IconApple, IconCherry } from '@tabler/icons-react'
+import { IconApple, IconCherry, IconFilterUp } from '@tabler/icons-react'
 
 import { Flex } from '../Flex'
 import { Button } from '../Button'
@@ -31,7 +31,21 @@ export const Overview: StoryFn<typeof Select> = () => {
   return (
     <div>
       <Flex css={{ width: '260px' }} direction="column" gap="sm">
-        <Select defaultValue="apple" placeholder="Select Fruits...">
+        <Select size="md" defaultValue="apple" placeholder="Select Fruits..." startSlot={<IconFilterUp size="12px" />}>
+          {mock_data.map((item, index) => (
+            <SelectItem key={index} value={item.value}>
+              {item.label}
+            </SelectItem>
+          ))}
+        </Select>
+        <Select defaultValue="apple" placeholder="Select Fruits..." startSlot={<IconFilterUp size="12px" />}>
+          {mock_data.map((item, index) => (
+            <SelectItem key={index} value={item.value}>
+              {item.label}
+            </SelectItem>
+          ))}
+        </Select>
+        <Select size="xs" defaultValue="apple" placeholder="Select Fruits..." startSlot={<IconFilterUp size="10px" />}>
           {mock_data.map((item, index) => (
             <SelectItem key={index} value={item.value}>
               {item.label}

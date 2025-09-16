@@ -121,34 +121,28 @@ interface ColorPickerTriggerProps {
   mode?: string
 }
 
-export const ColorPickerTrigger = forwardRef<HTMLButtonElement, ColorPickerTriggerProps>(
-  function Trigger(props, ref) {
-    const { color, colorSpace, mode, fullsize, ...rest } = props
+export const ColorPickerTrigger = forwardRef<HTMLButtonElement, ColorPickerTriggerProps>(function Trigger(props, ref) {
+  const { color, colorSpace, mode, fullsize, ...rest } = props
 
-    const { displayValue } = useColorSpaceConversion(
-      color,
-      colorSpace,
-      "sRGB"
-    )
+  const { displayValue } = useColorSpaceConversion(color, colorSpace, 'sRGB')
 
-    const valueStr = `#${toNormalizeHexStr(displayValue)}`
-    
-    return (
-      <StyledTrigger ref={ref} fullsize={fullsize} {...rest}>
-        <StyledTransparentPattern
-          fullsize={fullsize}
-          style={{
-            borderColor: valueStr,
-          }}
-        />
-        <Flex style={{ background: valueStr }} align="both">
-          {mode === 'hdr' && (
-            <StyledHDRBadge>
-              <IconHDR />
-            </StyledHDRBadge>
-          )}
-        </Flex>
-      </StyledTrigger>
-    )
-  }
-)
+  const valueStr = `#${toNormalizeHexStr(displayValue)}`
+
+  return (
+    <StyledTrigger ref={ref} fullsize={fullsize} {...rest}>
+      <StyledTransparentPattern
+        fullsize={fullsize}
+        style={{
+          borderColor: valueStr,
+        }}
+      />
+      <Flex style={{ background: valueStr }} align="both">
+        {mode === 'hdr' && (
+          <StyledHDRBadge>
+            <IconHDR />
+          </StyledHDRBadge>
+        )}
+      </Flex>
+    </StyledTrigger>
+  )
+})

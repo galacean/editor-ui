@@ -24,9 +24,9 @@ const StyledTextarea = styled('textarea', {
     size: {
       sm: {},
       md: {
-        borderRadius: '$4'
-      }
-    }
+        borderRadius: '$4',
+      },
+    },
   },
   '&:focus-visible': {
     boxShadow: '0px 0px 0px 1px $colors$blue10',

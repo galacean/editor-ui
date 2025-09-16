@@ -1,4 +1,4 @@
-import { colord } from 'colord';
+import { colord } from 'colord'
 
 export type Color = { r: number; g: number; b: number; a: number }
 
@@ -36,8 +36,10 @@ export function denormalizeColor<T extends Color = Color>(rgba: T): T {
 }
 
 export function toNormalizeHexStr(color: Color) {
-  const ret = colord({ ...color, a: 1 }).toHex().slice(1)
-  return ret;
+  const ret = colord({ ...color, a: 1 })
+    .toHex()
+    .slice(1)
+  return ret
 }
 
 export function isEqual(color0: Color, color1: Color) {
@@ -77,7 +79,7 @@ export function generatePreviewColor(
       value = srgbColorToLinear(value, false, true)
     }
     if (componentColorSpace === 'Linear' && displayColorSpace === 'sRGB') {
-      value = linearColorToSRGB(value, false , true)
+      value = linearColorToSRGB(value, false, true)
     }
     return `rgba(${value.r}, ${value.g}, ${value.b}, ${value.a})`
   }

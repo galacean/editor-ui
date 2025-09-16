@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react'
 
 export const GalaceanLogo = (props: React.SVGProps<SVGSVGElement> & { size?: string }) => {
   return (
@@ -10,8 +10,7 @@ export const GalaceanLogo = (props: React.SVGProps<SVGSVGElement> & { size?: str
       viewBox="0 0 446.39 458.52"
       version="1.1"
       fill="CurrentColor"
-      {...props}
-    >
+      {...props}>
       <defs>
         <clipPath id="clip1">
           <path d="M 0 0 L 446.390625 0 L 446.390625 458.519531 L 0 458.519531 Z M 0 0 " />
@@ -24,5 +23,5 @@ export const GalaceanLogo = (props: React.SVGProps<SVGSVGElement> & { size?: str
         </g>
       </g>
     </svg>
-  );
-};
+  )
+}

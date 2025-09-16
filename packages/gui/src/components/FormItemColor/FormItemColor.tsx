@@ -2,15 +2,23 @@ import React, { useState, useEffect } from 'react'
 import { colord } from 'colord'
 
 import { FormItem, extractFormItemProps, type BaseFormItemProps } from '../FormItem'
-import { ColorPicker, Input, InputNumber, Text, styled, useColorSpaceConversion, type ColorSpace } from '@galacean/editor-ui'
+import {
+  ColorPicker,
+  Input,
+  InputNumber,
+  Text,
+  styled,
+  useColorSpaceConversion,
+  type ColorSpace,
+} from '@galacean/editor-ui'
 import { normalizeColor, denormalizeColor, toNormalizeHexStr, type Color } from '@galacean/editor-ui'
 
 import { useControllableState } from '@radix-ui/react-use-controllable-state'
 
 export interface FormItemColorProps extends BaseFormItemProps<Color> {
-  mode?: 'constant' | 'hdr';
-  colorSpace?: ColorSpace;
-  onColorSpaceChange?: (colorSpace: ColorSpace) => void;
+  mode?: 'constant' | 'hdr'
+  colorSpace?: ColorSpace
+  onColorSpaceChange?: (colorSpace: ColorSpace) => void
 }
 
 const ColorSpaceBadge = styled('div', {
@@ -30,7 +38,7 @@ const ColorSpaceBadge = styled('div', {
   '&:hover': {
     backgroundColor: '$gray6',
     color: '$grayA12',
-  }
+  },
 })
 
 const defaultColor: Color = denormalizeColor({ r: 0, g: 0, b: 0, a: 1 })
@@ -38,7 +46,7 @@ const defaultColor: Color = denormalizeColor({ r: 0, g: 0, b: 0, a: 1 })
 export function FormItemColor(props: FormItemColorProps) {
   const { value, disabled, onChange, mode = 'constant', colorSpace = 'Linear' } = props
 
-  const [displayColorSpace, setDisplayColorSpace] = useState<ColorSpace>(colorSpace);
+  const [displayColorSpace, setDisplayColorSpace] = useState<ColorSpace>(colorSpace)
 
   useEffect(() => {
     setDisplayColorSpace(colorSpace)
@@ -54,11 +62,7 @@ export function FormItemColor(props: FormItemColorProps) {
     },
   })
 
-  const { displayValue, convertInputToComponentSpace } = useColorSpaceConversion(
-    color,
-    colorSpace,
-    displayColorSpace
-  )
+  const { displayValue, convertInputToComponentSpace } = useColorSpaceConversion(color, colorSpace, displayColorSpace)
 
   const [colorStr, setColorStr] = useState(toNormalizeHexStr(displayValue))
 
@@ -78,11 +82,7 @@ export function FormItemColor(props: FormItemColorProps) {
     if (e.key === 'Enter') {
       const colordValue = colord(`#${colorStr.replace('#', '')}`)
       if (colordValue.isValid()) {
-        onChange && onChange(normalizeColor(
-          convertInputToComponentSpace(
-            colordValue.toRgb()
-          )
-        ))
+        onChange && onChange(normalizeColor(convertInputToComponentSpace(colordValue.toRgb())))
       } else {
         setColorStr(toNormalizeHexStr(color))
       }
@@ -92,10 +92,7 @@ export function FormItemColor(props: FormItemColorProps) {
   const isHdrMode = mode === 'hdr'
 
   return (
-    <FormItem
-      {...extractFormItemProps(props)}
-      fieldColumn={isHdrMode ? '1' : 'color'}
-    >
+    <FormItem {...extractFormItemProps(props)} fieldColumn={isHdrMode ? '1' : 'color'}>
       <ColorPicker
         mode={mode as 'constant'}
         fullsize={isHdrMode}
@@ -120,8 +117,9 @@ export function FormItemColor(props: FormItemColorProps) {
               <ColorSpaceBadge
                 onClick={() => {
                   setDisplayColorSpace(displayColorSpace === 'sRGB' ? 'Linear' : 'sRGB')
-                }}
-              >{displayColorSpace}</ColorSpaceBadge>
+                }}>
+                {displayColorSpace}
+              </ColorSpaceBadge>
             }
           />
           <InputNumber

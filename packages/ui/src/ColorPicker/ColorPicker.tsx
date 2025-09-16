@@ -8,11 +8,11 @@ import { Popover } from '../Popover'
 import { useControllableState } from '@radix-ui/react-use-controllable-state'
 
 type ColorPickerProps = ColorPickerRootProps & {
-  disabled?: boolean;
-  fullsize?: boolean;
-  colorSpace?: ColorSpace;
-  displayColorSpace?: ColorSpace;
-  onDisplayColorSpaceChange?: (colorSpace: ColorSpace) => void;
+  disabled?: boolean
+  fullsize?: boolean
+  colorSpace?: ColorSpace
+  displayColorSpace?: ColorSpace
+  onDisplayColorSpaceChange?: (colorSpace: ColorSpace) => void
 }
 
 /**
@@ -24,7 +24,14 @@ type ColorPickerProps = ColorPickerRootProps & {
  * This component only provide **controlled** mode, which means that you have to control the color value by passing the `value` and `onValueChange` props.
  */
 const ColorPicker = forwardRef<HTMLButtonElement, ColorPickerProps>(function ColorPicker(props, forwardedRef) {
-  const { disabled, fullsize, colorSpace: originalColorSpace, displayColorSpace: propDisplayColorSpace, onDisplayColorSpaceChange: propOnDisplayColorSpaceChange, ...rest } = props
+  const {
+    disabled,
+    fullsize,
+    colorSpace: originalColorSpace,
+    displayColorSpace: propDisplayColorSpace,
+    onDisplayColorSpaceChange: propOnDisplayColorSpaceChange,
+    ...rest
+  } = props
   const { mode, value } = props
   const [displayColorSpace, setDisplayColorSpace] = useControllableState({
     prop: propDisplayColorSpace,

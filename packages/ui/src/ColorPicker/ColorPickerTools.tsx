@@ -84,13 +84,11 @@ export function ColorPickerTools(props: ColorPickerToolsProps) {
       try {
         const color = await open()
         let dcolor = colord(color.sRGBHex).toRgb()
-        if(colorSpace === 'Linear') {
+        if (colorSpace === 'Linear') {
           dcolor = srgbColorToLinear(dcolor, false, true)
         }
         if (onPickColor) {
-          onPickColor(
-            dcolor
-          )
+          onPickColor(dcolor)
         }
       } catch (e) {
         console.warn(e)

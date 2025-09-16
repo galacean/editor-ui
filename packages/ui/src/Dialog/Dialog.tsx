@@ -47,12 +47,12 @@ const StyledContent = styled(DialogPrimitive.Content, {
 
   '&:focus': { outline: 'none' },
 
-  "&[data-state=open]": {
-    animation: `${animations.contentFadeIn} 250ms ease`
+  '&[data-state=open]': {
+    animation: `${animations.contentFadeIn} 250ms ease`,
   },
-  "&[data-state=closed]": {
-    animation: `${animations.contentFadeOut} 250ms ease`
-  }
+  '&[data-state=closed]': {
+    animation: `${animations.contentFadeOut} 250ms ease`,
+  },
 })
 
 const StyledCloseButton = styled(DialogPrimitive.DialogClose, basicStyle, {
@@ -115,7 +115,7 @@ export interface DialogProps {
   css?: CSS
   zIndex?: number
   className?: string
-  id?: string;
+  id?: string
 }
 
 export function Dialog(props: DialogProps) {

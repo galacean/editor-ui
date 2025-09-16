@@ -67,7 +67,7 @@ const ColorPickerRoot = function ColorPickerRoot(
   const hProps = props as HDRColorPickerProps
 
   const { mode, onChangePreviewStr, defaultValue, colorSpace, displayColorSpace, onDisplayColorSpaceChange } = props
-  
+
   const [gradientColor, setGradientColor] = useControllableState<GradientColor>({
     prop: mode === 'gradient' ? gProps.value : undefined,
     defaultProp: mode === 'gradient' && gProps.defaultValue ? gProps.defaultValue : [],
@@ -88,8 +88,7 @@ const ColorPickerRoot = function ColorPickerRoot(
 
   const [HDRColor, setHDRColor] = useControllableState<HDRColor>({
     prop: mode === 'hdr' ? hProps.value : undefined,
-    defaultProp:
-      mode === 'hdr' && hProps.defaultValue ? hProps.defaultValue : { r: 0, g: 0, b: 0, a: 1, intensity: 0 },
+    defaultProp: mode === 'hdr' && hProps.defaultValue ? hProps.defaultValue : { r: 0, g: 0, b: 0, a: 1, intensity: 0 },
     onChange: (v) => {
       onChangePreviewStr(v)
       hProps.onValueChange && hProps.onValueChange(v)

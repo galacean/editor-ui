@@ -199,7 +199,7 @@ function SubMenuItem(props: PropsWithChildren<ISubMenuItemProps>) {
       <Portal>
         <SubContent>
           <ScrollArea type="always" subtle={false} asContainer>
-            {children}  
+            {children}
           </ScrollArea>
         </SubContent>
       </Portal>
@@ -280,8 +280,8 @@ function RadioItem(props: RadioItemProps) {
 }
 
 interface RadioGroupProps extends ContextMenuRadioGroupProps {
-  items: RadioItemProps[];
-  label?: string;
+  items: RadioItemProps[]
+  label?: string
 }
 
 function MenuRadioGroup(props: RadioGroupProps) {
@@ -323,7 +323,9 @@ function DropdownMenu(props: PropsWithChildren<IDropdownMenuProps>) {
         </DropdownMenuPrimitive.Trigger>
         <DropdownMenuPrimitive.Portal>
           <Content side={side} sideOffset={sideOffset} align={align} alignOffset={alignOffset}>
-            <ScrollArea type="always" subtle={false} asContainer>{children}</ScrollArea>
+            <ScrollArea type="always" subtle={false} asContainer>
+              {children}
+            </ScrollArea>
           </Content>
         </DropdownMenuPrimitive.Portal>
       </DropdownMenuPrimitive.Root>
@@ -352,7 +354,9 @@ function ContextMenu(props: IContextMenuProps) {
         </ContextMenuPrimitive.Trigger>
         <ContextMenuPrimitive.Portal>
           <Content hidden={hidden} onPointerDownOutside={onPointerDownOutside}>
-            <ScrollArea type="always" subtle={false} asContainer>{children}</ScrollArea>
+            <ScrollArea type="always" subtle={false} asContainer>
+              {children}
+            </ScrollArea>
           </Content>
         </ContextMenuPrimitive.Portal>
       </ContextMenuPrimitive.Root>

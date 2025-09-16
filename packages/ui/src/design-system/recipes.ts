@@ -175,20 +175,21 @@ export const dropdownMenuContentStyle = styled('div', {
   maxHeight: 'var(--radix-dropdown-menu-content-available-height)',
   transformOrigin: 'var(--radix-dropdown-menu-content-transform-origin)',
   padding: 0,
-});
+})
 
 export const contextMenuContentStyle = styled('div', {
   maxHeight: 'var(--radix-context-menu-content-available-height)',
   transformOrigin: 'var(--radix-context-menu-content-transform-origin)',
   padding: 0,
-});
+})
 
 export const contentStyle = styled('div', {
   position: 'relative',
   backgroundColor: '$gray2',
   borderRadius: '$3',
   padding: '$1',
-  boxShadow: "0px 0px .5px rgba(0, 0, 0, .5), 0px 1px 5px rgba(0, 0, 0, .4), inset 0px .5px 0px rgba(255, 255, 255, .1), inset 0px 0px .5px rgba(255, 255, 255, .3)",
+  boxShadow:
+    '0px 0px .5px rgba(0, 0, 0, .5), 0px 1px 5px rgba(0, 0, 0, .4), inset 0px .5px 0px rgba(255, 255, 255, .1), inset 0px 0px .5px rgba(255, 255, 255, .3)',
   transformOrigin: 'var(--radix-context-menu-content-transform-origin)',
   border: '1px solid $grayA4',
   minWidth: '200px',
@@ -327,11 +328,10 @@ export const overlayStyle = styled(null, {
   },
 })
 
-
 export const flexTextOverflow = css({
   flex: 1,
   minWidth: 0,
-  whiteSpace: "nowrap",
-  overflow: "hidden",
-  textOverflow: "ellipsis"
+  whiteSpace: 'nowrap',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
 })

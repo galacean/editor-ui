@@ -10,7 +10,6 @@ import { useCycleSwitch } from '../hooks/useCycleSwitch'
 import { srgbColorToLinear, type ColorSpace } from './helper'
 import { useColorSpaceConversion, createDisplayColorSpaceToggle } from './useColorSpaceConversion'
 
-
 type HexaColor = string
 const colorModes = ['RGBA', 'HSLA', 'HEX'] as const
 
@@ -30,7 +29,7 @@ const ColorSpaceBadge = styled('div', {
   userSelect: 'none',
   '&:hover': {
     backgroundColor: '$gray4',
-  }
+  },
 })
 
 const InputGrid = styled('div', {
@@ -235,7 +234,15 @@ function HEXAColorInput(props: ColorInputProps<HexaColor>) {
 
   return (
     <InputItem>
-      <HexColorInput prefixed alpha={alpha} id="colorPickerHex" color={color} onChange={setColor} onBlur={handleBlur} onKeyDown={handleKeyDown} />
+      <HexColorInput
+        prefixed
+        alpha={alpha}
+        id="colorPickerHex"
+        color={color}
+        onChange={setColor}
+        onBlur={handleBlur}
+        onKeyDown={handleKeyDown}
+      />
       <label htmlFor="colorPickerHex">HEX</label>
     </InputItem>
   )
@@ -245,21 +252,25 @@ type ColorPickerInputGroupProps = {
   alpha?: boolean
   value: RgbaColor
   onChange: (value: RgbaColor) => void
-  readonly?: boolean;
+  readonly?: boolean
   colorSpace: ColorSpace
   displayColorSpace: ColorSpace
   onDisplayColorSpaceChange?: (colorSpace: ColorSpace) => void
 }
 
 export function ColorPickerInputGroup(props: ColorPickerInputGroupProps) {
-  const { value, onChange, colorSpace, displayColorSpace, onDisplayColorSpaceChange, alpha = true, readonly = false } = props
+  const {
+    value,
+    onChange,
+    colorSpace,
+    displayColorSpace,
+    onDisplayColorSpaceChange,
+    alpha = true,
+    readonly = false,
+  } = props
   const { mode, switchMode } = useCycleSwitch(colorModes, 'RGBA')
 
-  const { displayValue, convertInputToComponentSpace } = useColorSpaceConversion(
-    value,
-    colorSpace,
-    displayColorSpace
-  )
+  const { displayValue, convertInputToComponentSpace } = useColorSpaceConversion(value, colorSpace, displayColorSpace)
 
   const rgba = displayValue
   const hexa = colord(displayValue).minify({ alphaHex: true })
@@ -281,16 +292,11 @@ export function ColorPickerInputGroup(props: ColorPickerInputGroupProps) {
     onChange(finalValue)
   }
 
-  const handleColorSpaceToggle = createDisplayColorSpaceToggle(
-    displayColorSpace,
-    onDisplayColorSpaceChange
-  )
+  const handleColorSpaceToggle = createDisplayColorSpaceToggle(displayColorSpace, onDisplayColorSpaceChange)
 
   return (
     <InputGrid readonly={readonly}>
-      <ColorSpaceBadge onClick={handleColorSpaceToggle}>
-        {displayColorSpace}
-      </ColorSpaceBadge>
+      <ColorSpaceBadge onClick={handleColorSpaceToggle}>{displayColorSpace}</ColorSpaceBadge>
       {mode === 'HEX' && <HEXAColorInput alpha={alpha} value={hexa} onChange={handleInputChange('HEX')} />}
       {mode === 'HSLA' && <HSLAColorInput alpha={alpha} value={hsla} onChange={handleInputChange('HSLA')} />}
       {mode === 'RGBA' && <RGBAColorInput alpha={alpha} value={rgba} onChange={handleInputChange('RGBA')} />}

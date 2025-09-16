@@ -7,7 +7,16 @@ import { Flex } from '../Flex'
 import { Button } from '../Button'
 import { ActionButton } from '../ActionButton'
 
-import { ContextMenu, DropdownMenu, MenuItem, SubMenuItem, MenuGroup, MenuCheckboxItem, MenuSeparator, MenuRadioGroup } from './'
+import {
+  ContextMenu,
+  DropdownMenu,
+  MenuItem,
+  SubMenuItem,
+  MenuGroup,
+  MenuCheckboxItem,
+  MenuSeparator,
+  MenuRadioGroup,
+} from './'
 
 const File = styled('div', {
   display: 'flex',
@@ -72,11 +81,9 @@ export const DropdownMenuDemo: StoryFn<any> = () => {
           <MenuItem name="Spine Animation" />
         </SubMenuItem>
         <SubMenuItem name="So many submenus">
-          {
-            Array.from(Array(30).keys()).map((item) => (
-              <MenuItem key={item} name={`Layer ${item}`} />
-            ))
-          }
+          {Array.from(Array(30).keys()).map((item) => (
+            <MenuItem key={item} name={`Layer ${item}`} />
+          ))}
         </SubMenuItem>
         <MenuItem name="Remove" critical />
       </DropdownMenu>

@@ -73,7 +73,7 @@ const StyledBadge = styled('span', {
         [`& ${StyledBadgeInner}`]: {
           padding: '0 $1_5',
         },
-      }
+      },
     },
 
     pill: {
@@ -157,7 +157,7 @@ const StyledBadge = styled('span', {
   },
   defaultVariants: {
     color: 'gray',
-    size: "sm"
+    size: 'sm',
   },
 })
 

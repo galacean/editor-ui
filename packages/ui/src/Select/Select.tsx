@@ -3,13 +3,13 @@ import {
   SelectItem as SingleSelectItem,
   type SelectProps as SingleSelectProps,
   type SelectItemProps as SingleSelectItemProps,
-} from "./SingleSelect";
+} from './SingleSelect'
 
-import { Combobox, ComboboxItem, type ComboboxProps, type ComboboxItemProps } from "./Combobox";
+import { Combobox, ComboboxItem, type ComboboxProps, type ComboboxItemProps } from './Combobox'
 
-import { SelectProvider, useSelectProvider } from "./SelectProvider";
+import { SelectProvider, useSelectProvider } from './SelectProvider'
 
-export type SelectProps = SingleSelectProps | ComboboxProps;
+export type SelectProps = SingleSelectProps | ComboboxProps
 
 export function Select(props: SelectProps) {
   return (
@@ -20,18 +20,17 @@ export function Select(props: SelectProps) {
         <SingleSelect {...(props as SingleSelectProps)} />
       )}
     </SelectProvider>
-  );
+  )
 }
 
-export type SelectItemProps = SingleSelectItemProps | ComboboxItemProps;
+export type SelectItemProps = SingleSelectItemProps | ComboboxItemProps
 
-export function SelectItem(props: SelectItemProps & { size?: 'sm' | 'md' }) {
-  const { multiple } = useSelectProvider();
+export function SelectItem(props: SelectItemProps & { size?: 'xs' | 'sm' | 'md' }) {
+  const { multiple } = useSelectProvider()
 
   if (multiple) {
-    return <ComboboxItem {...(props as ComboboxItemProps)} />;
+    return <ComboboxItem {...(props as ComboboxItemProps)} />
   }
 
-  return <SingleSelectItem {...props as SingleSelectItemProps} />;
+  return <SingleSelectItem {...(props as SingleSelectItemProps)} />
 }
-
