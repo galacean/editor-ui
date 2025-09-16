@@ -11,6 +11,7 @@ import React, { forwardRef } from 'react'
 import { CSS, styled } from '../design-system'
 import { checkboxItemStyle, indicatorStyle, labelStyle } from '../design-system/recipes'
 import { IconRightBottomCorner } from '../Icons'
+import { Flex } from '../Flex'
 
 const SelectTrigger = styled(SelectPrimitive.SelectTrigger, {
   all: 'unset',
@@ -64,7 +65,7 @@ const SelectTrigger = styled(SelectPrimitive.SelectTrigger, {
     size: {
       xs: {
         height: '$xs',
-        borderRadius: '$2',
+        borderRadius: '$1',
       },
       sm: {
         height: '$sm',
@@ -162,27 +163,21 @@ const StyledSelectItemContent = styled('span', {
   },
 })
 
-const StyledSelectSlot = styled('div', {
-  display: 'flex',
-  position: 'relative',
-  alignItems: 'center',
-  justifyContent: 'center',
+const StyledSelectSlot = styled(Flex, {
   flexShrink: 0,
-  color: '$gray9',
-  transition: 'color 0.2s ease',
   userSelect: 'none',
   variants: {
     size: {
       xs: {
-        padding: '0 $1',
+        paddingRight: '$1',
         fontSize: '$1',
       },
       sm: {
-        padding: '0 $1',
+        paddingRight: '$1',
         fontSize: '$1',
       },
       md: {
-        padding: '0 $2',
+        paddingRight: '$2',
         fontSize: '$1_5',
       },
     },
@@ -305,10 +300,12 @@ function Select(props: SelectProps) {
       <SelectPrimitive.Root {...rest} value={value} onValueChange={setValue}>
         <SelectTrigger size={size} id={id} css={triggerCss}>
           {!!startSlot ? (
-            <div style={{ position: 'relative', display: 'flex' }}>
-              <StyledSelectSlot size={size}>{startSlot}</StyledSelectSlot>
+            <Flex>
+              <StyledSelectSlot align="both" size={size}>
+                {startSlot}
+              </StyledSelectSlot>
               <SelectPrimitive.Value placeholder={placeholder}>{renderedValue}</SelectPrimitive.Value>
-            </div>
+            </Flex>
           ) : (
             <SelectPrimitive.Value placeholder={placeholder}>{renderedValue}</SelectPrimitive.Value>
           )}
