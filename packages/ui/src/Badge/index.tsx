@@ -12,12 +12,12 @@ const StyledBadgeInner = styled('span', {
   backgroundColor: '$$bgColor',
   padding: '$0_5 $1_5',
   gap: '$1',
-  borderRadius: '4px',
+  borderRadius: '$2',
   variants: {
-    closeable: {
+    closable: {
       true: {
-        borderRadius: '4px 0 0 4px',
-        padding: '0 $1_5',
+        borderRadius: '$2 0 0 $2',
+        padding: '0 $1',
       },
     },
   },
@@ -30,7 +30,7 @@ const StyledCloseButton = styled('span', {
   height: '100%',
   padding: '0 $0_5',
   lineHeight: '14px',
-  borderRadius: '0 4px 4px 0',
+  borderRadius: '0 $2 $2 0',
   marginLeft: '0.5px',
   textAlign: 'center',
   color: '$$color',
@@ -52,7 +52,7 @@ const StyledCloseButton = styled('span', {
 const StyledBadge = styled('span', {
   display: 'inline-flex',
   alignItems: 'center',
-  borderRadius: '4px',
+
   lineHeight: '16px',
   userSelect: 'none',
   whiteSpace: 'nowrap',
@@ -76,25 +76,25 @@ const StyledBadge = styled('span', {
       },
     },
 
+    closable: {
+      true: {
+        paddingRight: '$1',
+      }
+    },
+
     pill: {
       true: {
-        borderRadius: '$round',
-        backgroundColor: '$$bgColor',
-        paddingRight: '$1',
-        [`& ${StyledCloseButton}`]: {
-          background: 'transparent',
-        },
         [`& ${StyledBadgeInner}`]: {
-          backgroundColor: 'transparent',
-          paddingRight: 0,
-        },
+          borderRadius: '$round',
+          padding: '0 $2',
+        }
       },
     },
     active: {
       true: {
-        $$bgColor: '$blue10',
-        $$color: '$white',
-        $$highlightColor: '$blue12',
+        $$bgColor: '$colors$blue10',
+        $$color: '$colors$white',
+        $$highlightColor: '$colors$blueA12',
       },
     },
     dot: {
@@ -159,6 +159,43 @@ const StyledBadge = styled('span', {
     color: 'gray',
     size: 'sm',
   },
+  compoundVariants: [
+    {
+      pill: true,
+      size: 'xs',
+      css: {
+        [`& ${StyledBadgeInner}`]: {
+          padding: '0 $1_5',
+        },
+      },
+    },
+    {
+      pill: true,
+      closable: true,
+      size: 'sm',
+      css: {
+        [`& ${StyledBadgeInner}`]: {
+          borderRadius: '$round 0 0 $round',
+        },
+        [`& ${StyledCloseButton}`]: {
+          borderRadius: '0 $round $round 0',
+        },
+      },
+    },
+    {
+      pill: true,
+      closable: true,
+      size: 'xs',
+      css: {
+        [`& ${StyledBadgeInner}`]: {
+          borderRadius: '$round 0 0 $round',
+        },
+        [`& ${StyledCloseButton}`]: {
+          borderRadius: '0 $round $round 0',
+        },
+      },
+    },
+  ],
 })
 
 type BadgeCloseButtonProps = React.ComponentProps<typeof StyledCloseButton>
@@ -173,13 +210,13 @@ function BadgeCloseButton(props: BadgeCloseButtonProps) {
 
 export type BadgeProps = PropsWithChildren<
   Omit<StitchesComponent<typeof StyledBadge>, 'dot'> & {
-    closeable?: boolean
+    closable?: boolean
     onClose?: (e) => void
   }
 >
 
 const Badge = forwardRef<HTMLSpanElement, BadgeProps>(function Badge(
-  { closeable = false, onClose, children, ...rest },
+  { closable = false, onClose, children, ...rest },
   ref
 ) {
   const [closed, setClosed] = useState(false)
@@ -199,9 +236,9 @@ const Badge = forwardRef<HTMLSpanElement, BadgeProps>(function Badge(
   }
 
   return (
-    <StyledBadge ref={ref} {...rest}>
-      <StyledBadgeInner closeable={closeable}>{children}</StyledBadgeInner>
-      {closeable && <BadgeCloseButton onClick={handleClose} pill={rest.pill} />}
+    <StyledBadge ref={ref} {...rest} closable={closable}>
+      <StyledBadgeInner closable={closable}>{children}</StyledBadgeInner>
+      {closable && <BadgeCloseButton onClick={handleClose} pill={rest.pill} />}
     </StyledBadge>
   )
 })

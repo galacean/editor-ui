@@ -338,7 +338,7 @@ export function ComboboxItem(props: ComboboxItemProps) {
       )}
       {shouldCreateBadge
         ? createPortal(
-            <Badge onClick={preventDefault} closeable onClose={handleRemove}>
+            <Badge onClick={preventDefault} closable onClose={handleRemove}>
               {valueRenderer ? valueRenderer(value, 'trigger') : children}
             </Badge>,
             valueNode
