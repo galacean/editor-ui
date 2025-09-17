@@ -1,6 +1,6 @@
 import { Select, SelectItem } from '@galacean/editor-ui'
 import { ReactNode } from 'react'
-import { FormItem, type FormItemSelectableProps } from '../FormItem'
+import { FormItem, extractFormItemProps, type FormItemSelectableProps } from '../FormItem'
 
 export interface FormItemSelectProps<T extends number | string> extends FormItemSelectableProps<T> {
   open?: boolean
@@ -37,7 +37,7 @@ export function FormItemSelect<T extends number | string>(props: FormItemSelectP
   } = props
 
   return (
-    <FormItem label={label} info={info} formEndSlot={formEndSlot} formStartSlot={formStartSlot}>
+    <FormItem {...extractFormItemProps(props)}>
       <Select
         placeholder={placeholder}
         value={value as string}
