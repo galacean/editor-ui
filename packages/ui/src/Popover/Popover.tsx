@@ -7,6 +7,7 @@ import { useControllableState } from '@radix-ui/react-use-controllable-state'
 import { CSS, styled } from '../design-system'
 import { keyframes } from '../design-system/keyframes'
 import { contentStyle } from '../design-system/recipes'
+import { composeEventHandlers } from '../utils/composeEventHandler'
 
 const StyledContent = styled(PopoverPrimitive.Content, contentStyle, {
   padding: '$2',
@@ -56,19 +57,21 @@ export type PopoverProps = PopoverContentProps & {
   compact?: boolean
   constrainSize?: boolean;
   css?: CSS
+  container?: Element
 }
 
 interface PopoverContentProps extends PrimitiveContentProps {
   children?: React.ReactNode
   open?: boolean
   forceRender?: boolean
+  container?: Element
 }
 
 const PopoverContent = forwardRef<HTMLDivElement, PopoverContentProps>(function PopoverContent(
   props: PopoverContentProps,
   forwardedRef
 ) {
-  const { children, open, forceRender = false, ...rest } = props
+  const { children, open, container, forceRender = false, ...rest } = props
 
   const [fragment, setFragment] = React.useState<DocumentFragment>()
 
@@ -82,7 +85,7 @@ const PopoverContent = forwardRef<HTMLDivElement, PopoverContentProps>(function 
   }
 
   return (
-    <PopoverPrimitive.Portal>
+    <PopoverPrimitive.Portal container={container}>
       <StyledContent {...rest} ref={forwardedRef}>
         {children}
       </StyledContent>
@@ -99,12 +102,24 @@ const Popover = forwardRef<HTMLDivElement, PopoverProps>(function Popover(props:
     onChange: onOpenChange,
   })
 
+  // https://github.com/radix-ui/primitives/issues/1159
+  function stopPropagation(e: React.MouseEvent | React.TouchEvent) {
+    e.stopPropagation()
+  }
+
   return (
     <PopoverPrimitive.Root open={open} onOpenChange={setOpen}>
       <Trigger asChild disabled={disabled}>
         {trigger}
       </Trigger>
-      <PopoverContent {...rest} sideOffset={sideOffset} open={open} ref={forwardedRef}>
+      <PopoverContent
+        {...rest}
+        sideOffset={sideOffset}
+        open={open}
+        ref={forwardedRef}
+        onWheel={composeEventHandlers(stopPropagation, rest.onWheel)}
+        onTouchMove={composeEventHandlers(stopPropagation, rest.onTouchMove)}
+      >
         {children}
       </PopoverContent>
     </PopoverPrimitive.Root>

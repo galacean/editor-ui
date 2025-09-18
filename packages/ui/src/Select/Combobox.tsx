@@ -110,23 +110,15 @@ const StyledComboBoxItem = styled('button', basicItemStyle, {
   width: '100%',
   flexShrink: 0,
   '&:hover': {
-    color: '$blue12',
-    backgroundColor: '$blue9',
+    color: '$gray12',
+    backgroundColor: '$grayA4',
   },
   variants: {
     focused: {
-      true: {
-        color: '$blue12',
-        backgroundColor: '$blue9',
-      },
+      true: {}
     },
     selected: {
-      true: {
-        '&:hover': {
-          color: '$blue12',
-          backgroundColor: '$blue9',
-        },
-      },
+      true: {},
     },
   },
 })
