@@ -310,10 +310,21 @@ type IDropdownMenuProps = Pick<DropdownMenuContentProps, PickedContentProps> &
     size?: MenuSize
     sideOffset?: number
     disabled?: boolean
+    portal?: Element | boolean
   }
 
 function DropdownMenu(props: PropsWithChildren<IDropdownMenuProps>) {
-  const { children, size = 'sm', side, sideOffset = 4, align = 'start', alignOffset, disabled = false, ...rest } = props
+  const { children, portal = true, size = 'sm', side, sideOffset = 4, align = 'start', alignOffset, disabled = false, ...rest } = props
+
+  let Portal: any = Fragment;
+  let container: Element;
+
+  if (portal) {
+    Portal = DropdownMenuPrimitive.Portal
+    if(typeof portal === 'object') {
+      container = portal
+    }
+  }
 
   return (
     <MenuProvider type="dropdown" size={size}>
@@ -321,13 +332,13 @@ function DropdownMenu(props: PropsWithChildren<IDropdownMenuProps>) {
         <DropdownMenuPrimitive.Trigger disabled={disabled} asChild>
           {props.trigger}
         </DropdownMenuPrimitive.Trigger>
-        <DropdownMenuPrimitive.Portal>
+        <Portal container={container}>
           <Content side={side} sideOffset={sideOffset} align={align} alignOffset={alignOffset}>
             <ScrollArea type="always" subtle={false} asContainer>
               {children}
             </ScrollArea>
           </Content>
-        </DropdownMenuPrimitive.Portal>
+        </Portal>
       </DropdownMenuPrimitive.Root>
     </MenuProvider>
   )
@@ -339,26 +350,37 @@ type IContextMenuProps = ContextMenuProps & {
   asChild?: boolean
   onOpenChange?: (open: boolean) => void
   onPointerDownOutside?: (e: any) => void
-  portal?: any
   hidden?: boolean
+  portal?: Element | boolean
   disabled?: boolean
 }
 
 function ContextMenu(props: IContextMenuProps) {
-  const { trigger, size = 'sm', children, onPointerDownOutside, portal, asChild, disabled = false, hidden } = props
+  const { trigger, size = 'sm', children, onPointerDownOutside, portal = true, asChild, disabled = false, hidden } = props
+
+  let Portal: any = Fragment;
+  let container: Element;
+
+  if (portal) {
+    Portal = ContextMenuPrimitive.Portal
+    if(typeof portal === 'object') {
+      container = portal
+    }
+  }
+
   return (
     <MenuProvider type="context" size={size}>
       <ContextMenuPrimitive.Root>
         <ContextMenuPrimitive.Trigger disabled={disabled} asChild={asChild}>
           {trigger}
         </ContextMenuPrimitive.Trigger>
-        <ContextMenuPrimitive.Portal>
+        <Portal container={container}>
           <Content hidden={hidden} onPointerDownOutside={onPointerDownOutside}>
             <ScrollArea type="always" subtle={false} asContainer>
               {children}
             </ScrollArea>
           </Content>
-        </ContextMenuPrimitive.Portal>
+        </Portal>
       </ContextMenuPrimitive.Root>
     </MenuProvider>
   )
