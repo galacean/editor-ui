@@ -153,6 +153,12 @@ const StyledBadge = styled('span', {
         $$highlightColor: '$colors$goldA12',
         $$highlightBgColor: '$colors$goldA5',
       },
+      violet: {
+        $$color: '$colors$violetA11',
+        $$bgColor: '$colors$violetA3',
+        $$highlightColor: '$colors$violetA12',
+        $$highlightBgColor: '$colors$violetA5',
+      },
     },
   },
   defaultVariants: {
