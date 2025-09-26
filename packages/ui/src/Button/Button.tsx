@@ -315,6 +315,19 @@ export type ButtonProps = PropsWithChildren<
   }
 >
 
+const SlotContainer = styled('div', {
+  variants: {
+    position: {
+      start: {
+        marginRight: '$1_5',
+      },
+      end: {
+        marginLeft: '$1_5',
+      },
+    },
+  }
+})
+
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(props, forwardedRef) {
   const { children, startSlot, endSlot, async, size, loading: propLoading, onClick, asChild, ...rest } = props
   const { loading, handleClick } = useAsyncStatus({
@@ -323,15 +336,23 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(props,
     onClick,
   })
 
-  const spin = <Spin color="inherit" size="xs" css={{ marginRight: '$1_5' }} />
+  const spin = <Spin color="inherit" size="xs" />
   const Comp = asChild ? Slot : StyledButton
 
   return (
     <Comp ref={forwardedRef} loading={loading} size={size} onClick={handleClick} {...rest}>
-      {startSlot && (loading ? spin : <Flex css={{ marginRight: '$1_5' }}>{startSlot}</Flex>)}
+      {startSlot && (
+        <SlotContainer position="start">
+          {loading ? spin : startSlot}
+        </SlotContainer>
+      )}
       {!startSlot && !endSlot && loading && spin}
       <Slottable>{children}</Slottable>
-      {endSlot && (loading ? spin : <Flex css={{ marginLeft: '$1_5' }}>{endSlot}</Flex>)}
+      {endSlot && (
+        <SlotContainer position="end">
+          {loading ? spin : endSlot}
+        </SlotContainer>
+      )}
     </Comp>
   )
 })
