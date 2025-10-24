@@ -13,6 +13,8 @@ const StyledBadgeInner = styled('span', {
   padding: '$0_5 $1_5',
   gap: '$1',
   borderRadius: '$2',
+  border: '$$border',
+  backdropFilter: '$$backdropFilter',
   variants: {
     closable: {
       true: {
@@ -35,6 +37,8 @@ const StyledCloseButton = styled('span', {
   textAlign: 'center',
   color: '$$color',
   backgroundColor: '$$bgColor',
+  border: '$$border',
+  backdropFilter: '$$backdropFilter',
   cursor: 'pointer',
   '&:hover': {
     color: '$$highlightColor',
@@ -110,60 +114,79 @@ const StyledBadge = styled('span', {
         fontFamily: '$mono',
       },
     },
+    variant: {
+      solid: {
+        $$border: 'none',
+        $$backdropFilter: 'none',
+      },
+      surface: {
+        $$border: '1px solid $$borderColor',
+        $$backdropFilter: 'blur(8px)',
+      },
+    },
     color: {
       gray: {
         $$color: '$colors$grayA11',
         $$bgColor: '$colors$grayA3',
         $$highlightColor: '$colors$grayA12',
         $$highlightBgColor: '$colors$grayA5',
+        $$borderColor: '$colors$gray9',
       },
       green: {
         $$color: '$colors$greenA11',
         $$bgColor: '$colors$greenA3',
         $$highlightColor: '$colors$greenA12',
         $$highlightBgColor: '$colors$greenA5',
+        $$borderColor: '$colors$green9',
       },
       red: {
         $$color: '$colors$redA11',
         $$bgColor: '$colors$redA3',
         $$highlightColor: '$colors$redA12',
         $$highlightBgColor: '$colors$redA5',
+        $$borderColor: '$colors$red9',
       },
       blue: {
         $$color: '$colors$blueA11',
         $$bgColor: '$colors$blueA3',
         $$highlightColor: '$colors$blueA12',
         $$highlightBgColor: '$colors$blueA5',
+        $$borderColor: '$colors$blue9',
       },
       orange: {
         $$color: '$colors$orangeA11',
         $$bgColor: '$colors$orangeA3',
         $$highlightColor: '$colors$orangeA12',
         $$highlightBgColor: '$colors$orangeA5',
+        $$borderColor: '$colors$orange9',
       },
       amber: {
         $$color: '$colors$amberA11',
         $$bgColor: '$colors$amberA3',
         $$highlightColor: '$colors$amberA12',
         $$highlightBgColor: '$colors$amberA5',
+        $$borderColor: '$colors$amber9',
       },
       gold: {
         $$color: '$colors$goldA11',
         $$bgColor: '$colors$goldA3',
         $$highlightColor: '$colors$goldA12',
         $$highlightBgColor: '$colors$goldA5',
+        $$borderColor: '$colors$gold9',
       },
       violet: {
         $$color: '$colors$violetA11',
         $$bgColor: '$colors$violetA3',
         $$highlightColor: '$colors$violetA12',
         $$highlightBgColor: '$colors$violetA5',
+        $$borderColor: '$colors$violet9',
       },
     },
   },
   defaultVariants: {
     color: 'gray',
     size: 'sm',
+    variant: 'solid',
   },
   compoundVariants: [
     {
