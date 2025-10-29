@@ -84,7 +84,7 @@ function EditableText(props: IEditableText) {
   }
 
   return (
-    <Container focused={editing}>
+    <Container focused={editing} css={css}>
       {editing ? (
         <Input
           disabled={loading}
@@ -108,7 +108,8 @@ function EditableText(props: IEditableText) {
       ) : (
         <Flex
           align="v"
-          onClick={() => {
+          onClick={(e) => {
+            e.stopPropagation()
             !showIcon && edit()
           }}
           gap="xs"
