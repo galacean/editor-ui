@@ -5,14 +5,16 @@ import { SegmentControl, SegmentControlItem } from '@galacean/editor-ui'
 
 export interface FormItemSegmentControlProps extends BaseFormItemProps<any> {
   options: { value: any; label: React.ReactNode; disabled?: boolean }[]
+  variant?: 'subtle' | 'solid'
 }
 
 export function FormItemSegmentControl(props: FormItemSegmentControlProps) {
-  const { value, onChange, defaultValue, options = [] } = props
+  const { value, onChange, defaultValue, options = [], variant = 'subtle' } = props
   return (
     <FormItem {...extractFormItemProps(props)} fieldColumn={1}>
       <SegmentControl
         size="sm"
+        variant={variant}
         defaultValue={defaultValue}
         value={String(value)}
         onValueChange={(v) => onChange && onChange(isNaN(Number(v)) ? v : Number(v))}>

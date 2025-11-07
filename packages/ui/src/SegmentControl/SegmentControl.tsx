@@ -1,6 +1,24 @@
+import React, { createContext, useContext } from 'react'
 import * as RadioGroupPrimitive from '@radix-ui/react-radio-group'
 
 import { styled } from '../design-system'
+
+// Context for SegmentControl
+type SegmentControlContextValue = {
+  size: 'sm' | 'md'
+  variant: 'subtle' | 'solid'
+}
+
+const SegmentControlContext = createContext<SegmentControlContextValue | null>(null)
+SegmentControlContext.displayName = 'SegmentControlContext'
+
+const useSegmentControlContext = () => {
+  const context = useContext(SegmentControlContext)
+  if (!context) {
+    throw new Error('SegmentControlItem must be used within a SegmentControl')
+  }
+  return context
+}
 
 const StyledSegmentControlItem = styled(RadioGroupPrimitive.Item, {
   all: 'unset',
@@ -39,6 +57,25 @@ const StyledSegmentControlItem = styled(RadioGroupPrimitive.Item, {
     position: 'relative',
     boxShadow: 'inset 0 0 0 1px $colors$grayA8',
   },
+  variants: {
+    variant: {
+      subtle: {},
+      solid: {
+        backgroundColor: '$grayA3',
+        '&[data-state=checked]': {
+          backgroundColor: '$blue10',
+          color: '$white',
+          boxShadow: 'none',
+          '&:hover': {
+            color: '$white',
+          },
+        },
+      },
+    },
+  },
+  defaultVariants: {
+    variant: 'subtle',
+  },
 })
 
 const StyledSegmentControlRoot = styled(RadioGroupPrimitive.Root, {
@@ -61,13 +98,51 @@ const StyledSegmentControlRoot = styled(RadioGroupPrimitive.Root, {
         borderRadius: '$4',
       },
     },
+    variant: {
+      subtle: {},
+      solid: {
+        backgroundColor: 'transparent',
+        gap: '$1',
+      },
+    },
   },
   defaultVariants: {
     size: 'sm',
+    variant: 'subtle',
   },
 })
 
-const SegmentControl = StyledSegmentControlRoot
-const SegmentControlItem = StyledSegmentControlItem
+type SegmentControlProps = React.ComponentProps<typeof StyledSegmentControlRoot> & {
+  size?: 'sm' | 'md'
+  variant?: 'subtle' | 'solid'
+}
+
+const SegmentControl = React.forwardRef<
+  React.ElementRef<typeof StyledSegmentControlRoot>,
+  SegmentControlProps
+>((props, ref) => {
+  const { size = 'sm', variant = 'subtle', children, ...rest } = props
+
+  return (
+    <SegmentControlContext.Provider value={{ size, variant }}>
+      <StyledSegmentControlRoot ref={ref} size={size} variant={variant} {...rest}>
+        {children}
+      </StyledSegmentControlRoot>
+    </SegmentControlContext.Provider>
+  )
+})
+
+SegmentControl.displayName = 'SegmentControl'
+
+const SegmentControlItem = React.forwardRef<
+  React.ElementRef<typeof StyledSegmentControlItem>,
+  React.ComponentProps<typeof StyledSegmentControlItem>
+>((props, ref) => {
+  const { variant } = useSegmentControlContext()
+
+  return <StyledSegmentControlItem ref={ref} variant={variant} {...props} />
+})
+
+SegmentControlItem.displayName = 'SegmentControlItem'
 
 export { SegmentControl, SegmentControlItem }
