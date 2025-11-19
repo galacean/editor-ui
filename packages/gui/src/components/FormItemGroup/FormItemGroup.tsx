@@ -12,13 +12,15 @@ export interface FormItemGroupProps extends Omit<CollapsibleProps, 'defaultValue
   nesting?: boolean;
   // children: React.ReactNode;
   children: any;
+  transparent?: boolean;
 }
 
 function FormItemGroup(props: FormItemGroupProps) {
-  const { label, nesting, collapsible, customTitle, defaultOpen = true, open, onOpenChange } = props;
+  const { label, nesting, collapsible, customTitle, defaultOpen = true, open, onOpenChange, transparent, } = props;
 
   return (
     <Collapsible
+      transparent={transparent}
       title={customTitle ?? label}
       defaultOpen={defaultOpen}
       open={open}

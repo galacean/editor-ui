@@ -105,6 +105,9 @@ const StyledRoot = styled(CollapsiblePrimitive.Root, {
     transparent: {
       true: {
         backgroundColor: 'transparent',
+        '& &': {
+          backgroundColor: 'transparent',
+        },
         [`& > ${StyledTitle}`]: {
           backgroundColor: 'transparent',
         },
