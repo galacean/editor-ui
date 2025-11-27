@@ -14,7 +14,6 @@ const StyledBadgeInner = styled('span', {
   gap: '$1',
   borderRadius: '$2',
   border: '$$border',
-  backdropFilter: '$$backdropFilter',
   variants: {
     closable: {
       true: {
