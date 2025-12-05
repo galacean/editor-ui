@@ -1,5 +1,7 @@
 # Galacean Editor UI
 
+![banner.png](https://mdn.alipayobjects.com/huamei_rbbfv7/afts/img/A*qQt9SpKrSEIAAAAAgBAAAAgAeknZAQ/fmt.webp)
+
 A comprehensive UI component library designed for building professional 3D editors and interactive tools in the browser. This monorepo contains two complementary packages that work together to provide both low-level UI components and high-level GUI solutions.
 
 Checkout the [storybook](https://main--66ceb847fb9e976339fd906e.chromatic.com/) for more information.
