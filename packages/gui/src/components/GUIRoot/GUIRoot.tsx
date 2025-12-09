@@ -155,16 +155,16 @@ const StyledGroupWrapper = styled('div', {
 function renderGUIItem(item: GUIDefineItem, index: number) {
   const [data, keyOrBindPath, config] = item
   const { type, onChange, bindPath, label, ...rest } = config as Exclude<GUIItemConfig, GUIItemGroupConfig>
-  const realKey = keyOrBindPath.split('.').pop()
+  const realKey = keyOrBindPath?.split('.').pop()
 
   let realLabel = label ?? realKey
-  let value: any = data[keyOrBindPath]
+  let value: any = keyOrBindPath ? data[keyOrBindPath] : undefined
   let GUIComponent = null
   let nested = false
 
   let extraProps: any = {}
 
-  if (keyOrBindPath.indexOf('.') !== -1 && realKey) {
+  if (keyOrBindPath?.indexOf('.') !== -1 && realKey) {
     nested = true
   }
 
@@ -265,7 +265,7 @@ function renderGUIItem(item: GUIDefineItem, index: number) {
 
   if (GUIComponent === FormItemGroup) {
     return (
-      <StyledGroupWrapper>
+      <StyledGroupWrapper key={`group_${index}`}>
         <UnControlledComponent
           key={`label_${index}`}
           label={realLabel}

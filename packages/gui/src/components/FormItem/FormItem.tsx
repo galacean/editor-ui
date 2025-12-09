@@ -1,7 +1,7 @@
 import React, { cloneElement, forwardRef, ReactElement, ReactNode } from 'react'
 import { styled, type CSS, VariantProps } from '@galacean/editor-ui'
-import { v4 as uuidv4 } from 'uuid'
 import { Label } from './Label'
+import { nanoid } from 'nanoid'
 
 const StyledField = styled('div', {
   display: 'grid',
@@ -132,7 +132,7 @@ const FormItem = forwardRef<HTMLDivElement, FormItemProps>(function FormItem(pro
 
   const name = propLabel
 
-  const labelId = `${(name ?? '').replace(/\s/g, '-')}-${uuidv4()}`
+  const labelId = `${(name ?? '').replace(/\s/g, '-')}-${nanoid()}`
   const withoutLabel = !propLabel
 
   const decorateChildren = React.Children.toArray(children).map((child) => {

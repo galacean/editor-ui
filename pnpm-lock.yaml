@@ -20,10 +20,10 @@ importers:
         version: 2.27.11
       '@galacean/engine':
         specifier: latest
-        version: 1.5.12
+        version: 1.5.16
       '@galacean/engine-toolkit':
         specifier: latest
-        version: 1.5.3(@galacean/engine-ui@1.4.0(@galacean/engine@1.5.12))(@galacean/engine@1.5.12)
+        version: 1.6.0(@galacean/engine-ui@1.4.0(@galacean/engine@1.5.16))(@galacean/engine@1.5.16)
       '@rollup/plugin-typescript':
         specifier: ^11.1.6
         version: 11.1.6(rollup@4.40.2)(tslib@2.8.1)(typescript@5.7.2)
@@ -115,6 +115,9 @@ importers:
       '@tabler/icons-react':
         specifier: ^3.17.0
         version: 3.17.0(react@18.2.0)
+      nanoid:
+        specifier: ^5.1.6
+        version: 5.1.6
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -1620,92 +1623,92 @@ packages:
     resolution:
       { integrity: sha512-MDWhGtE+eHw5JW7lq4qhc5yRLS11ERl1c7Z6Xd0a58DozHES6EnNNwUWbMiG4J9Cgj053Bhk8zvlhFYKVhULwg== }
 
-  '@galacean/engine-core@1.5.12':
+  '@galacean/engine-core@1.5.16':
     resolution:
-      { integrity: sha512-TCG4Kykab3QhtigS5ocRSxu4+DRcrslLbigbvRuCtmlVVfOR8JimzKUb57DolqMzEbn6gQDLu20DoSPrmSfzFg== }
+      { integrity: sha512-SxJOIw7EY1X0CslQAp6jpi+b1W4L/07ArJn/WFF6DtV8YYSrcbmRdPZOmdbP6Rf7isFcfImhs0TZL+92lKfgaw== }
 
-  '@galacean/engine-loader@1.5.12':
+  '@galacean/engine-loader@1.5.16':
     resolution:
-      { integrity: sha512-KrTOq4N6uOznuVnJpkb54dTGBopiXCM7dypPShZy78kmF3+Dwqs2FVH/Q13HVxNhUXeug8ml7LOpuchEoLNWBw== }
+      { integrity: sha512-1BHIcCcl+aEjkXx+8hWV0333k362+EJDXkV4cO6l7cBBiE/IQLjDOwn1QMSrNroExpw2ga0uPAEsmUJkfGWdeg== }
 
-  '@galacean/engine-math@1.5.12':
+  '@galacean/engine-math@1.5.16':
     resolution:
-      { integrity: sha512-qJ1i4LGcxmJkZ8IgCM+HRLR1P2NOsU2v08PNjG7U8BxWp1IdgD67P3FMx1GYgggnIfOOD7TBFS84PSkxvLR5nw== }
+      { integrity: sha512-qLJ5ArE0fAynaDl1ojnYognJXxgEvFxuv4Zg/8T2vN77Kpi6cBQLYogJxH5VSyVWaRpg34ScbnIlDId61mhe3Q== }
 
-  '@galacean/engine-rhi-webgl@1.5.12':
+  '@galacean/engine-rhi-webgl@1.5.16':
     resolution:
-      { integrity: sha512-AcrDP03/kYyADDdGCMepg48Clm8wxKaaVFLjPDwlYneQhbyFQY7rgQGm/dwZz1rMxgzEzh3np59dvSqbslZ2og== }
+      { integrity: sha512-olfuWwfPAT6bRxuvdeI+YsWu7muBaRK+jfaSm1eogP9XB1pix3ygUZuSJzfnZvojzhz6byumqe+VwUaYnsKzJw== }
 
-  '@galacean/engine-toolkit-auxiliary-lines@1.5.3':
+  '@galacean/engine-toolkit-auxiliary-lines@1.6.0':
     resolution:
-      { integrity: sha512-92PgvXoVHp+5gk9Eril5OFxCILBT+jBaRCvEKiMUntdlfZtPrMstpnHaibgeWgLHoHGmEUG5Uei7kujyY9XTqw== }
+      { integrity: sha512-wwQj28bXUGYiv7V9/ZgW8RPL8UULS5nFpBOr1ucqrqSTLMbedPcVXfuShyesFnB4QNRGCKR9pHCKrhLlYhpaeA== }
     peerDependencies:
-      '@galacean/engine': ^1.5.0
+      '@galacean/engine': '>=1.6.0-0'
 
-  '@galacean/engine-toolkit-controls@1.5.3':
+  '@galacean/engine-toolkit-controls@1.6.0':
     resolution:
-      { integrity: sha512-SNTaCLF6rolBzSyKLwS+MUEZLpkksaQnYjhBvAnFpWUd9lR6llL8sdI5/DJZtaK6cyxiw+eA2MMCN75Cxn38OQ== }
+      { integrity: sha512-qqbxHStb+SsRjKAOol6m42KYC2Ma0GaiZ8zWOBjq8plCcZQNenX22u01ViAiqh+pbYcLqkslNuE3R20pPi53Eg== }
     peerDependencies:
-      '@galacean/engine': ^1.5.0
+      '@galacean/engine': '>=1.6.0-0'
 
-  '@galacean/engine-toolkit-custom-material@1.5.3':
+  '@galacean/engine-toolkit-custom-material@1.6.0':
     resolution:
-      { integrity: sha512-Pw/No07qNlf/RNPP9G/8nTmE2t75ge0UmuFT7rcXYrhe3CoBpureN9rEwm1TnFkWbGcothV6cLN3U6wDD/hf8w== }
+      { integrity: sha512-spUDhH35ZvD1yivJmzRorgIt2RGXXN8IGelqFRQEtt4nsph/0LuqddRrSI6o0NiEjEsWy6IvkzinQU4WXZvIbg== }
     peerDependencies:
-      '@galacean/engine': ^1.5.0
+      '@galacean/engine': '>=1.6.0-0'
 
-  '@galacean/engine-toolkit-framebuffer-picker@1.5.3':
+  '@galacean/engine-toolkit-framebuffer-picker@1.6.0':
     resolution:
-      { integrity: sha512-N4bp+c8Ess9FOnKHvml8OERspOffZTYI5UYQ9LP/0ftDTnYXqgPPQ5Hx55I/nQ6mgDgOqZW6d+wUeH1gZIH9jA== }
+      { integrity: sha512-lWaO7o+ehvtHttJdgwcG9Ix0eJFUBOzsO8kFc6RQp4aZ/IP6FS/SqGD2erRCicQeDnoIdMszW7xY2GGc8xrfMg== }
     peerDependencies:
-      '@galacean/engine': ^1.5.0
+      '@galacean/engine': '>=1.6.0-0'
 
-  '@galacean/engine-toolkit-geometry-sketch@1.5.3':
+  '@galacean/engine-toolkit-geometry-sketch@1.6.0':
     resolution:
-      { integrity: sha512-I2yQr8FSlw82JdaLHqQ8hU8pJ9rgmc2IL75NOWPVarwDwJaJeDA3uSPWNInXlFrh1MlGK1FyCMSka/XtyVotlw== }
+      { integrity: sha512-wYcjzJ80eO8ekOpCZRW78jUsiE5GKGtmrWWMa6v8p+HNugFu0X9UfyomTtTx3SuImvNb/TpP2O+KZ4ZW4RXmww== }
     peerDependencies:
-      '@galacean/engine': ^1.5.0
+      '@galacean/engine': '>=1.6.0-0'
 
-  '@galacean/engine-toolkit-gizmo@1.5.3':
+  '@galacean/engine-toolkit-gizmo@1.6.0':
     resolution:
-      { integrity: sha512-TpgtUsfazVaOBbwYy1pKcZsEBK09IYvYA0lI7nSWinAqpxC0LTKsBwhU/icOd9jyowGbT2Dyi4oGYj+FeLYIfw== }
+      { integrity: sha512-a5y4NACFnBsKweNcFe9VKn9ttxSuFZnNBJCcLNcWED1+Botk1xsW+2xwS3dcGhWf7GHx+nuZ4HCq4MeCLbozNQ== }
     peerDependencies:
-      '@galacean/engine': ^1.5.0
-      '@galacean/engine-ui': ^1.5.0
+      '@galacean/engine': '>=1.6.0-0'
+      '@galacean/engine-ui': '>=1.6.0-0'
 
-  '@galacean/engine-toolkit-lines@1.5.3':
+  '@galacean/engine-toolkit-lines@1.6.0':
     resolution:
-      { integrity: sha512-Skx4KvxxUoJXhIBNdus5HSYnGfXgu8beNzgg9GBiFr7yiGFbFdmWGt/a9df5djP/E7MPGEdNS8gOlB8KpKg9nQ== }
+      { integrity: sha512-QowKaRXAQPjvU21Xg+GoRpzbFcuuKrKoOcKjmC/qtFF8NF8GaeBOFhUbGPNt3ztrssDPJ474Soau8ZtqH42P5g== }
     peerDependencies:
-      '@galacean/engine': ^1.5.0
+      '@galacean/engine': '>=1.6.0-0'
 
-  '@galacean/engine-toolkit-navigation-gizmo@1.5.3':
+  '@galacean/engine-toolkit-navigation-gizmo@1.6.0':
     resolution:
-      { integrity: sha512-zE7L00TzjQqE++npzzoj4g1DKlxro9IxRiZtlnwMV+xI5L63DsqT1ISHQf5ZwuctusRI9nGjdkAmKXeHK2hcig== }
+      { integrity: sha512-m307kTSWwQCHiCHa/1fIWTGtytc1bLZIFkGrRQCLrj2dGiKDqK6VaC2Jdsnm6i2Exv2FJMmkGkYPrpi6xOwj9Q== }
     peerDependencies:
-      '@galacean/engine': ^1.5.0
+      '@galacean/engine': '>=1.6.0-0'
 
-  '@galacean/engine-toolkit-outline@1.5.3':
+  '@galacean/engine-toolkit-outline@1.6.0':
     resolution:
-      { integrity: sha512-CoLdhb5HjKaDpCxCEoxrWbajbwGIGUARibXI9ZbSu578+9Y662622xgidiifxA3HuUoEq+/YI3SliXhfh20BEw== }
+      { integrity: sha512-GrRZGb3B5Np35HlSVX08au9lUIQv30Yn+UPbz5tDongaIe//i7FFDpXnUC53NMfQgnySwxmjTBF8zFQtSQAsug== }
     peerDependencies:
-      '@galacean/engine': ^1.5.0
+      '@galacean/engine': '>=1.6.0-0'
 
-  '@galacean/engine-toolkit-skeleton-viewer@1.5.3':
+  '@galacean/engine-toolkit-skeleton-viewer@1.6.0':
     resolution:
-      { integrity: sha512-mBqEjm4NmDIuzyleR7nt5QjXIBaChQU7do6/yCTz1D7a5YeCK3F+4BoFNPg3PwM1TXymK+LOwixZYD9V6/oILg== }
+      { integrity: sha512-kxzt4OHF0y+S3Zr6Bu/qDjzqGn7+rwK6fdewlwIlSOstYjLQ4jS/RgOFFPAvF5E8O9B9wIWkyreFXG2DPJTg9A== }
     peerDependencies:
-      '@galacean/engine': ^1.5.0
+      '@galacean/engine': '>=1.6.0-0'
 
-  '@galacean/engine-toolkit-stats@1.5.3':
+  '@galacean/engine-toolkit-stats@1.6.0':
     resolution:
-      { integrity: sha512-bPGiFy4/zHcJitLHSUgd8xi0EP5ndqfwkR/HsYOvkYea5TD2MPYXI7DMlR8UopwhmHBd7TML0X7A1ppx74g9DA== }
+      { integrity: sha512-63LLxTWg15xR000jbtEONnK6lBBMylvl5m+3VqqC7b09YAuMWlm9CuPfaM8dlbctOYT6nmPu9bpQiq3JfdgtWg== }
     peerDependencies:
-      '@galacean/engine': ^1.5.0
+      '@galacean/engine': '>=1.6.0-0'
 
-  '@galacean/engine-toolkit@1.5.3':
+  '@galacean/engine-toolkit@1.6.0':
     resolution:
-      { integrity: sha512-Koefdezvft7DG1IhHDW5BXUoUp2JCQl8WJrBa/tgXR5/T20jXntzV7Ryz3jN5v0HNoOT4IhmYBBwtaxpS6KUHg== }
+      { integrity: sha512-XBVMJd5WA73z25nQKF3P9GydYqjGVDWIrHzH7LjkgK5g5Yre2BLVxlRnMZAu5iW95PPt0riWwqcu+8BLm+3Fgw== }
 
   '@galacean/engine-ui@1.4.0':
     resolution:
@@ -1713,9 +1716,9 @@ packages:
     peerDependencies:
       '@galacean/engine': 1.4.0
 
-  '@galacean/engine@1.5.12':
+  '@galacean/engine@1.5.16':
     resolution:
-      { integrity: sha512-9GL3/1S/k0gVvJidBLhQAuj0gyL5SvZpoUX+H8EJWy0FWXNwer/Yxk3jtwthULIM7FnYoeZX8r09kC7c3DEjMw== }
+      { integrity: sha512-bu2Azq3rNYHnCtIdLGTFicMYBFxMM6vMEYHc0fY9JQBXvCuwggkpJ9en5dhymPPATj1rdecjOOuVzivMPoJQAg== }
 
   '@humanwhocodes/module-importer@1.0.1':
     resolution:
@@ -1966,8 +1969,8 @@ packages:
     resolution:
       { integrity: sha512-z4eqJvfiNnFMHIIvXP3CY57y2WJs5g2v3X0zm9mEJkrkNv4rDxu+sg9Jh8EkXyeqBkB7SOcboo9dMVqhyrACIg== }
     peerDependencies:
-      '@types/react': '*'
-      react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+      '@types/react': ^18.3.4
+      react: ^18.2.0
     peerDependenciesMeta:
       '@types/react':
         optional: true
@@ -2955,7 +2958,7 @@ packages:
     resolution:
       { integrity: sha512-9g9dWI4gsSVe8bNLlb+lMkBYsnIKCZTmvqvDG+Avnn69XfmHZKiaMrx7cgTaddq7aTPPmXiTsbFcUy0xgI4+wA== }
     peerDependencies:
-      react: '*'
+      react: '>= 16.3.0'
 
   '@storybook/addon-actions@8.2.9':
     resolution:
@@ -5165,6 +5168,12 @@ packages:
     engines: { node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1 }
     hasBin: true
 
+  nanoid@5.1.6:
+    resolution:
+      { integrity: sha512-c7+7RQ+dMB5dPwwCp4ee1/iV/q2P6aK1mTZcfr1BTuVlyW9hJYiMPybJCcnBlQtuSmTIWNeazm/zqNoZSSElBg== }
+    engines: { node: ^18 || >=20 }
+    hasBin: true
+
   natural-compare@1.4.0:
     resolution:
       { integrity: sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw== }
@@ -5987,6 +5996,7 @@ packages:
     resolution:
       { integrity: sha512-2ymg6oRBpebeZi9UUNsgQ89bhx01TcTkmNTGnNO88imTmbSgy4nfujrgVEFKWpMTEGA11EDkTt7mqObTPdigIA== }
     engines: { node: '>= 8' }
+    deprecated: The work that was done in this beta branch won't be included in future versions
 
   space-separated-tokens@2.0.2:
     resolution:
@@ -7678,100 +7688,100 @@ snapshots:
 
   '@floating-ui/utils@0.2.9': {}
 
-  '@galacean/engine-core@1.5.12':
+  '@galacean/engine-core@1.5.16':
     dependencies:
-      '@galacean/engine-math': 1.5.12
+      '@galacean/engine-math': 1.5.16
 
-  '@galacean/engine-loader@1.5.12':
+  '@galacean/engine-loader@1.5.16':
     dependencies:
-      '@galacean/engine-core': 1.5.12
-      '@galacean/engine-math': 1.5.12
-      '@galacean/engine-rhi-webgl': 1.5.12
+      '@galacean/engine-core': 1.5.16
+      '@galacean/engine-math': 1.5.16
+      '@galacean/engine-rhi-webgl': 1.5.16
 
-  '@galacean/engine-math@1.5.12': {}
+  '@galacean/engine-math@1.5.16': {}
 
-  '@galacean/engine-rhi-webgl@1.5.12':
+  '@galacean/engine-rhi-webgl@1.5.16':
     dependencies:
-      '@galacean/engine-core': 1.5.12
-      '@galacean/engine-math': 1.5.12
+      '@galacean/engine-core': 1.5.16
+      '@galacean/engine-math': 1.5.16
 
-  '@galacean/engine-toolkit-auxiliary-lines@1.5.3(@galacean/engine@1.5.12)':
+  '@galacean/engine-toolkit-auxiliary-lines@1.6.0(@galacean/engine@1.5.16)':
     dependencies:
-      '@galacean/engine': 1.5.12
-      '@galacean/engine-toolkit-custom-material': 1.5.3(@galacean/engine@1.5.12)
+      '@galacean/engine': 1.5.16
+      '@galacean/engine-toolkit-custom-material': 1.6.0(@galacean/engine@1.5.16)
 
-  '@galacean/engine-toolkit-controls@1.5.3(@galacean/engine@1.5.12)':
+  '@galacean/engine-toolkit-controls@1.6.0(@galacean/engine@1.5.16)':
     dependencies:
-      '@galacean/engine': 1.5.12
+      '@galacean/engine': 1.5.16
 
-  '@galacean/engine-toolkit-custom-material@1.5.3(@galacean/engine@1.5.12)':
+  '@galacean/engine-toolkit-custom-material@1.6.0(@galacean/engine@1.5.16)':
     dependencies:
-      '@galacean/engine': 1.5.12
+      '@galacean/engine': 1.5.16
 
-  '@galacean/engine-toolkit-framebuffer-picker@1.5.3(@galacean/engine@1.5.12)':
+  '@galacean/engine-toolkit-framebuffer-picker@1.6.0(@galacean/engine@1.5.16)':
     dependencies:
-      '@galacean/engine': 1.5.12
+      '@galacean/engine': 1.5.16
 
-  '@galacean/engine-toolkit-geometry-sketch@1.5.3(@galacean/engine@1.5.12)':
+  '@galacean/engine-toolkit-geometry-sketch@1.6.0(@galacean/engine@1.5.16)':
     dependencies:
-      '@galacean/engine': 1.5.12
+      '@galacean/engine': 1.5.16
 
-  '@galacean/engine-toolkit-gizmo@1.5.3(@galacean/engine-ui@1.4.0(@galacean/engine@1.5.12))(@galacean/engine@1.5.12)':
+  '@galacean/engine-toolkit-gizmo@1.6.0(@galacean/engine-ui@1.4.0(@galacean/engine@1.5.16))(@galacean/engine@1.5.16)':
     dependencies:
-      '@galacean/engine': 1.5.12
-      '@galacean/engine-toolkit-custom-material': 1.5.3(@galacean/engine@1.5.12)
-      '@galacean/engine-toolkit-framebuffer-picker': 1.5.3(@galacean/engine@1.5.12)
-      '@galacean/engine-ui': 1.4.0(@galacean/engine@1.5.12)
+      '@galacean/engine': 1.5.16
+      '@galacean/engine-toolkit-custom-material': 1.6.0(@galacean/engine@1.5.16)
+      '@galacean/engine-toolkit-framebuffer-picker': 1.6.0(@galacean/engine@1.5.16)
+      '@galacean/engine-ui': 1.4.0(@galacean/engine@1.5.16)
 
-  '@galacean/engine-toolkit-lines@1.5.3(@galacean/engine@1.5.12)':
+  '@galacean/engine-toolkit-lines@1.6.0(@galacean/engine@1.5.16)':
     dependencies:
-      '@galacean/engine': 1.5.12
+      '@galacean/engine': 1.5.16
 
-  '@galacean/engine-toolkit-navigation-gizmo@1.5.3(@galacean/engine@1.5.12)':
+  '@galacean/engine-toolkit-navigation-gizmo@1.6.0(@galacean/engine@1.5.16)':
     dependencies:
-      '@galacean/engine': 1.5.12
-      '@galacean/engine-toolkit-controls': 1.5.3(@galacean/engine@1.5.12)
-      '@galacean/engine-toolkit-custom-material': 1.5.3(@galacean/engine@1.5.12)
+      '@galacean/engine': 1.5.16
+      '@galacean/engine-toolkit-controls': 1.6.0(@galacean/engine@1.5.16)
+      '@galacean/engine-toolkit-custom-material': 1.6.0(@galacean/engine@1.5.16)
 
-  '@galacean/engine-toolkit-outline@1.5.3(@galacean/engine@1.5.12)':
+  '@galacean/engine-toolkit-outline@1.6.0(@galacean/engine@1.5.16)':
     dependencies:
-      '@galacean/engine': 1.5.12
+      '@galacean/engine': 1.5.16
 
-  '@galacean/engine-toolkit-skeleton-viewer@1.5.3(@galacean/engine@1.5.12)':
+  '@galacean/engine-toolkit-skeleton-viewer@1.6.0(@galacean/engine@1.5.16)':
     dependencies:
-      '@galacean/engine': 1.5.12
+      '@galacean/engine': 1.5.16
 
-  '@galacean/engine-toolkit-stats@1.5.3(@galacean/engine@1.5.12)':
+  '@galacean/engine-toolkit-stats@1.6.0(@galacean/engine@1.5.16)':
     dependencies:
-      '@galacean/engine': 1.5.12
+      '@galacean/engine': 1.5.16
 
-  '@galacean/engine-toolkit@1.5.3(@galacean/engine-ui@1.4.0(@galacean/engine@1.5.12))(@galacean/engine@1.5.12)':
+  '@galacean/engine-toolkit@1.6.0(@galacean/engine-ui@1.4.0(@galacean/engine@1.5.16))(@galacean/engine@1.5.16)':
     dependencies:
-      '@galacean/engine-toolkit-auxiliary-lines': 1.5.3(@galacean/engine@1.5.12)
-      '@galacean/engine-toolkit-controls': 1.5.3(@galacean/engine@1.5.12)
-      '@galacean/engine-toolkit-custom-material': 1.5.3(@galacean/engine@1.5.12)
-      '@galacean/engine-toolkit-framebuffer-picker': 1.5.3(@galacean/engine@1.5.12)
-      '@galacean/engine-toolkit-geometry-sketch': 1.5.3(@galacean/engine@1.5.12)
-      '@galacean/engine-toolkit-gizmo': 1.5.3(@galacean/engine-ui@1.4.0(@galacean/engine@1.5.12))(@galacean/engine@1.5.12)
-      '@galacean/engine-toolkit-lines': 1.5.3(@galacean/engine@1.5.12)
-      '@galacean/engine-toolkit-navigation-gizmo': 1.5.3(@galacean/engine@1.5.12)
-      '@galacean/engine-toolkit-outline': 1.5.3(@galacean/engine@1.5.12)
-      '@galacean/engine-toolkit-skeleton-viewer': 1.5.3(@galacean/engine@1.5.12)
-      '@galacean/engine-toolkit-stats': 1.5.3(@galacean/engine@1.5.12)
+      '@galacean/engine-toolkit-auxiliary-lines': 1.6.0(@galacean/engine@1.5.16)
+      '@galacean/engine-toolkit-controls': 1.6.0(@galacean/engine@1.5.16)
+      '@galacean/engine-toolkit-custom-material': 1.6.0(@galacean/engine@1.5.16)
+      '@galacean/engine-toolkit-framebuffer-picker': 1.6.0(@galacean/engine@1.5.16)
+      '@galacean/engine-toolkit-geometry-sketch': 1.6.0(@galacean/engine@1.5.16)
+      '@galacean/engine-toolkit-gizmo': 1.6.0(@galacean/engine-ui@1.4.0(@galacean/engine@1.5.16))(@galacean/engine@1.5.16)
+      '@galacean/engine-toolkit-lines': 1.6.0(@galacean/engine@1.5.16)
+      '@galacean/engine-toolkit-navigation-gizmo': 1.6.0(@galacean/engine@1.5.16)
+      '@galacean/engine-toolkit-outline': 1.6.0(@galacean/engine@1.5.16)
+      '@galacean/engine-toolkit-skeleton-viewer': 1.6.0(@galacean/engine@1.5.16)
+      '@galacean/engine-toolkit-stats': 1.6.0(@galacean/engine@1.5.16)
     transitivePeerDependencies:
       - '@galacean/engine'
       - '@galacean/engine-ui'
 
-  '@galacean/engine-ui@1.4.0(@galacean/engine@1.5.12)':
+  '@galacean/engine-ui@1.4.0(@galacean/engine@1.5.16)':
     dependencies:
-      '@galacean/engine': 1.5.12
+      '@galacean/engine': 1.5.16
 
-  '@galacean/engine@1.5.12':
+  '@galacean/engine@1.5.16':
     dependencies:
-      '@galacean/engine-core': 1.5.12
-      '@galacean/engine-loader': 1.5.12
-      '@galacean/engine-math': 1.5.12
-      '@galacean/engine-rhi-webgl': 1.5.12
+      '@galacean/engine-core': 1.5.16
+      '@galacean/engine-loader': 1.5.16
+      '@galacean/engine-math': 1.5.16
+      '@galacean/engine-rhi-webgl': 1.5.16
 
   '@humanwhocodes/module-importer@1.0.1': {}
 
@@ -10762,6 +10772,8 @@ snapshots:
       thenify-all: 1.6.0
 
   nanoid@3.3.11: {}
+
+  nanoid@5.1.6: {}
 
   natural-compare@1.4.0: {}
 

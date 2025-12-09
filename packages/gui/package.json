@@ -1,6 +1,6 @@
 {
   "name": "@galacean/gui",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "An opinionated UI library designed to create engaging and functional online tools with ease.",
   "licenses": [
     {
@@ -73,7 +73,8 @@
   "dependencies": {
     "@galacean/editor-ui": "workspace:*",
     "@radix-ui/react-use-controllable-state": "^1.1.0",
-    "@tabler/icons-react": "^3.17.0"
+    "@tabler/icons-react": "^3.17.0",
+    "nanoid": "^5.1.6"
   },
   "peerDependencies": {
     "react": "^18.2.0",

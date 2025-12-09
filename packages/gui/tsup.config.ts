@@ -30,8 +30,12 @@ export default defineConfig([
     globalName: 'GalaceanGUI',
     dts: false,
     sourcemap: true,
-    noExternal: ['react', 'react-dom', '@galacean/editor-ui'],
+    noExternal: ['react', 'react-dom', '@galacean/editor-ui', 'nanoid'],
     minify: true,
+    platform: 'browser',
     outExtension: () => ({ js: '.umd.js' }),
+    define: {
+      'process.env.NODE_ENV': '"production"',
+    },
   },
 ])
