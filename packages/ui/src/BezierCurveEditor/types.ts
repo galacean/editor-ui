@@ -12,7 +12,11 @@ export interface BezierCurveEditorProps {
   algo?: "bezier" | "linear";
   width: number;
   height: number;
-  draggable?: boolean;
+  yTickScale?: number;
+  yRangeMode?: "symmetric" | "positive";
+  onYTickScaleChange?: (value: number) => void;
+  yTickScaleMin?: number;
+  yTickScaleMax?: number;
   zoomable?: boolean;
   zoomSpeed?: number;
   zoomLimit?: number[];
@@ -20,17 +24,5 @@ export interface BezierCurveEditorProps {
   defaultPoints?: IPoint[];
   onPointsChange?: (value: IPoint[]) => void;
   doubleControlPoint?: boolean;
-  pan?: true;
-  grid?: {
-    tickX: number;
-    tickY: number;
-  };
-  axisLabel?: {
-    x: string;
-    y: string;
-  };
-  axisName?: {
-    x: string;
-    y: string;
-  };
+  axisLabel?: string;
 }

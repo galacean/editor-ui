@@ -8,18 +8,19 @@ const StyledControlLine = styled('line', {
 })
 
 export interface BezierPointProps {
-  index: number
-  zoom: number
+  pointId: string
   bezierPoint: IBezierPoint
+  pointHoverLabel?: string
+  pointClipPath?: string
   doublePoint?: boolean
-  key: number
   algo: 'linear' | 'bezier'
-  onPointChange: (index, point: IBezierPoint) => void
+  onPointChange: (pointId: string, point: IBezierPoint) => void
 }
 
 export function BezierPoint(props: BezierPointProps) {
-  const { index, bezierPoint, onPointChange, algo, doublePoint = false } = props
-  let { point, controlPoint } = bezierPoint
+  const { pointId, bezierPoint, onPointChange, algo, doublePoint = false, pointHoverLabel, pointClipPath } = props
+  const { point, controlPoint } = bezierPoint
+  const pointClipStyle = pointClipPath ? { clipPath: pointClipPath } : undefined
 
   const subControlPoint =
     algo === 'bezier'
@@ -34,7 +35,7 @@ export function BezierPoint(props: BezierPointProps) {
       x: point.x + delta.x,
       y: point.y + delta.y,
     }
-    onPointChange(index, {
+    onPointChange(pointId, {
       point: newPoint,
       controlPoint:
         algo === 'bezier'
@@ -51,7 +52,7 @@ export function BezierPoint(props: BezierPointProps) {
       x: controlPoint.x + delta.x,
       y: controlPoint.y + delta.y,
     }
-    onPointChange(index, {
+    onPointChange(pointId, {
       point,
       controlPoint: newControlPoint,
     })
@@ -68,7 +69,7 @@ export function BezierPoint(props: BezierPointProps) {
     <>
       {algo === 'bezier' && (
         <>
-          <StyledControlLine strokeWidth={1} x1={point.x} y1={point.y} x2={controlPoint.x} y2={controlPoint.y} />
+          <StyledControlLine strokeWidth={1} x1={point.x} y1={point.y} x2={controlPoint.x} y2={controlPoint.y} style={pointClipStyle} />
           {doublePoint && (
             <StyledControlLine
               strokeWidth={1}
@@ -76,15 +77,25 @@ export function BezierPoint(props: BezierPointProps) {
               y1={point.y}
               x2={subControlPoint.x}
               y2={subControlPoint.y}
+              style={pointClipStyle}
             />
           )}
         </>
       )}
-      <Point type="pivot" main point={point} onPointChange={handlePointChange} />
+      <Point
+        type="pivot"
+        main
+        point={point}
+        onPointChange={handlePointChange}
+        hoverLabel={pointHoverLabel}
+        pointClipPath={pointClipPath}
+      />
       {algo === 'bezier' && (
         <>
-          <Point type="control" point={controlPoint} onPointChange={handleControlPointChange} />
-          {doublePoint && <Point type="control" point={subControlPoint} onPointChange={handleSubControlPointChange} />}
+          <Point type="control" point={controlPoint} onPointChange={handleControlPointChange} pointClipPath={pointClipPath} />
+          {doublePoint && (
+            <Point type="control" point={subControlPoint} onPointChange={handleSubControlPointChange} pointClipPath={pointClipPath} />
+          )}
         </>
       )}
     </>

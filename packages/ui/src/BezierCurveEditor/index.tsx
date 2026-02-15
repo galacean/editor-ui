@@ -1,4 +1,4 @@
-import React, { useState, useRef, useLayoutEffect, forwardRef, ButtonHTMLAttributes, useEffect } from 'react'
+import React, { useState, useRef, useLayoutEffect, forwardRef, useEffect } from 'react'
 import { useControllableState } from '@radix-ui/react-use-controllable-state'
 
 import { BezierCurveEditor as Editor } from './BezierCurveEditor'
@@ -6,7 +6,7 @@ import { convertPointsToBezierPoints, denormalizePoint, generateCurve, generateL
 
 import { mergeRefs } from '../utils/merge-refs'
 import { styled } from '../design-system'
-import { IPoint } from './types'
+import { IPoint, BezierCurveEditorProps as InnerBezierCurveEditorProps } from './types'
 import { Popover } from '../Popover'
 import { BezierCurvePresets } from './Preset'
 
@@ -25,7 +25,12 @@ const BezierCurveEditorTrigger = styled('div', {
   },
 })
 
-interface BezierCurveEditorProps {
+type CurveScaleProps = Pick<
+  InnerBezierCurveEditorProps,
+  'axisLabel' | 'yTickScale' | 'yRangeMode' | 'onYTickScaleChange' | 'yTickScaleMin' | 'yTickScaleMax'
+>
+
+interface BezierCurveEditorProps extends CurveScaleProps {
   value?: IPoint[]
   defaultValue?: IPoint[]
   onChange?: (value: IPoint[]) => void
@@ -42,7 +47,6 @@ const defaultPoints = [
 interface EditorTriggerProps {
   points: IPoint[]
   algo?: 'linear' | 'bezier'
-  children?: React.ReactNode
 }
 
 const EditorTrigger = forwardRef<HTMLDivElement, EditorTriggerProps>(function EditorTrigger(
@@ -50,7 +54,7 @@ const EditorTrigger = forwardRef<HTMLDivElement, EditorTriggerProps>(function Ed
   forwardedRef
 ) {
   const { points, algo, ...rest } = props
-  const rootRef = useRef<HTMLDivElement>()
+  const rootRef = useRef<HTMLDivElement>(null)
   const [size, setSize] = useState({ width: 0, height: 0 })
 
   useLayoutEffect(() => {
@@ -88,11 +92,23 @@ const CurveWrapper = styled('div', {
 const LocalStorageKey = '_bezier_curve_presets'
 
 export const BezierCurveEditor = function BezierCurveEditor(props: BezierCurveEditorProps) {
-  const { onChange, value, defaultValue, algo = 'bezier' } = props
+  const {
+    onChange,
+    value,
+    defaultValue,
+    algo = 'bezier',
+    axisLabel,
+    yTickScale = 1,
+    yRangeMode = 'symmetric',
+    onYTickScaleChange,
+    yTickScaleMin = 0.01,
+    yTickScaleMax,
+  } = props
+  const resolvedAxisLabel = axisLabel ?? 'time'
   const [presets, setPresets] = useState<IPoint[][]>([])
   const [points, setPoints] = useControllableState<IPoint[]>({
     prop: value,
-    defaultProp: defaultPoints || defaultValue,
+    defaultProp: defaultValue || defaultPoints,
     onChange: onChange,
   })
 
@@ -123,14 +139,23 @@ export const BezierCurveEditor = function BezierCurveEditor(props: BezierCurveEd
   }
 
   return (
-    <Popover trigger={<EditorTrigger points={points} algo={algo} />} sideOffset={2} compact>
+    <Popover
+      trigger={<EditorTrigger points={points} algo={algo} />}
+      sideOffset={2}
+      compact
+      onOpenAutoFocus={(event) => event.preventDefault()}>
       <CurveWrapper>
         <Editor
           algo={algo}
           width={400}
           height={220}
           points={points}
-          axisLabel={{ x: 'timer', y: 'value' }}
+          yTickScale={yTickScale}
+          yRangeMode={yRangeMode}
+          onYTickScaleChange={onYTickScaleChange}
+          yTickScaleMin={yTickScaleMin}
+          yTickScaleMax={yTickScaleMax}
+          axisLabel={resolvedAxisLabel}
           onPointsChange={setPoints}
         />
         <BezierCurvePresets
