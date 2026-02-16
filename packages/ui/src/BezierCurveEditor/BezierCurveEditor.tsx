@@ -60,7 +60,7 @@ const BezierCurveContainer = styled('div', {
   marginLeft: '$7',
 })
 
-const StyledYScaleInputOverlay = styled('div', {
+const StyledYScaleInputWrap = styled('div', {
   position: 'absolute',
   left: `${Y_TICK_ANCHOR_X}px`,
   top: `${Y_TICK_ANCHOR_Y}px`,
@@ -69,11 +69,6 @@ const StyledYScaleInputOverlay = styled('div', {
   height: '10px',
   zIndex: 3,
   pointerEvents: 'auto',
-})
-
-const StyledYScaleInputWrap = styled('div', {
-  width: '100%',
-  height: '100%',
   display: 'flex',
   alignItems: 'center',
   borderRadius: '$1',
@@ -92,10 +87,7 @@ const StyledYScaleInput = styled('input', {
   fontSize: '10px',
   lineHeight: '10px',
   textAlign: 'right',
-  fontFamily: 'inherit',
   fontVariantNumeric: 'tabular-nums',
-  caretColor: '$gray12',
-  outline: 'none',
   userSelect: 'text',
 })
 
@@ -203,9 +195,7 @@ function _BezierCurveEditor(props: BezierCurveEditorProps, forwardedRef: React.R
         height * axisYScale,
         zoom
       )
-      if (props.onPointsChange) {
-        props.onPointsChange(ret)
-      }
+      props.onPointsChange?.(ret)
     },
   })
 
@@ -231,15 +221,20 @@ function _BezierCurveEditor(props: BezierCurveEditorProps, forwardedRef: React.R
         return deltaX
       })
 
-      pointIdsRef.current = nextItems.map((item) => item.pointId)
-      return nextItems.map((item) => item.point)
+      const sortedIds: string[] = []
+      const sortedPoints: IBezierPoint[] = []
+      for (const item of nextItems) {
+        sortedIds.push(item.pointId)
+        sortedPoints.push(item.point)
+      }
+      pointIdsRef.current = sortedIds
+      return sortedPoints
     })
   }
 
   const clampOffsetForZoom = React.useCallback(
     (nextOffset: IPoint, targetZoom: number): IPoint => {
       const denormalizeTargetZoom = 1 / targetZoom
-      const xMin = 0
       const xMax = Math.max(0, width * denormalizeTargetZoom - width)
 
       const yPointA = -minNormalizedY * height * axisYScale * denormalizeTargetZoom
@@ -248,7 +243,7 @@ function _BezierCurveEditor(props: BezierCurveEditorProps, forwardedRef: React.R
       const yMax = Math.max(yPointA, yPointB)
 
       return {
-        x: clamp(nextOffset.x, xMin, xMax),
+        x: clamp(nextOffset.x, 0, xMax),
         y: clamp(nextOffset.y, yMin, yMax - height),
       }
     },
@@ -307,7 +302,7 @@ function _BezierCurveEditor(props: BezierCurveEditorProps, forwardedRef: React.R
   }
 
   const handleYTickScaleChange = (value: number) => {
-    if (!props.onYTickScaleChange || typeof value !== 'number' || Number.isNaN(value)) return
+    if (!props.onYTickScaleChange || Number.isNaN(value)) return
     props.onYTickScaleChange(clamp(value, yTickScaleMin, normalizedMaxScale))
   }
 
@@ -398,9 +393,8 @@ function _BezierCurveEditor(props: BezierCurveEditorProps, forwardedRef: React.R
         </Grid>
       </StyledSvgRoot>
       {props.onYTickScaleChange && (
-        <StyledYScaleInputOverlay>
-          <StyledYScaleInputWrap>
-            <StyledYScaleInput
+        <StyledYScaleInputWrap>
+          <StyledYScaleInput
               type="text"
               inputMode="decimal"
               value={yScaleInputText}
@@ -424,17 +418,12 @@ function _BezierCurveEditor(props: BezierCurveEditorProps, forwardedRef: React.R
                 }
               }}
             />
-          </StyledYScaleInputWrap>
-        </StyledYScaleInputOverlay>
+        </StyledYScaleInputWrap>
       )}
       <Flex gap="xs" style={{ position: 'absolute', bottom: 10, right: 10 }}>
         <ActionButtonGroup>
           <ActionButton
-            onClick={() => {
-              if (player.current) {
-                player.current.play()
-              }
-            }}
+            onClick={() => player.current?.play()}
             size="xs">
             <IconPlayerPlayFilled />
           </ActionButton>
