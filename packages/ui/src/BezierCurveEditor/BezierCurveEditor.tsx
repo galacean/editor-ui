@@ -125,7 +125,7 @@ function _BezierCurveEditor(props: BezierCurveEditorProps, forwardedRef: React.R
   const maxZoom = Math.max(zoomLimit[0], zoomLimit[1])
   // Keep 0 ~ 1 as the default full-width range on X axis.
   const defaultZoom = clamp(1, minZoom, maxZoom)
-  const defaultOffset = yRangeMode === 'positive' ? { x: 0, y: -height } : getDefaultOffset(width, height)
+  const defaultOffset = yRangeMode === 'positive' ? { x: 0, y: -height } : getDefaultOffset(height)
 
   const player = React.useRef<CurveAnimationRef>(null)
   const pointIdCounterRef = React.useRef(0)
@@ -397,8 +397,13 @@ function _BezierCurveEditor(props: BezierCurveEditorProps, forwardedRef: React.R
               onFocus={() => {
                 yScaleInputFocusedRef.current = true
               }}
-              onBlur={() => {
+              onBlur={(event) => {
                 yScaleInputFocusedRef.current = false
+                if (event.currentTarget.dataset.escaping) {
+                  delete event.currentTarget.dataset.escaping
+                  setYScaleInputText(yScaleDisplayValue)
+                  return
+                }
                 const value = Number(yScaleInputText.trim() || 0)
                 if (Number.isNaN(value)) {
                   setYScaleInputText(yScaleDisplayValue)
@@ -412,7 +417,7 @@ function _BezierCurveEditor(props: BezierCurveEditorProps, forwardedRef: React.R
                 if (event.key === 'Enter') {
                   event.currentTarget.blur()
                 } else if (event.key === 'Escape') {
-                  setYScaleInputText(yScaleDisplayValue)
+                  event.currentTarget.dataset.escaping = '1'
                   event.currentTarget.blur()
                 }
               }}

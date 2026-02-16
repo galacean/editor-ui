@@ -100,7 +100,9 @@ export function Point(props: PointProps) {
     }
     pointerRef.current.x = clientX
     pointerRef.current.y = clientY
-    const p = pointerRef.current.matrixTransform(getRootRef.current().getScreenCTM()?.inverse())
+    const ctm = getRootRef.current().getScreenCTM()
+    if (!ctm) return { x: 0, y: 0 }
+    const p = pointerRef.current.matrixTransform(ctm.inverse())
     return { x: p.x, y: p.y }
   }
 

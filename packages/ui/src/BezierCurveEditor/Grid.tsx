@@ -39,15 +39,6 @@ const StyledLabel = styled('text', {
   fill: '$grayA11',
   userSelect: 'none',
   pointerEvents: 'none',
-  variants: {
-    vertical: {
-      true: {
-        writingMode: 'vertical-rl',
-        textOrientation: 'mixed',
-        textAnchor: 'start',
-      },
-    },
-  },
 })
 
 const StyledGridLine = styled('rect', {

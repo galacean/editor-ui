@@ -20,7 +20,7 @@ export interface BezierCurveEditorProps {
   yTickScaleMax?: number;
   zoomable?: boolean;
   zoomSpeed?: number;
-  zoomLimit?: number[];
+  zoomLimit?: [number, number];
   points?: IPoint[];
   defaultPoints?: IPoint[];
   onPointsChange?: (value: IPoint[]) => void;

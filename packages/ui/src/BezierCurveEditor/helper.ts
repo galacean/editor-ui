@@ -93,7 +93,7 @@ export function normalizePoint(
   });
 }
 
-export function getDefaultOffset(_width: number, height: number) {
+export function getDefaultOffset(height: number) {
   return {
     x: 0,
     y: -Math.round(height / 2)

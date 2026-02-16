@@ -54,7 +54,9 @@ export function BezierCurve(props: BezierCurveProps) {
     }
     pointerRef.current.x = event.clientX
     pointerRef.current.y = event.clientY
-    return pointerRef.current.matrixTransform(getRoot().getScreenCTM()?.inverse())
+    const ctm = getRoot().getScreenCTM()
+    if (!ctm) return { x: 0, y: 0 }
+    return pointerRef.current.matrixTransform(ctm.inverse())
   }
 
   const handleMouseEnter = (e: React.MouseEvent<SVGPathElement>) => {

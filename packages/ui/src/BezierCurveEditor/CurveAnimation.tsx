@@ -41,7 +41,7 @@ export const CurveAnimation = forwardRef<CurveAnimationRef, CurveAnimationProps>
 
     const points = useMemo(() => {
       return convertBezierPointToPoint(propPoints, algo)
-    }, [propPoints])
+    }, [propPoints, algo])
 
     useImperativeHandle(
       forwardedRef,
