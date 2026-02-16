@@ -139,7 +139,7 @@ function _BezierCurveEditor(props: BezierCurveEditorProps, forwardedRef: React.R
   const normalizedMaxScale = yTickScaleMax ?? Number.MAX_VALUE
   const yScaleDisplayValue = formatTick(
     yTickScale,
-    getTickPrecision(Math.abs(yTickScale / (DEFAULT_GRID_TICK_Y * axisYScale)))
+    getTickPrecision(Math.abs(yTickScale / (DEFAULT_GRID_TICK_Y * axisYScale)), 0)
   )
   const [yScaleInputText, setYScaleInputText] = useState(yScaleDisplayValue)
 
@@ -405,16 +405,7 @@ function _BezierCurveEditor(props: BezierCurveEditorProps, forwardedRef: React.R
                   event.currentTarget.blur()
                 }
               }}
-              onChange={(event) => {
-                const nextText = event.target.value
-                setYScaleInputText(nextText)
-                if (nextText.trim() !== '') {
-                  const value = Number(nextText)
-                  if (!Number.isNaN(value)) {
-                    handleYTickScaleChange(value)
-                  }
-                }
-              }}
+              onChange={(event) => setYScaleInputText(event.target.value)}
             />
         </StyledYScaleInputWrap>
       )}
