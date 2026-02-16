@@ -27,7 +27,7 @@ const BezierCurveEditorTrigger = styled('div', {
 
 type CurveScaleProps = Pick<
   InnerBezierCurveEditorProps,
-  'axisLabel' | 'yTickScale' | 'yRangeMode' | 'onYTickScaleChange' | 'yTickScaleMin' | 'yTickScaleMax'
+  'axisLabel' | 'yTickScale' | 'yRangeMode' | 'onYTickScaleChange' | 'onYTickScaleCommit' | 'yTickScaleMin' | 'yTickScaleMax'
 >
 
 interface BezierCurveEditorProps extends CurveScaleProps {
@@ -101,6 +101,7 @@ export const BezierCurveEditor = function BezierCurveEditor(props: BezierCurveEd
     yTickScale = 1,
     yRangeMode = 'symmetric',
     onYTickScaleChange,
+    onYTickScaleCommit,
     yTickScaleMin = 0.01,
     yTickScaleMax,
   } = props
@@ -153,6 +154,7 @@ export const BezierCurveEditor = function BezierCurveEditor(props: BezierCurveEd
           yTickScale={yTickScale}
           yRangeMode={yRangeMode}
           onYTickScaleChange={onYTickScaleChange}
+          onYTickScaleCommit={onYTickScaleCommit}
           yTickScaleMin={yTickScaleMin}
           yTickScaleMax={yTickScaleMax}
           axisLabel={resolvedAxisLabel}

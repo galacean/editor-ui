@@ -15,6 +15,7 @@ export interface BezierCurveEditorProps {
   yTickScale?: number;
   yRangeMode?: "symmetric" | "positive";
   onYTickScaleChange?: (value: number) => void;
+  onYTickScaleCommit?: () => void;
   yTickScaleMin?: number;
   yTickScaleMax?: number;
   zoomable?: boolean;

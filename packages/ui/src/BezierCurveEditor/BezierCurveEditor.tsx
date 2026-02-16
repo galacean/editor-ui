@@ -65,8 +65,10 @@ const StyledYScaleInputWrap = styled('div', {
   left: `${Y_TICK_ANCHOR_X}px`,
   top: `${Y_TICK_ANCHOR_Y}px`,
   transform: 'translateX(-100%)',
-  width: '3.2ch',
+  width: '1.2ch',
   height: '10px',
+  fontSize: '10px',
+  fontVariantNumeric: 'tabular-nums',
   zIndex: 3,
   pointerEvents: 'auto',
   display: 'flex',
@@ -142,6 +144,7 @@ function _BezierCurveEditor(props: BezierCurveEditorProps, forwardedRef: React.R
     getTickPrecision(Math.abs(yTickScale / (DEFAULT_GRID_TICK_Y * axisYScale)), 0)
   )
   const [yScaleInputText, setYScaleInputText] = useState(yScaleDisplayValue)
+  const yScaleInputFocusedRef = React.useRef(false)
 
   const getPointHoverLabel = (point: IPoint): string => {
     const normalizedX = (point.x / width) * zoom
@@ -299,17 +302,11 @@ function _BezierCurveEditor(props: BezierCurveEditorProps, forwardedRef: React.R
   }
 
   const handleYTickScaleChange = (value: number) => {
-    if (!props.onYTickScaleChange || Number.isNaN(value)) return
-    props.onYTickScaleChange(clamp(value, yTickScaleMin, normalizedMaxScale))
-  }
-
-  const commitYScaleInput = () => {
-    const value = Number(yScaleInputText.trim() || 0)
-    if (Number.isNaN(value)) {
-      setYScaleInputText(yScaleDisplayValue)
+    if (!props.onYTickScaleChange || Number.isNaN(value)) {
       return
     }
-    handleYTickScaleChange(value)
+    const clampedValue = clamp(value, yTickScaleMin, normalizedMaxScale)
+    props.onYTickScaleChange(clampedValue)
   }
 
   useEffect(() => {
@@ -329,8 +326,9 @@ function _BezierCurveEditor(props: BezierCurveEditorProps, forwardedRef: React.R
   }, [defaultOffset.x, defaultOffset.y, defaultZoom])
 
   useEffect(() => {
+    if (yScaleInputFocusedRef.current) return
     setYScaleInputText(yScaleDisplayValue)
-  }, [yScaleDisplayValue])
+  }, [yScaleDisplayValue, yTickScale])
 
   const pointIds = points ? ensurePointIds(points.length) : []
 
@@ -391,12 +389,25 @@ function _BezierCurveEditor(props: BezierCurveEditorProps, forwardedRef: React.R
         </Grid>
       </StyledSvgRoot>
       {props.onYTickScaleChange && (
-        <StyledYScaleInputWrap style={{ width: `${Math.max(3.2, yScaleInputText.length + 0.2)}ch` }}>
+        <StyledYScaleInputWrap style={{ width: `${yScaleInputText.length - (yScaleInputText.match(/[.\-]/g) || []).length * 0.5 + 0.2}ch` }}>
           <StyledYScaleInput
               type="text"
               inputMode="decimal"
               value={yScaleInputText}
-              onBlur={commitYScaleInput}
+              onFocus={() => {
+                yScaleInputFocusedRef.current = true
+              }}
+              onBlur={() => {
+                yScaleInputFocusedRef.current = false
+                const value = Number(yScaleInputText.trim() || 0)
+                if (Number.isNaN(value)) {
+                  setYScaleInputText(yScaleDisplayValue)
+                } else {
+                  handleYTickScaleChange(value)
+                  setYScaleInputText(yScaleDisplayValue)
+                }
+                props.onYTickScaleCommit?.()
+              }}
               onKeyDown={(event) => {
                 if (event.key === 'Enter') {
                   event.currentTarget.blur()
@@ -405,7 +416,15 @@ function _BezierCurveEditor(props: BezierCurveEditorProps, forwardedRef: React.R
                   event.currentTarget.blur()
                 }
               }}
-              onChange={(event) => setYScaleInputText(event.target.value)}
+              onChange={(event) => {
+                const nextText = event.target.value
+                setYScaleInputText(nextText)
+                const trimmed = nextText.trim()
+                const num = Number(trimmed)
+                if (trimmed !== '' && !Number.isNaN(num)) {
+                  handleYTickScaleChange(num)
+                }
+              }}
             />
         </StyledYScaleInputWrap>
       )}
