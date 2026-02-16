@@ -1,4 +1,4 @@
-import React, { useState, useEffect, forwardRef } from 'react'
+import React, { useRef, useState, useEffect, forwardRef } from 'react'
 
 import type { IPoint } from './types'
 
@@ -86,10 +86,9 @@ interface PointProps extends React.SVGProps<SVGCircleElement> {
 
 export const Point = forwardRef<SVGCircleElement, PointProps>(function Point(props: PointProps, forwardedRef) {
   const { point, main, type = 'pivot', onPointChange, hoverLabel, pointClipPath, ...rest } = props
-  const [startPos, setStartPos] = useState<IPoint>({
-    x: 0,
-    y: 0,
-  })
+  const startPosRef = useRef<IPoint>({ x: 0, y: 0 })
+  const onPointChangeRef = useRef(onPointChange)
+  onPointChangeRef.current = onPointChange
   const [moving, setMoving] = useState(false)
   const [hovered, setHovered] = useState(false)
 
@@ -99,34 +98,26 @@ export const Point = forwardRef<SVGCircleElement, PointProps>(function Point(pro
     window.getSelection()?.removeAllRanges()
     if (!moving) {
       setMoving(true)
-      const { clientX, clientY } = event
-      setStartPos({ x: clientX, y: clientY })
+      startPosRef.current = { x: event.clientX, y: event.clientY }
     }
   }
 
   useEffect(() => {
-    const onViewMouseUp = () => {
-      setMoving(false)
-    }
+    if (!moving) return
 
+    const onViewMouseUp = () => setMoving(false)
     const onViewMouseMove = (event: MouseEvent) => {
-      if (moving) {
-        event.preventDefault()
-        const { clientX, clientY } = event
-        const deltaX = clientX - startPos.x
-        const deltaY = clientY - startPos.y
-        onPointChange({ x: deltaX, y: deltaY })
-      }
+      event.preventDefault()
+      const { clientX, clientY } = event
+      onPointChangeRef.current({
+        x: clientX - startPosRef.current.x,
+        y: clientY - startPosRef.current.y,
+      })
+      startPosRef.current = { x: clientX, y: clientY }
     }
 
-    if (moving) {
-      window.addEventListener('mouseup', onViewMouseUp)
-      window.addEventListener('mousemove', onViewMouseMove)
-    } else {
-      window.removeEventListener('mouseup', onViewMouseUp)
-      window.removeEventListener('mousemove', onViewMouseMove)
-    }
-
+    window.addEventListener('mouseup', onViewMouseUp)
+    window.addEventListener('mousemove', onViewMouseMove)
     return () => {
       window.removeEventListener('mouseup', onViewMouseUp)
       window.removeEventListener('mousemove', onViewMouseMove)
