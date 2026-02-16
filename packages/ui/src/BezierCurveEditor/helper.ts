@@ -1,28 +1,29 @@
 import { IBezierPoint, IPoint } from "./types";
 
-export function generateCurve(points: IBezierPoint[], zoom = 1): string {
-  points = points.map((point) => ({
+function scalePoints(points: IBezierPoint[], zoom: number): IBezierPoint[] {
+  return points.map((point) => ({
     point: { x: point.point.x / zoom, y: point.point.y / zoom },
     controlPoint: point.controlPoint ? { x: point.controlPoint.x / zoom, y: point.controlPoint.y / zoom } : null
   }));
+}
+
+export function generateCurve(points: IBezierPoint[], zoom = 1): string {
+  const scaled = scalePoints(points, zoom);
   return `
-    M ${points[0].point.x} ${points[0].point.y}
-    C ${points[0].controlPoint.x} ${points[0].controlPoint.y},
-    ${points[1].controlPoint.x} ${points[1].controlPoint.y}
-    ${points[1].point.x} ${points[1].point.y}
-    ${points
+    M ${scaled[0].point.x} ${scaled[0].point.y}
+    C ${scaled[0].controlPoint.x} ${scaled[0].controlPoint.y},
+    ${scaled[1].controlPoint.x} ${scaled[1].controlPoint.y}
+    ${scaled[1].point.x} ${scaled[1].point.y}
+    ${scaled
       .slice(2)
       .map((point) => ` S ${point.controlPoint.x} ${point.controlPoint.y}, ${point.point.x} ${point.point.y}`)}`;
 }
 
 export function generateLineByPoints(points: IBezierPoint[], zoom = 1): string {
-  points = points.map((point) => ({
-    point: { x: point.point.x / zoom, y: point.point.y / zoom },
-    controlPoint: point.controlPoint ? { x: point.controlPoint.x / zoom, y: point.controlPoint.y / zoom } : null
-  }));
+  const scaled = scalePoints(points, zoom);
   return `
-    M ${points[0].point.x} ${points[0].point.y}
-    ${points.slice(1).map((point) => ` L ${point.point.x} ${point.point.y}`)}`;
+    M ${scaled[0].point.x} ${scaled[0].point.y}
+    ${scaled.slice(1).map((point) => ` L ${point.point.x} ${point.point.y}`)}`;
 }
 
 export function convertPointsToBezierPoints(points: IPoint[], algo: "bezier" | "linear" = "bezier"): IBezierPoint[] {
@@ -53,10 +54,15 @@ export function convertBezierPointToPoint(
   if (algo === "linear") {
     return bezierPoints.map((bezierPoint) => bezierPoint.point);
   }
-  return bezierPoints.reduce((acc, bezierPoint, currentIndex) => {
-    if (currentIndex === 0) return [bezierPoint.point, bezierPoint.controlPoint];
-    return [...acc, bezierPoint.controlPoint, bezierPoint.point];
-  }, []);
+  const result: IPoint[] = [];
+  for (const bezierPoint of bezierPoints) {
+    if (result.length === 0) {
+      result.push(bezierPoint.point, bezierPoint.controlPoint);
+    } else {
+      result.push(bezierPoint.controlPoint, bezierPoint.point);
+    }
+  }
+  return result;
 }
 
 export function denormalizePoint(

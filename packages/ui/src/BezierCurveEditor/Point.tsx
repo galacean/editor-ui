@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 
 import type { IPoint } from './types'
 
@@ -77,19 +77,32 @@ const StyledPointLabelBg = styled('rect', {
 interface PointProps {
   point: IPoint
   main?: boolean
-  onPointChange: (delta: IPoint) => void
+  onPointChange: (svgPos: IPoint) => void
+  getRoot: () => SVGSVGElement
   type?: 'pivot' | 'control'
   hoverLabel?: string
   pointClipPath?: string
 }
 
 export function Point(props: PointProps) {
-  const { point, main, type = 'pivot', onPointChange, hoverLabel, pointClipPath } = props
-  const startPosRef = useRef<IPoint>({ x: 0, y: 0 })
+  const { point, main, type = 'pivot', onPointChange, getRoot, hoverLabel, pointClipPath } = props
   const onPointChangeRef = useRef(onPointChange)
   onPointChangeRef.current = onPointChange
+  const getRootRef = useRef(getRoot)
+  getRootRef.current = getRoot
+  const pointerRef = useRef<DOMPoint>()
   const [moving, setMoving] = useState(false)
   const [hovered, setHovered] = useState(false)
+
+  function toSvgPoint(clientX: number, clientY: number): IPoint {
+    if (!pointerRef.current) {
+      pointerRef.current = getRootRef.current().createSVGPoint()
+    }
+    pointerRef.current.x = clientX
+    pointerRef.current.y = clientY
+    const p = pointerRef.current.matrixTransform(getRootRef.current().getScreenCTM()?.inverse())
+    return { x: p.x, y: p.y }
+  }
 
   function handleMouseDown(event: React.MouseEvent<SVGGElement>) {
     event.preventDefault()
@@ -97,7 +110,6 @@ export function Point(props: PointProps) {
     window.getSelection()?.removeAllRanges()
     if (!moving) {
       setMoving(true)
-      startPosRef.current = { x: event.clientX, y: event.clientY }
     }
   }
 
@@ -107,12 +119,7 @@ export function Point(props: PointProps) {
     const onViewMouseUp = () => setMoving(false)
     const onViewMouseMove = (event: MouseEvent) => {
       event.preventDefault()
-      const { clientX, clientY } = event
-      onPointChangeRef.current({
-        x: clientX - startPosRef.current.x,
-        y: clientY - startPosRef.current.y,
-      })
-      startPosRef.current = { x: clientX, y: clientY }
+      onPointChangeRef.current(toSvgPoint(event.clientX, event.clientY))
     }
 
     window.addEventListener('mouseup', onViewMouseUp)

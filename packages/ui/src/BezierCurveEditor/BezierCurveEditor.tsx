@@ -13,7 +13,7 @@ import { BezierPoint } from './BezierPoint'
 import { BezierCurve } from './BezierCurve'
 import { Grid } from './Grid'
 import { POINT_HIT_RADIUS } from './Point'
-import { TICK_EPSILON, formatNormalizedCoord, formatTick, getTickPrecision } from './tick'
+import { TICK_EPSILON, formatTick, getTickPrecision } from './tick'
 
 import { styled } from '../design-system'
 import { clamp, mergeRefs } from '../utils'
@@ -27,9 +27,9 @@ const DEFAULT_GRID_TICK_Y = 10
 const Y_TICK_ANCHOR_X = -10
 const Y_TICK_ANCHOR_Y = -3.5
 
-function snapToBounds(value: number, min: number, max: number, epsilon = BOUNDARY_SNAP_EPSILON): number {
-  if (Math.abs(value - min) <= epsilon) return min
-  if (Math.abs(value - max) <= epsilon) return max
+function clampSnap(value: number, min: number, max: number): number {
+  if (value <= min + BOUNDARY_SNAP_EPSILON) return min
+  if (value >= max - BOUNDARY_SNAP_EPSILON) return max
   return value
 }
 
@@ -146,19 +146,16 @@ function _BezierCurveEditor(props: BezierCurveEditorProps, forwardedRef: React.R
   const getPointHoverLabel = (point: IPoint): string => {
     const normalizedX = (point.x / width) * zoom
     const normalizedY = (-point.y / (height * axisYScale)) * zoom
-    return `${formatNormalizedCoord(normalizedX)}, ${formatNormalizedCoord(normalizedY)}`
+    return `${formatTick(normalizedX, 3)}, ${formatTick(normalizedY, 3)}`
   }
 
-  const clampBezierPoint = (bezierPoint: IBezierPoint): IBezierPoint => {
-    const { point, controlPoint } = bezierPoint
-    return {
-      point: {
-        x: snapToBounds(clamp(point.x, 0, maxPointX), 0, maxPointX),
-        y: snapToBounds(clamp(point.y, minPointY, maxPointY), minPointY, maxPointY),
-      },
-      controlPoint,
-    }
-  }
+  const clampBezierPoint = (bezierPoint: IBezierPoint): IBezierPoint => ({
+    point: {
+      x: clampSnap(bezierPoint.point.x, 0, maxPointX),
+      y: clampSnap(bezierPoint.point.y, minPointY, maxPointY),
+    },
+    controlPoint: bezierPoint.controlPoint,
+  })
   const createPointId = () => `bezier-point-${pointIdCounterRef.current++}`
 
   const ensurePointIds = (length: number): string[] => {
@@ -375,6 +372,7 @@ function _BezierCurveEditor(props: BezierCurveEditorProps, forwardedRef: React.R
                     pointHoverLabel={getPointHoverLabel(bezierPoint.point)}
                     pointClipPath={`url(#${pointClipId})`}
                     onPointChange={handlePointChange}
+                    getRoot={() => svgRef.current!}
                     doublePoint={doubleControlPoint}
                     algo={algo}
                   />

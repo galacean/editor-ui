@@ -14,11 +14,12 @@ export interface BezierPointProps {
   pointClipPath?: string
   doublePoint?: boolean
   algo: 'linear' | 'bezier'
+  getRoot: () => SVGSVGElement
   onPointChange: (pointId: string, point: IBezierPoint) => void
 }
 
 export function BezierPoint(props: BezierPointProps) {
-  const { pointId, bezierPoint, onPointChange, algo, doublePoint = false, pointHoverLabel, pointClipPath } = props
+  const { pointId, bezierPoint, onPointChange, algo, doublePoint = false, pointHoverLabel, pointClipPath, getRoot } = props
   const { point, controlPoint } = bezierPoint
   const pointClipStyle = pointClipPath ? { clipPath: pointClipPath } : undefined
 
@@ -30,38 +31,27 @@ export function BezierPoint(props: BezierPointProps) {
         }
       : null
 
-  const handlePointChange = (delta: IPoint) => {
-    const newPoint = {
-      x: point.x + delta.x,
-      y: point.y + delta.y,
-    }
+  const handlePointChange = (svgPos: IPoint) => {
+    const dx = svgPos.x - point.x
+    const dy = svgPos.y - point.y
     onPointChange(pointId, {
-      point: newPoint,
+      point: svgPos,
       controlPoint:
         algo === 'bezier'
-          ? {
-              x: controlPoint.x + delta.x,
-              y: controlPoint.y + delta.y,
-            }
+          ? { x: controlPoint.x + dx, y: controlPoint.y + dy }
           : null,
     })
   }
 
-  const handleControlPointChange = (delta: IPoint) => {
-    const newControlPoint = {
-      x: controlPoint.x + delta.x,
-      y: controlPoint.y + delta.y,
-    }
-    onPointChange(pointId, {
-      point,
-      controlPoint: newControlPoint,
-    })
+  const handleControlPointChange = (svgPos: IPoint) => {
+    onPointChange(pointId, { point, controlPoint: svgPos })
   }
 
-  const handleSubControlPointChange = (delta: IPoint) => {
-    handleControlPointChange({
-      x: -delta.x,
-      y: -delta.y,
+  const handleSubControlPointChange = (svgPos: IPoint) => {
+    // sub control point is mirrored: subCP = 2*point - CP, so CP = 2*point - subCP
+    onPointChange(pointId, {
+      point,
+      controlPoint: { x: 2 * point.x - svgPos.x, y: 2 * point.y - svgPos.y },
     })
   }
 
@@ -86,15 +76,16 @@ export function BezierPoint(props: BezierPointProps) {
         type="pivot"
         main
         point={point}
+        getRoot={getRoot}
         onPointChange={handlePointChange}
         hoverLabel={pointHoverLabel}
         pointClipPath={pointClipPath}
       />
       {algo === 'bezier' && (
         <>
-          <Point type="control" point={controlPoint} onPointChange={handleControlPointChange} pointClipPath={pointClipPath} />
+          <Point type="control" point={controlPoint} getRoot={getRoot} onPointChange={handleControlPointChange} pointClipPath={pointClipPath} />
           {doublePoint && (
-            <Point type="control" point={subControlPoint} onPointChange={handleSubControlPointChange} pointClipPath={pointClipPath} />
+            <Point type="control" point={subControlPoint} getRoot={getRoot} onPointChange={handleSubControlPointChange} pointClipPath={pointClipPath} />
           )}
         </>
       )}

@@ -1,6 +1,6 @@
 import React from 'react'
 import { styled } from '../design-system'
-import { formatTick, getAlignedTickPrecision, getTickPrecision, isNearlyEqual } from './tick'
+import { TICK_EPSILON, formatTick, getAlignedTickPrecision, getTickPrecision } from './tick'
 
 const TICK_EDGE_CAPTURE = 8
 const X_TICK_CLIP_PADDING_LEFT = TICK_EDGE_CAPTURE
@@ -107,7 +107,7 @@ export function Grid(props: GridProps) {
 
   function renderYAxis() {
     // When origin is exactly on left border, keep only the orange border to avoid double-line mismatch.
-    if (isNearlyEqual(offset.x, 0)) return null
+    if (Math.abs(offset.x) < TICK_EPSILON) return null
     return <StyledAxis className="y-axis" x1={0} y1={offset.y} x2={0} y2={offset.y + height} strokeWidth="1" />
   }
 
@@ -176,7 +176,7 @@ export function Grid(props: GridProps) {
           const x = index * xAxisGap + offset.x - (offset.x % xAxisGap)
 
           // Do not draw grid line on panel left boundary; border already represents it.
-          if (isNearlyEqual(x, offset.x)) {
+          if (Math.abs(x - offset.x) < TICK_EPSILON) {
             return null
           }
 

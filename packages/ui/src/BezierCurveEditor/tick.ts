@@ -36,12 +36,3 @@ export function getAlignedTickPrecision(values: number[], basePrecision: number)
     return Math.max(maxPrecision, minimalPrecision)
   }, 0)
 }
-
-export function formatNormalizedCoord(value: number): string {
-  const normalizedValue = Math.abs(value) < TICK_EPSILON ? 0 : value
-  return Number(normalizedValue.toFixed(3)).toString()
-}
-
-export function isNearlyEqual(a: number, b: number): boolean {
-  return Math.abs(a - b) < TICK_EPSILON
-}
