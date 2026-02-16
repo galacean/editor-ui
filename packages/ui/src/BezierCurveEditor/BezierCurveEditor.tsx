@@ -199,6 +199,15 @@ function _BezierCurveEditor(props: BezierCurveEditorProps, forwardedRef: React.R
     },
   })
 
+  const sortByTime = (points: IBezierPoint[], ids: string[]): IBezierPoint[] => {
+    const order = points.map((_, i) => i).sort((a, b) => {
+      const dx = points[a].point.x - points[b].point.x
+      return Math.abs(dx) <= TICK_EPSILON ? a - b : dx
+    })
+    pointIdsRef.current = order.map((i) => ids[i])
+    return order.map((i) => points[i])
+  }
+
   const handlePointChange = (pointId: string, bezierPoint: IBezierPoint) => {
     setPoints((prevPoints) => {
       if (!prevPoints) return prevPoints
@@ -207,28 +216,8 @@ function _BezierCurveEditor(props: BezierCurveEditorProps, forwardedRef: React.R
       if (targetIndex === -1) return prevPoints
 
       const clampedPoint = clampBezierPoint(bezierPoint)
-      const nextItems = prevPoints.map((point, index) => ({
-        point: index === targetIndex ? clampedPoint : point,
-        pointId: pointIds[index],
-        order: index,
-      }))
-
-      nextItems.sort((a, b) => {
-        const deltaX = a.point.point.x - b.point.point.x
-        if (Math.abs(deltaX) <= TICK_EPSILON) {
-          return a.order - b.order
-        }
-        return deltaX
-      })
-
-      const sortedIds: string[] = []
-      const sortedPoints: IBezierPoint[] = []
-      for (const item of nextItems) {
-        sortedIds.push(item.pointId)
-        sortedPoints.push(item.point)
-      }
-      pointIdsRef.current = sortedIds
-      return sortedPoints
+      const newPoints = prevPoints.map((point, index) => (index === targetIndex ? clampedPoint : point))
+      return sortByTime(newPoints, pointIds)
     })
   }
 
@@ -296,8 +285,7 @@ function _BezierCurveEditor(props: BezierCurveEditorProps, forwardedRef: React.R
       newPoints.splice(index, 0, clampBezierPoint(point))
       const nextIds = [...ensurePointIds(prevPoints!.length)]
       nextIds.splice(index, 0, createPointId())
-      pointIdsRef.current = nextIds
-      return newPoints
+      return sortByTime(newPoints, nextIds)
     })
   }
 
