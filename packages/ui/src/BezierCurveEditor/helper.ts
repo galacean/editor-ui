@@ -1,4 +1,4 @@
-import { IBezierPoint, IPoint, BezierCurveEditorProps } from "./types";
+import { IBezierPoint, IPoint } from "./types";
 
 export function generateCurve(points: IBezierPoint[], zoom = 1): string {
   points = points.map((point) => ({
@@ -59,10 +59,6 @@ export function convertBezierPointToPoint(
   }, []);
 }
 
-export function convertPointsToLinearPoints(points: IPoint[]): IPoint[] {
-  return points;
-}
-
 export function denormalizePoint(
   points: IPoint[],
   scaleX: number,
@@ -91,14 +87,14 @@ export function normalizePoint(
   });
 }
 
-export function getDefaultOffset(width: number, height: number) {
+export function getDefaultOffset(_width: number, height: number) {
   return {
     x: 0,
     y: -Math.round(height / 2)
   };
 }
 
-function factorial(num) {
+function factorial(num: number) {
   if (num === 0) return 1;
   let result = 1;
   for (let i = 2; i <= num; i++) {

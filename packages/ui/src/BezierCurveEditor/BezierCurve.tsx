@@ -1,4 +1,4 @@
-import React, { forwardRef, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import type { IBezierPoint, IPoint } from './types'
 import { generateCurve, generateLineByPoints } from './helper'
@@ -36,10 +36,7 @@ interface BezierCurveProps {
   onAddPoint?: (point: IBezierPoint, index: number) => void
 }
 
-export const BezierCurve = forwardRef<SVGPathElement, BezierCurveProps>(function BezierCurve(
-  props: BezierCurveProps,
-  forwardedRef
-) {
+export function BezierCurve(props: BezierCurveProps) {
   const { points, getRoot, zoom = 1, algo = 'bezier' } = props
   const actualAlgorithm = points.length > 2 ? 'linear' : algo
   const [hovered, setHovered] = useState(false)
@@ -114,33 +111,33 @@ export const BezierCurve = forwardRef<SVGPathElement, BezierCurveProps>(function
 
   return (
     <g className="bezier-path" onMouseLeave={handleMouseLeave}>
-      {actualAlgorithm === 'linear' && (
-        <>
-          <StyledPath
-            className="bezier-line"
-            ref={forwardedRef}
-            d={generateLineByPoints(points)}
-          />
-          <StyledPath
-            hitline
-            className="bezier-line-hitarea"
-            d={generateLineByPoints(points)}
-            onMouseEnter={handleMouseEnter}
-            onMouseMove={handleMouseMove}
-          />
-        </>
-      )}
-      {actualAlgorithm === 'bezier' && (
-        <>
-          <StyledPath className="bezier-curve" ref={forwardedRef} d={generateCurve(points)} />
-          <StyledPath hitline className="bezier-curve-hitarea" d={generateCurve(points)} />
-        </>
-      )}
+      {(() => {
+        if (actualAlgorithm === 'linear') {
+          const d = generateLineByPoints(points)
+          return (
+            <>
+              <StyledPath className="bezier-line" d={d} />
+              <StyledPath
+                hitline
+                className="bezier-line-hitarea"
+                d={d}
+                onMouseEnter={handleMouseEnter}
+                onMouseMove={handleMouseMove}
+              />
+            </>
+          )
+        }
+        const d = generateCurve(points)
+        return (
+          <>
+            <StyledPath className="bezier-curve" d={d} />
+            <StyledPath hitline className="bezier-curve-hitarea" d={d} />
+          </>
+        )
+      })()}
       {actualAlgorithm === 'linear' && hovered && matrixedPoint && (
-        <g>
-          <StyledTempPoint cx={matrixedPoint.x} cy={matrixedPoint.y} onClick={handleAddPoint} />
-        </g>
+        <StyledTempPoint cx={matrixedPoint.x} cy={matrixedPoint.y} onClick={handleAddPoint} />
       )}
     </g>
   )
-})
+}

@@ -26,7 +26,7 @@ export function BezierPoint(props: BezierPointProps) {
     algo === 'bezier'
       ? {
           x: 2 * point.x - controlPoint.x,
-          y: point.y + (point.y - controlPoint.y),
+          y: 2 * point.y - controlPoint.y,
         }
       : null
 

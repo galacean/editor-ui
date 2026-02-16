@@ -1,9 +1,9 @@
-import React, { useEffect, useMemo, useImperativeHandle, forwardRef } from 'react'
-import { IBezierPoint, IPoint } from './types'
+import React, { useMemo, useImperativeHandle, forwardRef } from 'react'
+import { IBezierPoint } from './types'
 import { convertBezierPointToPoint, getPointOnCurve, getPointOnLinear } from './helper'
 import { styled } from '../design-system'
 
-const AnmiatedCircle = styled('circle', {
+const AnimatedCircle = styled('circle', {
   fill: 'transparent',
   transition: 'fill 0.3s ease',
   pointerEvents: 'none',
@@ -46,13 +46,9 @@ export const CurveAnimation = forwardRef<CurveAnimationRef, CurveAnimationProps>
     useImperativeHandle(
       forwardedRef,
       () => ({
-        play: () => {
-          startTransition()
-        },
+        play: startTransition,
         getIsPlaying: () => playing,
-        stop: () => {
-          stopTransition()
-        },
+        stop: stopTransition,
       }),
       [playing, points]
     )
@@ -66,7 +62,6 @@ export const CurveAnimation = forwardRef<CurveAnimationRef, CurveAnimationProps>
         const now = Date.now()
         const progress = (now - startTime) / duration
         progressRef.current = progress
-        // const point = getPointOnCurve(points, progress)
         const point = algo === 'bezier' ? getPointOnCurve(points, progress) : getPointOnLinear(points, progress)
         circleRef.current?.setAttribute('cx', point.x.toString())
         circleRef.current?.setAttribute('cy', point.y.toString())
@@ -85,6 +80,6 @@ export const CurveAnimation = forwardRef<CurveAnimationRef, CurveAnimationProps>
       cancelAnimationFrame(rafRef.current)
     }
 
-    return <AnmiatedCircle ref={circleRef} r="6" cx={points[0].x} cy={points[0].y} display={playing} />
+    return <AnimatedCircle ref={circleRef} r="6" cx={points[0].x} cy={points[0].y} display={playing} />
   }
 )

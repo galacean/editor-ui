@@ -1,7 +1,7 @@
-import { ButtonHTMLAttributes, HtmlHTMLAttributes, useEffect, useState } from 'react'
+import { useState } from 'react'
 import { styled } from '../design-system'
 import { IPoint } from './types'
-import { IconCirclePlus, IconCirclePlusFilled, IconCircleXFilled } from '@tabler/icons-react'
+import { IconCirclePlusFilled, IconCircleXFilled } from '@tabler/icons-react'
 import { Flex } from '../Flex'
 import { Button } from '../Button'
 
@@ -124,7 +124,7 @@ interface PresetItemProps extends React.HTMLAttributes<HTMLDivElement> {
 
 function PresetItem(props: PresetItemProps) {
   const { points, width = 74, height = 34, deletable = false, onDelete, ...rest } = props
-  const genPath = (points) => {
+  const genPath = (points: IPoint[]) => {
     if (points.length < 4) {
       return ''
     }
@@ -168,7 +168,7 @@ export function BezierCurvePresets(props: BezierCurveEditorProps) {
         align="v"
         justifyContent="between"
         css={{ fontSize: '$1', marginTop: '$7', color: '$gray11', userSelect: 'none' }}>
-        Pesets
+        Presets
         {presets.length > 0 && (
           <Button variant="subtle" onClick={() => setDeletable(!deletable)}>
             {deletable ? 'Done' : 'Edit'}

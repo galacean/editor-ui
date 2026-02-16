@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect, forwardRef } from 'react'
+import { useRef, useState, useEffect } from 'react'
 
 import type { IPoint } from './types'
 
@@ -43,7 +43,6 @@ const StyledPoint = styled('circle', {
   '&[data-point-type="ring"]': {
     fill: '$green4',
   },
-  '&[data-point-type="point"]': {},
 })
 
 const StyledPointRoot = styled('g', {
@@ -75,7 +74,7 @@ const StyledPointLabelBg = styled('rect', {
   pointerEvents: 'none',
 })
 
-interface PointProps extends React.SVGProps<SVGCircleElement> {
+interface PointProps {
   point: IPoint
   main?: boolean
   onPointChange: (delta: IPoint) => void
@@ -84,8 +83,8 @@ interface PointProps extends React.SVGProps<SVGCircleElement> {
   pointClipPath?: string
 }
 
-export const Point = forwardRef<SVGCircleElement, PointProps>(function Point(props: PointProps, forwardedRef) {
-  const { point, main, type = 'pivot', onPointChange, hoverLabel, pointClipPath, ...rest } = props
+export function Point(props: PointProps) {
+  const { point, main, type = 'pivot', onPointChange, hoverLabel, pointClipPath } = props
   const startPosRef = useRef<IPoint>({ x: 0, y: 0 })
   const onPointChangeRef = useRef(onPointChange)
   onPointChangeRef.current = onPointChange
@@ -125,7 +124,6 @@ export const Point = forwardRef<SVGCircleElement, PointProps>(function Point(pro
   }, [moving])
 
   return (
-    <>
       <StyledPointRoot onMouseDown={handleMouseDown} onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
         {hoverLabel && (hovered || moving) && (
           <>
@@ -141,7 +139,7 @@ export const Point = forwardRef<SVGCircleElement, PointProps>(function Point(pro
           </>
         )}
         <g style={pointClipPath ? { clipPath: pointClipPath } : undefined}>
-          <StyledPoint data-point-type="hitpoint" cx={point.x} cy={point.y} r={POINT_HIT_RADIUS} {...rest} ref={forwardedRef} />
+          <StyledPoint data-point-type="hitpoint" cx={point.x} cy={point.y} r={POINT_HIT_RADIUS} />
           <StyledPoint
             data-point-type="ring"
             pointType={main ? 'main' : 'control'}
@@ -159,6 +157,5 @@ export const Point = forwardRef<SVGCircleElement, PointProps>(function Point(pro
           />
         </g>
       </StyledPointRoot>
-    </>
   )
-})
+}

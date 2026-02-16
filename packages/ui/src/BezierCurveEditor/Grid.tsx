@@ -5,7 +5,6 @@ import { formatTick, getAlignedTickPrecision, getTickPrecision, isNearlyEqual } 
 const TICK_EDGE_CAPTURE = 8
 const X_TICK_CLIP_PADDING_LEFT = TICK_EDGE_CAPTURE
 const X_TICK_CLIP_PADDING_RIGHT = 16
-const X_TICK_CLIP_PADDING_TOP = 0
 const X_TICK_CLIP_HEIGHT = 22
 const Y_TICK_CLIP_PADDING_LEFT = 56
 const Y_TICK_CLIP_PADDING_TOP = 8
@@ -17,7 +16,6 @@ const StyledTicks = styled('text', {
   fontSize: '10px',
   fill: '$gray10',
   userSelect: 'none',
-  WebkitUserSelect: 'none',
   pointerEvents: 'none',
   variants: {
     direction: {
@@ -40,7 +38,6 @@ const StyledLabel = styled('text', {
   textAnchor: 'middle',
   fill: '$grayA11',
   userSelect: 'none',
-  WebkitUserSelect: 'none',
   pointerEvents: 'none',
   variants: {
     vertical: {
@@ -59,7 +56,6 @@ const StyledGridLine = styled('rect', {
 
 const StyledAxis = styled('line', {
   stroke: '$grayA6',
-  // stroke: "transparent"
 })
 
 interface GridProps {
@@ -121,7 +117,6 @@ export function Grid(props: GridProps) {
         {[...Array(yAxisLength).keys()].map((index) => {
           return (
             <StyledGridLine
-              data-index={index}
               key={index}
               x={offset.x}
               y={index * yAxisGap + offset.y - (offset.y % yAxisGap)}
@@ -237,7 +232,7 @@ export function Grid(props: GridProps) {
         <clipPath id={clipXTicksId}>
           <rect
             x={offset.x - X_TICK_CLIP_PADDING_LEFT}
-            y={offset.y + height - X_TICK_CLIP_PADDING_TOP}
+            y={offset.y + height}
             width={width + X_TICK_CLIP_PADDING_LEFT + X_TICK_CLIP_PADDING_RIGHT}
             height={X_TICK_CLIP_HEIGHT}
           />

@@ -37,11 +37,7 @@ const StyledSvgRoot = styled('svg', {
   overflow: 'unset',
   fontSize: 0,
   userSelect: 'none',
-  WebkitUserSelect: 'none',
   backgroundImage: 'linear-gradient(180deg, rgba(0,0,0,0) 0%, $orangeA2 100%)',
-  '& g': {
-    fontSize: 0,
-  },
 })
 
 const StyledPanelBorder = styled('rect', {
@@ -73,7 +69,6 @@ const StyledYScaleInputWrap = styled('div', {
   height: '100%',
   display: 'flex',
   alignItems: 'center',
-  padding: 0,
   borderRadius: '$1',
   backgroundColor: '$gray3',
   boxShadow: 'inset 0 0 0 1px $colors$grayA6',
@@ -95,7 +90,6 @@ const StyledYScaleInput = styled('input', {
   caretColor: '$gray12',
   outline: 'none',
   userSelect: 'text',
-  WebkitUserSelect: 'text',
 })
 
 const defaultPoints = [
@@ -176,25 +170,22 @@ function _BezierCurveEditor(props: BezierCurveEditorProps, forwardedRef: React.R
       y: snapToBounds(clamp(bezierPoint.point.y, minPointY, maxPointY), minPointY, maxPointY),
     },
   })
-  const createPointId = React.useCallback(() => {
+  const createPointId = () => {
     const id = `bezier-point-${pointIdCounterRef.current}`
     pointIdCounterRef.current += 1
     return id
-  }, [])
+  }
 
-  const ensurePointIds = React.useCallback(
-    (length: number): string[] => {
-      const ids = pointIdsRef.current
-      while (ids.length < length) {
-        ids.push(createPointId())
-      }
-      if (ids.length > length) {
-        ids.length = length
-      }
-      return ids
-    },
-    [createPointId]
-  )
+  const ensurePointIds = (length: number): string[] => {
+    const ids = pointIdsRef.current
+    while (ids.length < length) {
+      ids.push(createPointId())
+    }
+    if (ids.length > length) {
+      ids.length = length
+    }
+    return ids
+  }
 
   const [points, setPoints] = useControllableState<IBezierPoint[]>({
     prop: propPoints
@@ -313,7 +304,7 @@ function _BezierCurveEditor(props: BezierCurveEditorProps, forwardedRef: React.R
     [applyZoomAtAnchor, zoom, zoomSpeed]
   )
 
-  const handleAddPoint = (point: IBezierPoint, index) => {
+  const handleAddPoint = (point: IBezierPoint, index: number) => {
     setPoints((prevPoints) => {
       const newPoints = [...prevPoints!]
       newPoints.splice(index, 0, clampBezierPoint(point))
@@ -368,7 +359,7 @@ function _BezierCurveEditor(props: BezierCurveEditorProps, forwardedRef: React.R
         width={width}
         height={height}
         ref={mergeRefs([forwardedRef, svgRef])}
-        onDragStart={(e) => e.preventDefault()}>
+        onMouseDown={(e) => e.preventDefault()}>
         <defs>
           <clipPath id={pointClipId} clipPathUnits="userSpaceOnUse">
             <rect
