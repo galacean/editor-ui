@@ -13,7 +13,7 @@ import { BezierPoint } from './BezierPoint'
 import { BezierCurve } from './BezierCurve'
 import { Grid } from './Grid'
 import { POINT_HIT_RADIUS } from './Point'
-import { TICK_EPSILON, formatNormalizedCoord, formatTick, getAlignedTickPrecision, getTickPrecision } from './tick'
+import { TICK_EPSILON, formatNormalizedCoord, formatTick, getTickPrecision } from './tick'
 
 import { styled } from '../design-system'
 import { clamp, mergeRefs } from '../utils'
@@ -31,6 +31,13 @@ function snapToBounds(value: number, min: number, max: number, epsilon = BOUNDAR
   if (Math.abs(value - min) <= epsilon) return min
   if (Math.abs(value - max) <= epsilon) return max
   return value
+}
+
+function normalizeInputPoints(inputPoints: IPoint[], minY: number, maxY: number): IPoint[] {
+  return inputPoints.map((point) => ({
+    x: clamp(point.x, 0, 1),
+    y: clamp(point.y, minY, maxY),
+  }))
 }
 
 const StyledSvgRoot = styled('svg', {
@@ -138,23 +145,11 @@ function _BezierCurveEditor(props: BezierCurveEditorProps, forwardedRef: React.R
   const minPointY = Math.min(-minNormalizedY * yScale, -maxNormalizedY * yScale)
   const maxPointY = Math.max(-minNormalizedY * yScale, -maxNormalizedY * yScale)
   const normalizedMaxScale = yTickScaleMax ?? Number.MAX_VALUE
-  const yTickPrecision = getTickPrecision(Math.abs(yTickScale / (DEFAULT_GRID_TICK_Y * axisYScale)))
-  const yAxisLength = Math.ceil(DEFAULT_GRID_TICK_Y * zoom) + 1
-  const yAxisGap = height / (DEFAULT_GRID_TICK_Y * zoom)
-  const yTickValues = [...Array(yAxisLength).keys()].map((index) => {
-    const worldY = index * yAxisGap + offset.y - (offset.y % yAxisGap)
-    const normalizedTickY = (-worldY / (height * axisYScale)) * zoom
-    return normalizedTickY * yTickScale
-  })
-  const yAlignedTickPrecision = getAlignedTickPrecision(yTickValues, yTickPrecision)
-  const yScaleDisplayValue = formatTick(yTickScale, yAlignedTickPrecision)
+  const yScaleDisplayValue = formatTick(
+    yTickScale,
+    getTickPrecision(Math.abs(yTickScale / (DEFAULT_GRID_TICK_Y * axisYScale)))
+  )
   const [yScaleInputText, setYScaleInputText] = useState(yScaleDisplayValue)
-
-  const normalizeInputPoints = (inputPoints: IPoint[]) =>
-    inputPoints.map((point) => ({
-      x: clamp(point.x, 0, 1),
-      y: clamp(point.y, minNormalizedY, maxNormalizedY),
-    }))
 
   const getPointHoverLabel = (point: IPoint): string => {
     const normalizedX = (point.x / width) * zoom
@@ -162,19 +157,17 @@ function _BezierCurveEditor(props: BezierCurveEditorProps, forwardedRef: React.R
     return `${formatNormalizedCoord(normalizedX)}, ${formatNormalizedCoord(normalizedY)}`
   }
 
-  const clampBezierPoint = (bezierPoint: IBezierPoint): IBezierPoint => ({
-    ...bezierPoint,
-    point: {
-      ...bezierPoint.point,
-      x: snapToBounds(clamp(bezierPoint.point.x, 0, maxPointX), 0, maxPointX),
-      y: snapToBounds(clamp(bezierPoint.point.y, minPointY, maxPointY), minPointY, maxPointY),
-    },
-  })
-  const createPointId = () => {
-    const id = `bezier-point-${pointIdCounterRef.current}`
-    pointIdCounterRef.current += 1
-    return id
+  const clampBezierPoint = (bezierPoint: IBezierPoint): IBezierPoint => {
+    const { point, controlPoint } = bezierPoint
+    return {
+      point: {
+        x: snapToBounds(clamp(point.x, 0, maxPointX), 0, maxPointX),
+        y: snapToBounds(clamp(point.y, minPointY, maxPointY), minPointY, maxPointY),
+      },
+      controlPoint,
+    }
   }
+  const createPointId = () => `bezier-point-${pointIdCounterRef.current++}`
 
   const ensurePointIds = (length: number): string[] => {
     const ids = pointIdsRef.current
@@ -190,13 +183,13 @@ function _BezierCurveEditor(props: BezierCurveEditorProps, forwardedRef: React.R
   const [points, setPoints] = useControllableState<IBezierPoint[]>({
     prop: propPoints
       ? convertPointsToBezierPoints(
-          denormalizePoint(normalizeInputPoints(propPoints), width, height * axisYScale, denormalizeZoom),
+          denormalizePoint(normalizeInputPoints(propPoints, minNormalizedY, maxNormalizedY), width, height * axisYScale, denormalizeZoom),
           algo
         )
       : undefined,
     defaultProp: convertPointsToBezierPoints(
       denormalizePoint(
-        normalizeInputPoints(propDefaultPoints || defaultPoints),
+        normalizeInputPoints(propDefaultPoints || defaultPoints, minNormalizedY, maxNormalizedY),
         width,
         height * axisYScale,
         denormalizeZoom
@@ -253,12 +246,10 @@ function _BezierCurveEditor(props: BezierCurveEditorProps, forwardedRef: React.R
       const yPointB = -maxNormalizedY * height * axisYScale * denormalizeTargetZoom
       const yMin = Math.min(yPointA, yPointB)
       const yMax = Math.max(yPointA, yPointB)
-      const offsetYMin = yMin
-      const offsetYMax = yMax - height
 
       return {
         x: clamp(nextOffset.x, xMin, xMax),
-        y: clamp(nextOffset.y, offsetYMin, offsetYMax),
+        y: clamp(nextOffset.y, yMin, yMax - height),
       }
     },
     [axisYScale, height, maxNormalizedY, minNormalizedY, width]
@@ -413,9 +404,7 @@ function _BezierCurveEditor(props: BezierCurveEditorProps, forwardedRef: React.R
               type="text"
               inputMode="decimal"
               value={yScaleInputText}
-              onBlur={() => {
-                commitYScaleInput()
-              }}
+              onBlur={commitYScaleInput}
               onKeyDown={(event) => {
                 if (event.key === 'Enter') {
                   event.currentTarget.blur()
