@@ -391,7 +391,7 @@ function _BezierCurveEditor(props: BezierCurveEditorProps, forwardedRef: React.R
         </Grid>
       </StyledSvgRoot>
       {props.onYTickScaleChange && (
-        <StyledYScaleInputWrap>
+        <StyledYScaleInputWrap style={{ width: `${Math.max(3.2, yScaleInputText.length + 0.2)}ch` }}>
           <StyledYScaleInput
               type="text"
               inputMode="decimal"
