@@ -32,14 +32,19 @@ type ParticleValue = {
   step?: number;
 }[]
 
-export interface FormItemParticleProps extends FormItemProps<ParticleValue> {
+type CurveScaleProps = Pick<
+  BezierCurveEditorProps,
+  'yTickScale' | 'yRangeMode' | 'onYTickScaleChange' | 'onYTickScaleCommit' | 'yTickScaleMin' | 'yTickScaleMax'
+>
+
+export interface FormItemParticleProps extends FormItemProps<ParticleValue>, CurveScaleProps {
   type?: ParticlePropertyType;
   algo?: BezierCurveEditorProps["algo"];
   onValueChange?: (value: FormItemParticleProps["value"], type: ParticlePropertyType) => void;
 }
 
 export function FormItemParticle(props: FormItemParticleProps) {
-  const { label, info, value, onValueChange, algo = "bezier", ...rest } = props;
+  const { label, info, value, onValueChange, algo = "bezier", yRangeMode, yTickScale, yTickScaleMin, yTickScaleMax, onYTickScaleChange, onYTickScaleCommit, ...rest } = props;
   const [propType, setPropType] = useControllableState<ParticlePropertyType>({
     prop: props.type,
     defaultProp: "constant",
@@ -161,7 +166,7 @@ export function FormItemParticle(props: FormItemParticleProps) {
               />
             );
           case "curve":
-            return <BezierCurveEditor algo="linear" key="curve" value={value} onChange={handleCurveValueChange} />;
+            return <BezierCurveEditor algo="linear" key="curve" yRangeMode={yRangeMode} yTickScale={yTickScale} yTickScaleMin={yTickScaleMin} yTickScaleMax={yTickScaleMax} onYTickScaleChange={onYTickScaleChange} onYTickScaleCommit={onYTickScaleCommit} value={value} onChange={handleCurveValueChange} />;
           case "two-constant":
             return (
               <React.Fragment key="two-constant">
@@ -190,8 +195,8 @@ export function FormItemParticle(props: FormItemParticleProps) {
           case "two-curve":
             return (
               <React.Fragment key="two-curve">
-                <BezierCurveEditor algo="linear" value={value[0]} onChange={handleRdCurveValueChange(0)} />
-                <BezierCurveEditor algo="linear" value={value[1]} onChange={handleRdCurveValueChange(1)} />
+                <BezierCurveEditor algo="linear" yRangeMode={yRangeMode} yTickScale={yTickScale} yTickScaleMin={yTickScaleMin} yTickScaleMax={yTickScaleMax} onYTickScaleChange={onYTickScaleChange} onYTickScaleCommit={onYTickScaleCommit} value={value[0]} onChange={handleRdCurveValueChange(0)} />
+                <BezierCurveEditor algo="linear" yRangeMode={yRangeMode} yTickScale={yTickScale} yTickScaleMin={yTickScaleMin} yTickScaleMax={yTickScaleMax} onYTickScaleChange={onYTickScaleChange} onYTickScaleCommit={onYTickScaleCommit} value={value[1]} onChange={handleRdCurveValueChange(1)} />
               </React.Fragment>
             );
           default:
