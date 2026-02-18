@@ -2,12 +2,12 @@ import React from "react";
 import { useControllableState } from "@radix-ui/react-use-controllable-state";
 import { IconEaseIn, IconEqual, IconVectorBezier2, IconPlusMinus } from "@tabler/icons-react";
 
-import { InputNumber, Select, SelectItem, BezierCurveEditor, Button } from "@galacean/editor-ui";
+import { InputNumber, Select, SelectItem, BezierCurveEditor } from "@galacean/editor-ui";
 import { FormItem } from "../FormItem";
-import { BaseFormItemProps, FormItemProps } from "../FormItem/FormItem";
+import { FormItemProps } from "../FormItem/FormItem";
 import { BezierCurveEditorProps } from "@galacean/editor-ui/src/BezierCurveEditor/types";
 
-type ParticlePropertyType = "constant" | "curve" | "two-constant" | "two-curve";
+export type ParticlePropertyType = "constant" | "curve" | "two-constant" | "two-curve";
 
 const particlePropertyTypeOptions = [
   { type: "constant", icon: <IconEqual size="14px" />, columns: "minmax(0, 12fr) 32px" },
@@ -15,6 +15,14 @@ const particlePropertyTypeOptions = [
   { type: "two-constant", icon: <IconPlusMinus size="14px" />, columns: "repeat(2, minmax(0, 12fr)) 32px" },
   { type: "two-curve", icon: <IconVectorBezier2 size="14px" />, columns: "repeat(2, minmax(0, 12fr)) 32px" }
 ] as const;
+
+function renderTypeIcon(value, location) {
+  if (location === "trigger") {
+    return particlePropertyTypeOptions.find((option) => option.type === value)?.icon;
+  }
+  return value;
+}
+
 
 const defaultPoints = [
   { x: 0, y: 0 },
@@ -37,14 +45,16 @@ type CurveScaleProps = Pick<
   'yTickScale' | 'yRangeMode' | 'onYTickScaleChange' | 'onYTickScaleCommit' | 'yTickScaleMin' | 'yTickScaleMax'
 >
 
-export interface FormItemParticleProps extends FormItemProps<ParticleValue>, CurveScaleProps {
+export interface FormItemParticleCurveProps extends FormItemProps<ParticleValue>, CurveScaleProps {
   type?: ParticlePropertyType;
   algo?: BezierCurveEditorProps["algo"];
-  onValueChange?: (value: FormItemParticleProps["value"], type: ParticlePropertyType) => void;
+  /** Hide the mode type selector. The grid column space is still reserved. */
+  hideTypeSelector?: boolean;
+  onValueChange?: (value: FormItemParticleCurveProps["value"], type: ParticlePropertyType) => void;
 }
 
-export function FormItemParticle(props: FormItemParticleProps) {
-  const { label, info, value, onValueChange, algo = "bezier", yRangeMode, yTickScale, yTickScaleMin, yTickScaleMax, onYTickScaleChange, onYTickScaleCommit, ...rest } = props;
+export function FormItemParticleCurve(props: FormItemParticleCurveProps) {
+  const { label, info, value, onValueChange, algo = "bezier", yRangeMode, yTickScale, yTickScaleMin, yTickScaleMax, onYTickScaleChange, onYTickScaleCommit, hideTypeSelector, ...rest } = props;
   const [propType, setPropType] = useControllableState<ParticlePropertyType>({
     prop: props.type,
     defaultProp: "constant",
@@ -54,7 +64,7 @@ export function FormItemParticle(props: FormItemParticleProps) {
       }
     }
   });
-  const [valueMap, setValueMap] = useControllableState<FormItemParticleProps["value"]>({
+  const [valueMap, setValueMap] = useControllableState<FormItemParticleCurveProps["value"]>({
     prop: value,
     onChange: (state) => {
       if (onValueChange) {
@@ -68,13 +78,6 @@ export function FormItemParticle(props: FormItemParticleProps) {
       { value: [defaultPoints, defaultPoints], type: "two-curve" }
     ]
   });
-
-  function renderTypeIcon(value, location) {
-    if(location === "trigger") {
-      return particlePropertyTypeOptions.find((option) => option.type === value)?.icon;
-    }
-    return value;
-  }
 
   const handleConstantValueChange = (value) => {
     setValueMap((prev) => {
@@ -138,6 +141,8 @@ export function FormItemParticle(props: FormItemParticleProps) {
     });
   };
 
+  const curveProps = { algo, yRangeMode, yTickScale, yTickScaleMin, yTickScaleMax, onYTickScaleChange, onYTickScaleCommit };
+
   return (
     <FormItem
       label={label}
@@ -156,67 +161,50 @@ export function FormItemParticle(props: FormItemParticleProps) {
           case "constant":
             return (
               <InputNumber
+                key="constant"
                 min={min}
                 max={max}
                 dragStep={step}
                 step={step}
-                key="constant"
                 value={value}
                 onValueChange={handleConstantValueChange}
               />
             );
           case "curve":
-            return <BezierCurveEditor algo="linear" key="curve" yRangeMode={yRangeMode} yTickScale={yTickScale} yTickScaleMin={yTickScaleMin} yTickScaleMax={yTickScaleMax} onYTickScaleChange={onYTickScaleChange} onYTickScaleCommit={onYTickScaleCommit} value={value} onChange={handleCurveValueChange} />;
+            return <BezierCurveEditor key="curve" {...curveProps} value={value} onChange={handleCurveValueChange} />;
           case "two-constant":
             return (
               <React.Fragment key="two-constant">
-                <InputNumber
-                  size="sm"
-                  startSlot="min"
-                  value={value[0]}
-                  min={min}
-                  max={max}
-                  dragStep={step}
-                  step={step}
-                  onValueChange={handleRdConstantValueChange(0)}
-                />
-                <InputNumber
-                  size="sm"
-                  startSlot="max"
-                  value={value[1]}
-                  min={min}
-                  max={max}
-                  dragStep={step}
-                  step={step}
-                  onValueChange={handleRdConstantValueChange(1)}
-                />
+                <InputNumber size="sm" startSlot="min" value={value[0]} min={min} max={max} dragStep={step} step={step} onValueChange={handleRdConstantValueChange(0)} />
+                <InputNumber size="sm" startSlot="max" value={value[1]} min={min} max={max} dragStep={step} step={step} onValueChange={handleRdConstantValueChange(1)} />
               </React.Fragment>
             );
           case "two-curve":
             return (
               <React.Fragment key="two-curve">
-                <BezierCurveEditor algo="linear" yRangeMode={yRangeMode} yTickScale={yTickScale} yTickScaleMin={yTickScaleMin} yTickScaleMax={yTickScaleMax} onYTickScaleChange={onYTickScaleChange} onYTickScaleCommit={onYTickScaleCommit} value={value[0]} onChange={handleRdCurveValueChange(0)} />
-                <BezierCurveEditor algo="linear" yRangeMode={yRangeMode} yTickScale={yTickScale} yTickScaleMin={yTickScaleMin} yTickScaleMax={yTickScaleMax} onYTickScaleChange={onYTickScaleChange} onYTickScaleCommit={onYTickScaleCommit} value={value[1]} onChange={handleRdCurveValueChange(1)} />
+                <BezierCurveEditor {...curveProps} value={value[0]} onChange={handleRdCurveValueChange(0)} />
+                <BezierCurveEditor {...curveProps} value={value[1]} onChange={handleRdCurveValueChange(1)} />
               </React.Fragment>
             );
           default:
             return null;
         }
       })}
-      <Select
-        defaultValue="constant"
-        position="item-aligned"
-        cornerArrow
-        value={propType}
-        valueRenderer={renderTypeIcon}
-        onValueChange={(v) => setPropType(v as ParticlePropertyType)}
-      >
-        {valueMap.map((option) => (
-          <SelectItem value={option.type} key={option.type}>
-            {option.label || option.type}
-          </SelectItem>
-        ))}
-      </Select>
+      {!hideTypeSelector && (
+        <Select
+          value={propType}
+          position="item-aligned"
+          cornerArrow
+          valueRenderer={renderTypeIcon}
+          onValueChange={(v: string) => setPropType(v as ParticlePropertyType)}
+        >
+          {valueMap.map((option) => (
+            <SelectItem value={option.type} key={option.type}>
+              {option.label || option.type}
+            </SelectItem>
+          ))}
+        </Select>
+      )}
     </FormItem>
   );
 }

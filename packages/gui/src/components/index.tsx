@@ -53,7 +53,7 @@ export {
   type GradientPropertyType,
   type GradientValue,
 } from './FormItemGradient'
-export { FormItemParticle, type FormItemParticleProps } from './FormItemParticle'
+export { FormItemParticleCurve, type FormItemParticleCurveProps } from './FormItemParticle'
 
 export {
   FormItem,
