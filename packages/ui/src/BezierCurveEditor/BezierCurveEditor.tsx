@@ -21,6 +21,7 @@ import { ActionButton, ActionButtonGroup } from '../ActionButton'
 import { IconPlayerPlayFilled, IconZoomInFilled, IconZoomOutFilled, IconZoomReset } from '@tabler/icons-react'
 import { Flex } from '../Flex'
 import { CurveAnimation, CurveAnimationRef } from './CurveAnimation'
+import { ContextMenu, MenuItem } from '../Menu'
 
 const BOUNDARY_SNAP_EPSILON = 1e-4
 const DEFAULT_GRID_TICK_Y = 10
@@ -58,6 +59,7 @@ const StyledPanelBorder = styled('rect', {
 const BezierCurveContainer = styled('div', {
   position: 'relative',
   marginLeft: '$7',
+  outline: 'none',
 })
 
 const StyledYScaleInputWrap = styled('div', {
@@ -117,6 +119,7 @@ function _BezierCurveEditor(props: BezierCurveEditorProps, forwardedRef: React.R
     yTickScaleMax,
   } = props
 
+  const containerRef = React.useRef<HTMLDivElement>(null)
   const svgRef = React.useRef<SVGSVGElement>(null)
   const axisYScale = yRangeMode === 'positive' ? 1 : 0.5
   const minNormalizedY = yRangeMode === 'positive' ? 0 : -1
@@ -145,6 +148,10 @@ function _BezierCurveEditor(props: BezierCurveEditorProps, forwardedRef: React.R
   )
   const [yScaleInputText, setYScaleInputText] = useState(yScaleDisplayValue)
   const yScaleInputFocusedRef = React.useRef(false)
+  const hoveredPointRef = React.useRef<string | null>(null)
+  // Snapshot of hoveredPointRef at right-click time, since hover may change before menu item is clicked
+  const contextPointRef = React.useRef<string | null>(null)
+  const contextMenuOpenRef = React.useRef(false)
 
   const getPointHoverLabel = (point: IPoint): string => {
     const normalizedX = (point.x / width) * zoom
@@ -289,6 +296,49 @@ function _BezierCurveEditor(props: BezierCurveEditorProps, forwardedRef: React.R
     })
   }
 
+  // Focus container for keyboard events; skip when context menu is open to avoid stealing its focus
+  const focusContainer = () => {
+    if (!contextMenuOpenRef.current && !(document.activeElement instanceof HTMLInputElement)) {
+      containerRef.current!.focus()
+    }
+  }
+
+  const handleRemovePoint = (pointId: string) => {
+    setPoints((prevPoints) => {
+      if (prevPoints!.length <= 1) return prevPoints
+      const pointIds = ensurePointIds(prevPoints.length)
+      const idx = pointIds.indexOf(pointId)
+      if (idx === -1) return prevPoints
+      const newPoints = prevPoints.filter((_, i) => i !== idx)
+      pointIds.splice(idx, 1)
+      return newPoints
+    })
+    // Deleted point unmounts without onMouseLeave, clear manually
+    hoveredPointRef.current = null
+  }
+
+  const handlePointHoverChange = (pointId: string, hovered: boolean) => {
+    hoveredPointRef.current = hovered ? pointId : null
+    if (hovered) focusContainer()
+  }
+
+  const handleSvgContextMenu = (event: React.MouseEvent) => {
+    contextPointRef.current = hoveredPointRef.current
+    // Suppress context menu on empty space
+    if (!contextPointRef.current) {
+      event.preventDefault()
+      event.stopPropagation()
+    }
+  }
+
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.target instanceof HTMLInputElement) return
+    if ((event.key === 'Delete' || event.key === 'Backspace') && hoveredPointRef.current && points.length > 1) {
+      event.preventDefault()
+      handleRemovePoint(hoveredPointRef.current)
+    }
+  }
+
   const handleYTickScaleChange = (value: number) => {
     if (!props.onYTickScaleChange || Number.isNaN(value)) {
       return
@@ -321,14 +371,22 @@ function _BezierCurveEditor(props: BezierCurveEditorProps, forwardedRef: React.R
   const pointIds = points ? ensurePointIds(points.length) : []
 
   return (
-    <BezierCurveContainer>
-      <StyledSvgRoot
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox={`${offset.x} ${offset.y} ${width} ${height}`}
-        width={width}
-        height={height}
-        ref={mergeRefs([forwardedRef, svgRef])}
-        onMouseDown={(e) => e.preventDefault()}>
+    <ContextMenu
+      onOpenChange={(open: boolean) => {
+        contextMenuOpenRef.current = open
+        if (!open) containerRef.current!.focus()
+      }}
+      trigger={
+        <BezierCurveContainer ref={containerRef} tabIndex={0} onKeyDown={handleKeyDown}>
+
+          <StyledSvgRoot
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox={`${offset.x} ${offset.y} ${width} ${height}`}
+            width={width}
+            height={height}
+            ref={mergeRefs([forwardedRef, svgRef])}
+            onMouseDown={(e) => e.preventDefault()}
+            onContextMenu={handleSvgContextMenu}>
         <defs>
           <clipPath id={pointClipId} clipPathUnits="userSpaceOnUse">
             <rect
@@ -358,6 +416,7 @@ function _BezierCurveEditor(props: BezierCurveEditorProps, forwardedRef: React.R
                     pointHoverLabel={getPointHoverLabel(bezierPoint.point)}
                     pointClipPath={`url(#${pointClipId})`}
                     onPointChange={handlePointChange}
+                    onHoverChange={handlePointHoverChange}
                     getRoot={() => svgRef.current!}
                     doublePoint={doubleControlPoint}
                     algo={algo}
@@ -372,6 +431,8 @@ function _BezierCurveEditor(props: BezierCurveEditorProps, forwardedRef: React.R
             zoom={zoom}
             getRoot={() => svgRef.current}
             onAddPoint={handleAddPoint}
+            extendMinX={offset.x}
+            extendMaxX={offset.x + width}
           />
           <CurveAnimation points={points} algo={algo} ref={player} />
         </Grid>
@@ -452,6 +513,15 @@ function _BezierCurveEditor(props: BezierCurveEditorProps, forwardedRef: React.R
         </ActionButtonGroup>
       </Flex>
     </BezierCurveContainer>
+      }
+      asChild
+    >
+      <MenuItem
+        name="Delete Keyframe"
+        disabled={points.length <= 1}
+        onSelect={() => contextPointRef.current && handleRemovePoint(contextPointRef.current)}
+      />
+    </ContextMenu>
   )
 }
 

@@ -19,6 +19,12 @@ const StyledPath = styled('path', {
   },
 })
 
+const StyledExtensionPath = styled('path', {
+  strokeWidth: 1,
+  stroke: '$orange6',
+  fill: 'none',
+})
+
 const StyledTempPoint = styled('circle', {
   fill: '$orange11',
   r: 3,
@@ -34,11 +40,21 @@ interface BezierCurveProps {
   getRoot: () => SVGSVGElement
   // onAddPoint only works when algo is "linear" because svg could not render higher order bezier curve accurately
   onAddPoint?: (point: IBezierPoint, index: number) => void
+  extendMinX?: number
+  extendMaxX?: number
 }
 
 export function BezierCurve(props: BezierCurveProps) {
-  const { points, getRoot, zoom = 1, algo = 'bezier' } = props
-  const actualAlgorithm = points.length > 2 ? 'linear' : algo
+  const { points, getRoot, zoom = 1, algo = 'bezier', extendMinX, extendMaxX } = props
+  const actualAlgorithm = points.length === 2 ? algo : 'linear'
+  const generatePath = actualAlgorithm === 'linear' ? generateLineByPoints : generateCurve
+  const mainD = generatePath(points)
+  const hitD = generatePath(points, 1, extendMinX, extendMaxX)
+  const first = points[0].point
+  const last = points[points.length - 1].point
+  const extensionD = extendMinX !== undefined
+    ? `M ${extendMinX} ${first.y} L ${first.x} ${first.y} M ${last.x} ${last.y} L ${extendMaxX} ${last.y}`
+    : undefined
   const [hovered, setHovered] = useState(false)
   const pointerRef = React.useRef<DOMPoint>()
   const [matrixedPoint, setMatrixedPoint] = useState<IPoint | null>(null)
@@ -73,12 +89,12 @@ export function BezierCurve(props: BezierCurveProps) {
 
     const bezierPoint = {
       point: {
-        x: matrixedPoint.x * zoom,
-        y: matrixedPoint.y * zoom,
+        x: matrixedPoint.x,
+        y: matrixedPoint.y,
       },
       controlPoint: {
-        x: (matrixedPoint.x + 20) * zoom,
-        y: (matrixedPoint.y + 20) * zoom,
+        x: matrixedPoint.x + 20,
+        y: matrixedPoint.y + 20,
       },
     }
 
@@ -113,30 +129,14 @@ export function BezierCurve(props: BezierCurveProps) {
 
   return (
     <g className="bezier-path" onMouseLeave={handleMouseLeave}>
-      {(() => {
-        if (actualAlgorithm === 'linear') {
-          const d = generateLineByPoints(points)
-          return (
-            <>
-              <StyledPath className="bezier-line" d={d} />
-              <StyledPath
-                hitline
-                className="bezier-line-hitarea"
-                d={d}
-                onMouseEnter={handleMouseEnter}
-                onMouseMove={handleMouseMove}
-              />
-            </>
-          )
-        }
-        const d = generateCurve(points)
-        return (
-          <>
-            <StyledPath className="bezier-curve" d={d} />
-            <StyledPath hitline className="bezier-curve-hitarea" d={d} />
-          </>
-        )
-      })()}
+      {extensionD && <StyledExtensionPath d={extensionD} />}
+      <StyledPath d={mainD} />
+      <StyledPath
+        hitline
+        d={hitD}
+        onMouseEnter={handleMouseEnter}
+        onMouseMove={handleMouseMove}
+      />
       {actualAlgorithm === 'linear' && hovered && matrixedPoint && (
         <StyledTempPoint cx={matrixedPoint.x} cy={matrixedPoint.y} onClick={handleAddPoint} />
       )}

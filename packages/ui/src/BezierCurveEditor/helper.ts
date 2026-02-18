@@ -7,23 +7,41 @@ function scalePoints(points: IBezierPoint[], zoom: number): IBezierPoint[] {
   }));
 }
 
-export function generateCurve(points: IBezierPoint[], zoom = 1): string {
+export function generateCurve(points: IBezierPoint[], zoom = 1, extendLeftX?: number, extendRightX?: number): string {
   const scaled = scalePoints(points, zoom);
-  return `
-    M ${scaled[0].point.x} ${scaled[0].point.y}
-    C ${scaled[0].controlPoint.x} ${scaled[0].controlPoint.y},
-    ${scaled[1].controlPoint.x} ${scaled[1].controlPoint.y}
-    ${scaled[1].point.x} ${scaled[1].point.y}
-    ${scaled
-      .slice(2)
-      .map((point) => ` S ${point.controlPoint.x} ${point.controlPoint.y}, ${point.point.x} ${point.point.y}`)}`;
+  const first = scaled[0];
+  const last = scaled[scaled.length - 1];
+
+  let d = extendLeftX !== undefined
+    ? `M ${extendLeftX} ${first.point.y} L ${first.point.x} ${first.point.y}`
+    : `M ${first.point.x} ${first.point.y}`;
+
+  d += ` C ${first.controlPoint.x} ${first.controlPoint.y}, ${scaled[1].controlPoint.x} ${scaled[1].controlPoint.y} ${scaled[1].point.x} ${scaled[1].point.y}`;
+  d += scaled.slice(2).map((point) => ` S ${point.controlPoint.x} ${point.controlPoint.y}, ${point.point.x} ${point.point.y}`).join('');
+
+  if (extendRightX !== undefined) {
+    d += ` L ${extendRightX} ${last.point.y}`;
+  }
+
+  return d;
 }
 
-export function generateLineByPoints(points: IBezierPoint[], zoom = 1): string {
+export function generateLineByPoints(points: IBezierPoint[], zoom = 1, extendLeftX?: number, extendRightX?: number): string {
   const scaled = scalePoints(points, zoom);
-  return `
-    M ${scaled[0].point.x} ${scaled[0].point.y}
-    ${scaled.slice(1).map((point) => ` L ${point.point.x} ${point.point.y}`)}`;
+  const first = scaled[0];
+  const last = scaled[scaled.length - 1];
+
+  let d = extendLeftX !== undefined
+    ? `M ${extendLeftX} ${first.point.y} L ${first.point.x} ${first.point.y}`
+    : `M ${first.point.x} ${first.point.y}`;
+
+  d += scaled.slice(1).map((point) => ` L ${point.point.x} ${point.point.y}`).join('');
+
+  if (extendRightX !== undefined) {
+    d += ` L ${extendRightX} ${last.point.y}`;
+  }
+
+  return d;
 }
 
 export function convertPointsToBezierPoints(points: IPoint[], algo: "bezier" | "linear" = "bezier"): IBezierPoint[] {

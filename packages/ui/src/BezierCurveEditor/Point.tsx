@@ -78,6 +78,7 @@ interface PointProps {
   point: IPoint
   main?: boolean
   onPointChange: (svgPos: IPoint) => void
+  onHoverChange?: (hovered: boolean) => void
   getRoot: () => SVGSVGElement
   type?: 'pivot' | 'control'
   hoverLabel?: string
@@ -85,7 +86,7 @@ interface PointProps {
 }
 
 export function Point(props: PointProps) {
-  const { point, main, type = 'pivot', onPointChange, getRoot, hoverLabel, pointClipPath } = props
+  const { point, main, type = 'pivot', onPointChange, onHoverChange, getRoot, hoverLabel, pointClipPath } = props
   const onPointChangeRef = useRef(onPointChange)
   onPointChangeRef.current = onPointChange
   const getRootRef = useRef(getRoot)
@@ -107,6 +108,8 @@ export function Point(props: PointProps) {
   }
 
   function handleMouseDown(event: React.MouseEvent<SVGGElement>) {
+    // Only respond to left-click; right-click must not trigger drag
+    if (event.button !== 0) return
     event.preventDefault()
     event.stopPropagation()
     window.getSelection()?.removeAllRanges()
@@ -133,7 +136,7 @@ export function Point(props: PointProps) {
   }, [moving])
 
   return (
-      <StyledPointRoot onMouseDown={handleMouseDown} onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
+      <StyledPointRoot onMouseDown={handleMouseDown} onMouseEnter={() => { setHovered(true); onHoverChange?.(true) }} onMouseLeave={() => { setHovered(false); onHoverChange?.(false) }}>
         {hoverLabel && (hovered || moving) && (
           <>
             <StyledPointLabelBg

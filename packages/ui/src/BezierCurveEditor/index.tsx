@@ -64,12 +64,8 @@ const EditorTrigger = forwardRef<HTMLDivElement, EditorTriggerProps>(function Ed
   let path = ''
   if (size.width !== 0 && points.length) {
     const bezierPoint = convertPointsToBezierPoints(denormalizePoint(points, size.width, size.height), algo)
-    if (algo === 'bezier') {
-      path = generateCurve(bezierPoint)
-    }
-    if (algo === 'linear') {
-      path = generateLineByPoints(bezierPoint)
-    }
+    const generatePath = algo === 'bezier' ? generateCurve : generateLineByPoints
+    path = generatePath(bezierPoint, 1, 0, size.width)
   }
 
   return (

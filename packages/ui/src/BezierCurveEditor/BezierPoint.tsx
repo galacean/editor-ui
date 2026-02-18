@@ -1,3 +1,4 @@
+import React from 'react'
 import type { IPoint, IBezierPoint } from './types'
 import { Point } from './Point'
 
@@ -16,10 +17,11 @@ export interface BezierPointProps {
   algo: 'linear' | 'bezier'
   getRoot: () => SVGSVGElement
   onPointChange: (pointId: string, point: IBezierPoint) => void
+  onHoverChange?: (pointId: string, hovered: boolean) => void
 }
 
 export function BezierPoint(props: BezierPointProps) {
-  const { pointId, bezierPoint, onPointChange, algo, doublePoint = false, pointHoverLabel, pointClipPath, getRoot } = props
+  const { pointId, bezierPoint, onPointChange, onHoverChange, algo, doublePoint = false, pointHoverLabel, pointClipPath, getRoot } = props
   const { point, controlPoint } = bezierPoint
   const pointClipStyle = pointClipPath ? { clipPath: pointClipPath } : undefined
 
@@ -78,6 +80,7 @@ export function BezierPoint(props: BezierPointProps) {
         point={point}
         getRoot={getRoot}
         onPointChange={handlePointChange}
+        onHoverChange={(h) => onHoverChange?.(pointId, h)}
         hoverLabel={pointHoverLabel}
         pointClipPath={pointClipPath}
       />
