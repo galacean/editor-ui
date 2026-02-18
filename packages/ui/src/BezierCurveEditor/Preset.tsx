@@ -38,40 +38,16 @@ const defaultPresets = [
     { x: 1, y: 0 },
   ],
   [
-    {
-      x: 0,
-      y: 0,
-    },
-    {
-      x: 0.7,
-      y: 0,
-    },
-    {
-      x: 1,
-      y: 0.5,
-    },
-    {
-      x: 1,
-      y: 1,
-    },
+    { x: 0, y: 0 },
+    { x: 0.7, y: 0 },
+    { x: 1, y: 0.5 },
+    { x: 1, y: 1 },
   ],
   [
-    {
-      x: 0,
-      y: 0,
-    },
-    {
-      x: 0.42,
-      y: 0,
-    },
-    {
-      x: 0.58,
-      y: 1,
-    },
-    {
-      x: 1,
-      y: 1,
-    },
+    { x: 0, y: 0 },
+    { x: 0.42, y: 0 },
+    { x: 0.58, y: 1 },
+    { x: 1, y: 1 },
   ],
 ]
 
@@ -129,7 +105,7 @@ function PresetItem(props: PresetItemProps) {
       return ''
     }
 
-    let d = `M${points[0].x * width} ${points[0].y * height}`
+    let d = `M${points[0].x * width} ${-points[0].y * height}`
 
     for (let i = 1; i < points.length; i += 3) {
       d += ` C${points[i].x * width} ${-points[i].y * height}, ${points[i + 1].x * width} ${-points[i + 1].y * height}, ${points[i + 2].x * width} ${-points[i + 2].y * height}`
