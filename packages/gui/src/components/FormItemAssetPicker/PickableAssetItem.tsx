@@ -1,5 +1,5 @@
 import { forwardRef } from "react";
-import { AssetItem, PopoverCloseTrigger, type AssetItemProps } from '@galacean/editor-ui';
+import { AssetItem, type AssetItemProps } from '@galacean/editor-ui';
 
 export interface BasicAssetType {
   id: string;
@@ -13,17 +13,15 @@ export interface BasicAssetType {
 
 export interface PickableAssetItemProps extends AssetItemProps {}
 
-export const PickableAssetItem = 
+export const PickableAssetItem =
   forwardRef<HTMLDivElement, PickableAssetItemProps>(
     function PickableAssetItem(props, forwardedRef) {
       return (
-        <PopoverCloseTrigger asChild>
-          <AssetItem
-            {...props}
-            ref={forwardedRef}
-            readOnly
-          />
-        </PopoverCloseTrigger>
+        <AssetItem
+          {...props}
+          ref={forwardedRef}
+          readOnly
+        />
       );
     }
   )

@@ -5,7 +5,7 @@ import { BasicAssetType, AssetPickerPopoverProps } from './AssetPickerPopover'
 import { AssetPickerContent } from './AssetPickerContent'
 
 import { FormItem, extractFormItemProps } from '../FormItem'
-import { ActionButton, Button, styled, Popover, PopoverCloseTrigger, useDrop } from '@galacean/editor-ui'
+import { ActionButton, Button, styled, Popover, useDrop } from '@galacean/editor-ui'
 import { BaseFormItemProps } from '../FormItem/FormItem'
 
 const StyledIconFile = styled(IconFileFilled, {
@@ -47,6 +47,7 @@ const StyledTriggerButton = styled(Button, {
 
 function _FormItemAssetPicker<T extends BasicAssetType>(props: FormItemAssetPickerProps<T>, ref) {
   const [isDraggingOver, setIsDraggingOver] = useState(false)
+  const [open, setOpen] = useState(false)
   const {
     label,
     disabled,
@@ -64,6 +65,11 @@ function _FormItemAssetPicker<T extends BasicAssetType>(props: FormItemAssetPick
   } = props
 
   const actionDisabled = !!(disabled || !value)
+
+  const handleOpenChange = useCallback((isOpen: boolean) => {
+    setOpen(isOpen)
+    onOpenChange?.(isOpen)
+  }, [onOpenChange])
 
   const dropRef = useDrop({
     accept: dropLayer,
@@ -95,6 +101,7 @@ function _FormItemAssetPicker<T extends BasicAssetType>(props: FormItemAssetPick
         compact
         disabled={disabled}
         sideOffset={6}
+        open={open}
         trigger={
           <StyledTriggerButton
             ref={dropRef as any}
@@ -110,11 +117,12 @@ function _FormItemAssetPicker<T extends BasicAssetType>(props: FormItemAssetPick
             <Placeholder>{value ? value : placeholder}</Placeholder>
           </StyledTriggerButton>
         }
-        onOpenChange={onOpenChange}>
+        onOpenChange={handleOpenChange}>
         <AssetPickerContent
           assets={assets}
           selectedAssetId={asset?.id}
           onSelect={onSelect}
+          onClose={() => setOpen(false)}
           customFilter={customFilter}
           groupBy={groupBy}
         />
