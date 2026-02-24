@@ -326,13 +326,15 @@ function DropdownMenu(props: PropsWithChildren<IDropdownMenuProps>) {
     }
   }
 
+  const portalProps = Portal === Fragment ? {} : { container }
+
   return (
     <MenuProvider type="dropdown" size={size}>
       <DropdownMenuPrimitive.Root modal={false} {...rest}>
         <DropdownMenuPrimitive.Trigger disabled={disabled} asChild>
           {props.trigger}
         </DropdownMenuPrimitive.Trigger>
-        <Portal container={container}>
+        <Portal {...portalProps}>
           <Content side={side} sideOffset={sideOffset} align={align} alignOffset={alignOffset}>
             <ScrollArea type="always" subtle={false} asContainer>
               {children}

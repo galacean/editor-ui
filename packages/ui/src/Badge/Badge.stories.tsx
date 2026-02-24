@@ -22,13 +22,18 @@ export default {
     },
     color: {
       control: "select",
-      options: ["gray", "green", "red", "blue", "orange", "amber", "gold"],
+      options: ["gray", "green", "red", "blue", "orange", "amber", "gold", "violet"],
       description: "The color theme of the badge"
     },
     size: {
       control: "select",
       options: ["xs", "sm"],
       description: "The size of the badge"
+    },
+    variant: {
+      control: "select",
+      options: ["solid", "surface"],
+      description: "The visual style variant of the badge"
     },
     closable: {
       control: "boolean",
@@ -55,6 +60,7 @@ export default {
     children: "Badge",
     color: "gray",
     size: "sm",
+    variant: "solid",
     closable: false,
     pill: false,
     code: false,
@@ -70,4 +76,33 @@ export const Overview = (args) => {
       <Badge {...args}>Success</Badge>
     </Flex>
   )
+}
+
+export const SurfaceVariant: Story = {
+  render: () => (
+    <Flex gap="md" direction="column">
+      <Flex gap="sm" wrap>
+        <Badge variant="surface" color="gray">Gray Surface</Badge>
+        <Badge variant="surface" color="green">Green Surface</Badge>
+        <Badge variant="surface" color="red">Red Surface</Badge>
+        <Badge variant="surface" color="blue">Blue Surface</Badge>
+        <Badge variant="surface" color="orange">Orange Surface</Badge>
+        <Badge variant="surface" color="amber">Amber Surface</Badge>
+        <Badge variant="surface" color="gold">Gold Surface</Badge>
+        <Badge variant="surface" color="violet">Violet Surface</Badge>
+      </Flex>
+      <Flex gap="sm" wrap>
+        <Badge variant="surface" color="blue" pill>Pill Surface</Badge>
+        <Badge variant="surface" color="green" closable>Closable Surface</Badge>
+        <Badge variant="surface" color="violet" code>Code Surface</Badge>
+      </Flex>
+    </Flex>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story: "Surface variant uses subtle background colors with solid borders and backdrop blur for better text accessibility."
+      }
+    }
+  }
 }

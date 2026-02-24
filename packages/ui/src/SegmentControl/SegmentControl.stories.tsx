@@ -13,7 +13,13 @@ export default {
     size: {
       type: {
         name: 'enum',
-        value: ['sm', 'md', 'lg'],
+        value: ['sm', 'md'],
+      },
+    },
+    variant: {
+      type: {
+        name: 'enum',
+        value: ['subtle', 'solid'],
       },
     },
   },
@@ -28,7 +34,7 @@ export default {
  */
 export const Overview: StoryFn<typeof SegmentControl> = (args) => {
   return (
-    <Flex gap="md">
+    <Flex gap="md" css={{ width: '400px' }}>
       <SegmentControl defaultValue="enable" {...args}>
         <SegmentControlItem value="enable">Enable</SegmentControlItem>
         <SegmentControlItem value="idle">Idle</SegmentControlItem>

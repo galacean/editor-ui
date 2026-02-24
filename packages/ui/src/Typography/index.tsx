@@ -2,7 +2,6 @@ import { styled } from '../design-system'
 
 const StyledText = styled('p', {
   fontFamily: '$default',
-  cursor: 'default',
   fontSynthesis: 'none',
   variants: {
     code: {
@@ -106,7 +105,6 @@ const StyledText = styled('p', {
   },
   defaultVariants: {
     size: 'md',
-    selectable: false,
     weight: 'normal',
     highContrast: false,
   },

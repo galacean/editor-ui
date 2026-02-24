@@ -52,6 +52,7 @@ export interface AssetPickerPopoverProps<T extends BasicAssetType> {
   disabled?: boolean;
   assets: T[];
   onSelect?: (asset: T) => void;
+  onClose?: () => void;
   customFilter?: (asset: T) => boolean;
   groupBy?: (asset: T) => string;
 }
@@ -74,7 +75,7 @@ function groupAssets<T extends BasicAssetType>(assets: T[], groupBy?: (asset: T)
 const key = "galacean-gui-asset-picker-display-mode";
 
 export function AssetPickerContent<T extends BasicAssetType>(props: AssetPickerPopoverProps<T>) {
-  const { assets, customFilter, onSelect, selectedAssetId, groupBy } = props;
+  const { assets, customFilter, onSelect, onClose, selectedAssetId, groupBy } = props;
   const searchRef = useRef<HTMLInputElement>(null);
 
   const [searchText, setSearchText] = useState("");
@@ -124,10 +125,10 @@ export function AssetPickerContent<T extends BasicAssetType>(props: AssetPickerP
                 name={asset.name}
                 thumbnail={asset.thumbnailUrl}
                 onClick={() => {
-                  if (!asset.isInitCompleted) return;
                   if (onSelect) {
                     onSelect(asset);
                   }
+                  onClose?.();
                 }}
               />
             );

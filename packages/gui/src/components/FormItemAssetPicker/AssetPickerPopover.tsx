@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 
 import { AssetPickerContent } from "./AssetPickerContent";
 
@@ -43,20 +43,25 @@ onSelect?: (asset: T) => void;
 export function AssetPickerPopover<T extends BasicAssetType>(props: AssetPickerPopoverProps<T>) {
   const { asset, disabled, onSelect, assets = [], trigger } = props;
   const [selectedAssetId, setSelectedAssetId] = useState(asset?.id);
+  const [open, setOpen] = useState(false);
+
+  const handleOpenChange = useCallback((isOpen: boolean) => {
+    setOpen(isOpen);
+    if (isOpen) {
+      setSelectedAssetId(asset?.id);
+    }
+  }, [asset?.id]);
 
   return (
     <Popover
       compact
       disabled={disabled}
+      open={open}
       trigger={trigger}
-      onOpenChange={(open) => {
-        if (open) {
-          setSelectedAssetId(asset?.id);
-        }
-      }}
+      onOpenChange={handleOpenChange}
       sideOffset={6}
     >
-      <AssetPickerContent selectedAssetId={selectedAssetId} assets={assets} onSelect={onSelect} />
+      <AssetPickerContent selectedAssetId={selectedAssetId} assets={assets} onSelect={onSelect} onClose={() => setOpen(false)} />
     </Popover>
   );
 }
