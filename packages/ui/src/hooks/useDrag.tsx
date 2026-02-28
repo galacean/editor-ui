@@ -1,5 +1,5 @@
 import { RefObject, useContext, useEffect, useRef } from 'react'
-import React, { createContext, createRef, PropsWithChildren } from 'react'
+import { createContext, PropsWithChildren } from 'react'
 
 export enum DragState {
   None = 'none',
@@ -56,7 +56,8 @@ type IDragReturnType = [IDragElement, IDragElement]
 export function useDrag<T>(options: IDragOptions<T>): IDragReturnType {
   const dragRef = useRef<HTMLDivElement>(null)
   const previewRef = useRef<HTMLDivElement>(null)
-  const { type, item, onEnd, onStart, onCancel, disable = false } = options
+  const optionsRef = useRef(options)
+  optionsRef.current = options
 
   const dragItem = useContext(DragContext)
 
@@ -65,6 +66,8 @@ export function useDrag<T>(options: IDragOptions<T>): IDragReturnType {
     if (!dragElement) {
       return
     }
+
+    const { type, item, onEnd, onStart, onCancel, disable = false } = optionsRef.current
 
     const handleDragStart = (e: DragEvent) => {
       e.stopImmediatePropagation()
@@ -108,13 +111,11 @@ export function useDrag<T>(options: IDragOptions<T>): IDragReturnType {
     }
 
     return () => {
+      dragElement.removeAttribute('draggable')
       dragElement.removeEventListener('dragstart', handleDragStart)
       dragElement.removeEventListener('dragend', handleDragEnd)
-      dragItem.state = DragState.Cancelled
-      dragItem.item = null
-      dragItem.type = -1
     }
-  }, [])
+  })
 
   return [dragRef, previewRef]
 }
