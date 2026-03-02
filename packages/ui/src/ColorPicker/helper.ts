@@ -47,6 +47,64 @@ export function isEqual(color0: Color, color1: Color) {
   return color0.r === color1.r && color0.g === color1.g && color0.b === color1.b && color0.a === color1.a
 }
 
+function interpolateAlpha(alphaStops: GradientColor, position: number): number {
+  if (alphaStops.length === 0) return 1
+  if (position <= alphaStops[0].position) return alphaStops[0].value.a
+  if (position >= alphaStops[alphaStops.length - 1].position) return alphaStops[alphaStops.length - 1].value.a
+
+  for (let i = 0; i < alphaStops.length - 1; i++) {
+    const curr = alphaStops[i]
+    const next = alphaStops[i + 1]
+    if (position >= curr.position && position <= next.position) {
+      const denom = next.position - curr.position
+      if (denom === 0) return curr.value.a
+      const t = (position - curr.position) / denom
+      return curr.value.a + t * (next.value.a - curr.value.a)
+    }
+  }
+  return 1
+}
+
+function interpolateColor(colorStops: GradientColor, position: number): Color {
+  if (colorStops.length === 0) return { r: 255, g: 255, b: 255, a: 1 }
+  if (position <= colorStops[0].position) return colorStops[0].value
+  if (position >= colorStops[colorStops.length - 1].position) return colorStops[colorStops.length - 1].value
+
+  for (let i = 0; i < colorStops.length - 1; i++) {
+    const curr = colorStops[i]
+    const next = colorStops[i + 1]
+    if (position >= curr.position && position <= next.position) {
+      const denom = next.position - curr.position
+      if (denom === 0) return curr.value
+      const t = (position - curr.position) / denom
+      return {
+        r: curr.value.r + t * (next.value.r - curr.value.r),
+        g: curr.value.g + t * (next.value.g - curr.value.g),
+        b: curr.value.b + t * (next.value.b - curr.value.b),
+        a: curr.value.a + t * (next.value.a - curr.value.a),
+      }
+    }
+  }
+  return colorStops[colorStops.length - 1].value
+}
+
+function mergeStopPositions(colorStops: GradientColor, alphaStops: GradientColor): number[] {
+  const posSet = new Set<number>()
+  for (const s of colorStops) posSet.add(s.position)
+  for (const s of alphaStops) posSet.add(s.position)
+  return Array.from(posSet).sort((a, b) => a - b)
+}
+
+export function blendParticleStops(colorStops: GradientColor, alphaStops: GradientColor): { colors: Color[]; positions: number[] } {
+  const positions = mergeStopPositions(colorStops, alphaStops)
+  const colors = positions.map((pos): Color => {
+    const c = interpolateColor(colorStops, pos)
+    const a = interpolateAlpha(alphaStops, pos)
+    return { r: c.r, g: c.g, b: c.b, a }
+  })
+  return { colors, positions }
+}
+
 export function generateLinearGradient(colors: Color[], positions: number[]) {
   const stopStrings = colors.map((color, i) => {
     const position = positions[i]
@@ -92,10 +150,8 @@ export function generatePreviewColor(
   }
   if (mode === 'particle') {
     value = value as ParticleColor
-    return generateLinearGradient(
-      value.color.map((v) => v.value),
-      value.color.map((v) => v.position)
-    )
+    const { colors, positions } = blendParticleStops(value.color, value.alpha)
+    return generateLinearGradient(colors, positions)
   }
   if (mode === 'hdr') {
     return generateHDR(value as HDRColor)

@@ -2,6 +2,7 @@ import React, { useMemo } from 'react'
 import { useControllableState } from '@radix-ui/react-use-controllable-state'
 
 import type { GradientColor, ParticleColor } from '../ColorPicker/helper'
+import { blendParticleStops } from '../ColorPicker/helper'
 import { Range } from './Range'
 import { ThumbGroup } from './Thumb'
 
@@ -60,6 +61,7 @@ function ParticleSlider(props: ParticleSliderProps) {
   const colorPositionsValues = useMemo(() => colors!.color.map((c) => c.position), [colors])
   const alphasValues = useMemo(() => colors!.alpha.map((c) => c.value), [colors])
   const alphaPositionValues = useMemo(() => colors!.alpha.map((c) => c.position), [colors])
+  const blendedStops = useMemo(() => blendParticleStops(colors!.color, colors!.alpha), [colors])
 
   React.useEffect(() => {
     const { current } = ref
@@ -90,7 +92,7 @@ function ParticleSlider(props: ParticleSliderProps) {
         positions={colorPositionsValues}
         flipY
       />
-      <Range ref={ref} colors={colorValues} positions={colorPositionsValues} />
+      <Range ref={ref} colors={blendedStops.colors} positions={blendedStops.positions} />
       <ThumbGroup
         selectedIndex={selected?.type === 'alpha' ? selected.index : -1}
         onSelect={handleThumbSelect('alpha')}
