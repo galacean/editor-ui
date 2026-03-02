@@ -35,7 +35,7 @@ export const Controlled: StoryFn<typeof BezierCurveEditor> = (args) => {
 export const Uncontrolled: StoryFn<typeof BezierCurveEditor> = (args) => {
   return (
     <Flex gap="md" css={{ width: '100px' }}>
-      <BezierCurveEditor algo="bezier" />
+      <BezierCurveEditor algo="linear" />
     </Flex>
   );
 };
