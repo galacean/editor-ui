@@ -1,28 +1,47 @@
-import { IBezierPoint, IPoint, BezierCurveEditorProps } from "./types";
+import { IBezierPoint, IPoint } from "./types";
 
-export function generateCurve(points: IBezierPoint[], zoom = 1): string {
-  points = points.map((point) => ({
+function scalePoints(points: IBezierPoint[], zoom: number): IBezierPoint[] {
+  return points.map((point) => ({
     point: { x: point.point.x / zoom, y: point.point.y / zoom },
     controlPoint: point.controlPoint ? { x: point.controlPoint.x / zoom, y: point.controlPoint.y / zoom } : null
   }));
-  return `
-    M ${points[0].point.x} ${points[0].point.y}
-    C ${points[0].controlPoint.x} ${points[0].controlPoint.y},
-    ${points[1].controlPoint.x} ${points[1].controlPoint.y}
-    ${points[1].point.x} ${points[1].point.y}
-    ${points
-      .slice(2)
-      .map((point) => ` S ${point.controlPoint.x} ${point.controlPoint.y}, ${point.point.x} ${point.point.y}`)}`;
 }
 
-export function generateLineByPoints(points: IBezierPoint[], zoom = 1): string {
-  points = points.map((point) => ({
-    point: { x: point.point.x / zoom, y: point.point.y / zoom },
-    controlPoint: point.controlPoint ? { x: point.controlPoint.x / zoom, y: point.controlPoint.y / zoom } : null
-  }));
-  return `
-    M ${points[0].point.x} ${points[0].point.y}
-    ${points.slice(1).map((point) => ` L ${point.point.x} ${point.point.y}`)}`;
+export function generateCurve(points: IBezierPoint[], zoom = 1, extendLeftX?: number, extendRightX?: number): string {
+  const scaled = scalePoints(points, zoom);
+  const first = scaled[0];
+  const last = scaled[scaled.length - 1];
+
+  let d = extendLeftX !== undefined
+    ? `M ${extendLeftX} ${first.point.y} L ${first.point.x} ${first.point.y}`
+    : `M ${first.point.x} ${first.point.y}`;
+
+  d += ` C ${first.controlPoint.x} ${first.controlPoint.y}, ${scaled[1].controlPoint.x} ${scaled[1].controlPoint.y} ${scaled[1].point.x} ${scaled[1].point.y}`;
+  d += scaled.slice(2).map((point) => ` S ${point.controlPoint.x} ${point.controlPoint.y}, ${point.point.x} ${point.point.y}`).join('');
+
+  if (extendRightX !== undefined) {
+    d += ` L ${extendRightX} ${last.point.y}`;
+  }
+
+  return d;
+}
+
+export function generateLineByPoints(points: IBezierPoint[], zoom = 1, extendLeftX?: number, extendRightX?: number): string {
+  const scaled = scalePoints(points, zoom);
+  const first = scaled[0];
+  const last = scaled[scaled.length - 1];
+
+  let d = extendLeftX !== undefined
+    ? `M ${extendLeftX} ${first.point.y} L ${first.point.x} ${first.point.y}`
+    : `M ${first.point.x} ${first.point.y}`;
+
+  d += scaled.slice(1).map((point) => ` L ${point.point.x} ${point.point.y}`).join('');
+
+  if (extendRightX !== undefined) {
+    d += ` L ${extendRightX} ${last.point.y}`;
+  }
+
+  return d;
 }
 
 export function convertPointsToBezierPoints(points: IPoint[], algo: "bezier" | "linear" = "bezier"): IBezierPoint[] {
@@ -53,14 +72,15 @@ export function convertBezierPointToPoint(
   if (algo === "linear") {
     return bezierPoints.map((bezierPoint) => bezierPoint.point);
   }
-  return bezierPoints.reduce((acc, bezierPoint, currentIndex) => {
-    if (currentIndex === 0) return [bezierPoint.point, bezierPoint.controlPoint];
-    return [...acc, bezierPoint.controlPoint, bezierPoint.point];
-  }, []);
-}
-
-export function convertPointsToLinearPoints(points: IPoint[]): IPoint[] {
-  return points;
+  const result: IPoint[] = [];
+  for (const bezierPoint of bezierPoints) {
+    if (result.length === 0) {
+      result.push(bezierPoint.point, bezierPoint.controlPoint);
+    } else {
+      result.push(bezierPoint.controlPoint, bezierPoint.point);
+    }
+  }
+  return result;
 }
 
 export function denormalizePoint(
@@ -91,14 +111,14 @@ export function normalizePoint(
   });
 }
 
-export function getDefaultOffset(width: number, height: number) {
+export function getDefaultOffset(height: number) {
   return {
     x: 0,
     y: -Math.round(height / 2)
   };
 }
 
-function factorial(num) {
+function factorial(num: number) {
   if (num === 0) return 1;
   let result = 1;
   for (let i = 2; i <= num; i++) {
