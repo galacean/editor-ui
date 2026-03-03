@@ -369,7 +369,7 @@ function ContextMenu(props: IContextMenuProps) {
 
   return (
     <MenuProvider type="context" size={size}>
-      <ContextMenuPrimitive.Root modal={false} onOpenChange={onOpenChange}>
+      <ContextMenuPrimitive.Root onOpenChange={onOpenChange}>
         <ContextMenuPrimitive.Trigger disabled={disabled} asChild={asChild}>
           {trigger}
         </ContextMenuPrimitive.Trigger>
