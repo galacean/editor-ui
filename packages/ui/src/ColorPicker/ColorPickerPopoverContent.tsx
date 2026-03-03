@@ -182,7 +182,8 @@ const ColorPickerRoot = function ColorPickerRoot(
         return <RgbaColorPicker color={color} onChange={setColor} />
       }
       if (selectedType === 'color') {
-        return <RgbColorPicker color={color} onChange={(c) => setColor({ ...c, a: 1 })} />
+        const rgb = color ? { r: color.r, g: color.g, b: color.b } : color
+        return <RgbColorPicker color={rgb} onChange={(c) => setColor({ ...c, a: 1 })} />
       }
     }
 

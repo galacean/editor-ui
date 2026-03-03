@@ -60,7 +60,7 @@ const ColorPicker = forwardRef<HTMLButtonElement, ColorPickerProps>(function Col
         <ColorPickerTrigger
           ref={forwardedRef}
           fullsize={fullsize}
-          color={value as Color}
+          color={value}
           colorSpace={originalColorSpace}
           mode={mode}
         />

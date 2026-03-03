@@ -3,7 +3,7 @@ import React, { forwardRef, SVGProps } from 'react'
 import { styled } from '../design-system'
 import { TransparentPattern } from './TransparentPattern'
 import { Flex } from '../Flex'
-import { Color, ColorSpace, toNormalizeHexStr } from './helper'
+import { Color, ColorSpace, ColorPickerMode, ParticleColor, GradientColor, generatePreviewColor } from './helper'
 import { useColorSpaceConversion } from './useColorSpaceConversion'
 
 function IconHDR(props: SVGProps<SVGSVGElement>) {
@@ -115,28 +115,38 @@ const StyledTransparentPattern = styled(TransparentPattern, {
 })
 
 interface ColorPickerTriggerProps {
-  color: Color
+  color: Color | GradientColor | ParticleColor
   colorSpace: ColorSpace
   fullsize?: boolean
-  mode?: string
+  mode?: ColorPickerMode
 }
 
 export const ColorPickerTrigger = forwardRef<HTMLButtonElement, ColorPickerTriggerProps>(function Trigger(props, ref) {
   const { color, colorSpace, mode, fullsize, ...rest } = props
 
-  const { displayValue } = useColorSpaceConversion(color, colorSpace, 'sRGB')
+  const isGradientMode = mode === 'particle' || mode === 'gradient'
 
-  const valueStr = `#${toNormalizeHexStr(displayValue)}`
+  const { displayValue } = useColorSpaceConversion(
+    isGradientMode ? ({ r: 0, g: 0, b: 0, a: 1 } as Color) : (color as Color),
+    colorSpace,
+    'sRGB'
+  )
+
+  const backgroundStyle = isGradientMode
+    ? generatePreviewColor(mode, color, colorSpace, 'sRGB')
+    : `rgba(${displayValue.r}, ${displayValue.g}, ${displayValue.b}, ${displayValue.a})`
+
+  const borderColor = 'transparent'
 
   return (
     <StyledTrigger ref={ref} fullsize={fullsize} {...rest}>
       <StyledTransparentPattern
         fullsize={fullsize}
         style={{
-          borderColor: valueStr,
+          borderColor,
         }}
       />
-      <Flex style={{ background: valueStr }} align="both">
+      <Flex style={{ background: backgroundStyle }} align="both">
         {mode === 'hdr' && (
           <StyledHDRBadge>
             <IconHDR />
