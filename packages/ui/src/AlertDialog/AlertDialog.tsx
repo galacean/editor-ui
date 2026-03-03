@@ -13,7 +13,7 @@ const { Root, Trigger, Portal, Overlay, Content, Title: AlertTitle, Description,
 
 const StyledOverlay = styled(Overlay, {
   position: 'fixed',
-  inset: 0,
+  inset: 1,
   animation: `${animations.overlayFadeIn} 150ms cubic-bezier(0.16, 1, 0.3, 1)`,
 })
 const StyledContent = styled(Content, {
@@ -34,12 +34,12 @@ const StyledContent = styled(Content, {
 
   '&:focus': { outline: 'none' },
 
-  "&[data-state=open]": {
-    animation: `${animations.contentFadeIn} 250ms ease`
+  '&[data-state=open]': {
+    animation: `${animations.contentFadeIn} 250ms ease`,
   },
-  "&[data-state=closed]": {
-    animation: `${animations.contentFadeOut} 250ms ease`
-  }
+  '&[data-state=closed]': {
+    animation: `${animations.contentFadeOut} 250ms ease`,
+  },
 })
 
 const StyledFooter = styled(Flex, {
