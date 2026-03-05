@@ -8,6 +8,8 @@ export type Vector4 = { x: number; y: number; z: number; w: number }
 export interface FormItemVector4Props extends Omit<BaseFormItemProps<Vector4>, 'onChange'> {
   min?: number
   max?: number
+  step?: number
+  dragStep?: number
   disabled?: boolean
   onChange?: (value: Vector4, key: keyof Vector4) => void
   slotMapping?: Record<keyof Vector4, ReactNode>
@@ -18,6 +20,8 @@ export function FormItemVector4(props: FormItemVector4Props) {
     onChange,
     min,
     max,
+    step,
+    dragStep,
     disabled,
     value,
     slotMapping = {
@@ -41,6 +45,8 @@ export function FormItemVector4(props: FormItemVector4Props) {
         startSlot={slotMapping?.x}
         min={min}
         max={max}
+        step={step}
+        dragStep={dragStep}
         value={value.x}
         onValueChange={handleOnChange('x')}
       />
@@ -48,6 +54,8 @@ export function FormItemVector4(props: FormItemVector4Props) {
         disabled={disabled}
         min={min}
         max={max}
+        step={step}
+        dragStep={dragStep}
         startSlot={slotMapping?.y}
         value={value.y}
         onValueChange={handleOnChange('y')}
@@ -56,6 +64,8 @@ export function FormItemVector4(props: FormItemVector4Props) {
         disabled={disabled}
         min={min}
         max={max}
+        step={step}
+        dragStep={dragStep}
         startSlot={slotMapping?.z}
         value={value.z}
         onValueChange={handleOnChange('z')}
@@ -64,6 +74,8 @@ export function FormItemVector4(props: FormItemVector4Props) {
         disabled={disabled}
         min={min}
         max={max}
+        step={step}
+        dragStep={dragStep}
         startSlot={slotMapping?.w}
         value={value.w}
         onValueChange={handleOnChange('w')}
