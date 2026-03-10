@@ -5,7 +5,6 @@ export enum DragState {
   None = 'none',
   Dragging = 'dragging',
   Dropped = 'dropped',
-  Cancelled = 'cancelled',
 }
 
 interface IDndContextValue<T = any> {
