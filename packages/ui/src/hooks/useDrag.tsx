@@ -1,5 +1,4 @@
-import { RefObject, useContext, useEffect, useRef } from 'react'
-import React, { createContext, createRef, PropsWithChildren } from 'react'
+import { RefObject, useContext, useEffect, useRef, createContext, PropsWithChildren } from 'react'
 
 export enum DragState {
   None = 'none',
@@ -56,7 +55,8 @@ type IDragReturnType = [IDragElement, IDragElement]
 export function useDrag<T>(options: IDragOptions<T>): IDragReturnType {
   const dragRef = useRef<HTMLDivElement>(null)
   const previewRef = useRef<HTMLDivElement>(null)
-  const { type, item, onEnd, onStart, onCancel, disable = false } = options
+  const optionsRef = useRef(options)
+  optionsRef.current = options
 
   const dragItem = useContext(DragContext)
 
@@ -67,8 +67,13 @@ export function useDrag<T>(options: IDragOptions<T>): IDragReturnType {
     }
 
     const handleDragStart = (e: DragEvent) => {
+      if (optionsRef.current.disable) {
+        e.preventDefault()
+        return
+      }
       e.stopImmediatePropagation()
 
+      const { type, item, onStart } = optionsRef.current
       const dataTransfer = e.dataTransfer!
       dataTransfer.effectAllowed = 'move'
 
@@ -88,6 +93,7 @@ export function useDrag<T>(options: IDragOptions<T>): IDragReturnType {
     const handleDragEnd = (e: DragEvent) => {
       e.preventDefault()
       e.stopImmediatePropagation()
+      const { item, onEnd, onCancel } = optionsRef.current
       if (dragItem.state !== DragState.Dropped) {
         if (onCancel) {
           onCancel(e, item)
@@ -101,13 +107,12 @@ export function useDrag<T>(options: IDragOptions<T>): IDragReturnType {
       dragItem.type = -1
     }
 
-    if (!disable) {
-      dragElement.setAttribute('draggable', 'true')
-      dragElement.addEventListener('dragstart', handleDragStart)
-      dragElement.addEventListener('dragend', handleDragEnd)
-    }
+    dragElement.setAttribute('draggable', 'true')
+    dragElement.addEventListener('dragstart', handleDragStart)
+    dragElement.addEventListener('dragend', handleDragEnd)
 
     return () => {
+      dragElement.removeAttribute('draggable')
       dragElement.removeEventListener('dragstart', handleDragStart)
       dragElement.removeEventListener('dragend', handleDragEnd)
       dragItem.state = DragState.Cancelled

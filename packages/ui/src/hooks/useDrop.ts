@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { useContext, useEffect, useRef } from 'react'
 
 import { DragContext, DragState } from './useDrag'
 
@@ -30,9 +30,11 @@ export interface IDropOptions<T> {
 }
 
 export function useDrop<T extends HTMLElement, U = any>(options: IDropOptions<U>) {
-  const dropRef = React.createRef<T>()
+  const dropRef = useRef<T>(null)
+  const optionsRef = useRef(options)
+  optionsRef.current = options
 
-  const dragItem = React.useContext(DragContext)
+  const dragItem = useContext(DragContext)
 
   useEffect(() => {
     const dropElement = dropRef.current
@@ -40,10 +42,9 @@ export function useDrop<T extends HTMLElement, U = any>(options: IDropOptions<U>
       return
     }
 
-    const { accept, onDrop, onLeave, onEnter, onOver, disable = false } = options
-
     const handleDragOver = (e: DragEvent) => {
-      if (accept & dragItem.type) {
+      const { accept, onOver, disable } = optionsRef.current
+      if (!disable && accept & dragItem.type) {
         e.stopImmediatePropagation()
         e.preventDefault()
         e.dataTransfer!.dropEffect = 'move'
@@ -56,7 +57,8 @@ export function useDrop<T extends HTMLElement, U = any>(options: IDropOptions<U>
     let counter = 0
 
     const handleDragEnter = (e: DragEvent) => {
-      if (accept & dragItem.type) {
+      const { accept, onEnter, disable } = optionsRef.current
+      if (!disable && accept & dragItem.type) {
         e.stopImmediatePropagation()
         e.preventDefault()
         counter++
@@ -67,7 +69,8 @@ export function useDrop<T extends HTMLElement, U = any>(options: IDropOptions<U>
     }
 
     const handleDragLeave = (e: DragEvent) => {
-      if (accept & dragItem.type) {
+      const { accept, onLeave, disable } = optionsRef.current
+      if (!disable && accept & dragItem.type) {
         e.preventDefault()
         e.stopImmediatePropagation()
         counter--
@@ -78,7 +81,8 @@ export function useDrop<T extends HTMLElement, U = any>(options: IDropOptions<U>
     }
 
     const handleDrop = (e: DragEvent) => {
-      if (accept & dragItem.type) {
+      const { accept, onDrop, disable } = optionsRef.current
+      if (!disable && accept & dragItem.type) {
         dragItem.state = DragState.Dropped
         e.preventDefault()
         e.stopImmediatePropagation()
@@ -89,12 +93,10 @@ export function useDrop<T extends HTMLElement, U = any>(options: IDropOptions<U>
       }
     }
 
-    if (!disable) {
-      dropElement.addEventListener('dragleave', handleDragLeave)
-      dropElement.addEventListener('dragenter', handleDragEnter)
-      dropElement.addEventListener('dragover', handleDragOver)
-      dropElement.addEventListener('drop', handleDrop)
-    }
+    dropElement.addEventListener('dragleave', handleDragLeave)
+    dropElement.addEventListener('dragenter', handleDragEnter)
+    dropElement.addEventListener('dragover', handleDragOver)
+    dropElement.addEventListener('drop', handleDrop)
 
     return () => {
       dropElement.removeEventListener('dragenter', handleDragEnter)
