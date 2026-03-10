@@ -30,9 +30,11 @@ export interface IDropOptions<T> {
 }
 
 export function useDrop<T extends HTMLElement, U = any>(options: IDropOptions<U>) {
-  const dropRef = React.createRef<T>()
+  const dropRef = React.useRef<T>(null)
 
   const dragItem = React.useContext(DragContext)
+
+  const { accept, onDrop, onLeave, onEnter, onOver, disable = false } = options
 
   useEffect(() => {
     const dropElement = dropRef.current
@@ -40,7 +42,7 @@ export function useDrop<T extends HTMLElement, U = any>(options: IDropOptions<U>
       return
     }
 
-    const { accept, onDrop, onLeave, onEnter, onOver, disable = false } = options
+    let counter = 0
 
     const handleDragOver = (e: DragEvent) => {
       if (accept & dragItem.type) {
@@ -52,8 +54,6 @@ export function useDrop<T extends HTMLElement, U = any>(options: IDropOptions<U>
         }
       }
     }
-
-    let counter = 0
 
     const handleDragEnter = (e: DragEvent) => {
       if (accept & dragItem.type) {
@@ -97,12 +97,13 @@ export function useDrop<T extends HTMLElement, U = any>(options: IDropOptions<U>
     }
 
     return () => {
+      counter = 0
       dropElement.removeEventListener('dragenter', handleDragEnter)
       dropElement.removeEventListener('dragleave', handleDragLeave)
       dropElement.removeEventListener('dragover', handleDragOver)
       dropElement.removeEventListener('drop', handleDrop)
     }
-  }, [])
+  }, [accept, onDrop, onLeave, onEnter, onOver, disable])
 
   return dropRef
 }

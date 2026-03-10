@@ -5,7 +5,6 @@ export enum DragState {
   None = 'none',
   Dragging = 'dragging',
   Dropped = 'dropped',
-  Cancelled = 'cancelled',
 }
 
 interface IDndContextValue<T = any> {
@@ -17,7 +16,7 @@ interface IDndContextValue<T = any> {
 export const DragContext = createContext({ item: null } as IDndContextValue)
 
 export function DragDropContextProvider(props: PropsWithChildren) {
-  const dragItemRef = useRef<IDndContextValue>({ item: null, type: -1, state: DragState.None })
+  const dragItemRef = useRef<IDndContextValue>({ item: null, type: 0, state: DragState.None })
 
   return <DragContext.Provider value={dragItemRef.current!}>{props.children}</DragContext.Provider>
 }
@@ -96,25 +95,28 @@ export function useDrag<T>(options: IDragOptions<T>): IDragReturnType {
       if (onEnd) {
         onEnd(e, item)
       }
-      dragItem.state = DragState.Cancelled
+      dragItem.state = DragState.None
       dragItem.item = null
-      dragItem.type = -1
+      dragItem.type = 0
     }
 
     if (!disable) {
       dragElement.setAttribute('draggable', 'true')
       dragElement.addEventListener('dragstart', handleDragStart)
       dragElement.addEventListener('dragend', handleDragEnd)
+    } else {
+      dragElement.removeAttribute('draggable')
     }
 
     return () => {
       dragElement.removeEventListener('dragstart', handleDragStart)
       dragElement.removeEventListener('dragend', handleDragEnd)
-      dragItem.state = DragState.Cancelled
+      dragElement.removeAttribute('draggable')
+      dragItem.state = DragState.None
       dragItem.item = null
-      dragItem.type = -1
+      dragItem.type = 0
     }
-  }, [])
+  }, [type, item, onEnd, onStart, onCancel, disable])
 
   return [dragRef, previewRef]
 }
