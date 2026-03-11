@@ -8,6 +8,10 @@ export interface IDropOptions<T> {
    */
   accept: number
   /**
+   * Whether to accept external file drops from the system (e.g. Finder/Explorer).
+   */
+  acceptFiles?: boolean
+  /**
    * The callback that is called when drop the item.
    */
   onDrop?: (e: DragEvent, item: T, dropElement: HTMLElement) => void
@@ -34,7 +38,7 @@ export function useDrop<T extends HTMLElement, U = any>(options: IDropOptions<U>
 
   const dragItem = React.useContext(DragContext)
 
-  const { accept, onDrop, onLeave, onEnter, onOver, disable = false } = options
+  const { accept, acceptFiles = false, onDrop, onLeave, onEnter, onOver, disable = false } = options
 
   useEffect(() => {
     const dropElement = dropRef.current
@@ -44,8 +48,12 @@ export function useDrop<T extends HTMLElement, U = any>(options: IDropOptions<U>
 
     let counter = 0
 
+    const isAccepted = (e: DragEvent) => {
+      return (accept & dragItem.type) || (acceptFiles && e.dataTransfer?.types.includes('Files'))
+    }
+
     const handleDragOver = (e: DragEvent) => {
-      if (accept & dragItem.type) {
+      if (isAccepted(e)) {
         e.stopImmediatePropagation()
         e.preventDefault()
         e.dataTransfer!.dropEffect = 'move'
@@ -56,7 +64,7 @@ export function useDrop<T extends HTMLElement, U = any>(options: IDropOptions<U>
     }
 
     const handleDragEnter = (e: DragEvent) => {
-      if (accept & dragItem.type) {
+      if (isAccepted(e)) {
         e.stopImmediatePropagation()
         e.preventDefault()
         counter++
@@ -67,7 +75,7 @@ export function useDrop<T extends HTMLElement, U = any>(options: IDropOptions<U>
     }
 
     const handleDragLeave = (e: DragEvent) => {
-      if (accept & dragItem.type) {
+      if (isAccepted(e)) {
         e.preventDefault()
         e.stopImmediatePropagation()
         counter--
@@ -78,7 +86,7 @@ export function useDrop<T extends HTMLElement, U = any>(options: IDropOptions<U>
     }
 
     const handleDrop = (e: DragEvent) => {
-      if (accept & dragItem.type) {
+      if (isAccepted(e)) {
         dragItem.state = DragState.Dropped
         e.preventDefault()
         e.stopImmediatePropagation()
@@ -103,7 +111,7 @@ export function useDrop<T extends HTMLElement, U = any>(options: IDropOptions<U>
       dropElement.removeEventListener('dragover', handleDragOver)
       dropElement.removeEventListener('drop', handleDrop)
     }
-  }, [accept, onDrop, onLeave, onEnter, onOver, disable])
+  }, [accept, acceptFiles, onDrop, onLeave, onEnter, onOver, disable])
 
   return dropRef
 }
