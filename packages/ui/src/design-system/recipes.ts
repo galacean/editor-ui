@@ -12,11 +12,11 @@ export const button = styled('button', {
   boxSizing: 'border-box',
   cursor: 'pointer',
   '&:focus-visible': {
-    boxShadow: '0 0 0 3px $colors$blueA7',
+    boxShadow: '$focus',
   },
   '&:disabled': {
-    backgroundColor: '$grayA2',
-    color: '$grayA9',
+    backgroundColor: '$surfaceSubtle',
+    color: '$textMuted',
     cursor: 'not-allowed',
   },
 })
@@ -105,9 +105,9 @@ export const basicItemStyle = styled('div', {
   alignItems: 'center',
   justifyContent: 'space-between',
   lineHeight: 1,
-  fontSize: '11px',
-  borderRadius: '$2',
-  color: '$gray11',
+  fontSize: '$1',
+  borderRadius: '$sm',
+  color: '$text',
   padding: '$1 $2',
   userSelect: 'none',
   boxSizing: 'border-box',
@@ -115,14 +115,12 @@ export const basicItemStyle = styled('div', {
   cursor: 'default',
   // disable state
   '&[data-disabled]': {
-    color: '$grayA8',
+    color: '$textMuted',
     pointerEvents: 'none',
   },
 
   '&:focus': {
-    // backgroundColor: "$grayA3",
-    // color: "$grayA11"
-    backgroundColor: '$blue9',
+    backgroundColor: '$primary',
     color: '$white',
   },
 
@@ -130,18 +128,21 @@ export const basicItemStyle = styled('div', {
     size: {
       xs: {
         height: '$xs',
-        fontSize: '$0_5',
+        fontSize: '$1',
+        borderRadius: '$xs',
         minWidth: 'min-content',
       },
       sm: {
         height: '$sm',
+        borderRadius: '$sm',
       },
       md: {
-        height: '$8',
-        borderRadius: '$3',
+        height: '$md',
+        borderRadius: '$md',
       },
       lg: {
-        height: '$10',
+        height: '$lg',
+        borderRadius: '$md',
       },
     },
     critical: {
@@ -165,10 +166,10 @@ export const basicItemStyle = styled('div', {
 
 export const selectContent: CSS = {
   overflow: 'hidden',
-  backgroundColor: '$gray3',
-  borderRadius: '$2',
-  boxShadow: '0 5px 10px rgba(0,0,0,0.08)',
-  border: '1px solid $grayA4',
+  backgroundColor: '$overlayBg',
+  borderRadius: '$lg',
+  boxShadow: '$popContainer',
+  border: '1px solid $border',
 }
 
 export const dropdownMenuContentStyle = styled('div', {
@@ -185,13 +186,12 @@ export const contextMenuContentStyle = styled('div', {
 
 export const contentStyle = styled('div', {
   position: 'relative',
-  backgroundColor: '$gray2',
-  borderRadius: '$3',
+  backgroundColor: '$overlayBg',
+  borderRadius: '$lg',
   padding: '$1',
-  boxShadow:
-    '0px 0px .5px rgba(0, 0, 0, .5), 0px 1px 5px rgba(0, 0, 0, .4), inset 0px .5px 0px rgba(255, 255, 255, .1), inset 0px 0px .5px rgba(255, 255, 255, .3)',
+  boxShadow: '$popContainer',
   transformOrigin: 'var(--radix-context-menu-content-transform-origin)',
-  border: '1px solid $grayA4',
+  border: '1px solid $border',
   minWidth: '200px',
   animation: `${scaleIn} .2s ease`,
   animationDuration: '300ms',
@@ -215,10 +215,10 @@ export const contentStyle = styled('div', {
         minWidth: 'max-content',
       },
       sm: {
-        borderRadius: '$4',
+        borderRadius: '$lg',
       },
       md: {
-        borderRadius: '$5',
+        borderRadius: '$xl',
       },
     },
   },
@@ -226,14 +226,14 @@ export const contentStyle = styled('div', {
 
 export const labelStyle = styled('span', {
   fontSize: '10px',
-  color: '$gray9',
+  color: '$textMuted',
   padding: '$1 $2',
   userSelect: 'none',
 })
 
 export const separatorStyle = styled('div', {
   height: 1,
-  backgroundColor: '$gray5',
+  backgroundColor: '$border',
   margin: '$1',
 })
 
@@ -286,6 +286,8 @@ export const radioItemStyle = styled('div', basicItemStyle, {
       xs: {
         paddingLeft: '$5',
       },
+      sm: {},
+      md: {},
     },
   },
 })

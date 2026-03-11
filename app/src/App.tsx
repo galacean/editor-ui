@@ -16,7 +16,7 @@ function App() {
             Galacean Editor UI
           </Title>
           <Text>Count: {count}</Text>
-          <Button size="md" variant="primary" onClick={() => setCount(count + 1)} css={{ margin: '$4 0' }}>
+          <Button size="md" variant="solid" onClick={() => setCount(count + 1)} css={{ margin: '$4 0' }}>
             Increment Count
           </Button>
           <Text size="sm" secondary>

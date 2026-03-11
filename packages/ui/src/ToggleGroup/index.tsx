@@ -20,33 +20,33 @@ const StyledItem = styled(
     display: 'flex',
     height: '$sm',
     aspectRatio: '1/1',
-    borderRadius: '$2',
+    borderRadius: '$sm',
     alignItems: 'center',
     justifyContent: 'center',
     fontSize: '$1',
-    color: '$gray11',
+    color: '$text',
     backgroundColor: 'rgba(0, 0, 0, 0)',
-    transition: 'background-color 0.2s, color .2s, transform 0.2s ease',
+    transition: '$backgroundColor, $color, $shadow, transform 0.2s ease',
     cursor: 'pointer',
     variants: {
       size: {
         sm: {
           height: '$sm',
-          borderRadius: '$2',
+          borderRadius: '$sm',
           fontSize: '$1',
           '& > svg': {
-            width: '$4',
-            height: '$4',
+            width: '$iconSm',
+            height: '$iconSm',
             strokeWidth: 1.5,
           },
         },
         md: {
           height: '$md',
-          borderRadius: '$4',
+          borderRadius: '$md',
           fontSize: '$2',
           '& > svg': {
-            width: '$5',
-            height: '$5',
+            width: '$iconMd',
+            height: '$iconMd',
           },
         },
       },
@@ -60,35 +60,36 @@ const StyledItem = styled(
       variant: {
         primary: {
           '&[data-state=on]': {
-            backgroundColor: '$blue9',
-            color: '$white',
+            backgroundColor: '$selectionBg',
+            color: '$selectionText',
             fontWeight: 500,
           },
           '&[data-state=on]:hover': {
-            backgroundColor: '$blue10',
-            color: '$white',
+            backgroundColor: '$selectionBgHover',
+            color: '$selectionText',
           },
         },
         subtle: {
-          backgroundColor: '$grayA3',
+          backgroundColor: '$softBg',
           '&[data-state=on]': {
-            backgroundColor: '$grayA3',
-            color: '$gray11',
+            backgroundColor: '$surface',
+            color: '$textStrong',
             fontWeight: 500,
+            boxShadow: '$border',
           },
           '&[data-state=on]:hover': {
-            backgroundColor: '$grayA4',
-            color: '$gray11',
+            backgroundColor: '$surface',
+            color: '$textStrong',
           },
         },
       },
     },
     '&:hover': {
-      backgroundColor: '$grayA3',
+      backgroundColor: '$softBgHover',
     },
     '&:focus-visible': {
       position: 'relative',
-      boxShadow: 'inset 0 0 0 1px $colors$blue10',
+      boxShadow: '$focus',
     },
   },
   {

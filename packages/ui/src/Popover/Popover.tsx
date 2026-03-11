@@ -16,7 +16,7 @@ const StyledContent = styled(PopoverPrimitive.Content, contentStyle, {
   minWidth: '160px',
   outline: 'none',
   animationDuration: '300ms',
-  animationTimingFunction: 'ubic-bezier(0.25, 0.8, 0.25, 1)',
+  animationTimingFunction: 'cubic-bezier(0.25, 0.8, 0.25, 1)',
   '&[data-state="open"]': {
     '&[data-side="top"]': { animationName: keyframes.slideDownAndFade },
     '&[data-side="right"]': { animationName: keyframes.slideLeftAndFade },
@@ -55,7 +55,7 @@ export type PopoverProps = PopoverContentProps & {
   onOpenChange?: (open: boolean) => void
   open?: boolean
   compact?: boolean
-  constrainSize?: boolean;
+  constrainSize?: boolean
   css?: CSS
   container?: Element
 }
@@ -118,8 +118,7 @@ const Popover = forwardRef<HTMLDivElement, PopoverProps>(function Popover(props:
         open={open}
         ref={forwardedRef}
         onWheel={composeEventHandlers(stopPropagation, rest.onWheel)}
-        onTouchMove={composeEventHandlers(stopPropagation, rest.onTouchMove)}
-      >
+        onTouchMove={composeEventHandlers(stopPropagation, rest.onTouchMove)}>
         {children}
       </PopoverContent>
     </PopoverPrimitive.Root>

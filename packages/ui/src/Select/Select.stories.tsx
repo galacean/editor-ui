@@ -10,6 +10,25 @@ import { Select, SelectItem } from './'
 export default {
   title: 'Inputs/Select',
   tags: ['autodocs'],
+  component: Select,
+  argTypes: {
+    size: {
+      type: {
+        name: 'enum',
+        value: ['xs', 'sm', 'md'],
+      },
+    },
+    variant: {
+      type: {
+        name: 'enum',
+        value: ['outline', 'soft', 'subtle'],
+      },
+    },
+  },
+  args: {
+    size: 'sm',
+    variant: 'soft',
+  },
 } as Meta<typeof Select>
 
 const mock_data = [
@@ -27,33 +46,88 @@ const mock_data = [
  *
  * This component provide controlled and uncontrolled modes.
  */
-export const Overview: StoryFn<typeof Select> = () => {
+export const Overview: StoryFn<typeof Select> = (args) => {
   return (
-    <div>
-      <Flex css={{ width: '260px' }} direction="column" gap="sm">
-        <Select size="md" defaultValue="apple" placeholder="Select Fruits..." startSlot={<IconFilterUp size="12px" />}>
-          {mock_data.map((item, index) => (
-            <SelectItem key={index} value={item.value}>
-              {item.label}
-            </SelectItem>
-          ))}
-        </Select>
-        <Select defaultValue="apple" placeholder="Select Fruits..." startSlot={<IconFilterUp size="12px" />}>
-          {mock_data.map((item, index) => (
-            <SelectItem key={index} value={item.value}>
-              {item.label}
-            </SelectItem>
-          ))}
-        </Select>
-        <Select size="xs" defaultValue="apple" placeholder="Select Fruits..." startSlot={<IconFilterUp size="10px" />}>
-          {mock_data.map((item, index) => (
-            <SelectItem key={index} value={item.value}>
-              {item.label}
-            </SelectItem>
-          ))}
-        </Select>
-      </Flex>
-    </div>
+    <Flex css={{ width: '260px' }} direction="column" gap="sm">
+      <Select {...args} defaultValue="apple" placeholder="Select Fruits..." startSlot={<IconFilterUp size="12px" />}>
+        {mock_data.map((item, index) => (
+          <SelectItem key={index} value={item.value}>
+            {item.label}
+          </SelectItem>
+        ))}
+      </Select>
+    </Flex>
+  )
+}
+
+export const Sizes: StoryFn<typeof Select> = (args) => {
+  return (
+    <Flex css={{ width: '260px' }} direction="column" gap="sm">
+      <Select
+        {...args}
+        size="xs"
+        defaultValue="apple"
+        placeholder="Select Fruits..."
+        startSlot={<IconFilterUp size="10px" />}>
+        {mock_data.map((item, index) => (
+          <SelectItem key={index} value={item.value}>
+            {item.label}
+          </SelectItem>
+        ))}
+      </Select>
+      <Select
+        {...args}
+        size="sm"
+        defaultValue="apple"
+        placeholder="Select Fruits..."
+        startSlot={<IconFilterUp size="12px" />}>
+        {mock_data.map((item, index) => (
+          <SelectItem key={index} value={item.value}>
+            {item.label}
+          </SelectItem>
+        ))}
+      </Select>
+      <Select
+        {...args}
+        size="md"
+        defaultValue="apple"
+        placeholder="Select Fruits..."
+        startSlot={<IconFilterUp size="14px" />}>
+        {mock_data.map((item, index) => (
+          <SelectItem key={index} value={item.value}>
+            {item.label}
+          </SelectItem>
+        ))}
+      </Select>
+    </Flex>
+  )
+}
+
+export const Variants: StoryFn<typeof Select> = (args) => {
+  return (
+    <Flex css={{ width: '260px' }} direction="column" gap="sm">
+      <Select {...args} variant="outline" defaultValue="apple" placeholder="Outline select">
+        {mock_data.map((item, index) => (
+          <SelectItem key={index} value={item.value}>
+            {item.label}
+          </SelectItem>
+        ))}
+      </Select>
+      <Select {...args} variant="soft" defaultValue="apple" placeholder="Soft select">
+        {mock_data.map((item, index) => (
+          <SelectItem key={index} value={item.value}>
+            {item.label}
+          </SelectItem>
+        ))}
+      </Select>
+      <Select {...args} variant="subtle" defaultValue="apple" placeholder="Subtle select">
+        {mock_data.map((item, index) => (
+          <SelectItem key={index} value={item.value}>
+            {item.label}
+          </SelectItem>
+        ))}
+      </Select>
+    </Flex>
   )
 }
 
@@ -114,13 +188,40 @@ export const ValueType: StoryFn<typeof Select> = () => {
   )
 }
 
+export const UncontrolledNumber: StoryFn<typeof Select> = () => {
+  return (
+    <Flex style={{ width: '300px' }}>
+      <Select placeholder="Select Fruits..." defaultValue={0}>
+        <SelectItem value={0}>Apple - value 0</SelectItem>
+        <SelectItem value={1}>Cherry - value 1</SelectItem>
+      </Select>
+    </Flex>
+  )
+}
+
 /**
  * One of the useful feature of the Select component is the ability to define a custom value renderer.
  */
 export const CustomValueRenderer: StoryFn<typeof Select> = () => {
+  const renderFruit = (value: string | number) => {
+    if (String(value) === '0') {
+      return (
+        <Flex align="v" gap="xs">
+          <IconApple size="14px" /> Apple
+        </Flex>
+      )
+    }
+
+    return (
+      <Flex align="v" gap="xs">
+        <IconCherry size="14px" /> Cherry
+      </Flex>
+    )
+  }
+
   return (
     <Flex style={{ width: '300px' }}>
-      <Select placeholder="Select Fruits..." valueType="number">
+      <Select placeholder="Select Fruits..." valueType="number" defaultValue={0} valueRenderer={renderFruit}>
         <SelectItem value={0}>
           <Flex align="v" gap="xs">
             <IconApple size="14px" /> Apple

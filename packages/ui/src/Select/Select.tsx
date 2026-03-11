@@ -25,7 +25,7 @@ export function Select(props: SelectProps) {
 
 export type SelectItemProps = SingleSelectItemProps | ComboboxItemProps
 
-export function SelectItem(props: SelectItemProps & { size?: 'xs' | 'sm' | 'md' }) {
+export function SelectItem(props: SelectItemProps) {
   const { multiple } = useSelectProvider()
 
   if (multiple) {

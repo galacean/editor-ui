@@ -11,7 +11,7 @@ type ColorModeListener = (c: string) => void
 
 const callbackList = new Set<ColorModeListener>()
 
-const isBrowser = () => typeof window !== undefined
+const isBrowser = () => typeof window !== 'undefined'
 const isNode = () => !isBrowser()
 
 export const defaultThemes = {
@@ -41,8 +41,8 @@ const getMediaTheme = (): MediaTheme => {
   if (isNode()) return defaultTheme
 
   const darkQuery = window.matchMedia('(prefers-color-scheme: dark)')
-  if (darkQuery.matches) return defaultThemes.dark
-  return defaultThemes.light
+  if (darkQuery.matches) return 'dark'
+  return 'light'
 }
 
 export function getDefaultTheme(): Theme {

@@ -44,7 +44,7 @@ const ScrollAreaScrollbar = styled(ScrollAreaPrimitive.Scrollbar, {
   userSelect: 'none',
   touchAction: 'none',
   margin: '$0_5',
-  background: '$grayA3',
+  background: '$scrollbarTrack',
   '&[data-orientation="vertical"]': { width: SCROLLBAR_SIZE },
   '&[data-orientation="horizontal"]': {
     flexDirection: 'column',
@@ -56,7 +56,7 @@ const ScrollAreaScrollbar = styled(ScrollAreaPrimitive.Scrollbar, {
         padding: '$0_5 0 $0_5 $0_5',
         margin: 0,
         background: 'transparent',
-        '&:hover': { background: '$grayA5' },
+        '&:hover': { background: '$scrollbarTrackHover' },
       },
     },
   },
@@ -67,7 +67,7 @@ const ScrollAreaScrollbar = styled(ScrollAreaPrimitive.Scrollbar, {
 
 const ScrollAreaThumb = styled(ScrollAreaPrimitive.Thumb, {
   flex: 1,
-  background: '$grayA7',
+  background: '$scrollbarThumb',
   borderRadius: SCROLLBAR_SIZE,
   // increase target size for touch devices https://www.w3.org/WAI/WCAG21/Understanding/target-size.html
   position: 'relative',
@@ -85,7 +85,7 @@ const ScrollAreaThumb = styled(ScrollAreaPrimitive.Thumb, {
 })
 
 const StyledCorner = styled(ScrollAreaPrimitive.Corner, {
-  backgroundColor: '$grayA5',
+  backgroundColor: '$scrollbarTrackHover',
 })
 
 interface ScrollAreaProps extends PrimitiveScrollAreaProps {

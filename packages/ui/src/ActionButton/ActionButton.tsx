@@ -1,4 +1,4 @@
-import { forwardRef } from 'react'
+import { PropsWithChildren, forwardRef } from 'react'
 
 import { StitchesComponent, styled } from '../design-system'
 import { useAsyncStatus } from '../hooks/useAsyncStatus'
@@ -8,18 +8,22 @@ import { IconRightBottomCorner } from '../Icons/IconRightBottomCorner'
 
 const StyledActionButton = styled('button', button, {
   boxShadow: '$prepend',
-  transition: '$shadow, transform 0.2s ease',
-  borderRadius: '$2',
-  color: '$gray11',
+  transition: '$shadow, $borderColor, $backgroundColor, $color, transform 0.2s ease',
+  borderRadius: '$sm',
+  color: '$text',
   flexShrink: 0,
   flexGrow: 0,
   padding: 0,
   '&:focus-visible': {
-    boxShadow: '0 0 0 1px $colors$blue10',
+    boxShadow: '$focus',
   },
   '&:disabled': {
-    backgroundColor: 'transparent',
-    borderColor: 'transparent',
+    color: '$textMuted',
+    boxShadow: 'none',
+    cursor: 'not-allowed',
+    '&:hover': {
+      color: '$textMuted',
+    },
   },
   variants: {
     corner: {
@@ -31,112 +35,135 @@ const StyledActionButton = styled('button', button, {
       xs: {
         height: '$xs',
         width: '$xs',
-        borderRadius: '$2',
+        borderRadius: '$xs',
         '& > svg': {
-          height: '$3',
-          width: '$3',
+          height: '$iconXs',
+          width: '$iconXs',
+          strokeWidth: 1.5,
         },
-      },
-      s: {
-        height: '$s',
-        width: '$s',
-        borderRadius: '$2',
-        '& > svg': {
-          height: '14px',
-          width: '14px',
+        [`& ${Spin}`]: {
+          height: '$2',
+          width: '$2',
         },
       },
       sm: {
         height: '$sm',
         width: '$sm',
-        borderRadius: '$2',
-        fontSize: '$sm',
+        borderRadius: '$sm',
+        fontSize: '$1',
         '& svg': {
-          height: '14px',
-          width: '14px',
+          height: '$iconSm',
+          width: '$iconSm',
           strokeWidth: 1.5,
+        },
+        [`& ${Spin}`]: {
+          height: '$iconSm',
+          width: '$iconSm',
         },
       },
       md: {
         height: '$md',
         width: '$md',
-        borderRadius: '$4',
+        borderRadius: '$md',
         '& svg': {
-          height: '$5',
-          width: '$5',
+          height: '$iconMd',
+          width: '$iconMd',
+        },
+        [`& ${Spin}`]: {
+          height: '$iconMd',
+          width: '$iconMd',
         },
       },
       lg: {
-        height: '$8',
-        width: '$8',
-        borderRadius: '$4',
+        height: '$lg',
+        width: '$lg',
+        borderRadius: '$md',
         '& svg': {
-          height: '$4',
-          width: '$4',
+          height: '$iconLg',
+          width: '$iconLg',
+        },
+        [`& ${Spin}`]: {
+          height: '$iconLg',
+          width: '$iconLg',
         },
       },
     },
     variant: {
-      default: {
-        border: '1px solid $gray6',
-        borderColor: '$gray6',
+      outline: {
+        border: '1px solid $border',
         borderWidth: '1px',
         borderStyle: 'solid',
-        color: '$gray11',
+        color: '$text',
         fontSize: '$1',
         backgroundColor: 'transparent',
         '&:hover': {
-          color: '$gray12',
-          borderColor: '$gray7',
-          backgroundColor: '$grayA3',
+          color: '$textStrong',
+          borderColor: '$borderStrong',
+          backgroundColor: '$surfaceSubtle',
         },
         '&:disabled': {
-          color: '$grayA8',
-          borderColor: '$gray7',
-          backgroundColor: '$grayA3',
+          color: '$textMuted',
+          borderColor: '$border',
+          backgroundColor: '$surfaceSubtle',
           cursor: 'not-allowed',
         },
       },
-      secondary: {
-        backgroundColor: '$secondaryBg',
+      soft: {
+        color: '$text',
+        backgroundColor: '$softBg',
+        borderColor: 'transparent',
         '&:hover': {
-          backgroundColor: '$grayA4',
+          color: '$textStrong',
+          backgroundColor: '$softBgHover',
+          borderColor: 'transparent',
         },
         '&:disabled': {
-          color: '$gray7',
-          backgroundColor: '$grayA2',
+          color: '$textMuted',
+          borderColor: 'transparent',
+          backgroundColor: '$surfaceSubtle',
           cursor: 'not-allowed',
         },
       },
       subtle: {
         color: 'CurrentColor',
         backgroundColor: 'transparent',
+        borderColor: 'transparent',
         '&:hover': {
-          color: '$gray12',
-          backgroundColor: '$grayA4',
+          color: '$textStrong',
+          backgroundColor: '$surfaceSubtle',
         },
         '&:disabled': {
-          color: '$gray8',
+          color: '$textMuted',
+          borderColor: 'transparent',
+          backgroundColor: 'transparent',
           '&:hover': {
-            color: '$gray8',
+            color: '$textMuted',
             backgroundColor: 'transparent',
           },
         },
       },
-      transparent: {
-        color: '$gray11',
+      ghost: {
+        color: '$text',
         backgroundColor: 'transparent',
+        borderColor: 'transparent',
         '&:hover': {
-          color: '$gray12',
+          color: '$textStrong',
+        },
+        '&:disabled': {
+          color: '$textMuted',
+          borderColor: 'transparent',
+          backgroundColor: 'transparent',
         },
       },
     },
     active: {
       true: {
-        backgroundColor: '$blue9',
-        color: '$white',
+        backgroundColor: '$selectionBg',
+        borderColor: '$selectionBorder',
+        color: '$selectionText',
         '&:hover': {
-          backgroundColor: '$blueA9',
+          backgroundColor: '$selectionBgHover',
+          borderColor: '$selectionBorder',
         },
       },
     },
@@ -150,30 +177,63 @@ const StyledActionButton = styled('button', button, {
   },
   defaultVariants: {
     size: 'sm',
-    variant: 'secondary',
+    variant: 'soft',
   },
   compoundVariants: [
     {
-      variant: 'subtle',
+      variant: 'outline',
       active: true,
       css: {
-        color: '$white',
-        backgroundColor: 'transparent',
+        color: '$selectionText',
+        backgroundColor: '$selectionBg',
+        borderColor: '$selectionBorder',
         '&:hover': {
-          color: '$white',
-          backgroundColor: '$grayeA3',
+          color: '$selectionText',
+          backgroundColor: '$selectionBgHover',
+          borderColor: '$selectionBorder',
+        },
+        '&:disabled': {
+          color: '$textMuted',
+          backgroundColor: '$surfaceSubtle',
+          borderColor: '$border',
         },
       },
     },
     {
-      variant: 'transparent',
+      variant: 'subtle',
       active: true,
       css: {
-        color: '$white',
-        backgroundColor: '$blue9',
+        color: '$selectionText',
+        backgroundColor: '$selectionBg',
+        borderColor: 'transparent',
         '&:hover': {
-          color: '$white',
-          backgroundColor: '$blue10',
+          color: '$selectionText',
+          backgroundColor: '$selectionBgHover',
+          borderColor: 'transparent',
+        },
+        '&:disabled': {
+          color: '$textMuted',
+          backgroundColor: 'transparent',
+          borderColor: 'transparent',
+        },
+      },
+    },
+    {
+      variant: 'ghost',
+      active: true,
+      css: {
+        color: '$selectionText',
+        backgroundColor: '$selectionBg',
+        borderColor: 'transparent',
+        '&:hover': {
+          color: '$selectionText',
+          backgroundColor: '$selectionBgHover',
+          borderColor: 'transparent',
+        },
+        '&:disabled': {
+          color: '$textMuted',
+          backgroundColor: 'transparent',
+          borderColor: 'transparent',
         },
       },
     },
@@ -188,22 +248,39 @@ const StyledActionButtonGroup = styled('div', {
         [`& ${StyledActionButton}`]: {
           borderRadius: 0,
         },
+        [`& ${StyledActionButton}:not(:first-child)`]: {
+          marginLeft: '-1px',
+        },
+        [`& ${StyledActionButton}:hover, & ${StyledActionButton}:focus-visible, & ${StyledActionButton}[data-state="open"]`]:
+          {
+            position: 'relative',
+            zIndex: 1,
+          },
         [`& ${StyledActionButton}:nth-child(1)`]: {
-          borderRight: 0,
-          borderRadius: '$2 0 0 $2',
+          borderRadius: '$sm 0 0 $sm',
         },
         [`& ${StyledActionButton}:nth-last-child(1)`]: {
-          borderRadius: '0 $2 $2 0',
+          borderRadius: '0 $sm $sm 0',
         },
       },
       vertical: {
         flexDirection: 'column',
+        [`& ${StyledActionButton}`]: {
+          borderRadius: 0,
+        },
+        [`& ${StyledActionButton}:not(:first-child)`]: {
+          marginTop: '-1px',
+        },
+        [`& ${StyledActionButton}:hover, & ${StyledActionButton}:focus-visible, & ${StyledActionButton}[data-state="open"]`]:
+          {
+            position: 'relative',
+            zIndex: 1,
+          },
         [`& ${StyledActionButton}:nth-child(1)`]: {
-          borderBottom: 0,
-          borderRadius: '$2 $2 0 0',
+          borderRadius: '$sm $sm 0 0',
         },
         [`& ${StyledActionButton}:nth-last-child(1)`]: {
-          borderRadius: '0 0 $2 $2',
+          borderRadius: '0 0 $sm $sm',
         },
       },
     },
@@ -219,7 +296,7 @@ const CornerIcon = styled(IconRightBottomCorner, {
   position: 'absolute',
   width: '4px !important',
   height: '4px !important',
-  color: 'var(CurrentColor, $gray8)',
+  color: 'currentColor',
   bottom: 3,
   right: 3,
 })
@@ -238,7 +315,7 @@ export interface ActionButtonProps extends StitchesComponent<typeof StyledAction
 }
 
 export const ActionButton = forwardRef<HTMLButtonElement, ActionButtonProps>(function ActionButton(props, forwardedRf) {
-  const { loading: propLoading, async, onClick, size, corner, ...rest } = props
+  const { loading: propLoading, async, onClick, size, corner, disabled, type = 'button', ...rest } = props
   const { handleClick, loading } = useAsyncStatus({
     asyncFunction: async,
     propLoading,
@@ -252,8 +329,10 @@ export const ActionButton = forwardRef<HTMLButtonElement, ActionButtonProps>(fun
       onClick={handleClick}
       ref={forwardedRf}
       corner={corner}
-      disabled={loading || props.disabled}>
-      {loading ? <Spin size="xs" color="default" /> : rest.children}
+      type={type}
+      aria-busy={loading || undefined}
+      disabled={loading || disabled}>
+      {loading ? <Spin size="xs" color="inherit" /> : rest.children}
       {corner && <CornerIcon />}
     </StyledActionButton>
   )
@@ -261,4 +340,12 @@ export const ActionButton = forwardRef<HTMLButtonElement, ActionButtonProps>(fun
 
 ActionButton.toString = () => StyledActionButton.toString()
 
-export { StyledActionButtonGroup as ActionButtonGroup }
+export type ActionButtonGroupProps = React.ComponentProps<typeof StyledActionButtonGroup>
+
+export const ActionButtonGroup = forwardRef<HTMLDivElement, PropsWithChildren<ActionButtonGroupProps>>(
+  function ActionButtonGroup(props, forwardedRef) {
+    return <StyledActionButtonGroup ref={forwardedRef} {...props} />
+  }
+)
+
+ActionButtonGroup.displayName = 'ActionButtonGroup'

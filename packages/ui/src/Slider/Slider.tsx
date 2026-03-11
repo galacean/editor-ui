@@ -12,7 +12,7 @@ const StyledTrack = styled(SliderPrimitive.Track, {
   flexGrow: 1,
   borderRadius: '$2',
   overflow: 'hidden',
-  color: '$gray11',
+  color: '$text',
   '&[data-orientation="horizontal"]': {
     height: '100%',
   },
@@ -20,20 +20,20 @@ const StyledTrack = styled(SliderPrimitive.Track, {
     width: '100%',
   },
   '&[data-disabled]': {
-    backgroundColor: '$grayA3',
+    backgroundColor: '$softBg',
   },
 })
 
 const StyledRange = styled(SliderPrimitive.Range, {
   position: 'absolute',
-  backgroundColor: '$grayA4',
+  backgroundColor: '$softBgHover',
   height: '100%',
   transition: 'background-color .2s ease',
   '&[data-orientation="vertical"]': {
     width: '100%',
   },
   '&[data-disabled]': {
-    backgroundColor: '$grayA2',
+    backgroundColor: '$surfaceSubtle',
   },
 })
 
@@ -43,14 +43,14 @@ const StyledThumb = styled(SliderPrimitive.Thumb, {
   display: 'block',
   width: '$0_5',
   height: '100%',
-  backgroundColor: '$grayA6',
+  backgroundColor: '$borderStrong',
   transition: 'opacity .2s ease, background-color .2s ease, width .2s ease',
   '&[data-orientation="vertical"]': {
     width: '$6',
     height: '$0_5',
   },
   '&[data-disabled"]': {
-    backgroundColor: '$grayA4',
+    backgroundColor: '$border',
   },
 })
 
@@ -63,7 +63,7 @@ const StyledSlider = styled(SliderPrimitive.Root, {
   width: '100%',
   '&[data-orientation="horizontal"]': {
     height: '$sm',
-    backgroundColor: '$grayA3',
+    backgroundColor: '$softBg',
     borderRadius: '$2',
   },
   '&[data-orientation="vertical"]': {
@@ -73,16 +73,16 @@ const StyledSlider = styled(SliderPrimitive.Root, {
   cursor: 'ew-resize',
   '&:hover': {
     [`& ${StyledRange}`]: {
-      backgroundColor: '$blueA10',
+      backgroundColor: '$selectionBgHover',
     },
     [`& ${StyledThumb}`]: {
       width: '3px',
-      backgroundColor: '$white',
+      backgroundColor: '$selectionText',
     },
   },
   '&[data-disabled]': {
     pointerEvents: 'none',
-    color: '$grayA7',
+    color: '$textMuted',
   },
   variants: {
     compact: {
@@ -97,13 +97,13 @@ const StyledSlider = styled(SliderPrimitive.Root, {
           // backgroundColor: "$white",
           borderRadius: '$round',
           '&[data-disabled]': {
-            backgroundColor: '$gray11',
+            backgroundColor: '$textMuted',
           },
         },
         [`& ${StyledRange}`]: {
-          backgroundColor: '$blue9',
+          backgroundColor: '$selectionBg',
           '&[data-disabled]': {
-            backgroundColor: '$blueA8',
+            backgroundColor: '$focusRingMuted',
           },
         },
       },
@@ -127,7 +127,7 @@ const StyledSliderSlot = styled('div', {
   top: '50%',
   fontSize: '9px',
   fontFamily: '$mono',
-  color: '$grayA10',
+  color: '$textMuted',
   variants: {
     position: {
       start: {
@@ -169,7 +169,7 @@ interface RulerProps {
 }
 
 const StyledLine = styled('line', {
-  stroke: '$grayA6',
+  stroke: '$borderStrong',
 })
 
 function Ruler({ length, interval, majorInterval }: RulerProps) {

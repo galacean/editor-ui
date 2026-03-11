@@ -197,7 +197,7 @@ function SubMenuItem(props: PropsWithChildren<ISubMenuItemProps>) {
         <IconChevronRight size="12px" />
       </SubItem>
       <Portal>
-        <SubContent>
+        <SubContent size={size}>
           <ScrollArea type="always" subtle={false} asContainer>
             {children}
           </ScrollArea>
@@ -267,10 +267,11 @@ const DotIndicator = styled('div', {
 
 function RadioItem(props: RadioItemProps) {
   const { value, onSelect, name } = props
+  const { size } = useContext(MenuContext)
   const { RadioItem: StyledRadioItem, ItemIndicator } = useResolveMenuAnatomy()
 
   return (
-    <StyledRadioItem value={value} onSelect={onSelect}>
+    <StyledRadioItem value={value} onSelect={onSelect} size={size}>
       <ItemIndicator>
         <DotIndicator />
       </ItemIndicator>
@@ -314,14 +315,24 @@ type IDropdownMenuProps = Pick<DropdownMenuContentProps, PickedContentProps> &
   }
 
 function DropdownMenu(props: PropsWithChildren<IDropdownMenuProps>) {
-  const { children, portal = true, size = 'sm', side, sideOffset = 4, align = 'start', alignOffset, disabled = false, ...rest } = props
+  const {
+    children,
+    portal = true,
+    size = 'sm',
+    side,
+    sideOffset = 4,
+    align = 'start',
+    alignOffset,
+    disabled = false,
+    ...rest
+  } = props
 
-  let Portal: any = Fragment;
-  let container: Element;
+  let Portal: any = Fragment
+  let container: Element
 
   if (portal) {
     Portal = DropdownMenuPrimitive.Portal
-    if(typeof portal === 'object') {
+    if (typeof portal === 'object') {
       container = portal
     }
   }
@@ -358,14 +369,23 @@ type IContextMenuProps = ContextMenuProps & {
 }
 
 function ContextMenu(props: IContextMenuProps) {
-  const { trigger, size = 'sm', children, onPointerDownOutside, portal = true, asChild, disabled = false, hidden } = props
+  const {
+    trigger,
+    size = 'sm',
+    children,
+    onPointerDownOutside,
+    portal = true,
+    asChild,
+    disabled = false,
+    hidden,
+  } = props
 
-  let Portal: any = Fragment;
-  let container: Element;
+  let Portal: any = Fragment
+  let container: Element
 
   if (portal) {
     Portal = ContextMenuPrimitive.Portal
-    if(typeof portal === 'object') {
+    if (typeof portal === 'object') {
       container = portal
     }
   }

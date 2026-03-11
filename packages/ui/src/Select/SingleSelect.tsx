@@ -18,64 +18,86 @@ const SelectTrigger = styled(SelectPrimitive.SelectTrigger, {
   position: 'relative',
   display: 'inline-flex',
   alignItems: 'center',
-  justifyContent: 'space-between',
-  padding: '0 $1_5 0 $2',
-  fontSize: '$1',
-  height: '$6',
-  gap: '$1',
-  backgroundColor: '$grayA3',
-  color: '$gray11',
+  justifyContent: 'flex-start',
+  color: '$text',
+  border: '1px solid transparent',
+  transition: '$borderColor, $backgroundColor, $color, $shadow',
   userSelect: 'none',
   cursor: 'pointer',
   width: '100%',
   boxSizing: 'border-box',
-  whiteSpace: 'nowrap',
-  overflow: 'hidden',
-  textOverflow: 'ellipsis',
   '&:disabled': {
-    backgroundColor: '$grayA2',
-    color: '$grayA8',
+    backgroundColor: '$surfaceSubtle',
+    borderColor: '$border',
+    color: '$textMuted',
     '&:hover': {
-      backgroundColor: '$grayA2',
-      color: '$grayA8',
+      backgroundColor: '$surfaceSubtle',
+      color: '$textMuted',
       cursor: 'default',
     },
   },
   '&:hover': {
-    backgroundColor: '$grayA4',
+    backgroundColor: '$softBgHover',
+    borderColor: '$borderStrong',
   },
   '&[data-placeholder]': {
-    color: '$gray11',
+    color: '$textMuted',
   },
-  // '&:focus-visible': {
-  //   boxShadow: 'inset 0 0 0 1px $colors$blue10',
-  // },
-  '& > span:first-child': {
-    display: 'flex',
-    flex: 1,
-    height: '100%',
-    alignItems: 'center',
-    minWidth: 0,
-    lineHeight: 0,
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    whiteSpace: 'nowrap',
+  '&:focus-visible': {
+    borderColor: '$borderStrong',
+    boxShadow: '$focus',
   },
   variants: {
     size: {
       xs: {
-        height: '$xs',
-        borderRadius: '$1',
+        height: '$controlXs',
+        borderRadius: '$xs',
+        padding: '0 $5 0 $1_5',
+        fontSize: '$1',
       },
       sm: {
         height: '$sm',
-        borderRadius: '$2',
+        borderRadius: '$sm',
+        padding: '0 $5 0 $2',
+        fontSize: '$1',
       },
       md: {
         height: '$md',
-        borderRadius: '$4',
+        borderRadius: '$md',
+        padding: '0 $6 0 $3',
+        fontSize: '$2',
       },
     },
+    variant: {
+      outline: {
+        backgroundColor: '$surface',
+        borderColor: '$border',
+        '&:hover': {
+          backgroundColor: '$surfaceSubtle',
+          borderColor: '$borderStrong',
+        },
+      },
+      soft: {
+        backgroundColor: '$softBg',
+        borderColor: 'transparent',
+        '&:hover': {
+          backgroundColor: '$softBgHover',
+          borderColor: 'transparent',
+        },
+      },
+      subtle: {
+        backgroundColor: 'transparent',
+        borderColor: 'transparent',
+        '&:hover': {
+          backgroundColor: '$surfaceSubtle',
+          borderColor: 'transparent',
+        },
+      },
+    },
+  },
+  defaultVariants: {
+    size: 'sm',
+    variant: 'soft',
   },
 })
 
@@ -88,16 +110,60 @@ const SelectIcon = styled(SelectPrimitive.SelectIcon, {
   right: 4,
   lineHeight: 1,
   '& > svg': {
-    height: '14px',
-    width: '14px',
+    height: '$iconXs',
+    width: '$iconXs',
   },
+  variants: {
+    size: {
+      xs: {
+        '& > svg': {
+          height: '$iconXs',
+          width: '$iconXs',
+        },
+      },
+      sm: {
+        '& > svg': {
+          height: '$iconSm',
+          width: '$iconSm',
+        },
+      },
+      md: {
+        '& > svg': {
+          height: '$iconMd',
+          width: '$iconMd',
+        },
+      },
+    },
+  },
+})
+
+const StyledTriggerContent = styled('div', {
+  display: 'flex',
+  flex: 1,
+  minWidth: 0,
+  height: '100%',
+  alignItems: 'center',
+  gap: '$1',
+})
+
+const SelectValue = styled(SelectPrimitive.Value, {
+  display: 'flex',
+  flex: 1,
+  minWidth: 0,
+  height: '100%',
+  alignItems: 'center',
+  lineHeight: 1,
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  whiteSpace: 'nowrap',
+  color: 'inherit',
 })
 
 const CornerIcon = styled(IconRightBottomCorner, {
   position: 'absolute',
   width: '4px !important',
   height: '4px !important',
-  color: 'var(CurrentColor, $gray8)',
+  color: 'currentColor',
   bottom: 1,
   right: 1,
 })
@@ -105,11 +171,11 @@ const CornerIcon = styled(IconRightBottomCorner, {
 const SelectContent = styled(SelectPrimitive.Content, {
   overflow: 'auto',
   maxHeight: 'min(300px, var(--radix-select-content-available-height))',
-  backgroundColor: '$gray2',
+  backgroundColor: '$surfaceOverlay',
   minWidth: 'var(--radix-select-trigger-width)',
-  borderRadius: '$4',
-  boxShadow: '0 5px 10px rgba(0,0,0,0.08)',
-  border: '1px solid $grayA4',
+  borderRadius: '$lg',
+  boxShadow: '$popContainer',
+  border: '1px solid $border',
 })
 
 const SelectViewport = styled(SelectPrimitive.Viewport, {
@@ -133,7 +199,7 @@ const scrollButtonStyles = {
   alignItems: 'center',
   justifyContent: 'center',
   borderRadius: '$2',
-  color: '$gray10',
+  color: '$textMuted',
   cursor: 'default',
 }
 
@@ -166,6 +232,7 @@ const StyledSelectItemContent = styled('span', {
 const StyledSelectSlot = styled(Flex, {
   flexShrink: 0,
   userSelect: 'none',
+  color: '$textMuted',
   variants: {
     size: {
       xs: {
@@ -178,7 +245,7 @@ const StyledSelectSlot = styled(Flex, {
       },
       md: {
         paddingRight: '$2',
-        fontSize: '$1_5',
+        fontSize: '$2',
       },
     },
   },
@@ -235,6 +302,7 @@ export interface SelectProps extends Omit<PrimitiveSelectProps, 'value' | 'defau
   placeholder?: string
   position?: SelectContentProps['position']
   size?: 'xs' | 'sm' | 'md'
+  variant?: 'outline' | 'soft' | 'subtle'
   width?: 'initial'
   valueType?: 'string' | 'number'
   value?: string | number
@@ -259,6 +327,7 @@ function Select(props: SelectProps) {
     position = 'popper',
     valueRenderer,
     size = 'sm',
+    variant = 'soft',
     arrow = true,
     cornerArrow = false,
     width,
@@ -277,12 +346,16 @@ function Select(props: SelectProps) {
       valueType = 'number'
     } else if (typeof propValue === 'string') {
       valueType = 'string'
+    } else if (typeof propDefaultValue === 'number') {
+      valueType = 'number'
+    } else if (typeof propDefaultValue === 'string') {
+      valueType = 'string'
     }
   }
 
   const [value, setValue] = useControllableState<string>({
     prop: propValue !== undefined && propValue !== null ? String(propValue) : undefined,
-    defaultProp: propDefaultValue ? String(propDefaultValue) : undefined,
+    defaultProp: propDefaultValue !== undefined && propDefaultValue !== null ? String(propDefaultValue) : undefined,
     onChange: (val) => {
       if (props.onValueChange) {
         if (valueType === 'number') {
@@ -293,23 +366,25 @@ function Select(props: SelectProps) {
     },
   })
 
-  const renderedValue = valueRenderer ? valueRenderer(value, 'trigger') : undefined
+  const triggerValue =
+    valueType === 'number' && value !== undefined && value !== ''
+      ? Number(value)
+      : (value as string | number | undefined)
+  const renderedValue = valueRenderer ? valueRenderer(triggerValue as string | number, 'trigger') : undefined
 
   return (
     <SelectContext.Provider value={{ size, valueType: valueType as unknown as 'string' | 'number', valueRenderer }}>
       <SelectPrimitive.Root {...rest} value={value} onValueChange={setValue}>
-        <SelectTrigger size={size} id={id} css={triggerCss}>
-          {!!startSlot ? (
-            <Flex>
+        <SelectTrigger size={size} variant={variant} id={id} css={triggerCss}>
+          <StyledTriggerContent>
+            {!!startSlot && (
               <StyledSelectSlot align="both" size={size}>
                 {startSlot}
               </StyledSelectSlot>
-              <SelectPrimitive.Value placeholder={placeholder}>{renderedValue}</SelectPrimitive.Value>
-            </Flex>
-          ) : (
-            <SelectPrimitive.Value placeholder={placeholder}>{renderedValue}</SelectPrimitive.Value>
-          )}
-          {arrow && <SelectIcon>{cornerArrow ? <CornerIcon /> : <IconChevronDown />}</SelectIcon>}
+            )}
+            <SelectValue placeholder={placeholder}>{renderedValue}</SelectValue>
+          </StyledTriggerContent>
+          {arrow && <SelectIcon size={size}>{cornerArrow ? <CornerIcon /> : <IconChevronDown />}</SelectIcon>}
         </SelectTrigger>
         <SelectPrimitive.Portal>
           <SelectContent position={position} sideOffset={sideOffset} collisionPadding={4}>

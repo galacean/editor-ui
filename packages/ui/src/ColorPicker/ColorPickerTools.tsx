@@ -100,7 +100,7 @@ export function ColorPickerTools(props: ColorPickerToolsProps) {
   return (
     <StyledColorPickerTools align="v" gap="sm" readonly={readonly}>
       {isSupported() && (
-        <ActionButton size="md" variant="transparent" onClick={pickColor}>
+        <ActionButton size="md" variant="ghost" onClick={pickColor}>
           <EyeDropperIcon />
         </ActionButton>
       )}

@@ -34,12 +34,12 @@ const StyledContent = styled(Content, {
 
   '&:focus': { outline: 'none' },
 
-  "&[data-state=open]": {
-    animation: `${animations.contentFadeIn} 250ms ease`
+  '&[data-state=open]': {
+    animation: `${animations.contentFadeIn} 250ms ease`,
   },
-  "&[data-state=closed]": {
-    animation: `${animations.contentFadeOut} 250ms ease`
-  }
+  '&[data-state=closed]': {
+    animation: `${animations.contentFadeOut} 250ms ease`,
+  },
 })
 
 const StyledFooter = styled(Flex, {
@@ -94,14 +94,14 @@ function AlertDialog(props: PropsWithChildren<IAlertDialogProps & AlertDialogPro
             <StyledFooter gap="sm" justifyContent="end" css={{ marginTop: '$8' }}>
               {onClose && (
                 <Cancel asChild>
-                  <Button variant="secondary" size="md" onClick={onClose}>
+                  <Button variant="soft" size="md" onClick={onClose}>
                     {cancelText}
                   </Button>
                 </Cancel>
               )}
               {onConfirm && (
                 <Action asChild>
-                  <Button variant="primary" critical size="md" onClick={onConfirm}>
+                  <Button variant="solid" critical size="md" onClick={onConfirm}>
                     {confirmText}
                   </Button>
                 </Action>

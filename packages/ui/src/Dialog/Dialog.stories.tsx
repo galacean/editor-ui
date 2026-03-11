@@ -17,7 +17,7 @@ export const Overview: StoryFn<typeof Dialog> = (args) => {
 
   return (
     <Flex gap="md">
-      <Button variant="secondary" size="md" onClick={() => setOpen(true)}>
+      <Button variant="soft" size="md" onClick={() => setOpen(true)}>
         Open Dialog
       </Button>
       <Dialog open={open} closable onOpenChange={(open) => setOpen(false)}>

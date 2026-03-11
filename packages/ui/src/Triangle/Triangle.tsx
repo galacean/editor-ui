@@ -16,7 +16,7 @@ const StyledTriangle = styled('div', {
       },
     },
     size: {
-      s: {
+      xs: {
         borderLeftWidth: '4px',
         borderRightWidth: '4px',
         borderTopWidth: '4px',

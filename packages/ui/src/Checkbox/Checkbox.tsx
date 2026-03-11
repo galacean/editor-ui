@@ -16,31 +16,31 @@ const StyledCheckboxRoot = styled(CheckboxPrimitive.Root, {
   borderRadius: '$1',
   boxShadow: '$prepend',
   transition: '$shadow',
-  backgroundColor: '$gray4',
-  border: '1px solid $grayA4',
+  backgroundColor: '$softBg',
+  border: '1px solid $border',
   padding: 0,
   '&[data-state="checked"]': {
-    backgroundColor: '$blue9',
-    borderColor: '$blue9',
-    color: 'white',
-    fill: 'white',
+    backgroundColor: '$selectionBg',
+    borderColor: '$selectionBorder',
+    color: '$selectionText',
+    fill: '$selectionText',
   },
   '&[disabled]': {
-    backgroundColor: '$gray4',
-    borderColor: '$gray4',
-    color: '$gray9',
+    backgroundColor: '$surfaceSubtle',
+    borderColor: '$border',
+    color: '$textMuted',
   },
   '&[data-focused="true"]': {
-    boxShadow: '0 0 0 3px $colors$grayA7',
+    boxShadow: '0 0 0 3px $colors$focusRingMuted',
   },
   '&:focus-visible': {
-    outline: '2px solid $blueA7',
+    outline: '2px solid $focusRing',
   },
 })
 
 const StyledCheckboxLabel = styled(LabelPrimitive.Label, {
   fontSize: '$1',
-  color: '$gray11',
+  color: '$text',
   marginLeft: '$2',
   userSelect: 'none',
 })

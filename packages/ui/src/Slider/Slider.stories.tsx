@@ -1,23 +1,30 @@
-import { useState } from "react";
-import { Meta, StoryFn } from "@storybook/react";
+import { useState } from 'react'
+import { Meta, StoryFn } from '@storybook/react'
 
-import { Slider } from "./";
-import { Flex } from "../Flex";
-import { Button } from "..";
+import { Slider } from './'
+import { Flex } from '../Flex'
+import { Button } from '..'
 
 export default {
-  title: "Inputs/Slider",
+  title: 'Inputs/Slider',
   component: Slider,
   tags: ['autodocs'],
   argTypes: {
+    size: {
+      type: {
+        name: 'enum',
+        value: ['xs', 'sm'],
+      },
+    },
     defaultValue: {
       description: 'The default value of the slider. Use this if you want an uncontrolled component.',
     },
     step: {
-      description: 'The step size for each thumb movement. This defines the granularity of the slider\'s value increments.',
+      description:
+        "The step size for each thumb movement. This defines the granularity of the slider's value increments.",
       table: {
-        defaultValue: { summary: "1" },
-      }
+        defaultValue: { summary: '1' },
+      },
     },
     startSlot: {
       control: false,
@@ -31,8 +38,9 @@ export default {
     step: 1,
     showRuler: false,
     max: 100,
+    size: 'sm',
   },
-} as Meta<typeof Slider>;
+} as Meta<typeof Slider>
 
 export const Overview = (args) => {
   return (
@@ -59,11 +67,20 @@ export const Uncontrolled = (args) => {
 }
 
 export const Controlled = (args) => {
-  const [value, setValue] = useState([30]);
+  const [value, setValue] = useState([30])
   return (
     <Flex css={{ width: '300px' }} gap="sm">
       <Button onClick={() => setValue([50])}>Set to 50</Button>
       <Slider {...args} value={value} onValueChange={setValue} />
+    </Flex>
+  )
+}
+
+export const Sizes = (args) => {
+  return (
+    <Flex css={{ width: '300px' }} direction="column" gap="sm">
+      <Slider {...args} size="xs" />
+      <Slider {...args} size="sm" />
     </Flex>
   )
 }

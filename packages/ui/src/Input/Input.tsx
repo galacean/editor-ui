@@ -1,20 +1,23 @@
 import React from 'react'
 
-import { StitchesComponent, styled } from '../design-system'
+import { CSS, styled } from '../design-system'
 
 const StyledInputSlot = styled('div', {
   display: 'flex',
-  position: 'relative',
   alignItems: 'center',
   justifyContent: 'center',
   flexShrink: 0,
-  color: '$gray9',
-  transition: 'color 0.2s ease',
+  color: '$textMuted',
+  transition: '$color',
   userSelect: 'none',
   variants: {
     size: {
-      sm: {
+      xs: {
         padding: '0 $1',
+        fontSize: '$1',
+      },
+      sm: {
+        padding: '0 $1_5',
         fontSize: '$1',
       },
       md: {
@@ -25,80 +28,37 @@ const StyledInputSlot = styled('div', {
   },
 })
 
-const StyledInputBackground = styled('div', {
-  position: 'absolute',
-  top: 0,
-  inset: 0,
-  borderRadius: 'inherit',
-  pointerEvents: 'none',
-  variants: {
-    variant: {
-      default: {
-        boxShadow: 'inset 0 0 0 1px $colors$border, inset 0 -6px 18px 0px $colors$grayA2',
-      },
-      subtle: {
-        backgroundColor: '$secondaryBg',
-        '&:active': {
-          boxShadow: 'inset 0 0 0 1px $colors$border',
-        },
-      },
-      transparent: {
-        backgroundColor: 'transparent',
-        borderRadius: '$2',
-        outline: 'none !important',
-      },
-    },
-    state: {
-      invalid: {
-        boxShadow: '0 0 0 1px $colors$red7',
-        backgroundColor: '$redA3',
-        color: '$red11',
-      },
-      valid: {
-        backgroundColor: '$green3',
-        boxShadow: '0 0 0 1px $colors$green7',
-        color: '$green11',
-      },
-    },
-  },
-  defaultVariants: {
-    variant: 'subtle',
-  },
-})
-
 const StyledInput = styled('input', {
   appearance: 'none',
-  position: 'relative',
   height: '100%',
   borderWidth: '0',
   boxSizing: 'border-box',
   outline: 'none',
   flex: 1,
+  minWidth: 0,
   width: '100%',
-  color: '$gray11',
-  borderRadius: '$2',
+  color: '$text',
+  borderRadius: 'inherit',
   fontFamily: '$default',
   fontWeight: '$regular',
+  lineHeight: 'inherit',
   backgroundColor: 'transparent',
   textAlign: 'inherit',
   padding: 0,
   '&:hover': {
-    color: '$gray12',
-  },
-  [`&:focus ~ ${StyledInputBackground}`]: {
-    boxShadow: 'inset 0 0 0 1px $colors$blue10',
+    color: '$textStrong',
   },
   '&:focus-visible': {
-    color: '$gray12',
+    color: '$textStrong',
   },
   '&::placeholder': {
-    color: '$grayA10',
+    color: '$textMuted',
   },
   '&[readonly]': {
     cursor: 'default',
   },
   '&::read-only::placeholder': {
-    color: '$grayA7',
+    color: '$textMuted',
   },
   variants: {
     code: {
@@ -107,13 +67,20 @@ const StyledInput = styled('input', {
       },
     },
     size: {
-      sm: {
+      xs: {
         fontSize: '$1',
         paddingLeft: '$1_5',
+        paddingRight: '$1_5',
+      },
+      sm: {
+        fontSize: '$1',
+        paddingLeft: '$2',
+        paddingRight: '$2',
       },
       md: {
         fontSize: '$2',
-        paddingLeft: '$2',
+        paddingLeft: '$3',
+        paddingRight: '$3',
       },
     },
     ellipsis: {
@@ -138,75 +105,202 @@ const StyledInput = styled('input', {
 })
 
 export const StyledInputRoot = styled('div', {
-  position: 'relative',
   display: 'flex',
   width: '100%',
-  color: '$gray12',
-  transition: 'box-shadow 0.2s ease',
+  boxSizing: 'border-box',
+  border: '1px solid transparent',
+  color: '$textStrong',
+  transition: '$shadow, $borderColor, $backgroundColor',
   [`${StyledInputSlot} + ${StyledInput}`]: {
     paddingLeft: 0,
+  },
+  '&[data-state="default"]:focus-within': {
+    borderColor: '$borderStrong',
+    boxShadow: '$focus',
+    [`${StyledInputSlot}`]: {
+      color: '$text',
+    },
+  },
+  '&[data-state="valid"]:focus-within': {
+    borderColor: '$successBorder',
+    boxShadow: '$focus',
+    [`${StyledInputSlot}`]: {
+      color: '$successText',
+    },
+  },
+  '&[data-state="invalid"]:focus-within': {
+    borderColor: '$dangerBorder',
+    boxShadow: '$focus',
+    [`${StyledInputSlot}`]: {
+      color: '$dangerText',
+    },
   },
   variants: {
     size: {
       xs: {
-        height: '$5',
-        lineHeight: '$sizes$5',
-        borderRadius: '$2',
+        height: '$xs',
+        lineHeight: '$lineHeights$1',
+        borderRadius: '$xs',
         fontSize: '$1',
       },
       sm: {
         height: '$sm',
-        lineHeight: '$sizes$sm',
-        fontSize: '$sm',
-        borderRadius: '$2',
+        lineHeight: '$lineHeights$1',
+        fontSize: '$1',
+        borderRadius: '$sm',
       },
       md: {
         height: '$md',
         fontSize: '$2',
-        borderRadius: '$4',
+        lineHeight: '$lineHeights$2',
+        borderRadius: '$md',
       },
     },
     disabled: {
       true: {
-        // backgroundColor: "$gray2",
+        backgroundColor: '$surfaceSubtle',
+        borderColor: '$border',
+        boxShadow: 'none',
         [`${StyledInputSlot}`]: {
-          color: '$grayA7',
+          color: '$textMuted',
         },
         [`${StyledInput}`]: {
-          color: '$grayA7',
+          color: '$textMuted',
           '&:focus': {
-            color: '$grayA7',
+            color: '$textMuted',
           },
           '&:hover': {
-            color: '$grayA7',
-          },
-        },
-        [`${StyledInputSlot}`]: {
-          color: '$grayA7',
-          '&:focus': {
-            color: '$grayA7',
-          },
-          '&:hover': {
-            color: '$grayA7',
+            color: '$textMuted',
           },
         },
       },
     },
+    variant: {
+      outline: {
+        backgroundColor: '$surface',
+        borderColor: '$border',
+        '&[data-state="default"]:hover': {
+          borderColor: '$borderStrong',
+          [`${StyledInputSlot}`]: {
+            color: '$text',
+          },
+        },
+      },
+      soft: {
+        backgroundColor: '$softBg',
+        borderColor: 'transparent',
+        '&[data-state="default"]:hover': {
+          backgroundColor: '$softBgHover',
+          [`${StyledInputSlot}`]: {
+            color: '$text',
+          },
+        },
+      },
+      subtle: {
+        backgroundColor: 'transparent',
+        borderColor: 'transparent',
+        '&[data-state="default"]:hover': {
+          [`${StyledInputSlot}`]: {
+            color: '$text',
+          },
+        },
+      },
+    },
+    state: {
+      valid: {
+        backgroundColor: '$successBg',
+        borderColor: '$successBorder',
+        [`${StyledInputSlot}`]: {
+          color: '$successText',
+        },
+        [`${StyledInput}, ${StyledInput}:hover, ${StyledInput}:focus-visible`]: {
+          color: '$successText',
+        },
+        [`${StyledInput}::placeholder`]: {
+          color: '$successText',
+          opacity: 0.8,
+        },
+      },
+      invalid: {
+        backgroundColor: '$dangerBg',
+        borderColor: '$dangerBorder',
+        [`${StyledInputSlot}`]: {
+          color: '$dangerText',
+        },
+        [`${StyledInput}, ${StyledInput}:hover, ${StyledInput}:focus-visible`]: {
+          color: '$dangerText',
+        },
+        [`${StyledInput}::placeholder`]: {
+          color: '$dangerText',
+          opacity: 0.8,
+        },
+      },
+    },
   },
-  compoundVariants: [],
+  compoundVariants: [
+    {
+      variant: 'soft',
+      disabled: true,
+      css: {
+        backgroundColor: '$surfaceSubtle',
+        borderColor: 'transparent',
+      },
+    },
+    {
+      variant: 'subtle',
+      disabled: true,
+      css: {
+        backgroundColor: 'transparent',
+        borderColor: 'transparent',
+      },
+    },
+    {
+      state: 'valid',
+      disabled: true,
+      css: {
+        [`${StyledInputSlot}`]: {
+          color: '$textMuted',
+        },
+        [`${StyledInput}, ${StyledInput}:hover, ${StyledInput}:focus-visible`]: {
+          color: '$textMuted',
+        },
+        [`${StyledInput}::placeholder`]: {
+          color: '$textMuted',
+        },
+      },
+    },
+    {
+      state: 'invalid',
+      disabled: true,
+      css: {
+        [`${StyledInputSlot}`]: {
+          color: '$textMuted',
+        },
+        [`${StyledInput}, ${StyledInput}:hover, ${StyledInput}:focus-visible`]: {
+          color: '$textMuted',
+        },
+        [`${StyledInput}::placeholder`]: {
+          color: '$textMuted',
+        },
+      },
+    },
+  ],
   defaultVariants: {
     size: 'sm',
+    variant: 'soft',
   },
 })
 
-export interface InputProps extends StitchesComponent<typeof StyledInput> {
+export interface InputProps extends Omit<React.ComponentPropsWithoutRef<'input'>, 'size'> {
   startSlot?: React.ReactNode
   endSlot?: React.ReactNode
   overrideStartSlotStyle?: boolean
   overrideEndSlotStyle?: boolean
   rootRef?: any
   disabled?: boolean
-  variant?: 'default' | 'subtle' | 'transparent'
+  css?: CSS
+  size?: 'xs' | 'sm' | 'md'
+  variant?: 'outline' | 'soft' | 'subtle'
   state?: 'valid' | 'invalid'
 }
 
@@ -221,7 +315,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(function Inp
     rootRef,
     disabled,
     size = 'sm',
-    variant,
+    variant = 'soft',
     overrideStartSlotStyle,
     overrideEndSlotStyle,
     state,
@@ -229,11 +323,17 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(function Inp
   } = props
 
   return (
-    <StyledInputRoot css={css} ref={rootRef} size={size} disabled={disabled}>
+    <StyledInputRoot
+      css={css}
+      ref={rootRef}
+      size={size}
+      variant={variant}
+      state={state}
+      disabled={disabled}
+      data-state={state ?? 'default'}>
       {!!startSlot && (overrideStartSlotStyle ? startSlot : <StyledInputSlot size={size}>{startSlot}</StyledInputSlot>)}
       <StyledInput disabled={disabled} ref={forwardedRef} size={size} {...rest} />
       {!!endSlot && (overrideEndSlotStyle ? endSlot : <StyledInputSlot size={size}>{endSlot}</StyledInputSlot>)}
-      <StyledInputBackground variant={variant} state={state} />
     </StyledInputRoot>
   )
 })
