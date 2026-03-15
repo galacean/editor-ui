@@ -35,6 +35,7 @@ export interface IDropOptions<T> {
 
 export function useDrop<T extends HTMLElement, U = any>(options: IDropOptions<U>) {
   const dropRef = React.useRef<T>(null)
+  const counterRef = React.useRef(0)
 
   const dragItem = React.useContext(DragContext)
 
@@ -45,8 +46,6 @@ export function useDrop<T extends HTMLElement, U = any>(options: IDropOptions<U>
     if (!dropElement) {
       return
     }
-
-    let counter = 0
 
     const isAccepted = (e: DragEvent) => {
       return (accept & dragItem.type) || (acceptFiles && e.dataTransfer?.types.includes('Files'))
@@ -67,8 +66,8 @@ export function useDrop<T extends HTMLElement, U = any>(options: IDropOptions<U>
       if (isAccepted(e)) {
         e.stopImmediatePropagation()
         e.preventDefault()
-        counter++
-        if (counter === 1 && onEnter) {
+        counterRef.current++
+        if (counterRef.current === 1 && onEnter) {
           onEnter(e, dragItem.item, dropElement)
         }
       }
@@ -78,8 +77,8 @@ export function useDrop<T extends HTMLElement, U = any>(options: IDropOptions<U>
       if (isAccepted(e)) {
         e.preventDefault()
         e.stopImmediatePropagation()
-        counter--
-        if (counter === 0 && onLeave) {
+        counterRef.current--
+        if (counterRef.current === 0 && onLeave) {
           onLeave(e, dragItem.item, dropElement)
         }
       }
@@ -90,7 +89,7 @@ export function useDrop<T extends HTMLElement, U = any>(options: IDropOptions<U>
         dragItem.state = DragState.Dropped
         e.preventDefault()
         e.stopImmediatePropagation()
-        counter = 0
+        counterRef.current = 0
         if (onDrop) {
           onDrop(e, dragItem.item, dropElement)
         }
@@ -105,7 +104,6 @@ export function useDrop<T extends HTMLElement, U = any>(options: IDropOptions<U>
     }
 
     return () => {
-      counter = 0
       dropElement.removeEventListener('dragenter', handleDragEnter)
       dropElement.removeEventListener('dragleave', handleDragLeave)
       dropElement.removeEventListener('dragover', handleDragOver)

@@ -16,7 +16,7 @@ interface IDndContextValue<T = any> {
 export const DragContext = createContext({ item: null } as IDndContextValue)
 
 export function DragDropContextProvider(props: PropsWithChildren) {
-  const dragItemRef = useRef<IDndContextValue>({ item: null, type: 0, state: DragState.None })
+  const dragItemRef = useRef<IDndContextValue>({ item: null, type: -1, state: DragState.None })
 
   return <DragContext.Provider value={dragItemRef.current!}>{props.children}</DragContext.Provider>
 }
@@ -97,7 +97,7 @@ export function useDrag<T>(options: IDragOptions<T>): IDragReturnType {
       }
       dragItem.state = DragState.None
       dragItem.item = null
-      dragItem.type = 0
+      dragItem.type = -1
     }
 
     if (!disable) {
@@ -112,9 +112,13 @@ export function useDrag<T>(options: IDragOptions<T>): IDragReturnType {
       dragElement.removeEventListener('dragstart', handleDragStart)
       dragElement.removeEventListener('dragend', handleDragEnd)
       dragElement.removeAttribute('draggable')
-      dragItem.state = DragState.None
-      dragItem.item = null
-      dragItem.type = 0
+      // 只有当前实例正在拖拽时才重置共享 dragItem
+      // 其他 useDrag 实例（如 AssetItem）重渲染触发 cleanup 时不应干扰进行中的拖拽
+      if (dragItem.item === item) {
+        dragItem.state = DragState.None
+        dragItem.item = null
+        dragItem.type = -1
+      }
     }
   }, [type, item, onEnd, onStart, onCancel, disable])
 
