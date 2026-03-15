@@ -112,9 +112,8 @@ export function useDrag<T>(options: IDragOptions<T>): IDragReturnType {
       dragElement.removeEventListener('dragstart', handleDragStart)
       dragElement.removeEventListener('dragend', handleDragEnd)
       dragElement.removeAttribute('draggable')
-      dragItem.state = DragState.None
-      dragItem.item = null
-      dragItem.type = 0
+      // 不在 cleanup 中重置 dragItem — 拖拽可能正在进行中（React 重渲染触发 effect 重绑定）
+      // dragItem 的重置只在 handleDragEnd 中做，确保 drop 事件能正确读到 dragItem.type
     }
   }, [type, item, onEnd, onStart, onCancel, disable])
 
