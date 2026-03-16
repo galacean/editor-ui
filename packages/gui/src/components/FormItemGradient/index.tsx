@@ -4,7 +4,7 @@ import { IconEaseIn, IconEqual, IconVectorBezier2, IconPlusMinus, IconHexagonLet
 
 import { Button, ColorPicker, type ParticleColor, Select, SelectItem } from "@galacean/editor-ui";
 import { FormItem } from "../FormItem";
-import { type Color, type ColorPickerMode, normalizeColor, denormalizeColor } from "@galacean/editor-ui";
+import { type Color, type HDRColor, normalizeColor, denormalizeColor } from "@galacean/editor-ui";
 
 export type GradientPropertyType = "constant" | "gradient" | "two-constant" | "two-gradient";
 
@@ -58,7 +58,7 @@ export interface FormItemGradientProps {
   info?: string;
   labelFirst?: boolean;
   value: ParticleColorValue[];
-  colorPickerMode?: ColorPickerMode;
+  hdr?: boolean;
   onValueChange?: (value: FormItemGradientProps["value"], type: GradientPropertyType) => void;
 }
 
@@ -201,8 +201,14 @@ function denormalizeGradientValue(value: ParticleColorValue[]) {
   });
 }
 
+function ConstantColorPicker({ hdr, value, onValueChange, ...rest }: { hdr: boolean; value: Color; onValueChange: (v: Color) => void } & Record<string, any>) {
+  return hdr
+    ? <ColorPicker {...rest} mode="hdr" value={value as HDRColor} onValueChange={onValueChange} />
+    : <ColorPicker {...rest} mode="constant" value={value} onValueChange={onValueChange} />;
+}
+
 export function FormItemGradient(props: FormItemGradientProps) {
-  const { label, labelFirst, info, value, colorPickerMode = "constant" } = props;
+  const { label, labelFirst, info, value, hdr = false } = props;
   const [valueMap, setValueMap] = useControllableState({
     prop: denormalizeGradientValue(value),
     onChange: (state) => {
@@ -317,10 +323,10 @@ export function FormItemGradient(props: FormItemGradientProps) {
         switch (type) {
           case "constant":
             return (
-              <ColorPicker
+              <ConstantColorPicker
                 fullsize
                 key="constant"
-                mode={colorPickerMode as 'constant'}
+                hdr={hdr}
                 value={value}
                 onValueChange={handleConstantValueChange}
               />
@@ -338,18 +344,8 @@ export function FormItemGradient(props: FormItemGradientProps) {
           case "two-constant":
             return (
               <React.Fragment key="two-constant">
-                <ColorPicker
-                  fullsize
-                  mode={colorPickerMode as 'constant'}
-                  value={value[0]}
-                  onValueChange={handleTwoConstantValueChange(0)}
-                />
-                <ColorPicker
-                  fullsize
-                  mode={colorPickerMode as 'constant'}
-                  value={value[1]}
-                  onValueChange={handleTwoConstantValueChange(1)}
-                />
+                <ConstantColorPicker fullsize hdr={hdr} value={value[0]} onValueChange={handleTwoConstantValueChange(0)} />
+                <ConstantColorPicker fullsize hdr={hdr} value={value[1]} onValueChange={handleTwoConstantValueChange(1)} />
               </React.Fragment>
             );
           case "two-gradient":
