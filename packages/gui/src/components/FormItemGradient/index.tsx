@@ -4,7 +4,7 @@ import { IconEaseIn, IconEqual, IconVectorBezier2, IconPlusMinus, IconHexagonLet
 
 import { Button, ColorPicker, type ParticleColor, Select, SelectItem } from "@galacean/editor-ui";
 import { FormItem } from "../FormItem";
-import { type Color, normalizeColor, denormalizeColor } from "@galacean/editor-ui";
+import { type Color, type ColorPickerMode, normalizeColor, denormalizeColor } from "@galacean/editor-ui";
 
 export type GradientPropertyType = "constant" | "gradient" | "two-constant" | "two-gradient";
 
@@ -58,6 +58,7 @@ export interface FormItemGradientProps {
   info?: string;
   labelFirst?: boolean;
   value: ParticleColorValue[];
+  colorPickerMode?: ColorPickerMode;
   onValueChange?: (value: FormItemGradientProps["value"], type: GradientPropertyType) => void;
 }
 
@@ -201,7 +202,7 @@ function denormalizeGradientValue(value: ParticleColorValue[]) {
 }
 
 export function FormItemGradient(props: FormItemGradientProps) {
-  const { label, labelFirst, info, value } = props;
+  const { label, labelFirst, info, value, colorPickerMode = "constant" } = props;
   const [valueMap, setValueMap] = useControllableState({
     prop: denormalizeGradientValue(value),
     onChange: (state) => {
@@ -319,7 +320,7 @@ export function FormItemGradient(props: FormItemGradientProps) {
               <ColorPicker
                 fullsize
                 key="constant"
-                mode="constant"
+                mode={colorPickerMode as 'constant'}
                 value={value}
                 onValueChange={handleConstantValueChange}
               />
@@ -339,13 +340,13 @@ export function FormItemGradient(props: FormItemGradientProps) {
               <React.Fragment key="two-constant">
                 <ColorPicker
                   fullsize
-                  mode="constant"
+                  mode={colorPickerMode as 'constant'}
                   value={value[0]}
                   onValueChange={handleTwoConstantValueChange(0)}
                 />
                 <ColorPicker
                   fullsize
-                  mode="constant"
+                  mode={colorPickerMode as 'constant'}
                   value={value[1]}
                   onValueChange={handleTwoConstantValueChange(1)}
                 />
