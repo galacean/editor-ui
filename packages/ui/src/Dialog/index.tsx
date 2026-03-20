@@ -1,6 +1,10 @@
-export { 
-  Dialog, 
-  DialogCloseTrigger, 
+export {
+  Dialog,
+  DialogCloseTrigger,
   DialogTrigger,
-  
-} from './Dialog';
+  DialogHeader,
+  DialogBody,
+  DialogFooter,
+  DialogTitle,
+  DialogDescription,
+} from './Dialog'

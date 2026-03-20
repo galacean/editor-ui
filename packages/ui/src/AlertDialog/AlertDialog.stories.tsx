@@ -6,6 +6,7 @@ import { Button } from '../Button'
 import { AlertDialog } from '.'
 
 export default {
+  title: 'Overlay/AlertDialog',
   component: AlertDialog,
   argTypes: {
     onClose: {

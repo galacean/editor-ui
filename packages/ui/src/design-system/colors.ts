@@ -77,6 +77,8 @@ const lightColors = {
 }
 
 const coreSemanticColors = {
+  appBg: '$gray1',
+
   primary: '$blue9',
   primaryActive: '$blue10',
 
@@ -143,6 +145,7 @@ const statusSemanticColors = {
 const contextSemanticColors = {
   panelBg: '$gray3',
   toastBg: '$gray3',
+  overlayScrim: 'rgba(0, 0, 0, 0.72)',
   tooltipBg: '$white',
   tooltipColor: '$gray1',
   sidebarBg: '$grayA3',
@@ -150,8 +153,6 @@ const contextSemanticColors = {
 }
 
 const deprecatedSemanticColors = {
-  // Deprecated: use `surface`.
-  appBg: '$gray2',
   // Deprecated: use `softBg`.
   secondaryBg: '$grayA3',
   // Deprecated: use `surfaceOverlay`.
@@ -202,15 +203,16 @@ export const colors = {
   light: {
     ...lightColors,
     ...semanticColors,
-    surfaceOverlay: '$white',
-    dashboardBg: '$white',
-    listBg: '$white',
+    appBg: '$gray2',
+    surfaceOverlay: '$gray1',
+    dashboardBg: '$gray2',
+    listBg: '$gray2',
     toastBg: '$gray1',
     toasterBg: '$gray1',
-    surface: '$white',
+    surface: '$gray1',
     surfaceSubtle: '$gray2',
     surfaceStrong: '$gray3',
-    overlayBg: '$white',
+    overlayBg: '$gray1',
     tooltipBg: '$gray12',
     tooltipColor: '$gray1',
     sidebarBg: '$blueA3',

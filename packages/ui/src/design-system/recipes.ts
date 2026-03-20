@@ -317,7 +317,7 @@ const overlayShow = keyframes({
 })
 export const overlayStyle = styled(null, {
   position: 'fixed',
-  backgroundColor: 'rgba(0,0,0,.8)',
+  backgroundColor: '$overlayScrim',
   inset: 0,
   zIndex: 50,
   '@media (prefers-reduced-motion: no-preference)': {
@@ -329,6 +329,20 @@ export const overlayStyle = styled(null, {
     },
   },
 })
+
+export const modalSurfaceStyle: CSS = {
+  position: 'fixed',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  maxHeight: '85vh',
+  backgroundColor: '$surfaceOverlay',
+  borderRadius: '$xl',
+  border: '1px solid $border',
+  boxSizing: 'border-box',
+  boxShadow: '$popContainer',
+  outline: 'none',
+}
 
 export const flexTextOverflow = css({
   flex: 1,

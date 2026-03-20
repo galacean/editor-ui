@@ -7,94 +7,115 @@ import type {
   AccordionMultipleProps,
 } from '@radix-ui/react-accordion'
 
-import { styled } from '../design-system'
+import { keyframes, styled } from '../design-system'
+
+const slideDown = keyframes({
+  from: { height: 0, opacity: 0 },
+  to: { height: 'var(--radix-accordion-content-height)', opacity: 1 },
+})
+
+const slideUp = keyframes({
+  from: { height: 'var(--radix-accordion-content-height)', opacity: 1 },
+  to: { height: 0, opacity: 0 },
+})
 
 const StyledAccordion = styled(AccordionPrimitive.Root, {
-  borderRadius: '$3',
   width: '100%',
-  overflow: 'hidden',
-  boxShadow: '$popContainer',
-})
-
-const StyledChevron = styled(IconChevronRight, {
-  marginRight: '$0_5',
-  width: '$3',
-  height: '$3',
-  transform: 'rotate(0deg)',
-  transition: 'transform .2s ease',
-})
-
-const StyledTitle = styled(AccordionPrimitive.Trigger, {
-  all: 'unset',
-  display: 'flex',
-  width: '100%',
-  padding: '0 $1',
-  height: '$8',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  fontSize: '$1',
-  color: '$grayA11',
-  overflow: 'hidden',
-  boxSizing: 'border-box',
-  backgroundColor: '$grayA2',
-  '&[data-state="open"]': {
-    [`& ${StyledChevron}`]: {
-      transform: 'rotate(90deg)',
-    },
-  },
-  '&:hover': { backgroundColor: '$grayA3' },
-  '&:focus-visible': {
-    outline: 'none',
-    boxShadow: 'inset 0 0 0 1px $colors$blue9',
-  },
-})
-
-const StyledContent = styled(AccordionPrimitive.Content, {
-  fontSize: '$1',
-  padding: '$1 $1',
-  backgroundColor: '$grayA2',
-  color: '$gray11',
-  '&[data-state="open"]': {
-    borderBottom: '1px solid $grayA3',
-  },
-  '&:empty': {
-    padding: 0,
-    borderTop: 'none',
-  },
+  display: 'grid',
+  gap: '$1',
 })
 
 const StyledItem = styled(AccordionPrimitive.Item, {
   position: 'relative',
   boxSizing: 'border-box',
   width: '100%',
-  '& + &::after': {
-    content: "''",
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '1px',
-    backgroundColor: '$grayA3',
+  borderRadius: '$sm',
+  backgroundColor: '$surface',
+  border: '1px solid $border',
+  overflow: 'hidden',
+  '&[data-state=open]': {
+    borderColor: '$borderStrong',
   },
-  '&:first-child': {
-    [`& ${StyledTitle}`]: {
-      borderRadius: '$2 $2 0 0 !important',
+})
+
+const StyledChevron = styled(IconChevronRight, {
+  width: '$iconSm',
+  height: '$iconSm',
+  color: 'currentColor',
+  flexShrink: 0,
+  transform: 'rotate(0deg)',
+  transition: 'transform .2s ease, color .2s ease',
+})
+
+const StyledHeader = styled(AccordionPrimitive.Header, {
+  all: 'unset',
+  display: 'block',
+})
+
+const StyledTrigger = styled(AccordionPrimitive.Trigger, {
+  all: 'unset',
+  display: 'flex',
+  width: '100%',
+  minHeight: '$controlMd',
+  padding: '0 $3',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  gap: '$2',
+  fontSize: '$2',
+  lineHeight: '$lineHeights$2',
+  fontWeight: 500,
+  color: '$text',
+  overflow: 'hidden',
+  boxSizing: 'border-box',
+  userSelect: 'none',
+  backgroundColor: '$softBg',
+  transition: '$backgroundColor, $borderColor, $color',
+  '& > span': {
+    flex: 1,
+    minWidth: 0,
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+  },
+  '&[data-state="open"]': {
+    [`& ${StyledChevron}`]: {
+      transform: 'rotate(90deg)',
     },
   },
-  // '&:last-of-type': {
-  //   [`& ${StyledTitle}`]: {
-  //     borderRadius: "",
-  //     borderBottom: '1px solid $border',
-  //   }
-  // },
-  '&[data-state="open"] + &::after': {
-    display: 'none',
+  '&:hover': {
+    backgroundColor: '$softBgHover',
+    color: '$textStrong',
   },
-  '&[data-state="open"]:last-child': {
-    [`& ${StyledTitle}`]: {
-      borderRadius: 0,
+  '&:focus-visible': {
+    outline: 'none',
+    boxShadow: '$focus',
+  },
+})
+
+const StyledContent = styled(AccordionPrimitive.Content, {
+  overflow: 'hidden',
+  fontSize: '$1',
+  color: '$text',
+  backgroundColor: '$surface',
+  '&[data-state="open"]': {
+    animation: `${slideDown} 200ms cubic-bezier(0.16, 1, 0.3, 1)`,
+  },
+  '&[data-state="closed"]': {
+    animation: `${slideUp} 180ms cubic-bezier(0.16, 1, 0.3, 1)`,
+  },
+  '@media (prefers-reduced-motion: reduce)': {
+    '&[data-state="open"], &[data-state="closed"]': {
+      animation: 'none',
     },
   },
+})
+
+const StyledContentInner = styled('div', {
+  padding: '$3',
+  fontSize: '$1',
+  lineHeight: '$lineHeights$2',
+  color: '$text',
+  borderTop: '1px solid $border',
 })
 
 export type AccordionProps = AccordionSingleProps | AccordionMultipleProps
@@ -117,11 +138,15 @@ export function AccordionItem(props: AccordionItemProps) {
   const { children, title, arrow = true, ...rest } = props
   return (
     <StyledItem {...rest}>
-      <StyledTitle>
-        {arrow && <StyledChevron aria-hidden />}
-        {title}
-      </StyledTitle>
-      <StyledContent>{children}</StyledContent>
+      <StyledHeader>
+        <StyledTrigger>
+          <span>{title}</span>
+          {arrow && <StyledChevron aria-hidden />}
+        </StyledTrigger>
+      </StyledHeader>
+      <StyledContent>
+        <StyledContentInner>{children}</StyledContentInner>
+      </StyledContent>
     </StyledItem>
   )
 }

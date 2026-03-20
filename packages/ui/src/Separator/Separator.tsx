@@ -1,6 +1,6 @@
 import { forwardRef } from 'react'
 import * as PrimitiveSeparator from '@radix-ui/react-separator'
-import { CSS, StitchesComponent, styled, VariantProps } from '../design-system'
+import { CSS, StitchesComponent, styled } from '../design-system'
 import { Text } from '../Typography'
 
 const StyledCrosslineText = styled('div', {
@@ -9,33 +9,33 @@ const StyledCrosslineText = styled('div', {
   width: '100%',
   userSelect: 'none',
   '&::before': {
-    borderBottom: '1px solid $grayA6',
+    borderBottom: '1px solid $border',
     content: '',
     flex: '1 0 0',
     transform: 'translateY(-0.5px)',
   },
   '&::after': {
-    borderBottom: '1px solid $grayA6',
+    borderBottom: '1px solid $border',
     content: '',
     flex: '1 0 0',
     transform: 'translateY(-0.5px)',
   },
   '& > div': {
-    position: 'relative',
-    top: -2,
+    display: 'inline-flex',
+    alignItems: 'center',
     maxWidth: 'calc(100% - 60px)',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
-    color: '$gray10',
-    fontSize: '$3',
+    color: '$textMuted',
     flex: '0 1 auto',
-    margin: '0 $3',
+    margin: '0 $2',
   },
 })
 
 const StyledSeparator = styled(PrimitiveSeparator.Root, {
-  backgroundColor: '$grayA5',
+  backgroundColor: '$border',
+  flexShrink: 0,
   variants: {
     orientation: {
       horizontal: {
@@ -49,14 +49,12 @@ const StyledSeparator = styled(PrimitiveSeparator.Root, {
     },
     raw: {
       true: {
-        // display: "block",
-        display: 'none',
-        height: '1px',
+        display: 'block',
         width: '100%',
         margin: 0,
-        backgroundColor: '$appBg',
+        backgroundColor: '$surfaceSubtle',
         '& + &': {
-          display: 'none',
+          display: 'block',
         },
       },
     },
@@ -79,7 +77,9 @@ const Separator = forwardRef<HTMLDivElement, SeparatorProps>(function Separator(
     return (
       <StyledCrosslineText {...rest} ref={forwardedRef}>
         <div>
-          <Text size="1">{text}</Text>
+          <Text size="1" secondary>
+            {text}
+          </Text>
         </div>
       </StyledCrosslineText>
     )

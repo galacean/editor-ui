@@ -1,48 +1,48 @@
-import React, { useState, useEffect } from "react";
-import { Meta, StoryFn } from "@storybook/react";
+import React, { useState, useEffect } from 'react'
+import { Meta, StoryFn } from '@storybook/react'
 
-import { Flex } from "../Flex";
-import { Button } from "../Button";
+import { Flex } from '../Flex'
+import { Button } from '../Button'
 
-import { Popover } from "./";
+import { Popover } from './'
 
 export default {
-  title: "Display/Popover",
+  title: 'Overlay/Popover',
   component: Popover,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   argTypes: {
     side: {
       type: {
-        name: "enum",
-        value: ["top", "right", "bottom", "left"]
-      }
+        name: 'enum',
+        value: ['top', 'right', 'bottom', 'left'],
+      },
     },
     align: {
       type: {
-        name: "enum",
-        value: ["start", "center", "end"]
-      }
+        name: 'enum',
+        value: ['start', 'center', 'end'],
+      },
     },
     sideOffset: {
-      type: "number",
-      defaultValue: 8
-    }
-  }
-} as Meta<typeof Popover>;
+      type: 'number',
+      defaultValue: 8,
+    },
+  },
+} as Meta<typeof Popover>
 
 function PopoverContent() {
   useEffect(() => {
-    console.log("mount");
+    console.log('mount')
     return () => {
-      console.log("unmount");
-    };
-  }, []);
+      console.log('unmount')
+    }
+  }, [])
 
   return (
     <div>
       <p>Popover content</p>
     </div>
-  );
+  )
 }
 
 export const Overview: StoryFn<typeof Popover> = (args) => {
@@ -52,5 +52,5 @@ export const Overview: StoryFn<typeof Popover> = (args) => {
         <PopoverContent />
       </Popover>
     </Flex>
-  );
-};
+  )
+}

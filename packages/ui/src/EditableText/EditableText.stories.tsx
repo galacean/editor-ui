@@ -1,13 +1,14 @@
-import React, { useState } from "react";
-import { Meta, StoryFn } from "@storybook/react";
+import React, { useState } from 'react'
+import { Meta, StoryFn } from '@storybook/react'
 
-import { Flex } from "../Flex";
+import { Flex } from '../Flex'
 
-import { EditableText } from ".";
+import { EditableText } from '.'
 
 export default {
-  component: EditableText
-} as Meta<typeof EditableText>;
+  title: 'Inputs/EditableText',
+  component: EditableText,
+} as Meta<typeof EditableText>
 
 export const Overview: StoryFn<typeof EditableText> = (args) => {
   return (
@@ -15,11 +16,11 @@ export const Overview: StoryFn<typeof EditableText> = (args) => {
       <EditableText {...args} />
       <EditableText {...args} showIcon />
     </Flex>
-  );
-};
+  )
+}
 
 Overview.argTypes = {
   value: {
-    defaultValue: "inline-name"
-  }
-};
+    defaultValue: 'inline-name',
+  },
+}

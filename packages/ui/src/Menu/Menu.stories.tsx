@@ -38,7 +38,7 @@ const Area = styled(Flex, {
 })
 
 export default {
-  title: 'Display/Menu',
+  title: 'Overlay/Menu',
   tags: ['autodocs'],
 } as Meta<typeof ContextMenu>
 

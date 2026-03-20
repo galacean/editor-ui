@@ -13,7 +13,7 @@ export default {
     size: {
       type: {
         name: 'enum',
-        value: ['sm', 'md'],
+        value: ['sm', 'md', 'lg'],
       },
     },
   },
@@ -38,6 +38,7 @@ export const Sizes: StoryFn<typeof Progress> = (args) => {
     <Flex direction="column" gap="sm" style={{ width: '300px' }}>
       <Progress {...args} size="sm" />
       <Progress {...args} size="md" />
+      <Progress {...args} size="lg" />
     </Flex>
   )
 }

@@ -14,7 +14,7 @@ const promise = new Promise((s, j) => {
 })
 
 export default {
-  title: 'Toast',
+  title: 'Overlay/Toast',
 }
 
 export const Overview: StoryFn = (args) => {

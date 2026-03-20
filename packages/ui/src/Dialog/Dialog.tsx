@@ -1,9 +1,9 @@
 import * as DialogPrimitive from '@radix-ui/react-dialog'
-import * as VisuallyHidden from '@radix-ui/react-visually-hidden'
 import { IconX } from '@tabler/icons-react'
 import React from 'react'
 
 import { CSS, animations, styled } from '../design-system'
+import { modalSurfaceStyle } from '../design-system/recipes'
 
 export const basicStyle = styled(null, {
   all: 'unset',
@@ -15,11 +15,11 @@ export const basicStyle = styled(null, {
   boxSizing: 'border-box',
   cursor: 'pointer',
   '&:focus-visible': {
-    boxShadow: '0 0 0 2px $colors$blueA7',
+    boxShadow: '$focus',
   },
   '&:disabled': {
-    backgroundColor: '$grayA3',
-    color: '$grayA8',
+    backgroundColor: '$surfaceSubtle',
+    color: '$textMuted',
     cursor: 'not-allowed',
   },
 })
@@ -30,19 +30,11 @@ const StyledOverlay = styled(DialogPrimitive.Overlay, {
   animation: `${animations.overlayFadeIn} 150ms cubic-bezier(0.16, 1, 0.3, 1)`,
 })
 
-const StyledContent = styled(DialogPrimitive.Content, {
-  position: 'fixed',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
+const StyledContent = styled(DialogPrimitive.Content, modalSurfaceStyle, {
   minWidth: '440px',
-  maxHeight: '85vh',
-  padding: '$3',
-  borderRadius: '$5',
+  width: 'min(440px, calc(100vw - 32px))',
+  padding: '$4',
   overflow: 'hidden',
-  backgroundColor: '$subbg',
-  boxShadow: `$popContainer`,
-  // zIndex: 2,
   animation: `${animations.contentShow} 150ms cubic-bezier(0.16, 1, 0.3, 1)`,
 
   '&:focus': { outline: 'none' },
@@ -55,6 +47,42 @@ const StyledContent = styled(DialogPrimitive.Content, {
   },
 })
 
+const StyledHeader = styled('div', {
+  display: 'grid',
+  gap: '$2',
+  paddingRight: '$7',
+})
+
+const StyledBody = styled('div', {
+  display: 'grid',
+  gap: '$3',
+})
+
+const StyledFooter = styled('div', {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'flex-end',
+  gap: '$2',
+  marginTop: '$2',
+  paddingTop: '$4',
+})
+
+const StyledTitle = styled(DialogPrimitive.Title, {
+  margin: 0,
+  color: '$textStrong',
+  fontSize: '$4',
+  lineHeight: '$lineHeights$4',
+  fontWeight: 600,
+})
+
+const StyledDescription = styled(DialogPrimitive.Description, {
+  margin: 0,
+  color: '$textMuted',
+  fontSize: '$2',
+  lineHeight: '$lineHeights$2',
+  maxWidth: '56ch',
+})
+
 const StyledCloseButton = styled(DialogPrimitive.DialogClose, basicStyle, {
   position: 'absolute',
   appearance: 'none',
@@ -65,23 +93,20 @@ const StyledCloseButton = styled(DialogPrimitive.DialogClose, basicStyle, {
   alignItems: 'center',
   justifyContent: 'center',
   border: 'none',
-  borderRadius: '$3',
-  color: '$gray10',
+  borderRadius: '$sm',
+  color: '$textMuted',
   zIndex: 2,
   backgroundColor: 'transparent',
   '& > svg': {
-    height: '18px',
-    width: '18px',
+    height: '$iconMd',
+    width: '$iconMd',
   },
   '&:hover': {
-    color: '$gray12',
-    backgroundColor: '$gray4',
+    color: '$textStrong',
+    backgroundColor: '$softBgHover',
   },
-  '&:focus': {
-    boxShadow: '0 0 0 3px $colors$grayA7',
-  },
-  '&:focus-visble': {
-    boxShadow: '0 0 0 3px $colors$grayA7',
+  '&:focus-visible': {
+    boxShadow: '$focus',
   },
 })
 
@@ -100,6 +125,11 @@ const DialogRoot = DialogPrimitive.Root
 const DialogContent = Content
 
 export const DialogCloseTrigger = DialogPrimitive.DialogClose
+export const DialogHeader = StyledHeader
+export const DialogBody = StyledBody
+export const DialogFooter = StyledFooter
+export const DialogTitle = StyledTitle
+export const DialogDescription = StyledDescription
 
 export function DialogTrigger(props: { children?: React.ReactNode }) {
   return <DialogPrimitive.Trigger asChild>{props.children}</DialogPrimitive.Trigger>
@@ -129,10 +159,6 @@ export function Dialog(props: DialogProps) {
         </DialogPrimitive.Trigger>
       )}
       <DialogContent id={id} css={css} zIndex={zIndex} className={className}>
-        <VisuallyHidden.Root>
-          <DialogPrimitive.Title />
-          <DialogPrimitive.Description />
-        </VisuallyHidden.Root>
         {children}
         {closable && (
           <StyledCloseButton>
