@@ -38,7 +38,7 @@ export const Overview: StoryFn = (args) => {
         }}>
         toast with promise
       </Button>
-      <Button onClick={() => toast.success('Member Added!', { duration: 100000 })}>sucess</Button>
+      <Button onClick={() => toast.success('Member Added!', { duration: 100000 })}>success</Button>
       <Button onClick={() => toast.error('hello!')}>error</Button>
       <Button
         onClick={() => {

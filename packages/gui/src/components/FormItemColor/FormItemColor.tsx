@@ -112,7 +112,7 @@ export function FormItemColor(props: FormItemColorProps) {
             value={colorStr}
             onChange={inputOnChange}
             onKeyDown={onKeyDown}
-            code
+            css={{ fontFamily: '$mono' }}
             endSlot={
               <ColorSpaceBadge
                 onClick={() => {

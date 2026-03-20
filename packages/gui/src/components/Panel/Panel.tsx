@@ -122,7 +122,7 @@ export const Panel = forwardRef<HTMLDivElement, PanelProps>(function Panel(props
       <PanelHeader align="both" onMouseDown={handleMouseDown} justifyContent="around">
         <ActionButton
           size="xs"
-          variant="transparent"
+          variant="ghost"
           css={{
             position: 'absolute',
             right: 4,

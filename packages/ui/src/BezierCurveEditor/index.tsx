@@ -36,7 +36,7 @@ type CurveScaleProps = Pick<
   | 'yTickScaleMax'
 >
 
-interface BezierCurveEditorProps extends CurveScaleProps {
+export interface BezierCurveEditorProps extends CurveScaleProps {
   value?: IPoint[]
   defaultValue?: IPoint[]
   onChange?: (value: IPoint[]) => void
@@ -172,3 +172,5 @@ export const BezierCurveEditor = function BezierCurveEditor(props: BezierCurveEd
     </Popover>
   )
 }
+
+export type { IPoint, IBezierPoint } from './types'

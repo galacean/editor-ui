@@ -38,7 +38,7 @@ export default {
 
 export const Overview: StoryFn<typeof Textarea> = (args) => {
   return (
-    <Flex gap="sm" style={{ width: '200px' }}>
+    <Flex direction="column" gap="sm" style={{ width: '260px' }}>
       <Textarea {...args} variant="outline" />
       <Textarea {...args} variant="soft" />
       <Textarea {...args} variant="subtle" />

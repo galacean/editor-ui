@@ -370,7 +370,8 @@ function Select(props: SelectProps) {
     valueType === 'number' && value !== undefined && value !== ''
       ? Number(value)
       : (value as string | number | undefined)
-  const renderedValue = valueRenderer ? valueRenderer(triggerValue as string | number, 'trigger') : undefined
+  const renderedValue =
+    valueRenderer && triggerValue !== undefined ? valueRenderer(triggerValue as string | number, 'trigger') : undefined
 
   return (
     <SelectContext.Provider value={{ size, valueType: valueType as unknown as 'string' | 'number', valueRenderer }}>

@@ -49,7 +49,7 @@ const StyledThumb = styled(SliderPrimitive.Thumb, {
     width: '$6',
     height: '$0_5',
   },
-  '&[data-disabled"]': {
+  '&[data-disabled]': {
     backgroundColor: '$border',
   },
 })

@@ -51,7 +51,7 @@ export function FormItemSelect<T extends number | string>(props: FormItemSelectP
         showSelectAll={showSelectAll}
         startSlot={startSlot}>
         {options.map((option) => (
-          <SelectItem key={option.value} value={option.value} size={size}>
+          <SelectItem key={option.value} value={option.value}>
             {option.label}
           </SelectItem>
         ))}

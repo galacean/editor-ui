@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, type ReactNode } from 'react'
 import { Meta, StoryFn } from '@storybook/react'
 import { IconBox, IconSun } from '@tabler/icons-react'
 
@@ -17,7 +17,7 @@ export default {
   component: Accordion,
 } as Meta<typeof Accordion>
 
-const Panel = ({ children }: { children: React.ReactNode }) => (
+const Panel = ({ children }: { children: ReactNode }) => (
   <Flex direction="column" gap="sm" css={{ width: '360px' }}>
     {children}
   </Flex>

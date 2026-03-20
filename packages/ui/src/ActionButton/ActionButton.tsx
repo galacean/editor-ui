@@ -1,4 +1,4 @@
-import { PropsWithChildren, forwardRef } from 'react'
+import { PropsWithChildren, ComponentProps, forwardRef } from 'react'
 
 import { StitchesComponent, styled } from '../design-system'
 import { useAsyncStatus } from '../hooks/useAsyncStatus'
@@ -340,7 +340,7 @@ export const ActionButton = forwardRef<HTMLButtonElement, ActionButtonProps>(fun
 
 ActionButton.toString = () => StyledActionButton.toString()
 
-export type ActionButtonGroupProps = React.ComponentProps<typeof StyledActionButtonGroup>
+export type ActionButtonGroupProps = ComponentProps<typeof StyledActionButtonGroup>
 
 export const ActionButtonGroup = forwardRef<HTMLDivElement, PropsWithChildren<ActionButtonGroupProps>>(
   function ActionButtonGroup(props, forwardedRef) {

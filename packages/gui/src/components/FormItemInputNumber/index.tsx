@@ -70,10 +70,10 @@ export function FormItemInputNumber(props: FormItemInputNumberProps) {
       />
       {additionalControl && (
         <Fragment>
-          <Button size="sm" variant="secondary" onClick={handleDecrease} disabled={disabled}>
+          <Button size="sm" variant="soft" onClick={handleDecrease} disabled={disabled}>
             <IconMinus size="14px" />
           </Button>
-          <Button size="sm" variant="secondary" onClick={handleIncrease} disabled={disabled}>
+          <Button size="sm" variant="soft" onClick={handleIncrease} disabled={disabled}>
             <IconPlus size="14px" />
           </Button>
         </Fragment>

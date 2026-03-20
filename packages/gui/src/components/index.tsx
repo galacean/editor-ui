@@ -23,7 +23,7 @@ function generateGUI<T>() {
 
 export type FormItemButtonProps = PropsWithChildren<Omit<BaseFormItemProps<string>, 'value' | 'onChange'>>
 export const FormItemButton = generateGUI<string>()(Button, {
-  variant: 'classic',
+  variant: 'soft',
 })
 
 export type FormItemCascadeSliderProps = BaseFormItemProps<number[]>
