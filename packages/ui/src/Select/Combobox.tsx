@@ -344,12 +344,12 @@ export const ComboboxTrigger = forwardRef<HTMLButtonElement, ComboboxTriggerProp
           {startSlot && <StyledComboboxSlot size={size}>{startSlot}</StyledComboboxSlot>}
           <StyledComboboxValueNode gap="xxs" wrap={false} ref={onValueNodeChange}>
             {shouldShowSummary && (
-              <Text size="sm" secondary css={{ padding: '0 $1_5' }}>
+              <Text size="sm" muted css={{ padding: '0 $1_5' }}>
                 {summaryText}
               </Text>
             )}
             {shouldShowNoneText && (
-              <Text size="sm" secondary css={{ padding: '0 $1_5' }}>
+              <Text size="sm" muted css={{ padding: '0 $1_5' }}>
                 {noneText}
               </Text>
             )}

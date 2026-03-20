@@ -77,7 +77,7 @@ const Separator = forwardRef<HTMLDivElement, SeparatorProps>(function Separator(
     return (
       <StyledCrosslineText {...rest} ref={forwardedRef}>
         <div>
-          <Text size="1" secondary>
+          <Text size="1" muted>
             {text}
           </Text>
         </div>

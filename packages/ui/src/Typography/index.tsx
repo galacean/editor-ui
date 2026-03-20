@@ -71,7 +71,7 @@ const StyledText = styled('p', {
         textAlign: 'center',
       },
     },
-    secondary: {
+    muted: {
       true: {
         color: '$textMuted',
       },

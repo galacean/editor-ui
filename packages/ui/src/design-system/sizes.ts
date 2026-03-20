@@ -17,16 +17,17 @@ export const sizes = {
   12: '48px',
   14: '56px',
   16: '64px',
-  // Public component heights follow common UI-library expectations.
-  xs: '$6',
-  sm: '$7',
+  // Public component heights follow the compact editor baseline:
+  // xs=20, sm=24, md=32, lg=36, xl=40.
+  xs: '$5',
+  sm: '$6',
   md: '$8',
   lg: '$9',
   xl: '$10',
   // Explicit control aliases keep dense editor layouts possible without
   // overloading sm/md/lg semantics.
-  controlXs: '$6',
-  controlSm: '$7',
+  controlXs: '$5',
+  controlSm: '$6',
   controlMd: '$8',
   controlLg: '$9',
   iconXs: '12px',

@@ -26,7 +26,7 @@ const Panel = ({ children }: { children: ReactNode }) => (
 export const Overview: StoryFn<typeof Accordion> = (args) => {
   return (
     <Panel>
-      <Text secondary>Accordion works best as an inspector-style grouping surface instead of a floating card.</Text>
+      <Text muted>Accordion works best as an inspector-style grouping surface instead of a floating card.</Text>
       <Accordion type="single" defaultValue="transform" collapsible {...args}>
         <AccordionItem value="transform" title="Transform">
           <Flex direction="column" gap="sm">
@@ -46,7 +46,7 @@ export const Overview: StoryFn<typeof Accordion> = (args) => {
           </Flex>
         </AccordionItem>
         <AccordionItem value="metadata" title="Metadata">
-          <Text secondary size="2">
+          <Text muted size="2">
             Collapsed groups should feel like part of the panel, not like nested popovers.
           </Text>
         </AccordionItem>
@@ -70,7 +70,7 @@ export const CustomTitleContent: StoryFn<typeof Accordion> = () => {
               </Badge>
             </Flex>
           }>
-          <Text secondary size="2">
+          <Text muted size="2">
             Custom title content should inherit the same density and color language as the default trigger.
           </Text>
         </AccordionItem>
@@ -98,12 +98,12 @@ export const Uncontrolled: StoryFn<typeof Accordion> = (args) => {
       <Badge status="info">Single</Badge>
       <Accordion {...args} type="single" defaultValue="first" collapsible>
         <AccordionItem value="first" title="Scene">
-          <Text secondary size="2">
+          <Text muted size="2">
             Default-open items should still read like embedded panel groups.
           </Text>
         </AccordionItem>
         <AccordionItem value="second" title="Rendering">
-          <Text secondary size="2">
+          <Text muted size="2">
             Uncontrolled usage is ideal for simple settings sections.
           </Text>
         </AccordionItem>
@@ -112,12 +112,12 @@ export const Uncontrolled: StoryFn<typeof Accordion> = (args) => {
       <Badge status="info">Multiple</Badge>
       <Accordion {...args} type="multiple" defaultValue={['first']}>
         <AccordionItem value="first" title="Meshes">
-          <Text secondary size="2">
+          <Text muted size="2">
             Multiple mode works well for technical groups with independent visibility.
           </Text>
         </AccordionItem>
         <AccordionItem value="second" title="Materials">
-          <Text secondary size="2">
+          <Text muted size="2">
             Each item keeps the same height and surface treatment for visual consistency.
           </Text>
         </AccordionItem>
@@ -138,12 +138,12 @@ export const Controlled = () => {
       </Button>
       <Accordion type="single" value={singleValue} onValueChange={setSingleValue} collapsible>
         <AccordionItem value="first" title="Scene">
-          <Text secondary size="2">
+          <Text muted size="2">
             Trigger and content should respond cleanly when state is controlled outside the component.
           </Text>
         </AccordionItem>
         <AccordionItem value="second" title="Rendering">
-          <Text secondary size="2">
+          <Text muted size="2">
             The open state should only change the active group border and chevron orientation.
           </Text>
         </AccordionItem>
@@ -155,12 +155,12 @@ export const Controlled = () => {
       </Button>
       <Accordion type="multiple" value={multipleValue} onValueChange={setMultipleValue}>
         <AccordionItem value="first" title="Physics">
-          <Text secondary size="2">
+          <Text muted size="2">
             Controlled multiple accordions are useful when linked to editor presets or inspector filters.
           </Text>
         </AccordionItem>
         <AccordionItem value="second" title="Debug">
-          <Text secondary size="2">
+          <Text muted size="2">
             Each section should keep the same density as other form surfaces in the system.
           </Text>
         </AccordionItem>

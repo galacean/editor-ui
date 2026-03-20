@@ -19,6 +19,12 @@ const slideUp = keyframes({
   to: { height: 0, opacity: 0 },
 })
 
+type AccordionSize = 'sm' | 'md'
+
+const AccordionContext = React.createContext<{ size: AccordionSize }>({
+  size: 'sm',
+})
+
 const StyledAccordion = styled(AccordionPrimitive.Root, {
   width: '100%',
   display: 'grid',
@@ -90,6 +96,25 @@ const StyledTrigger = styled(AccordionPrimitive.Trigger, {
     outline: 'none',
     boxShadow: '$focus',
   },
+  variants: {
+    size: {
+      sm: {
+        minHeight: '$sm',
+        padding: '0 $2',
+        fontSize: '$1',
+        lineHeight: '$lineHeights$1',
+      },
+      md: {
+        minHeight: '$md',
+        padding: '0 $3',
+        fontSize: '$2',
+        lineHeight: '$lineHeights$2',
+      },
+    },
+  },
+  defaultVariants: {
+    size: 'sm',
+  },
 })
 
 const StyledContent = styled(AccordionPrimitive.Content, {
@@ -111,14 +136,30 @@ const StyledContent = styled(AccordionPrimitive.Content, {
 })
 
 const StyledContentInner = styled('div', {
-  padding: '$3',
-  fontSize: '$1',
-  lineHeight: '$lineHeights$2',
   color: '$text',
   borderTop: '1px solid $border',
+  variants: {
+    size: {
+      sm: {
+        padding: '$2',
+        fontSize: '$1',
+        lineHeight: '$lineHeights$1',
+      },
+      md: {
+        padding: '$3',
+        fontSize: '$1',
+        lineHeight: '$lineHeights$2',
+      },
+    },
+  },
+  defaultVariants: {
+    size: 'sm',
+  },
 })
 
-export type AccordionProps = AccordionSingleProps | AccordionMultipleProps
+export type AccordionProps = (AccordionSingleProps | AccordionMultipleProps) & {
+  size?: AccordionSize
+}
 
 /**
  * The Accordion Component is used to show/hide content in a collapsible manner. Consists of `Accordion` and `AccordionItem` components.
@@ -126,7 +167,12 @@ export type AccordionProps = AccordionSingleProps | AccordionMultipleProps
  * This Component provide controlled and uncontrolled modes.
  */
 export const Accordion = function Accordion(props: AccordionProps) {
-  return <StyledAccordion {...props} />
+  const { size = 'sm', ...rest } = props
+  return (
+    <AccordionContext.Provider value={{ size }}>
+      <StyledAccordion {...rest} />
+    </AccordionContext.Provider>
+  )
 }
 
 export type AccordionItemProps = Omit<PrimitiveItemProps, 'title'> & {
@@ -135,17 +181,18 @@ export type AccordionItemProps = Omit<PrimitiveItemProps, 'title'> & {
 }
 
 export function AccordionItem(props: AccordionItemProps) {
+  const { size } = React.useContext(AccordionContext)
   const { children, title, arrow = true, ...rest } = props
   return (
     <StyledItem {...rest}>
       <StyledHeader>
-        <StyledTrigger>
+        <StyledTrigger size={size}>
           <span>{title}</span>
           {arrow && <StyledChevron aria-hidden />}
         </StyledTrigger>
       </StyledHeader>
       <StyledContent>
-        <StyledContentInner>{children}</StyledContentInner>
+        <StyledContentInner size={size}>{children}</StyledContentInner>
       </StyledContent>
     </StyledItem>
   )

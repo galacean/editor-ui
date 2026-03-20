@@ -128,21 +128,28 @@ export const basicItemStyle = styled('div', {
     size: {
       xs: {
         height: '$xs',
-        fontSize: '$1',
+        fontSize: '$0_5',
         borderRadius: '$xs',
+        padding: '0 $1_5',
         minWidth: 'min-content',
       },
       sm: {
         height: '$sm',
         borderRadius: '$sm',
+        fontSize: '$1',
+        padding: '0 $2',
       },
       md: {
         height: '$md',
         borderRadius: '$md',
+        fontSize: '$2',
+        padding: '0 $3',
       },
       lg: {
         height: '$lg',
         borderRadius: '$md',
+        fontSize: '$2',
+        padding: '0 $4',
       },
     },
     critical: {
@@ -225,10 +232,27 @@ export const contentStyle = styled('div', {
 })
 
 export const labelStyle = styled('span', {
-  fontSize: '10px',
   color: '$textMuted',
-  padding: '$1 $2',
   userSelect: 'none',
+  variants: {
+    size: {
+      xs: {
+        fontSize: '$0_5',
+        padding: '$1 $1_5',
+      },
+      sm: {
+        fontSize: '$0_5',
+        padding: '$1 $2',
+      },
+      md: {
+        fontSize: '$1',
+        padding: '$1_5 $3',
+      },
+    },
+  },
+  defaultVariants: {
+    size: 'sm',
+  },
 })
 
 export const separatorStyle = styled('div', {
@@ -239,16 +263,47 @@ export const separatorStyle = styled('div', {
 
 export const indicatorStyle = styled('div', {
   position: 'absolute',
+  top: '50%',
   display: 'inline-flex',
   alignItems: 'center',
   justifyContent: 'center',
-  left: '$1',
-  width: '$4',
-  height: '$4',
-  marginRight: '$1_5',
-  '& > svg': {
-    width: '14px',
-    height: '14px',
+  transform: 'translateY(-50%)',
+  variants: {
+    size: {
+      xs: {
+        left: '$1',
+        width: '$3',
+        height: '$3',
+        marginRight: '$1',
+        '& > svg': {
+          width: '$iconXs',
+          height: '$iconXs',
+        },
+      },
+      sm: {
+        left: '$1',
+        width: '$4',
+        height: '$4',
+        marginRight: '$1_5',
+        '& > svg': {
+          width: '$iconSm',
+          height: '$iconSm',
+        },
+      },
+      md: {
+        left: '$2',
+        width: '$4',
+        height: '$4',
+        marginRight: '$2',
+        '& > svg': {
+          width: '$iconMd',
+          height: '$iconMd',
+        },
+      },
+    },
+  },
+  defaultVariants: {
+    size: 'sm',
   },
 })
 
@@ -257,11 +312,19 @@ export const radioGroupStyle = styled('div', {
     size: {
       xs: {
         [`& ${labelStyle}`]: {
+          paddingLeft: '$5',
+        },
+      },
+      sm: {
+        [`& ${labelStyle}`]: {
           paddingLeft: '$6',
         },
       },
-      sm: {},
-      md: {},
+      md: {
+        [`& ${labelStyle}`]: {
+          paddingLeft: '$7',
+        },
+      },
     },
   },
 })
@@ -273,10 +336,22 @@ export const checkboxItemStyle = styled('div', basicItemStyle, {
     display: 'flex',
     justifyContent: 'initial',
   },
+  variants: {
+    size: {
+      xs: {
+        paddingLeft: '$5 !important',
+      },
+      sm: {},
+      md: {
+        paddingLeft: '$7 !important',
+      },
+      lg: {},
+    },
+  },
 })
 
 export const radioItemStyle = styled('div', basicItemStyle, {
-  paddingLeft: '$6',
+  paddingLeft: '$6 !important',
   '&[data-state=checked]': {
     display: 'flex',
     justifyContent: 'initial',
@@ -284,10 +359,13 @@ export const radioItemStyle = styled('div', basicItemStyle, {
   variants: {
     size: {
       xs: {
-        paddingLeft: '$5',
+        paddingLeft: '$5 !important',
       },
       sm: {},
-      md: {},
+      md: {
+        paddingLeft: '$7 !important',
+      },
+      lg: {},
     },
   },
 })

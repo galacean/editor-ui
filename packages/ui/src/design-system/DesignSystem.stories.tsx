@@ -266,7 +266,6 @@ const semanticSwatches = [
   'selectionBorder',
   'panelBg',
   'toastBg',
-  'secondaryBg',
   'border',
   'borderStrong',
   'focusRing',
@@ -360,7 +359,7 @@ export const Overview: StoryFn = () => {
             <SwatchCard key={token}>
               <SwatchPreview css={{ backgroundColor: `$${token}` }} />
               <SwatchMeta>
-                <TokenName>{token === 'secondaryBg' ? 'secondaryBg (Legacy)' : token}</TokenName>
+                <TokenName>{token}</TokenName>
                 <TokenValue>{semanticColors[token]}</TokenValue>
               </SwatchMeta>
             </SwatchCard>

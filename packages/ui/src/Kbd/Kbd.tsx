@@ -104,10 +104,20 @@ const StyledKbd = styled('kbd', {
         height: '$3',
         fontSize: '10px',
         borderRadius: '$1',
+        padding: '0 $0_5',
       },
       sm: {
         minWidth: '$4',
         height: '$4',
+        fontSize: '10px',
+      },
+      md: {
+        minWidth: '$5',
+        height: '$5',
+        fontSize: '$1',
+        lineHeight: '$lineHeights$1',
+        borderRadius: '$2',
+        padding: '0 $1_5',
       },
     },
     uppercase: {
@@ -139,10 +149,11 @@ export const Kbd = StyledKbd
 type IKbdGroupProps = {
   shortcuts?: string | string[]
   uppercase?: boolean
+  size?: 'xs' | 'sm' | 'md'
 }
 
 export function KbdGroup(props: IKbdGroupProps) {
-  const { shortcuts, uppercase = true } = props
+  const { shortcuts, uppercase = true, size = 'sm' } = props
   if (!shortcuts) return null
 
   if (Array.isArray(shortcuts)) {
@@ -153,7 +164,7 @@ export function KbdGroup(props: IKbdGroupProps) {
             return <IconSlot key={index}>{gastureMap[key]}</IconSlot>
           }
           return (
-            <Kbd uppercase={uppercase} key={index}>
+            <Kbd uppercase={uppercase} size={size} key={index}>
               {symbolsMap[key] ?? key}
             </Kbd>
           )
@@ -168,7 +179,7 @@ export function KbdGroup(props: IKbdGroupProps) {
     <StyledKbdGroup>
       {keys.map((key, index) => {
         return (
-          <Kbd uppercase={uppercase} key={index}>
+          <Kbd uppercase={uppercase} size={size} key={index}>
             {key}
           </Kbd>
         )

@@ -37,10 +37,33 @@ type PickedContentProps = 'side' | 'sideOffset' | 'align' | 'alignOffset'
 const StyledMenuItemContent = styled('span', {
   display: 'flex',
   alignItems: 'center',
-  '& > svg': {
-    marginRight: '$1_5',
-    width: '$4',
-    height: '$4',
+  variants: {
+    size: {
+      xs: {
+        '& > svg': {
+          marginRight: '$1',
+          width: '$3',
+          height: '$3',
+        },
+      },
+      sm: {
+        '& > svg': {
+          marginRight: '$1_5',
+          width: '$4',
+          height: '$4',
+        },
+      },
+      md: {
+        '& > svg': {
+          marginRight: '$2',
+          width: '$4',
+          height: '$4',
+        },
+      },
+    },
+  },
+  defaultVariants: {
+    size: 'sm',
   },
 })
 
@@ -148,11 +171,11 @@ const MenuItem = forwardRef<HTMLDivElement, MenuItemProps>(function MenuItem(pro
         children
       ) : (
         <Fragment>
-          <StyledMenuItemContent>
+          <StyledMenuItemContent size={size}>
             {icon}
             {name}
           </StyledMenuItemContent>
-          <KbdGroup shortcuts={shortcuts} />
+          <KbdGroup shortcuts={shortcuts} size={size} />
         </Fragment>
       )}
     </Item>
@@ -190,11 +213,11 @@ function SubMenuItem(props: PropsWithChildren<ISubMenuItemProps>) {
   return (
     <Sub>
       <SubItem size={size} disabled={disabled}>
-        <StyledMenuItemContent>
+        <StyledMenuItemContent size={size}>
           {icon}
           {name}
         </StyledMenuItemContent>
-        <IconChevronRight size="12px" />
+        <IconChevronRight size={size === 'xs' ? '10px' : size === 'md' ? '14px' : '12px'} />
       </SubItem>
       <Portal>
         <SubContent size={size}>
@@ -214,6 +237,7 @@ interface GroupProps extends ContextMenuGroupProps {
 
 function MenuGroup(props: GroupProps) {
   const { Group, MenuLabel } = useResolveMenuAnatomy()
+  const { size } = useContext(MenuContext)
   const { label, divider, children, ...rest } = props
   const dividerVal = typeof divider === 'boolean' && divider ? 'bottom' : divider
   const showTopDivider = dividerVal === 'top' || dividerVal === 'both'
@@ -223,7 +247,7 @@ function MenuGroup(props: GroupProps) {
     <React.Fragment>
       {showTopDivider && <MenuSeparator />}
       <Group {...rest}>
-        {label && <MenuLabel>{label}</MenuLabel>}
+        {label && <MenuLabel size={size}>{label}</MenuLabel>}
         {children}
       </Group>
       {showBottomDivider && <MenuSeparator />}
@@ -243,10 +267,10 @@ function MenuCheckboxItem(props: ICheckboxItemProps) {
 
   return (
     <StyledCheckboxItem {...rest} size={size}>
-      <ItemIndicator>
+      <ItemIndicator size={size}>
         <IconCheck />
       </ItemIndicator>
-      <StyledMenuItemContent>
+      <StyledMenuItemContent size={size} css={{ position: 'relative' }}>
         {icon}
         {name}
       </StyledMenuItemContent>
@@ -272,10 +296,12 @@ function RadioItem(props: RadioItemProps) {
 
   return (
     <StyledRadioItem value={value} onSelect={onSelect} size={size}>
-      <ItemIndicator>
+      <ItemIndicator size={size}>
         <DotIndicator />
       </ItemIndicator>
-      {name}
+      <StyledMenuItemContent size={size} css={{ position: 'relative' }}>
+        {name}
+      </StyledMenuItemContent>
     </StyledRadioItem>
   )
 }
@@ -292,7 +318,7 @@ function MenuRadioGroup(props: RadioGroupProps) {
 
   return (
     <RadioGroupPrimitive {...rest} size={size}>
-      {label && <MenuLabel>{label}</MenuLabel>}
+      {label && <MenuLabel size={size}>{label}</MenuLabel>}
       {items.map((item, index) => (
         <RadioItem key={index} {...item} />
       ))}

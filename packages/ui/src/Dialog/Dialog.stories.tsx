@@ -44,9 +44,7 @@ export const Overview: StoryFn<typeof Dialog> = (args) => {
 
   return (
     <Flex direction="column" gap="md" css={{ width: '420px' }}>
-      <Text secondary>
-        A lightweight editor dialog with a title area, compact body content and optional close action.
-      </Text>
+      <Text muted>A lightweight editor dialog with a title area, compact body content and optional close action.</Text>
       <Button variant="soft" size="md" startSlot={<IconSparkles size="14px" />} onClick={() => setOpen(true)}>
         Open Overview Dialog
       </Button>

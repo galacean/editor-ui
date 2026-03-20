@@ -19,7 +19,7 @@ function App() {
           <Button size="md" variant="solid" onClick={() => setCount(count + 1)} css={{ margin: '$4 0' }}>
             Increment Count
           </Button>
-          <Text size="sm" secondary>
+          <Text size="sm" muted>
             Check the bundle analyzer to verify tree-shaking is working correctly
           </Text>
         </Flex>

@@ -26,7 +26,7 @@ export const WithText: StoryFn<typeof Separator> = () => {
   return (
     <Flex direction="column" gap="md" style={{ width: '320px' }}>
       <Separator text="Lighting" />
-      <Text secondary size="2">
+      <Text muted size="2">
         Group separators should stay quiet and structural instead of competing with surrounding controls.
       </Text>
     </Flex>
