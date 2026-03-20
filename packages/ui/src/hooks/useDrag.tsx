@@ -5,7 +5,6 @@ export enum DragState {
   None = 'none',
   Dragging = 'dragging',
   Dropped = 'dropped',
-  Cancelled = 'cancelled',
 }
 
 interface IDndContextValue<T = any> {
@@ -96,7 +95,7 @@ export function useDrag<T>(options: IDragOptions<T>): IDragReturnType {
       if (onEnd) {
         onEnd(e, item)
       }
-      dragItem.state = DragState.Cancelled
+      dragItem.state = DragState.None
       dragItem.item = null
       dragItem.type = -1
     }
@@ -105,16 +104,23 @@ export function useDrag<T>(options: IDragOptions<T>): IDragReturnType {
       dragElement.setAttribute('draggable', 'true')
       dragElement.addEventListener('dragstart', handleDragStart)
       dragElement.addEventListener('dragend', handleDragEnd)
+    } else {
+      dragElement.removeAttribute('draggable')
     }
 
     return () => {
       dragElement.removeEventListener('dragstart', handleDragStart)
       dragElement.removeEventListener('dragend', handleDragEnd)
-      dragItem.state = DragState.Cancelled
-      dragItem.item = null
-      dragItem.type = -1
+      dragElement.removeAttribute('draggable')
+      // 只有当前实例正在拖拽时才重置共享 dragItem
+      // 其他 useDrag 实例（如 AssetItem）重渲染触发 cleanup 时不应干扰进行中的拖拽
+      if (dragItem.item === item) {
+        dragItem.state = DragState.None
+        dragItem.item = null
+        dragItem.type = -1
+      }
     }
-  }, [])
+  }, [type, item, onEnd, onStart, onCancel, disable])
 
   return [dragRef, previewRef]
 }

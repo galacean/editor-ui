@@ -1,9 +1,22 @@
+import React from 'react'
 import { styled } from '../design-system'
+import { TICK_EPSILON, formatTick, getAlignedTickPrecision, getTickPrecision } from './tick'
+
+const TICK_EDGE_CAPTURE = 8
+const X_TICK_CLIP_PADDING_LEFT = TICK_EDGE_CAPTURE
+const X_TICK_CLIP_PADDING_RIGHT = 16
+const X_TICK_CLIP_HEIGHT = 22
+const Y_TICK_CLIP_PADDING_LEFT = 56
+const Y_TICK_CLIP_PADDING_TOP = 8
+const Y_TICK_CLIP_PADDING_BOTTOM = TICK_EDGE_CAPTURE
+const X_TICK_Y_OFFSET = 16
+const Y_TICK_X_OFFSET = 12
 
 const StyledTicks = styled('text', {
   fontSize: '10px',
   fill: '$gray10',
   userSelect: 'none',
+  pointerEvents: 'none',
   variants: {
     direction: {
       vertical: {
@@ -25,15 +38,7 @@ const StyledLabel = styled('text', {
   textAnchor: 'middle',
   fill: '$grayA11',
   userSelect: 'none',
-  variants: {
-    vertical: {
-      true: {
-        writingMode: 'vertical-rl',
-        textOrientation: 'mixed',
-        textAnchor: 'start',
-      },
-    },
-  },
+  pointerEvents: 'none',
 })
 
 const StyledGridLine = styled('rect', {
@@ -42,20 +47,19 @@ const StyledGridLine = styled('rect', {
 
 const StyledAxis = styled('line', {
   stroke: '$grayA6',
-  // stroke: "transparent"
 })
 
 interface GridProps {
   children?: React.ReactNode
+  overlay?: React.ReactNode
   size: {
     width: number
     height: number
   }
   zoom: number
-  axisLabel?: {
-    x: string
-    y: string
-  }
+  yTickScale?: number
+  axisYScale?: number
+  axisLabel?: string
   offset: {
     x: number
     y: number
@@ -71,6 +75,8 @@ export function Grid(props: GridProps) {
     size: { width, height },
     offset,
     zoom,
+    yTickScale = 1,
+    axisYScale = 0.4,
     tick = { x: 10, y: 10 },
     axisLabel,
   } = props
@@ -79,9 +85,20 @@ export function Grid(props: GridProps) {
   const xAxisGap = width / (tick.x * zoom)
   const yAxisLength = Math.ceil(tick.y * zoom) + 1
   const yAxisGap = height / (tick.y * zoom)
+  const clipIdPrefix = React.useId().replace(/:/g, '')
+  const clipGridId = `${clipIdPrefix}-grid`
+  const clipXTicksId = `${clipIdPrefix}-x-ticks`
+  const clipYTicksId = `${clipIdPrefix}-y-ticks`
   const labelGap = 10
+  const xTickPrecision = getTickPrecision(1 / tick.x)
+  const yTickPrecision = getTickPrecision(Math.abs(yTickScale / (tick.y * axisYScale)))
+
+  const getNormalizedTickY = (worldY: number) => (-worldY / (height * axisYScale)) * zoom
+  const getScaledTickY = (worldY: number) => getNormalizedTickY(worldY) * yTickScale
 
   function renderYAxis() {
+    // When origin is exactly on left border, keep only the orange border to avoid double-line mismatch.
+    if (Math.abs(offset.x) < TICK_EPSILON) return null
     return <StyledAxis className="y-axis" x1={0} y1={offset.y} x2={0} y2={offset.y + height} strokeWidth="1" />
   }
 
@@ -89,13 +106,11 @@ export function Grid(props: GridProps) {
     return (
       <g className="grid-x-lines">
         {[...Array(yAxisLength).keys()].map((index) => {
-          const gap = height / (tick.y * zoom)
           return (
             <StyledGridLine
-              data-index={index}
               key={index}
               x={offset.x}
-              y={index * gap + offset.y - (offset.y % gap)}
+              y={index * yAxisGap + offset.y - (offset.y % yAxisGap)}
               width={width}
               height={1}
             />
@@ -106,18 +121,30 @@ export function Grid(props: GridProps) {
   }
 
   function renderYAxisTicks(tickXOffset = -16, tickYOffset = 0) {
+    const ticks = [...Array(yAxisLength).keys()].map((index) => {
+      const worldY = index * yAxisGap + offset.y - (offset.y % yAxisGap)
+      return {
+        index,
+        worldY,
+        value: getScaledTickY(worldY),
+      }
+    })
+    const alignedPrecision = getAlignedTickPrecision(
+      ticks.map((tickItem) => tickItem.value),
+      yTickPrecision
+    )
+
     return (
-      <g className="grid-y-ticks" style={{ clipPath: 'url(#clipYTicks)' }}>
-        {[...Array(yAxisLength).keys()].map((index) => {
-          const gap = yAxisGap
+      <g className="grid-y-ticks" style={{ clipPath: `url(#${clipYTicksId})` }}>
+        {ticks.map((tickItem) => {
           return (
             <StyledTicks
               className="y-axis-tick"
-              key={`y-${index}`}
+              key={`y-${tickItem.index}`}
               x={tickXOffset}
               direction="vertical"
-              y={index * gap + offset.y - (offset.y % gap) + tickYOffset}>
-              {-(index + (offset.y > 0 ? Math.floor(offset.y / gap) : Math.ceil(offset.y / gap))) * 0.25}
+              y={tickItem.worldY + tickYOffset}>
+              {formatTick(tickItem.value, alignedPrecision)}
             </StyledTicks>
           )
         })}
@@ -125,18 +152,10 @@ export function Grid(props: GridProps) {
     )
   }
 
-  function renderYAxisLabel() {
-    return (
-      <StyledLabel className="y-axis-label" vertical x={offset.x + 10} y={offset.y + labelGap} textAnchor="middle">
-        {axisLabel ? axisLabel.y : 'y'}
-      </StyledLabel>
-    )
-  }
-
   function renderXAxisLabel() {
     return (
       <StyledLabel className="x-axis-label" x={offset.x + width / 2} y={offset.y + height - labelGap}>
-        {axisLabel ? axisLabel.x : 'x'}
+        {axisLabel ?? 'x'}
       </StyledLabel>
     )
   }
@@ -144,34 +163,38 @@ export function Grid(props: GridProps) {
   function renderVerticalGridLines() {
     return (
       <g className="grid-y-lines">
-        {[...Array(yAxisLength).keys()].map((index) => {
-          const gap = width / (tick.x * zoom)
-          return (
-            <StyledGridLine
-              key={index}
-              x={index * gap + offset.x - (offset.x % gap)}
-              y={offset.y}
-              width={1}
-              height={height}
-            />
-          )
+        {[...Array(xAxisLength).keys()].map((index) => {
+          const x = index * xAxisGap + offset.x - (offset.x % xAxisGap)
+
+          // Do not draw grid line on panel left boundary; border already represents it.
+          if (Math.abs(x - offset.x) < TICK_EPSILON) {
+            return null
+          }
+
+          return <StyledGridLine key={index} x={x} y={offset.y} width={1} height={height} />
         })}
       </g>
     )
   }
 
   function renderXAxisTicks(tickXOffset = -10, tickYOffset = 100) {
+    const axisOffsetIndex = offset.x > 0 ? Math.floor(offset.x / xAxisGap) : Math.ceil(offset.x / xAxisGap)
+    const ticks = [...Array(xAxisLength).keys()].map((index) => ({
+      index,
+      value: (index + axisOffsetIndex) / tick.x,
+      x: index * xAxisGap + offset.x - (offset.x % xAxisGap) + tickXOffset,
+    }))
+    const alignedPrecision = getAlignedTickPrecision(
+      ticks.map((tickItem) => tickItem.value),
+      xTickPrecision
+    )
+
     return (
-      <g className="grid-x-ticks" style={{ clipPath: 'url(#clipXTicks)' }}>
-        {[...Array(xAxisLength).keys()].map((index) => {
-          const gap = xAxisGap
+      <g className="grid-x-ticks" style={{ clipPath: `url(#${clipXTicksId})` }}>
+        {ticks.map((tickItem) => {
           return (
-            <StyledTicks
-              className="x-axis-tick"
-              key={`x-${index}`}
-              y={tickYOffset}
-              x={index * gap + offset.x - (offset.x % gap) + tickXOffset}>
-              {(index + (offset.x > 0 ? Math.floor(offset.x / gap) : Math.ceil(offset.x / gap))) / 10}
+            <StyledTicks className="x-axis-tick" key={`x-${tickItem.index}`} y={tickYOffset} x={tickItem.x}>
+              {formatTick(tickItem.value, alignedPrecision)}
             </StyledTicks>
           )
         })}
@@ -186,31 +209,41 @@ export function Grid(props: GridProps) {
   return (
     <>
       <defs>
-        <clipPath id="clipGrid">
+        <clipPath id={clipGridId}>
           <rect x={offset.x} y={offset.y} width={width} height={height} />
         </clipPath>
-        <clipPath id="clipXTicks">
-          <rect x={offset.x - 5} y={offset.y + height} width={width + 20} height={16} />
+        <clipPath id={clipXTicksId}>
+          <rect
+            x={offset.x - X_TICK_CLIP_PADDING_LEFT}
+            y={offset.y + height}
+            width={width + X_TICK_CLIP_PADDING_LEFT + X_TICK_CLIP_PADDING_RIGHT}
+            height={X_TICK_CLIP_HEIGHT}
+          />
         </clipPath>
-        <clipPath id="clipYTicks">
-          <rect x={offset.x - 40} y={offset.y} width={40} height={height} />
+        <clipPath id={clipYTicksId}>
+          <rect
+            x={offset.x - Y_TICK_CLIP_PADDING_LEFT}
+            y={offset.y - Y_TICK_CLIP_PADDING_TOP}
+            width={Y_TICK_CLIP_PADDING_LEFT}
+            height={height + Y_TICK_CLIP_PADDING_TOP + Y_TICK_CLIP_PADDING_BOTTOM}
+          />
         </clipPath>
       </defs>
       <g
         className="bezier-curve-grid"
         height={height}
         width={width}
-        style={{ clipPath: 'url(#clipGrid)', overflow: 'hidden' }}>
+        style={{ clipPath: `url(#${clipGridId})`, overflow: 'hidden' }}>
         {renderHorizontalGridLines()}
         {renderVerticalGridLines()}
         {renderXAxis()}
         {renderYAxis()}
         {renderXAxisLabel()}
-        {renderYAxisLabel()}
         {props.children}
       </g>
-      {renderYAxisTicks(offset.x - 12, 4)}
-      {renderXAxisTicks(0, height + offset.y + 16)}
+      {props.overlay}
+      {renderYAxisTicks(offset.x - Y_TICK_X_OFFSET, 4)}
+      {renderXAxisTicks(0, height + offset.y + X_TICK_Y_OFFSET)}
     </>
   )
 }

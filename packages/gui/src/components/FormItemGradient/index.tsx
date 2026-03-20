@@ -1,108 +1,109 @@
-import React from "react";
-import { useControllableState } from "@radix-ui/react-use-controllable-state";
-import { IconEaseIn, IconEqual, IconVectorBezier2, IconPlusMinus, IconHexagonLetterEFilled } from "@tabler/icons-react";
+import React from 'react'
+import { useControllableState } from '@radix-ui/react-use-controllable-state'
+import { IconEaseIn, IconEqual, IconVectorBezier2, IconPlusMinus, IconHexagonLetterEFilled } from '@tabler/icons-react'
 
-import { Button, ColorPicker, type ParticleColor, Select, SelectItem } from "@galacean/editor-ui";
-import { FormItem } from "../FormItem";
-import { type Color, normalizeColor, denormalizeColor } from "@galacean/editor-ui";
+import { Button, ColorPicker, type ParticleColor, Select, SelectItem } from '@galacean/editor-ui'
+import { FormItem } from '../FormItem'
+import { type Color, type HDRColor, normalizeColor, denormalizeColor } from '@galacean/editor-ui'
 
-export type GradientPropertyType = "constant" | "gradient" | "two-constant" | "two-gradient";
+export type GradientPropertyType = 'constant' | 'gradient' | 'two-constant' | 'two-gradient'
 
 export type IEngineParticleColor = {
-  color: { value: Color; time: number }[];
-  alpha: { value: number; time: number }[];
-};
+  color: { value: Color; time: number }[]
+  alpha: { value: number; time: number }[]
+}
 
 export type ConstantValue = {
-  type: "constant";
-  label?: string;
-  value: Color;
-};
+  type: 'constant'
+  label?: string
+  value: Color
+}
 
 export type TwoConstantValue = {
-  type: "two-constant";
-  label?: string;
-  value: [Color, Color];
-};
+  type: 'two-constant'
+  label?: string
+  value: [Color, Color]
+}
 
 export type GradientValue = {
-  type: "gradient";
-  label?: string;
-  value: IEngineParticleColor;
-};
+  type: 'gradient'
+  label?: string
+  value: IEngineParticleColor
+}
 
 export type GradientInsideValue = {
-  type: "gradient";
-  label?: string;
-  value: ParticleColor;
-};
+  type: 'gradient'
+  label?: string
+  value: ParticleColor
+}
 
 export type TwoGradientValue = {
-  type: "two-gradient";
-  label?: string;
-  value: [IEngineParticleColor, IEngineParticleColor];
-};
+  type: 'two-gradient'
+  label?: string
+  value: [IEngineParticleColor, IEngineParticleColor]
+}
 
 export type TwoGradientInsideValue = {
-  type: "two-gradient";
-  label?: string;
-  value: [ParticleColor, ParticleColor];
-};
+  type: 'two-gradient'
+  label?: string
+  value: [ParticleColor, ParticleColor]
+}
 
-export type ParticleColorValue = ConstantValue | TwoConstantValue | GradientValue | TwoGradientValue;
-export type ParticleColorInsideValue = ConstantValue | TwoConstantValue | GradientInsideValue | TwoGradientInsideValue;
+export type ParticleColorValue = ConstantValue | TwoConstantValue | GradientValue | TwoGradientValue
+export type ParticleColorInsideValue = ConstantValue | TwoConstantValue | GradientInsideValue | TwoGradientInsideValue
 
 export interface FormItemGradientProps {
-  type?: GradientPropertyType;
-  label: string;
-  info?: string;
-  labelFirst?: boolean;
-  value: ParticleColorValue[];
-  onValueChange?: (value: FormItemGradientProps["value"], type: GradientPropertyType) => void;
+  type?: GradientPropertyType
+  label: string
+  info?: string
+  labelFirst?: boolean
+  value: ParticleColorValue[]
+  hdr?: boolean
+  onValueChange?: (value: FormItemGradientProps['value'], type: GradientPropertyType) => void
 }
 
 const particlePropertyTypeOptions = [
-  { type: "constant", icon: <IconEqual size="14px" />, columns: "1fr 32px" },
-  { type: "gradient", icon: <IconEaseIn size="14px" />, columns: "1fr 32px" },
-  { type: "two-constant", icon: <IconPlusMinus size="14px" />, columns: "repeat(2, minmax(0, 12fr)) 32px" },
-  { type: "two-gradient", icon: <IconVectorBezier2 size="14px" />, columns: "repeat(2, minmax(0, 12fr)) 32px" }
-] as const;
+  { type: 'constant', icon: <IconEqual size="14px" />, columns: '1fr 32px' },
+  { type: 'gradient', icon: <IconEaseIn size="14px" />, columns: '1fr 32px' },
+  { type: 'two-constant', icon: <IconPlusMinus size="14px" />, columns: 'repeat(2, minmax(0, 12fr)) 32px' },
+  { type: 'two-gradient', icon: <IconVectorBezier2 size="14px" />, columns: 'repeat(2, minmax(0, 12fr)) 32px' },
+] as const
 
 // IParticleColor -> IEngineParticleColor
 function normalizeGradientValue(rootValue: ParticleColorInsideValue[]) {
   return rootValue.map((item) => {
-    const { type, value } = item;
-    if (type === "constant") {
+    const { type, value } = item
+    if (type === 'constant') {
       return {
         type,
         label: item.label,
-        value: normalizeColor(value)
-      } as ConstantValue;
+        value: normalizeColor(value),
+      } as ConstantValue
     }
-    if (type === "two-constant") {
+    if (type === 'two-constant') {
       return {
         type,
         label: item.label,
-        value: [normalizeColor(value[0]), normalizeColor(value[1])]
-      } as TwoConstantValue;
+        value: [normalizeColor(value[0]), normalizeColor(value[1])],
+      } as TwoConstantValue
     }
-    if (type === "gradient") {
+    if (type === 'gradient') {
       return {
         type,
         label: item.label,
         value: {
           color: value.color.map((v) => ({
             value: normalizeColor(v.value),
-            time: v.position
+            time: v.position,
           })),
           alpha: value.alpha.map((v) => ({
             value: v.value.a,
-            time: v.position
-          }))
-        }
-      } as GradientValue;
+            time: v.position,
+          })),
+        },
+      } as GradientValue
     }
-    if (type === "two-gradient") {
+    if (type === 'two-gradient') {
       return {
         type,
         label: item.label,
@@ -110,65 +111,65 @@ function normalizeGradientValue(rootValue: ParticleColorInsideValue[]) {
           {
             color: value[0].color.map((c) => ({
               value: normalizeColor(c.value),
-              time: c.position
+              time: c.position,
             })),
             alpha: value[0].alpha.map((a) => ({
               value: a.value.a,
-              time: a.position
-            }))
+              time: a.position,
+            })),
           },
           {
             color: value[1].color.map((c) => ({
               value: normalizeColor(c.value),
-              time: c.position
+              time: c.position,
             })),
             alpha: value[1].alpha.map((a) => ({
               value: a.value.a,
-              time: a.position
-            }))
-          }
-        ]
-      } as TwoGradientValue;
+              time: a.position,
+            })),
+          },
+        ],
+      } as TwoGradientValue
     }
-    return item;
-  });
+    return item
+  })
 }
 
 // IEngineParticleColor -> IParticleColor
 function denormalizeGradientValue(value: ParticleColorValue[]) {
   return value.map((item) => {
-    const { type, value } = item;
-    if (type === "constant") {
+    const { type, value } = item
+    if (type === 'constant') {
       return {
         type,
         label: item.label,
-        value: denormalizeColor(value)
-      } as ConstantValue;
+        value: denormalizeColor(value),
+      } as ConstantValue
     }
-    if (type === "two-constant") {
+    if (type === 'two-constant') {
       return {
         type,
         label: item.label,
-        value: [denormalizeColor(value[0]), denormalizeColor(value[1])]
-      } as TwoConstantValue;
+        value: [denormalizeColor(value[0]), denormalizeColor(value[1])],
+      } as TwoConstantValue
     }
-    if (type === "gradient") {
+    if (type === 'gradient') {
       return {
         type,
         label: item.label,
         value: {
           color: value.color.map((v) => ({
             value: denormalizeColor(v.value),
-            position: v.time
+            position: v.time,
           })),
           alpha: value.alpha.map((v) => ({
             value: { r: 255, g: 255, b: 255, a: v.value },
-            position: v.time
-          }))
-        }
-      } as GradientInsideValue;
+            position: v.time,
+          })),
+        },
+      } as GradientInsideValue
     }
-    if (type === "two-gradient") {
+    if (type === 'two-gradient') {
       return {
         type,
         label: item.label,
@@ -176,130 +177,142 @@ function denormalizeGradientValue(value: ParticleColorValue[]) {
           {
             color: value[0].color.map((c) => ({
               value: denormalizeColor(c.value),
-              position: c.time
+              position: c.time,
             })),
             alpha: value[0].alpha.map((a) => ({
               value: { r: 255, g: 255, b: 255, a: a.value },
-              position: a.time
-            }))
+              position: a.time,
+            })),
           },
           {
             color: value[1].color.map((c) => ({
               value: denormalizeColor(c.value),
-              position: c.time
+              position: c.time,
             })),
             alpha: value[1].alpha.map((a) => ({
               value: { r: 255, g: 255, b: 255, a: a.value },
-              position: a.time
-            }))
-          }
-        ]
-      } as TwoGradientInsideValue;
+              position: a.time,
+            })),
+          },
+        ],
+      } as TwoGradientInsideValue
     }
-    return item;
-  });
+    return item
+  })
+}
+
+function ConstantColorPicker({
+  hdr,
+  value,
+  onValueChange,
+  ...rest
+}: { hdr: boolean; value: Color; onValueChange: (v: Color) => void } & Record<string, any>) {
+  return hdr ? (
+    <ColorPicker {...rest} mode="hdr" value={value as HDRColor} onValueChange={onValueChange} />
+  ) : (
+    <ColorPicker {...rest} mode="constant" value={value} onValueChange={onValueChange} />
+  )
 }
 
 export function FormItemGradient(props: FormItemGradientProps) {
-  const { label, labelFirst, info, value } = props;
+  const { label, labelFirst, info, value, hdr = false } = props
   const [valueMap, setValueMap] = useControllableState({
     prop: denormalizeGradientValue(value),
     onChange: (state) => {
       if (props.onValueChange) {
-        props.onValueChange(normalizeGradientValue(state), propType as GradientPropertyType);
+        props.onValueChange(normalizeGradientValue(state), propType as GradientPropertyType)
       }
-    }
-  });
+    },
+  })
 
   const [propType, setPropType] = useControllableState<GradientPropertyType>({
     prop: props.type,
-    defaultProp: "constant",
+    defaultProp: 'constant',
     onChange: (state) => {
       if (props.onValueChange) {
-        props.onValueChange(value, state as GradientPropertyType);
+        props.onValueChange(value, state as GradientPropertyType)
       }
-    }
-  });
+    },
+  })
 
   function renderTypeIcon(type, location) {
-    if(location === "trigger") {
-      return particlePropertyTypeOptions.find((option) => option.type === type)?.icon;
+    if (location === 'trigger') {
+      return particlePropertyTypeOptions.find((option) => option.type === type)?.icon
     }
-    return type;
-
+    return type
   }
 
   const handleConstantValueChange = (value) => {
     setValueMap((prev) => {
       return prev.map((item) => {
-        if (item.type !== propType) return item;
-        return { ...item, value };
-      });
-    });
-  };
+        if (item.type !== propType) return item
+        return { ...item, value }
+      })
+    })
+  }
 
   const handleTwoConstantValueChange = (index: number) => (value: Color) => {
     setValueMap((prev) => {
       return prev.map((item) => {
-        if (item.type !== propType) return item;
-        const { value: prevValue } = item as TwoConstantValue;
-        if (item.type === "two-constant") {
+        if (item.type !== propType) return item
+        const { value: prevValue } = item as TwoConstantValue
+        if (item.type === 'two-constant') {
           if (index === 0) {
             return {
               ...item,
-              value: [value, prevValue[1]]
-            };
+              value: [value, prevValue[1]],
+            }
           }
           if (index === 1) {
             return {
               ...item,
-              value: [prevValue[0], value]
-            };
+              value: [prevValue[0], value],
+            }
           }
         }
-        return item;
-      });
-    });
-  };
+        return item
+      })
+    })
+  }
 
   const handleCurveValueChange = (points: ParticleColor) => {
     setValueMap((prev) => {
       return prev.map((item) => {
-        if (item.type !== propType) return item;
-        if (item.type === "gradient") {
+        if (item.type !== propType) return item
+        if (item.type === 'gradient') {
           return {
             ...item,
-            value: points
-          } as GradientInsideValue;
+            value: points,
+          } as GradientInsideValue
         }
-        return item;
-      });
-    });
-  };
+        return item
+      })
+    })
+  }
 
   const handleTwoCurveValueChange = (index: number) => (points: ParticleColor) => {
     setValueMap((prev) => {
       return prev.map((item) => {
-        if (item.type !== propType) return item;
-        if (item.type === "two-gradient") {
-          const { value } = item;
+        if (item.type !== propType) return item
+        if (item.type === 'two-gradient') {
+          const { value } = item
           if (index === 0) {
             return {
               ...item,
-              value: [points, value[1]]
-            } as TwoGradientInsideValue;
+              value: [points, value[1]],
+            } as TwoGradientInsideValue
           }
           if (index === 1) {
             return {
               ...item,
-              value: [value[0], points]
-            } as TwoGradientInsideValue;
+              value: [value[0], points],
+            } as TwoGradientInsideValue
           }
         }
-        return item;
-      });
-    });
-  };
+        return item
+      })
+    })
+  }
 
   return (
     <FormItem
@@ -307,24 +320,23 @@ export function FormItemGradient(props: FormItemGradientProps) {
       info={info}
       fieldCss={{
         gridTemplateColumns: particlePropertyTypeOptions.find((option) => option.type === propType)?.columns,
-      }}
-    >
+      }}>
       {valueMap.map((item) => {
-        const { type, value } = item;
-        if (!type || propType !== type) return null;
+        const { type, value } = item
+        if (!type || propType !== type) return null
 
         switch (type) {
-          case "constant":
+          case 'constant':
             return (
-              <ColorPicker
+              <ConstantColorPicker
                 fullsize
                 key="constant"
-                mode="constant"
+                hdr={hdr}
                 value={value}
                 onValueChange={handleConstantValueChange}
               />
-            );
-          case "gradient":
+            )
+          case 'gradient':
             return (
               <ColorPicker
                 fullsize
@@ -333,33 +345,33 @@ export function FormItemGradient(props: FormItemGradientProps) {
                 value={value}
                 onValueChange={handleCurveValueChange}
               />
-            );
-          case "two-constant":
+            )
+          case 'two-constant':
             return (
               <React.Fragment key="two-constant">
-                <ColorPicker
+                <ConstantColorPicker
                   fullsize
-                  mode="constant"
+                  hdr={hdr}
                   value={value[0]}
                   onValueChange={handleTwoConstantValueChange(0)}
                 />
-                <ColorPicker
+                <ConstantColorPicker
                   fullsize
-                  mode="constant"
+                  hdr={hdr}
                   value={value[1]}
                   onValueChange={handleTwoConstantValueChange(1)}
                 />
               </React.Fragment>
-            );
-          case "two-gradient":
+            )
+          case 'two-gradient':
             return (
               <React.Fragment key="two-gradient">
                 <ColorPicker fullsize mode="particle" value={value[0]} onValueChange={handleTwoCurveValueChange(0)} />
                 <ColorPicker fullsize mode="particle" value={value[1]} onValueChange={handleTwoCurveValueChange(1)} />
               </React.Fragment>
-            );
+            )
           default:
-            return null;
+            return null
         }
       })}
       <Select
@@ -368,17 +380,13 @@ export function FormItemGradient(props: FormItemGradientProps) {
         cornerArrow
         value={propType}
         valueRenderer={renderTypeIcon}
-        onValueChange={(v) => setPropType(v as GradientPropertyType)}
-      >
+        onValueChange={(v) => setPropType(v as GradientPropertyType)}>
         {valueMap.map((option) => (
-          <SelectItem
-            value={option.type}
-            key={option.type}
-          >
+          <SelectItem value={option.type} key={option.type}>
             {option.label || option.type}
           </SelectItem>
         ))}
       </Select>
     </FormItem>
-  );
+  )
 }

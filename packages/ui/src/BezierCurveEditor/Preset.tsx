@@ -1,7 +1,7 @@
-import { ButtonHTMLAttributes, HtmlHTMLAttributes, useEffect, useState } from 'react'
+import { useState } from 'react'
 import { styled } from '../design-system'
 import { IPoint } from './types'
-import { IconCirclePlus, IconCirclePlusFilled, IconCircleXFilled } from '@tabler/icons-react'
+import { IconCirclePlusFilled, IconCircleXFilled } from '@tabler/icons-react'
 import { Flex } from '../Flex'
 import { Button } from '../Button'
 
@@ -38,40 +38,16 @@ const defaultPresets = [
     { x: 1, y: 0 },
   ],
   [
-    {
-      x: 0,
-      y: 0,
-    },
-    {
-      x: 0.7,
-      y: 0,
-    },
-    {
-      x: 1,
-      y: 0.5,
-    },
-    {
-      x: 1,
-      y: 1,
-    },
+    { x: 0, y: 0 },
+    { x: 0.7, y: 0 },
+    { x: 1, y: 0.5 },
+    { x: 1, y: 1 },
   ],
   [
-    {
-      x: 0,
-      y: 0,
-    },
-    {
-      x: 0.42,
-      y: 0,
-    },
-    {
-      x: 0.58,
-      y: 1,
-    },
-    {
-      x: 1,
-      y: 1,
-    },
+    { x: 0, y: 0 },
+    { x: 0.42, y: 0 },
+    { x: 0.58, y: 1 },
+    { x: 1, y: 1 },
   ],
 ]
 
@@ -124,12 +100,12 @@ interface PresetItemProps extends React.HTMLAttributes<HTMLDivElement> {
 
 function PresetItem(props: PresetItemProps) {
   const { points, width = 74, height = 34, deletable = false, onDelete, ...rest } = props
-  const genPath = (points) => {
+  const genPath = (points: IPoint[]) => {
     if (points.length < 4) {
       return ''
     }
 
-    let d = `M${points[0].x * width} ${points[0].y * height}`
+    let d = `M${points[0].x * width} ${-points[0].y * height}`
 
     for (let i = 1; i < points.length; i += 3) {
       d += ` C${points[i].x * width} ${-points[i].y * height}, ${points[i + 1].x * width} ${-points[i + 1].y * height}, ${points[i + 2].x * width} ${-points[i + 2].y * height}`
@@ -168,7 +144,7 @@ export function BezierCurvePresets(props: BezierCurveEditorProps) {
         align="v"
         justifyContent="between"
         css={{ fontSize: '$1', marginTop: '$7', color: '$gray11', userSelect: 'none' }}>
-        Pesets
+        Presets
         {presets.length > 0 && (
           <Button variant="subtle" onClick={() => setDeletable(!deletable)}>
             {deletable ? 'Done' : 'Edit'}

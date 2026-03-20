@@ -361,7 +361,6 @@ type IContextMenuProps = ContextMenuProps & {
   trigger: React.ReactNode
   size?: MenuSize
   asChild?: boolean
-  onOpenChange?: (open: boolean) => void
   onPointerDownOutside?: (e: any) => void
   hidden?: boolean
   portal?: Element | boolean
@@ -373,6 +372,7 @@ function ContextMenu(props: IContextMenuProps) {
     trigger,
     size = 'sm',
     children,
+    onOpenChange,
     onPointerDownOutside,
     portal = true,
     asChild,
@@ -392,7 +392,7 @@ function ContextMenu(props: IContextMenuProps) {
 
   return (
     <MenuProvider type="context" size={size}>
-      <ContextMenuPrimitive.Root>
+      <ContextMenuPrimitive.Root onOpenChange={onOpenChange}>
         <ContextMenuPrimitive.Trigger disabled={disabled} asChild={asChild}>
           {trigger}
         </ContextMenuPrimitive.Trigger>
