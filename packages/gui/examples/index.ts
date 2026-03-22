@@ -41,11 +41,11 @@ async function start() {
 
   const resources = await engine.resourceManager.load([
     {
-      type: AssetType.Texture2D,
+      type: AssetType.Texture,
       url: 'https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*g_HIRqQdNUcAAAAAAAAAAAAAARQnAQ',
     },
     {
-      type: AssetType.Texture2D,
+      type: AssetType.Texture,
       url: 'https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*H7nMRY2SuWcAAAAAAAAAAAAAARQnAQ',
     },
     {
