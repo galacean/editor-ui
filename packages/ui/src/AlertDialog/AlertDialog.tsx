@@ -1,12 +1,10 @@
 import * as AlertDialogPrimitive from '@radix-ui/react-alert-dialog'
 import { AlertDialogProps } from '@radix-ui/react-alert-dialog'
-import React, { forwardRef, PropsWithChildren, ReactElement, useImperativeHandle, useState } from 'react'
-import { createRoot } from 'react-dom/client'
+import React, { PropsWithChildren } from 'react'
 
 import { styled, animations } from '../design-system'
 import { Button } from '../Button'
 import { Flex } from '../Flex'
-import { contentStyle, overlayStyle } from '../design-system/recipes'
 import { Text, Title } from '../Typography'
 
 const { Root, Trigger, Portal, Overlay, Content, Title: AlertTitle, Description, Cancel, Action } = AlertDialogPrimitive
@@ -34,12 +32,12 @@ const StyledContent = styled(Content, {
 
   '&:focus': { outline: 'none' },
 
-  "&[data-state=open]": {
-    animation: `${animations.contentFadeIn} 250ms ease`
+  '&[data-state=open]': {
+    animation: `${animations.contentFadeIn} 250ms ease`,
   },
-  "&[data-state=closed]": {
-    animation: `${animations.contentFadeOut} 250ms ease`
-  }
+  '&[data-state=closed]': {
+    animation: `${animations.contentFadeOut} 250ms ease`,
+  },
 })
 
 const StyledFooter = styled(Flex, {
@@ -114,61 +112,4 @@ function AlertDialog(props: PropsWithChildren<IAlertDialogProps & AlertDialogPro
   )
 }
 
-function genPortalId() {
-  return `editor-portal-id-${new Date().getTime()}`
-}
-
-function showAlert(props: Omit<IAlertDialogProps, 'trigger'>) {
-  const el = document.createElement('span')
-  const id = genPortalId()
-  el.id = id
-  document.body.appendChild(el)
-  const root = createRoot(el)
-
-  const Wrapper = forwardRef(function AlertWrapper(_, ref) {
-    const [open, setOpen] = useState(true)
-
-    const close = () => {
-      setOpen(false)
-      root.unmount()
-      if (props.onClose) {
-        props.onClose()
-      }
-    }
-
-    const confirm = () => {
-      setOpen(false)
-      if (props.onConfirm) {
-        props.onConfirm()
-      }
-    }
-
-    useImperativeHandle(ref, () => ({
-      close,
-    }))
-
-    return (
-      <AlertDialog
-        {...props}
-        trigger={null}
-        onClose={close}
-        onConfirm={confirm}
-        open={open}
-        onOpenChange={(o) => {
-          setOpen(o)
-          if (!o) {
-            close()
-          }
-        }}
-      />
-    )
-  })
-
-  root.render(<Wrapper />)
-
-  return {
-    close,
-  }
-}
-
-export { AlertDialog, showAlert }
+export { AlertDialog }
