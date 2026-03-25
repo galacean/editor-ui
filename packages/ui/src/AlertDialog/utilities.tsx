@@ -17,6 +17,7 @@ function showAlert(props: Omit<IAlertDialogProps, 'trigger'>) {
   const cleanup = () => {
     root.unmount()
     el.remove()
+    document.body.style.pointerEvents = ''
   }
 
   const Wrapper = () => {
