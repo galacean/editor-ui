@@ -5,7 +5,6 @@ import React, { PropsWithChildren } from 'react'
 import { styled, animations } from '../design-system'
 import { Button } from '../Button'
 import { Flex } from '../Flex'
-import { contentStyle, overlayStyle } from '../design-system/recipes'
 import { Text, Title } from '../Typography'
 
 const { Root, Trigger, Portal, Overlay, Content, Title: AlertTitle, Description, Cancel, Action } = AlertDialogPrimitive
@@ -33,12 +32,12 @@ const StyledContent = styled(Content, {
 
   '&:focus': { outline: 'none' },
 
-  "&[data-state=open]": {
-    animation: `${animations.contentFadeIn} 250ms ease`
+  '&[data-state=open]': {
+    animation: `${animations.contentFadeIn} 250ms ease`,
   },
-  "&[data-state=closed]": {
-    animation: `${animations.contentFadeOut} 250ms ease`
-  }
+  '&[data-state=closed]': {
+    animation: `${animations.contentFadeOut} 250ms ease`,
+  },
 })
 
 const StyledFooter = styled(Flex, {
