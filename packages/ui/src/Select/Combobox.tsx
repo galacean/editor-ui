@@ -36,7 +36,7 @@ const StyledComboboxTrigger = styled('button', {
       sm: {
         height: '$sm',
         borderRadius: '$sm',
-        padding: '0 $5 0 $2',
+        padding: '0 $5 0 $0_5',
       },
       md: {
         height: '$md',

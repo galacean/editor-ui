@@ -24,6 +24,10 @@ const StyledInputSlot = styled('div', {
         padding: '0 $2',
         fontSize: '$1_5',
       },
+      lg: {
+        padding: '0 $3',
+        fontSize: '$2',
+      },
     },
   },
 })
@@ -81,6 +85,11 @@ const StyledInput = styled('input', {
         fontSize: '$2',
         paddingLeft: '$3',
         paddingRight: '$3',
+      },
+      lg: {
+        fontSize: '$2',
+        paddingLeft: '$4',
+        paddingRight: '$4',
       },
     },
     ellipsis: {
@@ -151,6 +160,12 @@ export const StyledInputRoot = styled('div', {
       },
       md: {
         height: '$md',
+        fontSize: '$2',
+        lineHeight: '$lineHeights$2',
+        borderRadius: '$md',
+      },
+      lg: {
+        height: '$lg',
         fontSize: '$2',
         lineHeight: '$lineHeights$2',
         borderRadius: '$md',
@@ -295,11 +310,12 @@ export interface InputProps extends Omit<React.ComponentPropsWithoutRef<'input'>
   startSlot?: React.ReactNode
   endSlot?: React.ReactNode
   overrideStartSlotStyle?: boolean
+  ellipsis?: boolean;
   overrideEndSlotStyle?: boolean
   rootRef?: any
   disabled?: boolean
   css?: CSS
-  size?: 'xs' | 'sm' | 'md'
+  size?: 'xs' | 'sm' | 'md' | 'lg'
   variant?: 'outline' | 'soft' | 'subtle'
   state?: 'valid' | 'invalid'
 }

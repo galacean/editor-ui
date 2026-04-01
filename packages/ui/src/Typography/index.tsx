@@ -3,7 +3,6 @@ import { styled } from '../design-system'
 const StyledText = styled('p', {
   fontFamily: '$default',
   fontSynthesis: 'none',
-  color: '$text',
   variants: {
     code: {
       true: {

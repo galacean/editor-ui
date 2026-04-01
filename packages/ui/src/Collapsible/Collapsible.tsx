@@ -37,7 +37,7 @@ const StyledTitle = styled('div', {
   justifyContent: 'space-between',
   color: '$text',
   padding: '0 $1 0 $1',
-  minHeight: '$controlSm',
+  minHeight: '30px',
   fontSize: '$1',
   userSelect: 'none',
   backgroundColor: '$panelBg',
@@ -90,7 +90,7 @@ const StyledRoot = styled(CollapsiblePrimitive.Root, {
         borderRadius: '$md',
         border: '1px solid $border',
         [`& > ${StyledTitle}`]: {
-          minHeight: '$sm',
+          minHeight: '30px',
         },
         [`& > ${StyledContent}`]: {
           backgroundColor: '$surface',

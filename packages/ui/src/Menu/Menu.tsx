@@ -37,33 +37,10 @@ type PickedContentProps = 'side' | 'sideOffset' | 'align' | 'alignOffset'
 const StyledMenuItemContent = styled('span', {
   display: 'flex',
   alignItems: 'center',
-  variants: {
-    size: {
-      xs: {
-        '& > svg': {
-          marginRight: '$1',
-          width: '$3',
-          height: '$3',
-        },
-      },
-      sm: {
-        '& > svg': {
-          marginRight: '$1_5',
-          width: '$4',
-          height: '$4',
-        },
-      },
-      md: {
-        '& > svg': {
-          marginRight: '$2',
-          width: '$4',
-          height: '$4',
-        },
-      },
-    },
-  },
-  defaultVariants: {
-    size: 'sm',
+  '& > svg': {
+    marginRight: '$1_5',
+    width: '$4',
+    height: '$4',
   },
 })
 
@@ -171,11 +148,11 @@ const MenuItem = forwardRef<HTMLDivElement, MenuItemProps>(function MenuItem(pro
         children
       ) : (
         <Fragment>
-          <StyledMenuItemContent size={size}>
+          <StyledMenuItemContent>
             {icon}
             {name}
           </StyledMenuItemContent>
-          <KbdGroup shortcuts={shortcuts} size={size} />
+          <KbdGroup shortcuts={shortcuts} />
         </Fragment>
       )}
     </Item>
@@ -213,14 +190,14 @@ function SubMenuItem(props: PropsWithChildren<ISubMenuItemProps>) {
   return (
     <Sub>
       <SubItem size={size} disabled={disabled}>
-        <StyledMenuItemContent size={size}>
+        <StyledMenuItemContent>
           {icon}
           {name}
         </StyledMenuItemContent>
-        <IconChevronRight size={size === 'xs' ? '10px' : size === 'md' ? '14px' : '12px'} />
+        <IconChevronRight size="12px" />
       </SubItem>
       <Portal>
-        <SubContent size={size}>
+        <SubContent>
           <ScrollArea type="always" subtle={false} asContainer>
             {children}
           </ScrollArea>
@@ -237,7 +214,6 @@ interface GroupProps extends ContextMenuGroupProps {
 
 function MenuGroup(props: GroupProps) {
   const { Group, MenuLabel } = useResolveMenuAnatomy()
-  const { size } = useContext(MenuContext)
   const { label, divider, children, ...rest } = props
   const dividerVal = typeof divider === 'boolean' && divider ? 'bottom' : divider
   const showTopDivider = dividerVal === 'top' || dividerVal === 'both'
@@ -247,7 +223,7 @@ function MenuGroup(props: GroupProps) {
     <React.Fragment>
       {showTopDivider && <MenuSeparator />}
       <Group {...rest}>
-        {label && <MenuLabel size={size}>{label}</MenuLabel>}
+        {label && <MenuLabel>{label}</MenuLabel>}
         {children}
       </Group>
       {showBottomDivider && <MenuSeparator />}
@@ -267,10 +243,10 @@ function MenuCheckboxItem(props: ICheckboxItemProps) {
 
   return (
     <StyledCheckboxItem {...rest} size={size}>
-      <ItemIndicator size={size}>
+      <ItemIndicator>
         <IconCheck />
       </ItemIndicator>
-      <StyledMenuItemContent size={size} css={{ position: 'relative' }}>
+      <StyledMenuItemContent>
         {icon}
         {name}
       </StyledMenuItemContent>
@@ -291,17 +267,14 @@ const DotIndicator = styled('div', {
 
 function RadioItem(props: RadioItemProps) {
   const { value, onSelect, name } = props
-  const { size } = useContext(MenuContext)
   const { RadioItem: StyledRadioItem, ItemIndicator } = useResolveMenuAnatomy()
 
   return (
-    <StyledRadioItem value={value} onSelect={onSelect} size={size}>
-      <ItemIndicator size={size}>
+    <StyledRadioItem value={value} onSelect={onSelect}>
+      <ItemIndicator>
         <DotIndicator />
       </ItemIndicator>
-      <StyledMenuItemContent size={size} css={{ position: 'relative' }}>
-        {name}
-      </StyledMenuItemContent>
+      {name}
     </StyledRadioItem>
   )
 }
@@ -318,7 +291,7 @@ function MenuRadioGroup(props: RadioGroupProps) {
 
   return (
     <RadioGroupPrimitive {...rest} size={size}>
-      {label && <MenuLabel size={size}>{label}</MenuLabel>}
+      {label && <MenuLabel>{label}</MenuLabel>}
       {items.map((item, index) => (
         <RadioItem key={index} {...item} />
       ))}
@@ -341,24 +314,14 @@ type IDropdownMenuProps = Pick<DropdownMenuContentProps, PickedContentProps> &
   }
 
 function DropdownMenu(props: PropsWithChildren<IDropdownMenuProps>) {
-  const {
-    children,
-    portal = true,
-    size = 'sm',
-    side,
-    sideOffset = 4,
-    align = 'start',
-    alignOffset,
-    disabled = false,
-    ...rest
-  } = props
+  const { children, portal = true, size = 'sm', side, sideOffset = 4, align = 'start', alignOffset, disabled = false, ...rest } = props
 
-  let Portal: any = Fragment
-  let container: Element
+  let Portal: any = Fragment;
+  let container: Element;
 
   if (portal) {
     Portal = DropdownMenuPrimitive.Portal
-    if (typeof portal === 'object') {
+    if(typeof portal === 'object') {
       container = portal
     }
   }
@@ -394,24 +357,14 @@ type IContextMenuProps = ContextMenuProps & {
 }
 
 function ContextMenu(props: IContextMenuProps) {
-  const {
-    trigger,
-    size = 'sm',
-    children,
-    onOpenChange,
-    onPointerDownOutside,
-    portal = true,
-    asChild,
-    disabled = false,
-    hidden,
-  } = props
+  const { trigger, size = 'sm', children, onOpenChange, onPointerDownOutside, portal = true, asChild, disabled = false, hidden } = props
 
-  let Portal: any = Fragment
-  let container: Element
+  let Portal: any = Fragment;
+  let container: Element;
 
   if (portal) {
     Portal = ContextMenuPrimitive.Portal
-    if (typeof portal === 'object') {
+    if(typeof portal === 'object') {
       container = portal
     }
   }

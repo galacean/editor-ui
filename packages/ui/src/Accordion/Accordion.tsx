@@ -27,20 +27,38 @@ const AccordionContext = React.createContext<{ size: AccordionSize }>({
 
 const StyledAccordion = styled(AccordionPrimitive.Root, {
   width: '100%',
-  display: 'grid',
-  gap: '$1',
+  display: 'flex',
+  flexDirection: 'column',
 })
 
 const StyledItem = styled(AccordionPrimitive.Item, {
   position: 'relative',
   boxSizing: 'border-box',
   width: '100%',
-  borderRadius: '$sm',
   backgroundColor: '$surface',
   border: '1px solid $border',
+  borderBottom: 'none',
   overflow: 'hidden',
+  '&:first-child': {
+    borderTopLeftRadius: '$sm',
+    borderTopRightRadius: '$sm',
+  },
+  '&:last-child': {
+    borderBottomLeftRadius: '$sm',
+    borderBottomRightRadius: '$sm',
+    borderBottom: '1px solid $border',
+  },
   '&[data-state=open]': {
     borderColor: '$borderStrong',
+    '&:not(:first-child)': {
+      borderTopColor: '$borderStrong',
+    },
+    '& + &': {
+      borderTopColor: '$borderStrong',
+    },
+  },
+  '&:has(+ [data-state=open])': {
+    borderBottomColor: '$borderStrong',
   },
 })
 
@@ -62,7 +80,7 @@ const StyledTrigger = styled(AccordionPrimitive.Trigger, {
   all: 'unset',
   display: 'flex',
   width: '100%',
-  minHeight: '$controlMd',
+  minHeight: '30px',
   padding: '0 $3',
   alignItems: 'center',
   justifyContent: 'space-between',
@@ -74,7 +92,7 @@ const StyledTrigger = styled(AccordionPrimitive.Trigger, {
   overflow: 'hidden',
   boxSizing: 'border-box',
   userSelect: 'none',
-  backgroundColor: '$softBg',
+  backgroundColor: '$grayA2',
   transition: '$backgroundColor, $borderColor, $color',
   '& > span': {
     flex: 1,
@@ -89,7 +107,7 @@ const StyledTrigger = styled(AccordionPrimitive.Trigger, {
     },
   },
   '&:hover': {
-    backgroundColor: '$softBgHover',
+    backgroundColor: '$grayA3',
     color: '$textStrong',
   },
   '&:focus-visible': {
@@ -99,13 +117,13 @@ const StyledTrigger = styled(AccordionPrimitive.Trigger, {
   variants: {
     size: {
       sm: {
-        minHeight: '$sm',
+        minHeight: '27px',
         padding: '0 $2',
         fontSize: '$1',
         lineHeight: '$lineHeights$1',
       },
       md: {
-        minHeight: '$md',
+        minHeight: '30px',
         padding: '0 $3',
         fontSize: '$2',
         lineHeight: '$lineHeights$2',
@@ -121,7 +139,7 @@ const StyledContent = styled(AccordionPrimitive.Content, {
   overflow: 'hidden',
   fontSize: '$1',
   color: '$text',
-  backgroundColor: '$surface',
+  backgroundColor: '$grayA2',
   '&[data-state="open"]': {
     animation: `${slideDown} 200ms cubic-bezier(0.16, 1, 0.3, 1)`,
   },

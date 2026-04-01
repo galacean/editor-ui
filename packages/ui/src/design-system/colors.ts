@@ -77,7 +77,7 @@ const lightColors = {
 }
 
 const coreSemanticColors = {
-  appBg: '$gray1',
+  appBg: '$gray2',
 
   primary: '$blue9',
   primaryActive: '$blue10',
