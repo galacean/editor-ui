@@ -5,7 +5,8 @@ import { IconEaseIn, IconEqual, IconVectorBezier2, IconPlusMinus } from "@tabler
 import { InputNumber, Select, SelectItem, BezierCurveEditor } from "@galacean/editor-ui";
 import { FormItem } from "../FormItem";
 import { FormItemProps } from "../FormItem/FormItem";
-import { BezierCurveEditorProps } from "@galacean/editor-ui/src/BezierCurveEditor/types";
+
+type BezierCurveEditorProps = React.ComponentProps<typeof BezierCurveEditor>;
 
 export type ParticlePropertyType = "constant" | "curve" | "two-constant" | "two-curve";
 
