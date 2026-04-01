@@ -116,13 +116,14 @@ export interface DialogProps {
   zIndex?: number
   className?: string
   id?: string
+  modal?: boolean
 }
 
 export function Dialog(props: DialogProps) {
-  const { trigger, children, closable, onOpenChange, disabled, css, zIndex, className, id, ...rest } = props
+  const { trigger, children, closable, onOpenChange, disabled, css, zIndex, className, id, modal = true, ...rest } = props
 
   return (
-    <DialogRoot onOpenChange={onOpenChange} {...rest}>
+    <DialogRoot onOpenChange={onOpenChange} modal={modal} {...rest}>
       {trigger && (
         <DialogPrimitive.Trigger asChild disabled={disabled}>
           {trigger}
