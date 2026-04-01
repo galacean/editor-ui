@@ -3,9 +3,9 @@ import { useControllableState } from '@radix-ui/react-use-controllable-state'
 import { IconEaseIn, IconEqual, IconVectorBezier2, IconPlusMinus } from '@tabler/icons-react'
 
 import { InputNumber, Select, SelectItem, BezierCurveEditor } from '@galacean/editor-ui'
-import type { BezierCurveEditorProps } from '@galacean/editor-ui'
 import { FormItem } from '../FormItem'
 import { FormItemProps } from '../FormItem/FormItem'
+type BezierCurveEditorProps = React.ComponentProps<typeof BezierCurveEditor>;
 
 export type ParticlePropertyType = 'constant' | 'curve' | 'two-constant' | 'two-curve'
 
