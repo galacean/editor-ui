@@ -58,5 +58,6 @@ export {
   type GradientValue,
 } from './FormItemGradient'
 export { FormItemParticleCurve, type FormItemParticleCurveProps } from './FormItemParticle'
+export { FormItemParticleCurve as FormItemParticle } from './FormItemParticle'
 
 export { FormItem, type BaseFormItemProps, type FormItemSelectableProps, type FormItemRangeProps } from './FormItem'
