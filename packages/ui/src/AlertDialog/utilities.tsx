@@ -1,40 +1,39 @@
-import { createRoot } from "react-dom/client";
-import { AlertDialog, type IAlertDialogProps } from "./AlertDialog";
-import { forwardRef, useImperativeHandle, useState } from "react";
+import { createRoot } from 'react-dom/client'
+import { AlertDialog, type IAlertDialogProps } from './AlertDialog'
+import { useState } from 'react'
+
+let portalCounter = 0
 
 function genPortalId() {
-  return `editor-portal-id-${new Date().getTime()}`;
+  return `editor-portal-id-${++portalCounter}`
 }
 
+function showAlert(props: Omit<IAlertDialogProps, 'trigger'>) {
+  const el = document.createElement('span')
+  el.id = genPortalId()
+  document.body.appendChild(el)
+  const root = createRoot(el)
 
-function showAlert(props: Omit<IAlertDialogProps, "trigger">) {
-  const el = document.createElement("span");
-  const id = genPortalId();
-  el.id = id;
-  document.body.appendChild(el);
-  const root = createRoot(el);
+  const cleanup = () => {
+    root.unmount()
+    el.remove()
+    document.body.style.pointerEvents = ''
+  }
 
-  const Wrapper = forwardRef(function AlertWrapper(_, ref) {
-    const [open, setOpen] = useState(true);
+  const Wrapper = () => {
+    const [open, setOpen] = useState(true)
 
     const close = () => {
-      setOpen(false);
-      root.unmount();
-      if (props.onClose) {
-        props.onClose();
-      }
-    };
+      setOpen(false)
+      cleanup()
+      props.onClose?.()
+    }
 
     const confirm = () => {
-      setOpen(false);
-      if (props.onConfirm) {
-        props.onConfirm();
-      }
-    };
-
-    useImperativeHandle(ref, () => ({
-      close
-    }));
+      setOpen(false)
+      cleanup()
+      props.onConfirm?.()
+    }
 
     return (
       <AlertDialog
@@ -44,21 +43,22 @@ function showAlert(props: Omit<IAlertDialogProps, "trigger">) {
         onConfirm={confirm}
         open={open}
         onOpenChange={(o) => {
-          setOpen(o);
           if (!o) {
-            close();
+            close()
           }
         }}
       />
-    );
-  });
+    )
+  }
 
-  root.render(<Wrapper />);
+  root.render(<Wrapper />)
 
   return {
-    close
-  };
+    close: () => {
+      cleanup()
+      props.onClose?.()
+    },
+  }
 }
-
 
 export { showAlert }
