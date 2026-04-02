@@ -28,6 +28,7 @@ const StyledItem = styled(
     backgroundColor: 'rgba(0, 0, 0, 0)',
     transition: '$backgroundColor, $color, $shadow, transform 0.2s ease',
     cursor: 'pointer',
+    boxSizing: 'border-box',
     variants: {
       size: {
         sm: {
@@ -75,7 +76,7 @@ const StyledItem = styled(
             backgroundColor: '$surface',
             color: '$textStrong',
             fontWeight: 500,
-            boxShadow: '$border',
+            boxShadow: 'inset $border',
           },
           '&[data-state=on]:hover': {
             backgroundColor: '$surface',

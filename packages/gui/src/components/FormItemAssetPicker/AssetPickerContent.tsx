@@ -145,7 +145,7 @@ export function AssetPickerContent<T extends BasicAssetType>(props: AssetPickerP
           value={searchText}
           ref={searchRef}
           startSlot={<IconSearch size="14px" />}
-          variant="subtle"
+          variant="soft"
           placeholder="Search Assets..."
           size="sm"
           onChange={(e) => {
