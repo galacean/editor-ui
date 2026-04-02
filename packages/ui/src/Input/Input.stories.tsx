@@ -118,7 +118,7 @@ export const Slot: StoryFn<typeof Input> = (args) => {
         size="sm"
         {...args}
         startSlot={
-          <Badge color="orange" style={{ marginLeft: '-3px' }}>
+          <Badge color="orange" size="xs" style={{ marginLeft: '-3px' }}>
             Danger
           </Badge>
         }
@@ -164,10 +164,10 @@ export const OverrideSlotStyle: StoryFn<typeof Input> = (args) => {
     <Flex direction="column" gap="md" css={{ width: '400px' }}>
       <Input
         startSlot={<DropdownAction />}
+        variant="outline"
         overrideStartSlotStyle
         placeholder="Search the components..."
         size="sm"
-        {...args}
       />
     </Flex>
   )

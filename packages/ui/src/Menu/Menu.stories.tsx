@@ -45,7 +45,7 @@ export default {
 export const Overview = (args) => {
   return (
     <Flex gap="lg">
-      <DropdownMenu trigger={<Button>menu</Button>}>
+      <DropdownMenu size="xs" trigger={<Button>menu</Button>}>
         <MenuItem name="Remove" />
       </DropdownMenu>
       <ContextMenu trigger={<Area align="both">Context area</Area>}>

@@ -12,9 +12,9 @@ export default {
 
 export const Overview: StoryFn<typeof EditableText> = (args) => {
   return (
-    <Flex gap="md">
-      <EditableText {...args} />
-      <EditableText {...args} showIcon />
+    <Flex gap="md" direction="column">
+      <EditableText value="Pam Beesly" {...args} />
+      <EditableText value="Jim Halpert" {...args} showIcon />
     </Flex>
   )
 }
