@@ -76,39 +76,126 @@ const lightColors = {
   ...lime,
 }
 
-export const semanticColors = {
+const coreSemanticColors = {
+  appBg: '$gray2',
+
   primary: '$blue9',
   primaryActive: '$blue10',
-  appBg: '$gray2',
-  secondaryBg: '$grayA3',
-  subtleColor: '$gray11',
-  subtleHoverColor: '$gray12',
-  panelTitleBg: '$gray5',
-  // panelBg: "$gray3",
-  panelBg: '$gray3',
-  listBg: '$gray2',
 
-  dashboardBg: '$gray2',
+  textMuted: '$gray10',
+  text: '$gray11',
+  textStrong: '$gray12',
+  textInverted: '$gray1',
+
+  surface: '$gray2',
+  surfaceSubtle: '$grayA3',
+  surfaceStrong: '$gray4',
+  surfaceOverlay: '$gray2',
+
+  softBg: '$grayA3',
+  softBgHover: '$grayA4',
+  softBgActive: '$grayA5',
+
+  border: '$grayA5',
+  borderStrong: '$grayA7',
+
+  focusRing: '$blueA7',
+  focusRingMuted: '$grayA7',
+}
+
+const statusSemanticColors = {
+  infoText: '$blue11',
+  infoBg: '$blue3',
+  infoBgHover: '$blue4',
+  infoBorder: '$blue7',
+  infoSolid: '$blue9',
+  infoSolidHover: '$blue10',
+
+  successText: '$green11',
+  successBg: '$green3',
+  successBgHover: '$greenA4',
+  successBorder: '$green7',
+  successSolid: '$green9',
+  successSolidHover: '$green10',
+
+  warningText: '$amber11',
+  warningBg: '$amber3',
+  warningBgHover: '$amber4',
+  warningBorder: '$amber7',
+  warningSolid: '$amber9',
+  warningSolidHover: '$amber10',
+
+  dangerText: '$red11',
+  dangerBg: '$redA3',
+  dangerBgHover: '$redA4',
+  dangerBorder: '$red7',
+  dangerSolid: '$red9',
+  dangerSolidHover: '$red10',
+
+  selectionText: '$white',
+  selectionBg: '$blue9',
+  selectionBgHover: '$blue10',
+  selectionBorder: '$blue10',
+
+  scrollbarTrack: '$grayA3',
+  scrollbarTrackHover: '$grayA5',
+  scrollbarThumb: '$grayA7',
+}
+
+const contextSemanticColors = {
+  panelBg: '$gray3',
+  toastBg: '$gray3',
+  overlayScrim: 'rgba(0, 0, 0, 0.72)',
+  tooltipBg: '$white',
+  tooltipColor: '$gray1',
   sidebarBg: '$grayA3',
   sidebarColor: '$gray12',
+}
 
+const deprecatedSemanticColors = {
+  // Deprecated: use `softBg`.
+  secondaryBg: '$grayA3',
+  // Deprecated: use `surfaceOverlay`.
+  overlayBg: '$gray2',
+  // Deprecated: use `text`.
+  subtleColor: '$gray11',
+  // Deprecated: use `textStrong`.
+  subtleHoverColor: '$gray12',
+  // Deprecated: move to component-local token if still needed.
+  panelTitleBg: '$gray5',
+  // Deprecated: use `surface`.
+  listBg: '$gray2',
+  // Deprecated: use `surface`.
+  dashboardBg: '$gray2',
+  // Deprecated: use `surface`.
   defaultBg: '$gray2',
-  border: '$grayA5',
-  borderFocus: '$gray3',
-  borderActive: '$blue10',
-
-  toasterBg: '$gray3',
-
+  // Deprecated: use `surface`.
   subbg: '$gray2',
+  // Deprecated: use `textMuted`.
   label: '$grayA11',
+  // Deprecated: use `textStrong`.
   hiContrast: '$gray12',
+  // Deprecated: use `textInverted`.
   loContrast: '$gray1',
+  // Deprecated: use `textInverted`.
   inversion: 'white',
-  tooltipColor: '$gray1',
-  tooltipBg: '$white',
-  white: 'white',
-  text: '$gray11',
+  // Deprecated: use `toastBg`.
+  toasterBg: '$gray3',
+  // Deprecated: use `borderStrong` or component-local border tokens.
+  borderFocus: '$gray3',
+  // Deprecated: use `selectionBorder` or a status-specific border token.
+  borderActive: '$blue10',
+  // Deprecated: use component-local token if still needed.
   menuContentBackground: '$gray3',
+  // Deprecated: use `textInverted` for text or component-local raw white where necessary.
+  white: 'white',
+}
+
+export const semanticColors = {
+  ...coreSemanticColors,
+  ...statusSemanticColors,
+  ...contextSemanticColors,
+  ...deprecatedSemanticColors,
 }
 
 export const colors = {
@@ -116,9 +203,16 @@ export const colors = {
   light: {
     ...lightColors,
     ...semanticColors,
-    dashboardBg: '$white',
-    listBg: '$white',
+    appBg: '$gray2',
+    surfaceOverlay: '$gray1',
+    dashboardBg: '$gray2',
+    listBg: '$gray2',
+    toastBg: '$gray1',
     toasterBg: '$gray1',
+    surface: '$gray1',
+    surfaceSubtle: '$gray2',
+    surfaceStrong: '$gray3',
+    overlayBg: '$gray1',
     tooltipBg: '$gray12',
     tooltipColor: '$gray1',
     sidebarBg: '$blueA3',

@@ -5,141 +5,159 @@ import { button } from '../design-system/recipes'
 import { styled, StitchesComponent } from '../design-system'
 
 import { Spin } from '../Spin'
-import { Flex } from '../Flex'
 import { useAsyncStatus } from '../hooks/useAsyncStatus'
 
 const StyledButton = styled('button', button, {
-  transition: 'box-shadow .2s ease, opacity .6s ease-out',
+  transition: '$shadow, $borderColor, $backgroundColor, $color, opacity .2s ease-out',
   userSelect: 'none',
   whiteSpace: 'nowrap',
   outline: 'none',
   '&:disabled': {
-    color: '$grayA8',
+    color: '$textMuted',
     cursor: 'not-allowed',
+    boxShadow: 'none',
     '&:hover': {
-      backgroundColor: '$grayA2',
-      color: '$grayA8',
+      color: '$textMuted',
     },
   },
   variants: {
     size: {
       xs: {
         height: '$xs',
-        fontSize: '$xs',
-        lineHeight: '$sizes$5',
-        fontWeight: 400,
-        borderRadius: '$2',
+        fontSize: '$1',
+        lineHeight: '$lineHeights$1',
+        fontWeight: 500,
+        borderRadius: '$xs',
         padding: '0 $1_5',
         [`& ${Spin}`]: {
           height: '$2',
           width: '$2',
         },
       },
-      s: {
-        height: '$s',
-        fontSize: '$2',
-        fontWeight: 500,
-        borderRadius: '$2',
-        padding: '0 $2',
-        [`& ${Spin}`]: {
-          height: '$3',
-          width: '$3',
-        },
-      },
       sm: {
         height: '$sm',
-        fontSize: '$sm',
-        fontWeight: 400,
-        borderRadius: '$2',
+        fontSize: '$1',
+        lineHeight: '$lineHeights$1',
+        fontWeight: 500,
+        borderRadius: '$sm',
         padding: '0 $2',
         [`& ${Spin}`]: {
-          height: '$3',
-          width: '$3',
+          height: '$iconSm',
+          width: '$iconSm',
         },
       },
       md: {
         height: '$md',
-        borderRadius: '$4',
-        padding: '0 $4',
+        borderRadius: '$md',
+        padding: '0 $3',
         fontSize: '$2',
+        lineHeight: '$lineHeights$2',
         fontWeight: 500,
+        [`& ${Spin}`]: {
+          height: '$iconMd',
+          width: '$iconMd',
+        },
       },
       lg: {
         height: '$lg',
-        fontSize: '$3',
-        borderRadius: '$1',
+        fontSize: '$2',
+        lineHeight: '$lineHeights$2',
+        fontWeight: 500,
+        borderRadius: '$md',
         padding: '0 $4',
+        [`& ${Spin}`]: {
+          height: '$iconLg',
+          width: '$iconLg',
+        },
       },
     },
     // The Variant of button
     variant: {
-      default: {
-        color: '$gray11',
+      outline: {
+        color: '$text',
         backgroundColor: 'transparent',
-        border: '1px solid $grayA5',
-        transition: 'border-color .2s ease',
+        border: '1px solid $border',
         '&:hover': {
-          border: '1px solid $colors$gray8',
+          borderColor: '$borderStrong',
+          backgroundColor: '$surfaceSubtle',
         },
         '&:active': {
-          backgroundColor: '$gray3',
+          backgroundColor: '$surfaceStrong',
+        },
+        '&:disabled': {
+          color: '$textMuted',
+          borderColor: '$border',
+          backgroundColor: 'transparent',
         },
       },
-      /** the basic style */
-      primary: {
-        backgroundColor: '$blue9',
+      soft: {
+        color: '$text',
+        backgroundColor: '$softBg',
+        borderColor: 'transparent',
+        '&:hover': {
+          color: '$textStrong',
+          backgroundColor: '$softBgHover',
+          borderColor: 'transparent',
+        },
+        '&:active': {
+          color: '$textStrong',
+          backgroundColor: '$softBgActive',
+          borderColor: 'transparent',
+        },
+        '&:disabled': {
+          color: '$textMuted',
+          backgroundColor: '$surfaceSubtle',
+          borderColor: 'transparent',
+        },
+      },
+      solid: {
+        backgroundColor: '$primary',
+        borderColor: '$primary',
         color: '$white',
         '&:hover': {
-          backgroundColor: '$blue10',
+          backgroundColor: '$primaryActive',
+          borderColor: '$primaryActive',
         },
         '&:active': {
-          backgroundColor: '$blue10',
+          backgroundColor: '$primaryActive',
+          borderColor: '$primaryActive',
         },
-      },
-      secondary: {
-        backgroundColor: '$secondaryBg',
-        color: '$grayA11',
-        '&:hover': {
-          color: '$grayA12',
-          backgroundColor: '$grayA4',
-        },
-        '&:active': {
-          color: '$gray12',
-          backgroundColor: '$grayA5',
+        '&:disabled': {
+          color: '$textMuted',
+          backgroundColor: '$surfaceSubtle',
+          borderColor: '$border',
         },
       },
       subtle: {
-        color: '$gray11',
+        color: '$text',
+        borderColor: 'transparent',
         '&:hover': {
-          backgroundColor: '$grayA4',
-          color: '$gray11',
+          backgroundColor: '$surfaceSubtle',
+          color: '$textStrong',
         },
         '&:active': {
-          backgroundColor: '$gray5',
+          backgroundColor: '$surfaceStrong',
+        },
+        '&:disabled': {
+          color: '$textMuted',
+          backgroundColor: 'transparent',
+          borderColor: 'transparent',
         },
       },
-      contrast: {
-        color: '$gray1',
-        backgroundColor: '$gray12',
+      inverted: {
+        color: '$textInverted',
+        backgroundColor: '$textStrong',
+        borderColor: '$textStrong',
         '&:hover': {
-          backgroundColor: '$gray12',
+          backgroundColor: '$textStrong',
         },
         '&:active': {
-          backgroundColor: '$gray12',
+          backgroundColor: '$textStrong',
         },
-      },
-      classic: {
-        position: 'relative',
-        border: 'none',
-        whiteSpace: 'pre-wrap',
-        boxShadow: '$2',
-        backgroundColor: '$secondaryBg',
-        color: '$gray11',
-        '&:hover': {
-          backgroundColor: '$grayA4',
-        },
-        '&:active': {
-          backgroundColor: '$secondaryBg',
+        '&:disabled': {
+          color: '$textMuted',
+          backgroundColor: '$surfaceStrong',
+          borderColor: '$border',
         },
       },
     },
@@ -156,25 +174,25 @@ const StyledButton = styled('button', button, {
     // The state of button
     critical: {
       true: {
-        color: '$red11',
+        color: '$dangerText',
         backgroundColor: 'transparent',
         '&:hover': {
-          backgroundColor: '$red3',
+          backgroundColor: '$dangerBg',
         },
         '&:active': {
-          backgroundColor: '$red4',
+          backgroundColor: '$dangerBgHover',
         },
       },
     },
     positive: {
       true: {
-        color: '$green11',
+        color: '$successText',
         backgroundColor: 'transparent',
         '&:hover': {
-          backgroundColor: '$greenA3',
+          backgroundColor: '$successBg',
         },
         '&:active': {
-          backgroundColor: '$greenA4',
+          backgroundColor: '$successBgHover',
         },
       },
     },
@@ -192,97 +210,111 @@ const StyledButton = styled('button', button, {
   },
   defaultVariants: {
     size: 'sm',
-    variant: 'default',
+    variant: 'soft',
   },
   compoundVariants: [
     {
-      variant: 'default',
+      variant: 'outline',
       critical: true,
       css: {
-        color: '$red10',
-        borderColor: '$red6',
+        color: '$dangerText',
+        borderColor: '$dangerBorder',
         '&:hover': {
-          borderColor: '$red8',
-          backgroundColor: '$redA3',
+          borderColor: '$dangerBorder',
+          backgroundColor: '$dangerBg',
         },
         '&:active': {
-          backgroundColor: '$redA4',
+          borderColor: '$dangerBorder',
+          backgroundColor: '$dangerBgHover',
         },
         '&:disabled': {
-          borderColor: '$gray6',
+          borderColor: '$border',
         },
       },
     },
     {
-      variant: 'default',
+      variant: 'outline',
       positive: true,
       css: {
-        color: '$green10',
-        borderColor: '$green6',
+        color: '$successText',
+        borderColor: '$successBorder',
         '&:hover': {
-          borderColor: '$green8',
-          backgroundColor: '$greenA3',
+          borderColor: '$successBorder',
+          backgroundColor: '$successBg',
         },
         '&:active': {
-          backgroundColor: '$greenA4',
+          borderColor: '$successBorder',
+          backgroundColor: '$successBgHover',
         },
       },
     },
     {
-      variant: 'primary',
+      variant: 'soft',
       critical: true,
       css: {
-        color: '$red12',
-        backgroundColor: '$red9',
+        color: '$dangerText',
+        backgroundColor: '$dangerBg',
+        borderColor: 'transparent',
         '&:hover': {
-          backgroundColor: '$red10',
+          color: '$dangerText',
+          backgroundColor: '$dangerBgHover',
+          borderColor: 'transparent',
         },
         '&:active': {
-          backgroundColor: '$red9',
+          backgroundColor: '$dangerBgHover',
+          borderColor: 'transparent',
         },
       },
     },
     {
-      variant: 'primary',
+      variant: 'soft',
       positive: true,
       css: {
-        color: 'white',
-        backgroundColor: '$green9',
+        color: '$successText',
+        backgroundColor: '$successBg',
+        borderColor: 'transparent',
         '&:hover': {
-          backgroundColor: '$green10',
+          color: '$successText',
+          backgroundColor: '$successBgHover',
+          borderColor: 'transparent',
         },
         '&:active': {
-          backgroundColor: '$green10',
+          backgroundColor: '$successBgHover',
+          borderColor: 'transparent',
         },
       },
     },
     {
-      variant: 'secondary',
+      variant: 'solid',
       critical: true,
       css: {
-        color: '$red11',
-        backgroundColor: '$redA3',
+        color: '$white',
+        backgroundColor: '$dangerSolid',
+        borderColor: '$dangerSolid',
         '&:hover': {
-          color: '$red11',
-          backgroundColor: '$redA4',
+          backgroundColor: '$dangerSolidHover',
+          borderColor: '$dangerSolidHover',
         },
         '&:active': {
-          backgroundColor: '$redA3',
+          backgroundColor: '$dangerSolidHover',
+          borderColor: '$dangerSolidHover',
         },
       },
     },
     {
-      variant: 'secondary',
+      variant: 'solid',
       positive: true,
       css: {
-        color: '$green11',
-        backgroundColor: '$greenA3',
+        color: '$white',
+        backgroundColor: '$successSolid',
+        borderColor: '$successSolid',
         '&:hover': {
-          color: '$green11',
-          backgroundColor: '$greenA4',
+          backgroundColor: '$successSolidHover',
+          borderColor: '$successSolidHover',
         },
         '&:active': {
-          backgroundColor: '$greenA3',
+          backgroundColor: '$successSolidHover',
+          borderColor: '$successSolidHover',
         },
       },
     },
@@ -290,16 +322,67 @@ const StyledButton = styled('button', button, {
       variant: 'subtle',
       critical: true,
       css: {
-        color: '$redA9',
+        color: '$dangerText',
         '&:focus-visible': {
-          boxShadow: '0 0 0 3px $colors$redA7',
+          boxShadow: '$focus',
         },
         '&:hover': {
-          color: '$red10',
-          backgroundColor: '$redA3',
+          color: '$dangerText',
+          backgroundColor: '$dangerBg',
         },
         '&:active': {
-          backgroundColor: '$redA4',
+          backgroundColor: '$dangerBgHover',
+        },
+      },
+    },
+    {
+      variant: 'subtle',
+      positive: true,
+      css: {
+        color: '$successText',
+        '&:focus-visible': {
+          boxShadow: '$focus',
+        },
+        '&:hover': {
+          color: '$successText',
+          backgroundColor: '$successBg',
+        },
+        '&:active': {
+          backgroundColor: '$successBgHover',
+        },
+      },
+    },
+    {
+      variant: 'inverted',
+      critical: true,
+      css: {
+        color: '$textInverted',
+        backgroundColor: '$dangerSolidHover',
+        borderColor: '$dangerSolidHover',
+        '&:hover': {
+          backgroundColor: '$dangerText',
+          borderColor: '$dangerText',
+        },
+        '&:active': {
+          backgroundColor: '$dangerText',
+          borderColor: '$dangerText',
+        },
+      },
+    },
+    {
+      variant: 'inverted',
+      positive: true,
+      css: {
+        color: '$textInverted',
+        backgroundColor: '$successSolidHover',
+        borderColor: '$successSolidHover',
+        '&:hover': {
+          backgroundColor: '$successText',
+          borderColor: '$successText',
+        },
+        '&:active': {
+          backgroundColor: '$successText',
+          borderColor: '$successText',
         },
       },
     },
@@ -316,41 +399,101 @@ export type ButtonProps = PropsWithChildren<
 >
 
 const SlotContainer = styled('div', {
+  display: 'inline-flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  flexShrink: 0,
   variants: {
     position: {
       start: {
-        marginRight: '$1_5',
+        marginRight: '$1',
       },
       end: {
-        marginLeft: '$1_5',
+        marginLeft: '$1',
       },
     },
-  }
+    size: {
+      xs: {},
+      sm: {
+        fontSize: '$1',
+      },
+      md: {
+        fontSize: '$2',
+      },
+      lg: {
+        fontSize: '$2',
+      },
+    },
+    gap: {
+      xs: {
+        '&[data-position="start"]': {
+          marginRight: '$1',
+        },
+        '&[data-position="end"]': {
+          marginLeft: '$1',
+        },
+      },
+      sm: {
+        '&[data-position="start"]': {
+          marginRight: '$1_5',
+        },
+        '&[data-position="end"]': {
+          marginLeft: '$1_5',
+        },
+      },
+      md: {
+        '&[data-position="start"]': {
+          marginRight: '$2',
+        },
+        '&[data-position="end"]': {
+          marginLeft: '$2',
+        },
+      },
+      lg: {
+        '&[data-position="start"]': {
+          marginRight: '$2',
+        },
+        '&[data-position="end"]': {
+          marginLeft: '$2',
+        },
+      },
+    },
+  },
 })
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(props, forwardedRef) {
-  const { children, startSlot, endSlot, async, size, loading: propLoading, onClick, asChild, ...rest } = props
+  const { children, startSlot, endSlot, async, size, loading: propLoading, onClick, asChild, disabled, ...rest } = props
   const { loading, handleClick } = useAsyncStatus({
     asyncFunction: async,
     propLoading: propLoading as unknown as boolean,
     onClick,
   })
 
+  const resolvedSize = size ?? 'sm'
   const spin = <Spin color="inherit" size="xs" />
   const Comp = asChild ? Slot : StyledButton
+  const leadingSlot = startSlot ? (loading ? spin : startSlot) : !endSlot && loading ? spin : null
+  const trailingSlot = endSlot ? (loading ? spin : endSlot) : null
 
   return (
-    <Comp ref={forwardedRef} loading={loading} size={size} onClick={handleClick} {...rest}>
-      {startSlot && (
-        <SlotContainer position="start">
-          {loading ? spin : startSlot}
+    <Comp
+      {...rest}
+      ref={forwardedRef}
+      loading={loading}
+      size={resolvedSize}
+      onClick={handleClick}
+      aria-busy={loading || undefined}
+      disabled={asChild ? undefined : disabled || loading}
+      aria-disabled={asChild ? disabled || loading || undefined : undefined}>
+      {leadingSlot && (
+        <SlotContainer position="start" data-position="start" size={resolvedSize} gap={resolvedSize}>
+          {leadingSlot}
         </SlotContainer>
       )}
-      {!startSlot && !endSlot && loading && spin}
       <Slottable>{children}</Slottable>
-      {endSlot && (
-        <SlotContainer position="end">
-          {loading ? spin : endSlot}
+      {trailingSlot && (
+        <SlotContainer position="end" data-position="end" size={resolvedSize} gap={resolvedSize}>
+          {trailingSlot}
         </SlotContainer>
       )}
     </Comp>

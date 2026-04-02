@@ -101,7 +101,7 @@ function _FormItemAssetPicker<T extends BasicAssetType>(props: FormItemAssetPick
             size="sm"
             id={label}
             disabled={disabled}
-            variant="secondary"
+            variant="soft"
             isDraggingOver={isDraggingOver}
             css={{
               justifyContent: 'initial',
@@ -119,10 +119,10 @@ function _FormItemAssetPicker<T extends BasicAssetType>(props: FormItemAssetPick
           groupBy={groupBy}
         />
       </Popover>
-      <ActionButton size="sm" disabled={!value} onClick={handleLocate} variant="secondary">
+      <ActionButton size="sm" disabled={!value} onClick={handleLocate} variant="soft">
         <IconCurrentLocation />
       </ActionButton>
-      <ActionButton size="sm" disabled={actionDisabled || !onDelete} onClick={onDelete} variant="secondary">
+      <ActionButton size="sm" disabled={actionDisabled || !onDelete} onClick={onDelete} variant="soft">
         <IconUnlink />
       </ActionButton>
     </FormItem>

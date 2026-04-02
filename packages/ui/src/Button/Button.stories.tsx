@@ -33,7 +33,7 @@ const meta = {
     variant: {
       type: {
         name: 'enum',
-        value: ['default', 'primary', 'secondary', 'subtle'],
+        value: ['solid', 'outline', 'soft', 'subtle', 'inverted'],
       },
       control: {
         type: 'radio',
@@ -43,7 +43,7 @@ const meta = {
   args: {
     children: 'Galacean Button',
     size: 'sm',
-    variant: 'secondary',
+    variant: 'soft',
     onClick: fn(),
     critical: false,
     positive: false,
@@ -56,23 +56,45 @@ export const Overview: StoryFn = (args) => {
   return <Button {...args} />
 }
 
+export const Sizes: StoryFn = (args) => {
+  return (
+    <Flex gap="sm" align="v" wrap>
+      <Button {...args} size="xs">
+        XS 24
+      </Button>
+      <Button {...args} size="sm">
+        SM 28
+      </Button>
+      <Button {...args} size="md">
+        MD 32
+      </Button>
+      <Button {...args} size="lg">
+        LG 36
+      </Button>
+    </Flex>
+  )
+}
+
 /**
- * `<Button />` Component provides 4 variants: `default`, `outline`, `secondary`, `subtle`.
+ * `<Button />` provides neutral, emphasized and utility variants for editor actions.
  */
 export const Variants: StoryFn = (args) => {
   return (
     <Flex gap="xs">
-      <Button {...args} variant="default">
-        Default
+      <Button {...args} variant="solid">
+        Solid
       </Button>
-      <Button {...args} variant="primary">
-        Primary
+      <Button {...args} variant="outline">
+        Outline
       </Button>
-      <Button {...args} variant="secondary">
-        Secondary
+      <Button {...args} variant="soft">
+        Soft
       </Button>
       <Button {...args} variant="subtle">
-        subtle
+        Subtle
+      </Button>
+      <Button {...args} variant="inverted">
+        Inverted
       </Button>
     </Flex>
   )
@@ -82,24 +104,14 @@ export const Variants: StoryFn = (args) => {
 export const WithSlot: StoryFn = (args) => {
   return (
     <Flex gap="sm">
-      <Button {...args} startSlot={<IconComponents size="15px" strokeWidth={1.5} />} variant="default">
+      <Button {...args} startSlot={<IconComponents size="15px" strokeWidth={1.5} />} variant="outline">
         Add Component
       </Button>
-      <Button {...args} startSlot={<IconTrash size="15px" strokeWidth={1.5} />} variant="primary" critical>
+      <Button {...args} startSlot={<IconTrash size="15px" strokeWidth={1.5} />} variant="solid" critical>
         Delete
       </Button>
     </Flex>
   )
-}
-
-WithSlot.argTypes = {
-  title: {
-    type: 'boolean',
-  },
-}
-
-WithSlot.args = {
-  title: false,
 }
 
 /**
@@ -114,12 +126,7 @@ export const WithAsyncFunction: StoryFn = (args) => {
     setDone(true)
   }
   return (
-    <Button
-      {...args}
-      startSlot={done && <IconCircleCheckFilled size="14px" />}
-      positive
-      variant="primary"
-      async={upload}>
+    <Button {...args} startSlot={done && <IconCircleCheckFilled size="14px" />} critical variant="solid" async={upload}>
       {done ? 'Uploaded' : 'Upload File'}
     </Button>
   )

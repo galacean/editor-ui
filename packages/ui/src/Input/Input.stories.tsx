@@ -17,19 +17,20 @@ export default {
     variant: {
       type: {
         name: 'enum',
-        value: ['default', 'subtle'],
+        value: ['outline', 'soft', 'subtle'],
       },
     },
     size: {
       type: {
         name: 'enum',
-        value: ['sm', 'md'],
+        value: ['xs', 'sm', 'md'],
       },
     },
   },
   args: {
     placeholder: 'Search the components...',
     size: 'sm',
+    variant: 'soft',
     disabled: false,
   },
 } as Meta<typeof Input>
@@ -47,6 +48,63 @@ export const Overview: StoryFn<typeof Input> = (args) => {
   )
 }
 
+export const Sizes: StoryFn<typeof Input> = (args) => {
+  return (
+    <Flex direction="column" gap="sm" css={{ width: '400px' }}>
+      <Input {...args} size="xs" placeholder="Extra small input" startSlot={<IconSearch size="12px" />} />
+      <Input {...args} size="sm" placeholder="Small input" startSlot={<IconSearch size="12px" />} />
+      <Input {...args} size="md" placeholder="Medium input" startSlot={<IconSearch size="14px" />} />
+    </Flex>
+  )
+}
+
+export const States: StoryFn<typeof Input> = (args) => {
+  return (
+    <Flex direction="column" gap="sm" css={{ width: '400px' }}>
+      <Input {...args} variant="outline" placeholder="Outline input" startSlot={<IconSearch size="12px" />} />
+      <Input {...args} variant="soft" placeholder="Soft input" startSlot={<IconSearch size="12px" />} />
+      <Input {...args} state="valid" placeholder="Valid input" startSlot={<IconSearch size="12px" />} />
+      <Input {...args} state="invalid" placeholder="Invalid input" startSlot={<IconSearch size="12px" />} />
+      <Input {...args} variant="subtle" placeholder="Subtle input" startSlot={<IconSearch size="12px" />} />
+      <Input {...args} disabled placeholder="Disabled input" startSlot={<IconSearch size="12px" />} />
+    </Flex>
+  )
+}
+
+export const compositeState: StoryFn<typeof Input> = (args) => {
+  return (
+    <Flex direction="column" gap="md" css={{ width: '420px' }}>
+      <Input {...args} variant="outline" placeholder="Outline default" startSlot={<IconSearch size="12px" />} />
+      <Input {...args} variant="soft" placeholder="Soft default" startSlot={<IconSearch size="12px" />} />
+      <Input {...args} variant="subtle" placeholder="Subtle default" startSlot={<IconSearch size="12px" />} />
+      <Input
+        {...args}
+        variant="outline"
+        state="valid"
+        placeholder="Outline valid"
+        startSlot={<IconSearch size="12px" />}
+      />
+      <Input {...args} variant="soft" state="valid" placeholder="Soft valid" startSlot={<IconSearch size="12px" />} />
+      <Input
+        {...args}
+        variant="subtle"
+        state="invalid"
+        placeholder="Subtle invalid"
+        startSlot={<IconSearch size="12px" />}
+      />
+      <Input
+        {...args}
+        variant="outline"
+        disabled
+        placeholder="Outline disabled"
+        startSlot={<IconSearch size="12px" />}
+      />
+      <Input {...args} variant="soft" disabled placeholder="Soft disabled" startSlot={<IconSearch size="12px" />} />
+      <Input {...args} variant="subtle" disabled placeholder="Subtle disabled" startSlot={<IconSearch size="12px" />} />
+    </Flex>
+  )
+}
+
 /**
  * You could use the `startSlot` or `endSlot` props to add an icon or any other element to the input.
  */
@@ -60,7 +118,7 @@ export const Slot: StoryFn<typeof Input> = (args) => {
         size="sm"
         {...args}
         startSlot={
-          <Badge status="warning" style={{ marginLeft: '-3px' }}>
+          <Badge color="orange" size="xs" style={{ marginLeft: '-3px' }}>
             Danger
           </Badge>
         }
@@ -106,10 +164,10 @@ export const OverrideSlotStyle: StoryFn<typeof Input> = (args) => {
     <Flex direction="column" gap="md" css={{ width: '400px' }}>
       <Input
         startSlot={<DropdownAction />}
+        variant="outline"
         overrideStartSlotStyle
         placeholder="Search the components..."
         size="sm"
-        {...args}
       />
     </Flex>
   )

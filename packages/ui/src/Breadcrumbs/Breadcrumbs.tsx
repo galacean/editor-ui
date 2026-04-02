@@ -9,7 +9,7 @@ const StyledBreadcrumbs = styled('ol', {
   margin: 0,
   padding: 0,
   fontSize: '$1',
-  color: '$gray11',
+  color: '$text',
   listStyle: 'none',
 })
 
@@ -48,23 +48,30 @@ function Breadcrumbs(props: BreadcrumbProps) {
 
 const StyledBreadcrumbItem = styled('li', {
   display: 'flex',
-  borderRadius: '$1',
   alignItems: 'center',
   fontSize: '$1',
+  lineHeight: '$lineHeights$1',
   outline: 'none',
   cursor: 'pointer',
   userSelect: 'none',
-  color: '$gray10',
+  color: '$textMuted',
   '&[data-current="true"]': {
-    color: '$grayA12',
+    color: '$textStrong',
   },
   variants: {
     size: {
       sm: {
+        minHeight: '$xs',
+        padding: '0 $1',
         fontSize: '$1',
+        borderRadius: '$xs',
       },
       md: {
+        minHeight: '$sm',
+        padding: '0 $1_5',
         fontSize: '$2',
+        lineHeight: '$lineHeights$2',
+        borderRadius: '$sm',
       },
     },
   },
@@ -74,10 +81,24 @@ const StyledBreadcrumbItem = styled('li', {
 })
 
 const Slash = styled(IconSlash, {
-  height: '$3',
-  width: '$3',
-  margin: '0 $0_5',
-  color: '$gray8',
+  color: '$textMuted',
+  variants: {
+    size: {
+      sm: {
+        height: '$3',
+        width: '$3',
+        margin: '0 $0_5',
+      },
+      md: {
+        height: '$4',
+        width: '$4',
+        margin: '0 $1',
+      },
+    },
+  },
+  defaultVariants: {
+    size: 'sm',
+  },
 })
 
 export interface BreadcrumbItemProps extends React.HtmlHTMLAttributes<HTMLLIElement> {
@@ -87,11 +108,13 @@ export interface BreadcrumbItemProps extends React.HtmlHTMLAttributes<HTMLLIElem
 }
 
 function BreadcrumbItem(props: BreadcrumbItemProps) {
-  const { isCurrent, ...rest } = props
+  const { isCurrent, size, ...rest } = props
   return (
     <Fragment>
-      <StyledBreadcrumbItem {...rest}>{rest.children}</StyledBreadcrumbItem>
-      {!isCurrent && <Slash />}
+      <StyledBreadcrumbItem size={size} {...rest}>
+        {rest.children}
+      </StyledBreadcrumbItem>
+      {!isCurrent && <Slash size={size} />}
     </Fragment>
   )
 }

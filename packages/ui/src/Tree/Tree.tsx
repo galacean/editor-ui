@@ -68,7 +68,7 @@ const TreeItemContentRoot = styled('div', {
       selected: true,
       isActive: false,
       css: {
-        color: '$gray11',
+        color: '$white',
       },
     },
   ],

@@ -4,6 +4,7 @@ import { AssetItem } from './'
 import { styled } from '../design-system'
 
 export default {
+  title: 'Display/AssetItem',
   component: AssetItem,
 } as Meta<typeof AssetItem>
 

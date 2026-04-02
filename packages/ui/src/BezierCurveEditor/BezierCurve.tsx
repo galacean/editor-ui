@@ -52,9 +52,10 @@ export function BezierCurve(props: BezierCurveProps) {
   const hitD = generatePath(points, 1, extendMinX, extendMaxX)
   const first = points[0].point
   const last = points[points.length - 1].point
-  const extensionD = extendMinX !== undefined
-    ? `M ${extendMinX} ${first.y} L ${first.x} ${first.y} M ${last.x} ${last.y} L ${extendMaxX} ${last.y}`
-    : undefined
+  const extensionD =
+    extendMinX !== undefined
+      ? `M ${extendMinX} ${first.y} L ${first.x} ${first.y} M ${last.x} ${last.y} L ${extendMaxX} ${last.y}`
+      : undefined
   const [hovered, setHovered] = useState(false)
   const pointerRef = React.useRef<DOMPoint>()
   const [matrixedPoint, setMatrixedPoint] = useState<IPoint | null>(null)
@@ -131,12 +132,7 @@ export function BezierCurve(props: BezierCurveProps) {
     <g className="bezier-path" onMouseLeave={handleMouseLeave}>
       {extensionD && <StyledExtensionPath d={extensionD} />}
       <StyledPath d={mainD} />
-      <StyledPath
-        hitline
-        d={hitD}
-        onMouseEnter={handleMouseEnter}
-        onMouseMove={handleMouseMove}
-      />
+      <StyledPath hitline d={hitD} onMouseEnter={handleMouseEnter} onMouseMove={handleMouseMove} />
       {actualAlgorithm === 'linear' && hovered && matrixedPoint && (
         <StyledTempPoint cx={matrixedPoint.x} cy={matrixedPoint.y} onClick={handleAddPoint} />
       )}

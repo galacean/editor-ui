@@ -1,7 +1,8 @@
 export const sizes = {
+  0: '0px',
   '0_5': '2px',
   1: '4px',
-  1_5: '6px',
+  '1_5': '6px',
   2: '8px',
   3: '12px',
   4: '16px',
@@ -16,58 +17,73 @@ export const sizes = {
   12: '48px',
   14: '56px',
   16: '64px',
-  xs: '$4_5',
-  s: '$5_5',
+  // Public component heights follow the compact editor baseline:
+  // xs=20, sm=24, md=32, lg=36, xl=40.
+  xs: '$5',
   sm: '$6',
-  md: '$9',
+  md: '$8',
+  lg: '$9',
+  xl: '$10',
+  // Explicit control aliases keep dense editor layouts possible without
+  // overloading sm/md/lg semantics.
+  controlXs: '$5',
+  controlSm: '$6',
+  controlMd: '$8',
+  controlLg: '$9',
+  iconXs: '12px',
+  iconSm: '14px',
+  iconMd: '16px',
+  iconLg: '18px',
 }
 
 export const fontSizes = {
   '0_5': '10px',
   1: '12px',
+  '1_5': '13px',
   2: '14px',
   3: '16px',
   4: '18px',
   5: '20px',
   6: '24px',
   7: '28px',
-  8: '35px',
-  9: '60px',
+  8: '32px',
+  9: '48px',
   sm: '$1',
   xs: '$0_5',
 }
 
 export const space = {
-  '0_5': '0.125rem', // 2px
-  1: '0.25rem', // 4px
-  '1_5': '0.375rem', // 4px
-  2: '0.5rem', // 8px
-  3: '0.75rem', // 12px
-  4: '1rem', // basic px is 16
-  5: '1.25rem', // 20px
-  6: '1.5rem', // 24px
-  7: '1.75rem',
-  8: '2rem',
-  9: '2.25rem',
-  10: '2.5rem',
-  12: '3rem',
-  14: '3.5rem',
-  16: '4rem',
-  20: '5rem',
-  24: '6rem',
-  28: '7rem',
-  32: '8rem',
-  36: '9rem',
-  40: '10rem',
-  44: '11rem',
-  48: '12rem',
-  52: '13rem',
-  56: '14rem',
-  60: '15rem',
-  64: '16rem',
-  72: '18rem',
-  80: '20rem',
-  96: '24rem',
+  0: '0px',
+  '0_5': '2px',
+  1: '4px',
+  '1_5': '6px',
+  2: '8px',
+  3: '12px',
+  4: '16px',
+  5: '20px',
+  6: '24px',
+  7: '28px',
+  8: '32px',
+  9: '36px',
+  10: '40px',
+  12: '48px',
+  14: '56px',
+  16: '64px',
+  20: '80px',
+  24: '96px',
+  28: '112px',
+  32: '128px',
+  36: '144px',
+  40: '160px',
+  44: '176px',
+  48: '192px',
+  52: '208px',
+  56: '224px',
+  60: '240px',
+  64: '256px',
+  72: '288px',
+  80: '320px',
+  96: '384px',
 }
 
 export const radii = {
@@ -76,29 +92,21 @@ export const radii = {
   3: '6px',
   4: '8px',
   5: '10px',
-
+  xs: '4px',
+  sm: '4px',
+  md: '6px',
+  lg: '6px',
+  xl: '8px',
   round: '9999px',
 }
 
 export const shadows = {
-  2: `
-    0px 0px .5px rgba(0, 0, 0, .5),
-    0px 2px 6px 0px rgba(0, 0, 0, .2),
-    inset 0px .5px 0px rgba(255, 255, 255, .1),
-    inset 0px 0px .5px rgba(255, 255, 255, .3)
-  `,
-  3: `
-    0px 0px .5px rgba(0, 0, 0, .5),
-    0px 2px 6px 0px rgba(0, 0, 0, .2),
-    inset 0px .5px 0px rgba(255, 255, 255, .1),
-    inset 0px 0px .5px rgba(255, 255, 255, .3)
-  `,
-  border: `inset 0 0 0 1px $colors$grayA3`,
-  popContainer: `
-    0px 0px .5px rgba(0, 0, 0, .5),
-    0px 2px 6px 0px rgba(0, 0, 0, .2),
-    inset 0px .5px 0px rgba(255, 255, 255, .1),
-    inset 0px 0px .5px rgba(255, 255, 255, .3)
-  `,
+  1: '0 1px 2px rgba(0, 0, 0, 0.14)',
+  2: '0 4px 12px rgba(0, 0, 0, 0.18)',
+  3: '0 10px 28px rgba(0, 0, 0, 0.24)',
+  border: '0 0 0 1px $colors$border',
+  focus: '0 0 0 2px $colors$focusRing',
+  subtleFocus: '0 0 0 2px $colors$focusRingMuted',
+  popContainer: '0 10px 28px rgba(0, 0, 0, 0.24), 0 2px 8px rgba(0, 0, 0, 0.16)',
   prepend: '0 0 0 0 transparent',
 }

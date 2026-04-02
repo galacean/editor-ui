@@ -182,7 +182,12 @@ function _BezierCurveEditor(props: BezierCurveEditorProps, forwardedRef: React.R
   const [points, setPoints] = useControllableState<IBezierPoint[]>({
     prop: propPoints
       ? convertPointsToBezierPoints(
-          denormalizePoint(normalizeInputPoints(propPoints, minNormalizedY, maxNormalizedY), width, height * axisYScale, denormalizeZoom),
+          denormalizePoint(
+            normalizeInputPoints(propPoints, minNormalizedY, maxNormalizedY),
+            width,
+            height * axisYScale,
+            denormalizeZoom
+          ),
           algo
         )
       : undefined,
@@ -196,21 +201,18 @@ function _BezierCurveEditor(props: BezierCurveEditorProps, forwardedRef: React.R
       algo
     ),
     onChange: (bezierPoints: IBezierPoint[]) => {
-      const ret = normalizePoint(
-        convertBezierPointToPoint(bezierPoints, algo),
-        width,
-        height * axisYScale,
-        zoom
-      )
+      const ret = normalizePoint(convertBezierPointToPoint(bezierPoints, algo), width, height * axisYScale, zoom)
       props.onPointsChange?.(ret)
     },
   })
 
   const sortByTime = (points: IBezierPoint[], ids: string[]): IBezierPoint[] => {
-    const order = points.map((_, i) => i).sort((a, b) => {
-      const dx = points[a].point.x - points[b].point.x
-      return Math.abs(dx) <= TICK_EPSILON ? a - b : dx
-    })
+    const order = points
+      .map((_, i) => i)
+      .sort((a, b) => {
+        const dx = points[a].point.x - points[b].point.x
+        return Math.abs(dx) <= TICK_EPSILON ? a - b : dx
+      })
     pointIdsRef.current = order.map((i) => ids[i])
     return order.map((i) => points[i])
   }
@@ -378,7 +380,6 @@ function _BezierCurveEditor(props: BezierCurveEditorProps, forwardedRef: React.R
       }}
       trigger={
         <BezierCurveContainer ref={containerRef} tabIndex={0} onKeyDown={handleKeyDown}>
-
           <StyledSvgRoot
             xmlns="http://www.w3.org/2000/svg"
             viewBox={`${offset.x} ${offset.y} ${width} ${height}`}
@@ -387,135 +388,135 @@ function _BezierCurveEditor(props: BezierCurveEditorProps, forwardedRef: React.R
             ref={mergeRefs([forwardedRef, svgRef])}
             onMouseDown={(e) => e.preventDefault()}
             onContextMenu={handleSvgContextMenu}>
-        <defs>
-          <clipPath id={pointClipId} clipPathUnits="userSpaceOnUse">
-            <rect
-              x={offset.x - POINT_HIT_RADIUS}
-              y={offset.y - POINT_HIT_RADIUS}
-              width={width + POINT_HIT_RADIUS * 2}
-              height={height + POINT_HIT_RADIUS * 2}
-            />
-          </clipPath>
-        </defs>
-        <Grid
-          size={{ width, height }}
-          offset={offset}
-          axisLabel={props.axisLabel}
-          zoom={zoom}
-          yTickScale={yTickScale}
-          axisYScale={axisYScale}
-          overlay={
-            <>
-              <StyledPanelBorder x={offset.x} y={offset.y} width={width} height={height} />
-              <g className="bezier-curve-points">
-                {points.map((bezierPoint, index) => (
-                  <BezierPoint
-                    pointId={pointIds[index]!}
-                    key={pointIds[index]!}
-                    bezierPoint={bezierPoint}
-                    pointHoverLabel={getPointHoverLabel(bezierPoint.point)}
-                    pointClipPath={`url(#${pointClipId})`}
-                    onPointChange={handlePointChange}
-                    onHoverChange={handlePointHoverChange}
-                    getRoot={() => svgRef.current!}
-                    doublePoint={doubleControlPoint}
-                    algo={algo}
-                  />
-                ))}
-              </g>
-            </>
-          }>
-          <BezierCurve
-            algo={algo}
-            points={points!}
-            zoom={zoom}
-            getRoot={() => svgRef.current}
-            onAddPoint={handleAddPoint}
-            extendMinX={offset.x}
-            extendMaxX={offset.x + width}
-          />
-          <CurveAnimation points={points} algo={algo} ref={player} />
-        </Grid>
-      </StyledSvgRoot>
-      {props.onYTickScaleChange && (
-        <StyledYScaleInputWrap style={{ width: `${yScaleInputText.length - (yScaleInputText.match(/[.\-]/g) || []).length * 0.5 + 0.2}ch` }}>
-          <StyledYScaleInput
-              type="text"
-              inputMode="decimal"
-              value={yScaleInputText}
-              onFocus={() => {
-                yScaleInputFocusedRef.current = true
-              }}
-              onBlur={(event) => {
-                yScaleInputFocusedRef.current = false
-                if (event.currentTarget.dataset.escaping) {
-                  delete event.currentTarget.dataset.escaping
-                  setYScaleInputText(yScaleDisplayValue)
-                  return
-                }
-                const value = Number(yScaleInputText.trim() || 0)
-                if (Number.isNaN(value)) {
-                  setYScaleInputText(yScaleDisplayValue)
-                } else {
-                  handleYTickScaleChange(value)
-                  setYScaleInputText(yScaleDisplayValue)
-                }
-                props.onYTickScaleCommit?.()
-              }}
-              onKeyDown={(event) => {
-                if (event.key === 'Enter') {
-                  event.currentTarget.blur()
-                } else if (event.key === 'Escape') {
-                  event.currentTarget.dataset.escaping = '1'
-                  event.currentTarget.blur()
-                }
-              }}
-              onChange={(event) => {
-                const nextText = event.target.value
-                setYScaleInputText(nextText)
-                const trimmed = nextText.trim()
-                const num = Number(trimmed)
-                if (trimmed !== '' && !Number.isNaN(num)) {
-                  handleYTickScaleChange(num)
-                }
-              }}
-            />
-        </StyledYScaleInputWrap>
-      )}
-      <Flex gap="xs" style={{ position: 'absolute', bottom: 10, right: 10 }}>
-        <ActionButtonGroup>
-          <ActionButton
-            onClick={() => player.current?.play()}
-            size="xs">
-            <IconPlayerPlayFilled />
-          </ActionButton>
-          <ActionButton
-            size="xs"
-            onClick={() => applyZoomAtAnchor(zoom - 0.05, { x: 0.5, y: 0.5 })}
-            disabled={zoom <= minZoom}>
-            <IconZoomInFilled />
-          </ActionButton>
-          <ActionButton
-            size="xs"
-            onClick={() => applyZoomAtAnchor(zoom + 0.05, { x: 0.5, y: 0.5 })}
-            disabled={zoom >= maxZoom}>
-            <IconZoomOutFilled />
-          </ActionButton>
-          <ActionButton
-            size="xs"
-            onClick={() => {
-              setZoom(defaultZoom)
-              setOffset(defaultOffset)
-            }}
-            disabled={zoom === defaultZoom}>
-            <IconZoomReset />
-          </ActionButton>
-        </ActionButtonGroup>
-      </Flex>
-    </BezierCurveContainer>
+            <defs>
+              <clipPath id={pointClipId} clipPathUnits="userSpaceOnUse">
+                <rect
+                  x={offset.x - POINT_HIT_RADIUS}
+                  y={offset.y - POINT_HIT_RADIUS}
+                  width={width + POINT_HIT_RADIUS * 2}
+                  height={height + POINT_HIT_RADIUS * 2}
+                />
+              </clipPath>
+            </defs>
+            <Grid
+              size={{ width, height }}
+              offset={offset}
+              axisLabel={props.axisLabel}
+              zoom={zoom}
+              yTickScale={yTickScale}
+              axisYScale={axisYScale}
+              overlay={
+                <>
+                  <StyledPanelBorder x={offset.x} y={offset.y} width={width} height={height} />
+                  <g className="bezier-curve-points">
+                    {points.map((bezierPoint, index) => (
+                      <BezierPoint
+                        pointId={pointIds[index]!}
+                        key={pointIds[index]!}
+                        bezierPoint={bezierPoint}
+                        pointHoverLabel={getPointHoverLabel(bezierPoint.point)}
+                        pointClipPath={`url(#${pointClipId})`}
+                        onPointChange={handlePointChange}
+                        onHoverChange={handlePointHoverChange}
+                        getRoot={() => svgRef.current!}
+                        doublePoint={doubleControlPoint}
+                        algo={algo}
+                      />
+                    ))}
+                  </g>
+                </>
+              }>
+              <BezierCurve
+                algo={algo}
+                points={points!}
+                zoom={zoom}
+                getRoot={() => svgRef.current}
+                onAddPoint={handleAddPoint}
+                extendMinX={offset.x}
+                extendMaxX={offset.x + width}
+              />
+              <CurveAnimation points={points} algo={algo} ref={player} />
+            </Grid>
+          </StyledSvgRoot>
+          {props.onYTickScaleChange && (
+            <StyledYScaleInputWrap
+              style={{
+                width: `${yScaleInputText.length - (yScaleInputText.match(/[.\-]/g) || []).length * 0.5 + 0.2}ch`,
+              }}>
+              <StyledYScaleInput
+                type="text"
+                inputMode="decimal"
+                value={yScaleInputText}
+                onFocus={() => {
+                  yScaleInputFocusedRef.current = true
+                }}
+                onBlur={(event) => {
+                  yScaleInputFocusedRef.current = false
+                  if (event.currentTarget.dataset.escaping) {
+                    delete event.currentTarget.dataset.escaping
+                    setYScaleInputText(yScaleDisplayValue)
+                    return
+                  }
+                  const value = Number(yScaleInputText.trim() || 0)
+                  if (Number.isNaN(value)) {
+                    setYScaleInputText(yScaleDisplayValue)
+                  } else {
+                    handleYTickScaleChange(value)
+                    setYScaleInputText(yScaleDisplayValue)
+                  }
+                  props.onYTickScaleCommit?.()
+                }}
+                onKeyDown={(event) => {
+                  if (event.key === 'Enter') {
+                    event.currentTarget.blur()
+                  } else if (event.key === 'Escape') {
+                    event.currentTarget.dataset.escaping = '1'
+                    event.currentTarget.blur()
+                  }
+                }}
+                onChange={(event) => {
+                  const nextText = event.target.value
+                  setYScaleInputText(nextText)
+                  const trimmed = nextText.trim()
+                  const num = Number(trimmed)
+                  if (trimmed !== '' && !Number.isNaN(num)) {
+                    handleYTickScaleChange(num)
+                  }
+                }}
+              />
+            </StyledYScaleInputWrap>
+          )}
+          <Flex gap="xs" style={{ position: 'absolute', bottom: 10, right: 10 }}>
+            <ActionButtonGroup>
+              <ActionButton onClick={() => player.current?.play()} size="xs">
+                <IconPlayerPlayFilled />
+              </ActionButton>
+              <ActionButton
+                size="xs"
+                onClick={() => applyZoomAtAnchor(zoom - 0.05, { x: 0.5, y: 0.5 })}
+                disabled={zoom <= minZoom}>
+                <IconZoomInFilled />
+              </ActionButton>
+              <ActionButton
+                size="xs"
+                onClick={() => applyZoomAtAnchor(zoom + 0.05, { x: 0.5, y: 0.5 })}
+                disabled={zoom >= maxZoom}>
+                <IconZoomOutFilled />
+              </ActionButton>
+              <ActionButton
+                size="xs"
+                onClick={() => {
+                  setZoom(defaultZoom)
+                  setOffset(defaultOffset)
+                }}
+                disabled={zoom === defaultZoom}>
+                <IconZoomReset />
+              </ActionButton>
+            </ActionButtonGroup>
+          </Flex>
+        </BezierCurveContainer>
       }
-      asChild
-    >
+      asChild>
       <MenuItem
         name="Delete Keyframe"
         disabled={points.length <= 1}

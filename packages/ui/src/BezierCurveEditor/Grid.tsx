@@ -171,15 +171,7 @@ export function Grid(props: GridProps) {
             return null
           }
 
-          return (
-            <StyledGridLine
-              key={index}
-              x={x}
-              y={offset.y}
-              width={1}
-              height={height}
-            />
-          )
+          return <StyledGridLine key={index} x={x} y={offset.y} width={1} height={height} />
         })}
       </g>
     )

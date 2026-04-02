@@ -3,7 +3,6 @@ import React, { useState, useEffect, forwardRef, useRef } from 'react'
 import { useInputNumberState } from './useInputNumberState'
 import { clamp } from '../utils/math'
 
-import type { VariantProps } from '../design-system'
 import { styled } from '../design-system'
 import { Input } from '../Input'
 import { mergeRefs } from '../utils/merge-refs'
@@ -39,15 +38,16 @@ const StyledNumController = styled('div', {
   position: 'absolute',
   cursor: 'ew-resize',
   inset: 0,
+  borderRadius: 'inherit',
 })
 
 const StyledInputNumberRoot = styled('div', {
   position: 'relative',
+  borderRadius: 'inherit',
 })
 
 export interface InputNumberProps
-  extends VariantProps<typeof Input>,
-    Omit<React.ComponentProps<typeof Input>, 'onChange'> {
+  extends Omit<React.ComponentProps<typeof Input>, 'onChange' | 'value' | 'defaultValue' | 'type'> {
   min?: number
   max?: number
   step?: number
@@ -71,9 +71,11 @@ export const InputNumber = forwardRef<HTMLInputElement, InputNumberProps>(functi
     min = -Infinity,
     max = Infinity,
     startSlot,
+    endSlot,
     dragStep = 0.1,
     step = 0.1,
     disabled,
+    onFocus,
     onValueChange,
     ...rest
   } = props
@@ -82,10 +84,12 @@ export const InputNumber = forwardRef<HTMLInputElement, InputNumberProps>(functi
   const [dragging, setDragging] = useState(false)
   const [focused, setFocused] = useState(false)
   const downTimeRef = useRef<number>(0)
-  const [startX, setStartX] = useState(0)
+  const dragStartXRef = useRef(0)
+  const dragStartValueRef = useRef(0)
   const { ref, value, defaultValue, onBlur, onChange } = useInputNumberState({
     onChange: onValueChange,
     value: props.value,
+    defaultValue: props.defaultValue,
     fallbackValue: 0,
     min,
     max,
@@ -94,11 +98,12 @@ export const InputNumber = forwardRef<HTMLInputElement, InputNumberProps>(functi
   const handleMouseMove = (e: MouseEvent) => {
     e.stopPropagation()
     e.preventDefault()
-    setAccurateMode(e.ctrlKey || e.metaKey)
-    const step = accurateMode ? dragStep / 10 : dragStep
     if (!dragging) return
-    const diff = safeTimes(safePlus(e.clientX, -startX), step)
-    const newValue = clamp(safePlus(props.value, diff), min, max)
+    const nextAccurateMode = e.ctrlKey || e.metaKey
+    setAccurateMode(nextAccurateMode)
+    const currentStep = nextAccurateMode ? dragStep / 10 : dragStep
+    const diff = safeTimes(safePlus(e.clientX, -dragStartXRef.current), currentStep)
+    const newValue = clamp(safePlus(dragStartValueRef.current, diff), min, max)
     const valueString = newValue.toString()
     if (onChange) {
       onChange({ target: { value: valueString } } as React.ChangeEvent<HTMLInputElement>)
@@ -117,15 +122,17 @@ export const InputNumber = forwardRef<HTMLInputElement, InputNumberProps>(functi
       document.removeEventListener('mousemove', handleMouseMove)
       document.removeEventListener('mouseup', handleMouseUp)
     }
-  }, [dragging, accurateMode])
+  }, [dragging, dragStep, min, max, onChange])
 
   const handleMouseDown = (e) => {
     e.stopPropagation()
     e.preventDefault()
     downTimeRef.current = Date.now()
-    if (e.ctrlKey || e.metaKey) setAccurateMode(true)
+    setAccurateMode(e.ctrlKey || e.metaKey)
     setDragging(true)
-    setStartX(e.clientX)
+    dragStartXRef.current = e.clientX
+    const currentValue = Number(ref.current?.value ?? props.value ?? props.defaultValue ?? 0)
+    dragStartValueRef.current = Number.isNaN(currentValue) ? 0 : currentValue
   }
 
   const handleMouseUp = () => {
@@ -138,6 +145,7 @@ export const InputNumber = forwardRef<HTMLInputElement, InputNumberProps>(functi
         ref.current.focus()
         setFocused(true)
       }
+      setAccurateMode(false)
       return
     }
 
@@ -149,6 +157,10 @@ export const InputNumber = forwardRef<HTMLInputElement, InputNumberProps>(functi
     setFocused(false)
   }
 
+  function handleFocus() {
+    setFocused(true)
+  }
+
   return (
     <StyledInputNumberRoot>
       <Input
@@ -158,6 +170,7 @@ export const InputNumber = forwardRef<HTMLInputElement, InputNumberProps>(functi
         defaultValue={defaultValue}
         onChange={onChange}
         disabled={disabled}
+        onFocus={compound(onFocus, handleFocus)}
         onBlur={compound(onBlur, handleBlur)}
         size={size}
         min={min}
@@ -165,6 +178,7 @@ export const InputNumber = forwardRef<HTMLInputElement, InputNumberProps>(functi
         step={step}
         type="number"
         startSlot={startSlot}
+        endSlot={endSlot}
       />
       {!disabled && !focused && <StyledNumController onMouseDown={handleMouseDown} onMouseUp={handleMouseUp} />}
     </StyledInputNumberRoot>

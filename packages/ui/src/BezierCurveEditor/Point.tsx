@@ -136,38 +136,47 @@ export function Point(props: PointProps) {
   }, [moving])
 
   return (
-      <StyledPointRoot onMouseDown={handleMouseDown} onMouseEnter={() => { setHovered(true); onHoverChange?.(true) }} onMouseLeave={() => { setHovered(false); onHoverChange?.(false) }}>
-        {hoverLabel && (hovered || moving) && (
-          <>
-            <StyledPointLabelBg
-              x={point.x - (hoverLabel.length * 6 + 8) / 2}
-              y={point.y - 24}
-              width={hoverLabel.length * 6 + 8}
-              height={14}
-            />
-            <StyledPointLabel x={point.x} y={point.y - 14} textAnchor="middle">
-              {hoverLabel}
-            </StyledPointLabel>
-          </>
-        )}
-        <g style={pointClipPath ? { clipPath: pointClipPath } : undefined}>
-          <StyledPoint data-point-type="hitpoint" cx={point.x} cy={point.y} r={POINT_HIT_RADIUS} />
-          <StyledPoint
-            data-point-type="ring"
-            pointType={main ? 'main' : 'control'}
-            cx={point.x}
-            cy={point.y}
-            r={POINT_RING_RADIUS}
+    <StyledPointRoot
+      onMouseDown={handleMouseDown}
+      onMouseEnter={() => {
+        setHovered(true)
+        onHoverChange?.(true)
+      }}
+      onMouseLeave={() => {
+        setHovered(false)
+        onHoverChange?.(false)
+      }}>
+      {hoverLabel && (hovered || moving) && (
+        <>
+          <StyledPointLabelBg
+            x={point.x - (hoverLabel.length * 6 + 8) / 2}
+            y={point.y - 24}
+            width={hoverLabel.length * 6 + 8}
+            height={14}
           />
-          <StyledPoint
-            data-point-type="point"
-            pointType={main ? 'main' : 'control'}
-            type={type}
-            cx={point.x}
-            cy={point.y}
-            r={POINT_CENTER_RADIUS}
-          />
-        </g>
-      </StyledPointRoot>
+          <StyledPointLabel x={point.x} y={point.y - 14} textAnchor="middle">
+            {hoverLabel}
+          </StyledPointLabel>
+        </>
+      )}
+      <g style={pointClipPath ? { clipPath: pointClipPath } : undefined}>
+        <StyledPoint data-point-type="hitpoint" cx={point.x} cy={point.y} r={POINT_HIT_RADIUS} />
+        <StyledPoint
+          data-point-type="ring"
+          pointType={main ? 'main' : 'control'}
+          cx={point.x}
+          cy={point.y}
+          r={POINT_RING_RADIUS}
+        />
+        <StyledPoint
+          data-point-type="point"
+          pointType={main ? 'main' : 'control'}
+          type={type}
+          cx={point.x}
+          cy={point.y}
+          r={POINT_CENTER_RADIUS}
+        />
+      </g>
+    </StyledPointRoot>
   )
 }

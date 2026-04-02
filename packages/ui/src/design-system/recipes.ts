@@ -12,11 +12,11 @@ export const button = styled('button', {
   boxSizing: 'border-box',
   cursor: 'pointer',
   '&:focus-visible': {
-    boxShadow: '0 0 0 3px $colors$blueA7',
+    boxShadow: '$focus',
   },
   '&:disabled': {
-    backgroundColor: '$grayA2',
-    color: '$grayA9',
+    backgroundColor: '$surfaceSubtle',
+    color: '$textMuted',
     cursor: 'not-allowed',
   },
 })
@@ -105,9 +105,9 @@ export const basicItemStyle = styled('div', {
   alignItems: 'center',
   justifyContent: 'space-between',
   lineHeight: 1,
-  fontSize: '11px',
-  borderRadius: '$2',
-  color: '$gray11',
+  fontSize: '$1',
+  borderRadius: '$sm',
+  color: '$text',
   padding: '$1 $2',
   userSelect: 'none',
   boxSizing: 'border-box',
@@ -115,14 +115,12 @@ export const basicItemStyle = styled('div', {
   cursor: 'default',
   // disable state
   '&[data-disabled]': {
-    color: '$grayA8',
+    color: '$textMuted',
     pointerEvents: 'none',
   },
 
   '&:focus': {
-    // backgroundColor: "$grayA3",
-    // color: "$grayA11"
-    backgroundColor: '$blue9',
+    backgroundColor: '$primary',
     color: '$white',
   },
 
@@ -131,17 +129,27 @@ export const basicItemStyle = styled('div', {
       xs: {
         height: '$xs',
         fontSize: '$0_5',
+        borderRadius: '$xs',
+        padding: '0 $1_5',
         minWidth: 'min-content',
       },
       sm: {
         height: '$sm',
+        borderRadius: '$sm',
+        fontSize: '$1',
+        padding: '0 $2',
       },
       md: {
-        height: '$8',
-        borderRadius: '$3',
+        height: '$md',
+        borderRadius: '$md',
+        fontSize: '$2',
+        padding: '0 $3',
       },
       lg: {
-        height: '$10',
+        height: '$lg',
+        borderRadius: '$md',
+        fontSize: '$2',
+        padding: '0 $4',
       },
     },
     critical: {
@@ -165,10 +173,10 @@ export const basicItemStyle = styled('div', {
 
 export const selectContent: CSS = {
   overflow: 'hidden',
-  backgroundColor: '$gray3',
-  borderRadius: '$2',
-  boxShadow: '0 5px 10px rgba(0,0,0,0.08)',
-  border: '1px solid $grayA4',
+  backgroundColor: '$overlayBg',
+  borderRadius: '$lg',
+  boxShadow: '$popContainer',
+  border: '1px solid $border',
 }
 
 export const dropdownMenuContentStyle = styled('div', {
@@ -185,13 +193,12 @@ export const contextMenuContentStyle = styled('div', {
 
 export const contentStyle = styled('div', {
   position: 'relative',
-  backgroundColor: '$gray2',
-  borderRadius: '$3',
+  backgroundColor: '$overlayBg',
+  borderRadius: '$lg',
   padding: '$1',
-  boxShadow:
-    '0px 0px .5px rgba(0, 0, 0, .5), 0px 1px 5px rgba(0, 0, 0, .4), inset 0px .5px 0px rgba(255, 255, 255, .1), inset 0px 0px .5px rgba(255, 255, 255, .3)',
+  boxShadow: '$popContainer',
   transformOrigin: 'var(--radix-context-menu-content-transform-origin)',
-  border: '1px solid $grayA4',
+  border: '1px solid $border',
   minWidth: '200px',
   animation: `${scaleIn} .2s ease`,
   animationDuration: '300ms',
@@ -215,40 +222,88 @@ export const contentStyle = styled('div', {
         minWidth: 'max-content',
       },
       sm: {
-        borderRadius: '$4',
+        borderRadius: '$lg',
       },
       md: {
-        borderRadius: '$5',
+        borderRadius: '$xl',
       },
     },
   },
 })
 
 export const labelStyle = styled('span', {
-  fontSize: '10px',
-  color: '$gray9',
-  padding: '$1 $2',
+  color: '$textMuted',
   userSelect: 'none',
+  variants: {
+    size: {
+      xs: {
+        fontSize: '$0_5',
+        padding: '$1 $1_5',
+      },
+      sm: {
+        fontSize: '$0_5',
+        padding: '$1 $2',
+      },
+      md: {
+        fontSize: '$1',
+        padding: '$1_5 $3',
+      },
+    },
+  },
+  defaultVariants: {
+    size: 'sm',
+  },
 })
 
 export const separatorStyle = styled('div', {
   height: 1,
-  backgroundColor: '$gray5',
+  backgroundColor: '$border',
   margin: '$1',
 })
 
 export const indicatorStyle = styled('div', {
   position: 'absolute',
+  top: '50%',
   display: 'inline-flex',
   alignItems: 'center',
   justifyContent: 'center',
-  left: '$1',
-  width: '$4',
-  height: '$4',
-  marginRight: '$1_5',
-  '& > svg': {
-    width: '14px',
-    height: '14px',
+  transform: 'translateY(-50%)',
+  variants: {
+    size: {
+      xs: {
+        left: '$1',
+        width: '$3',
+        height: '$3',
+        marginRight: '$1',
+        '& > svg': {
+          width: '$iconXs',
+          height: '$iconXs',
+        },
+      },
+      sm: {
+        left: '$1',
+        width: '$4',
+        height: '$4',
+        marginRight: '$1_5',
+        '& > svg': {
+          width: '$iconSm',
+          height: '$iconSm',
+        },
+      },
+      md: {
+        left: '$2',
+        width: '$4',
+        height: '$4',
+        marginRight: '$2',
+        '& > svg': {
+          width: '$iconMd',
+          height: '$iconMd',
+        },
+      },
+    },
+  },
+  defaultVariants: {
+    size: 'sm',
   },
 })
 
@@ -257,11 +312,19 @@ export const radioGroupStyle = styled('div', {
     size: {
       xs: {
         [`& ${labelStyle}`]: {
+          paddingLeft: '$5',
+        },
+      },
+      sm: {
+        [`& ${labelStyle}`]: {
           paddingLeft: '$6',
         },
       },
-      sm: {},
-      md: {},
+      md: {
+        [`& ${labelStyle}`]: {
+          paddingLeft: '$7',
+        },
+      },
     },
   },
 })
@@ -273,10 +336,22 @@ export const checkboxItemStyle = styled('div', basicItemStyle, {
     display: 'flex',
     justifyContent: 'initial',
   },
+  variants: {
+    size: {
+      xs: {
+        paddingLeft: '$5 !important',
+      },
+      sm: {},
+      md: {
+        paddingLeft: '$7 !important',
+      },
+      lg: {},
+    },
+  },
 })
 
 export const radioItemStyle = styled('div', basicItemStyle, {
-  paddingLeft: '$6',
+  paddingLeft: '$6 !important',
   '&[data-state=checked]': {
     display: 'flex',
     justifyContent: 'initial',
@@ -284,8 +359,13 @@ export const radioItemStyle = styled('div', basicItemStyle, {
   variants: {
     size: {
       xs: {
-        paddingLeft: '$5',
+        paddingLeft: '$5 !important',
       },
+      sm: {},
+      md: {
+        paddingLeft: '$7 !important',
+      },
+      lg: {},
     },
   },
 })
@@ -315,7 +395,7 @@ const overlayShow = keyframes({
 })
 export const overlayStyle = styled(null, {
   position: 'fixed',
-  backgroundColor: 'rgba(0,0,0,.8)',
+  backgroundColor: '$overlayScrim',
   inset: 0,
   zIndex: 50,
   '@media (prefers-reduced-motion: no-preference)': {
@@ -327,6 +407,20 @@ export const overlayStyle = styled(null, {
     },
   },
 })
+
+export const modalSurfaceStyle: CSS = {
+  position: 'fixed',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  maxHeight: '85vh',
+  backgroundColor: '$surfaceOverlay',
+  borderRadius: '$xl',
+  border: '1px solid $border',
+  boxSizing: 'border-box',
+  boxShadow: '$popContainer',
+  outline: 'none',
+}
 
 export const flexTextOverflow = css({
   flex: 1,

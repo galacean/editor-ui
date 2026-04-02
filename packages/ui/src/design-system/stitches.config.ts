@@ -1,5 +1,5 @@
 import { createStitches } from '@stitches/react'
-import type { VariantProps, CSS, ComponentProps } from '@stitches/react'
+import type { VariantProps, ComponentProps } from '@stitches/react'
 
 import { colors } from './colors'
 import { fontSizes, sizes, space, radii, shadows } from './sizes'
@@ -27,19 +27,22 @@ export const { styled, css, keyframes, getCssText, theme, globalCss, createTheme
     },
     lineHeights: {
       1: '16px',
+      '1_5': '18px',
       2: '20px',
       3: '24px',
       4: '26px',
       5: '28px',
-      6: '30px',
+      6: '32px',
       7: '36px',
       8: '40px',
-      9: '60px',
+      9: '48px',
     },
     shadows,
     transitions: {
       shadow: 'box-shadow .2s ease',
       backgroundColor: 'background-color .2s ease',
+      borderColor: 'border-color .2s ease',
+      color: 'color .2s ease',
     },
   },
   utils: {
@@ -120,13 +123,13 @@ export const resetStyle = (custom: Record<string, any> = {}) => {
     html: {
       fontFamily: '$default',
       fontSize: '16px',
-      backgroundColor: '$gray1',
-      color: '$gray12',
+      backgroundColor: '$surface',
+      color: '$textStrong',
       ...custom.html,
     },
     body: {
-      backgroundColor: '$gray1',
-      color: '$gray12',
+      backgroundColor: '$surface',
+      color: '$textStrong',
       ...custom.body,
     },
     ...custom,
@@ -138,7 +141,8 @@ export const darkTheme = theme
 
 export const lightTheme = createTheme('light-theme', { colors: colors.light })
 
-type StitchesComponent<T extends { [key: string]: any; [key: symbol]: any }> = ComponentProps<T> &
-  VariantProps<T> & { css?: CSS }
+type CSS = Parameters<typeof css>[0]
+
+type StitchesComponent<T extends { [key: string]: any; [key: symbol]: any }> = ComponentProps<T>
 
 export type { VariantProps, CSS, StitchesComponent }

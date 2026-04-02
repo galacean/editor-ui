@@ -18,56 +18,107 @@ const StyledComboboxTrigger = styled('button', {
   position: 'relative',
   display: 'flex',
   width: '100%',
-  minHeight: '$6',
   gap: '$1',
   alignItems: 'center',
-  padding: '$0_5 $6 $0_5 $0_5',
-  borderRadius: '$2',
+  justifyContent: 'flex-start',
   boxSizing: 'border-box',
-  backgroundColor: '$grayA3',
-  '&:hover': {
-    cursor: 'pointer',
-    backgroundColor: '$grayA4',
-  },
+  color: '$text',
+  border: '1px solid transparent',
+  transition: '$borderColor, $backgroundColor, $color, $shadow',
+  cursor: 'pointer',
   variants: {
     size: {
-      xs: {},
+      xs: {
+        height: '$controlXs',
+        borderRadius: '$xs',
+        padding: '0 $5 0 $1_5',
+      },
       sm: {
         height: '$sm',
-        borderRadius: '$2',
+        borderRadius: '$sm',
+        padding: '0 $5 0 $0_5',
       },
       md: {
         height: '$md',
-        borderRadius: '$4',
-        paddingLeft: '$2',
+        borderRadius: '$md',
+        padding: '0 $6 0 $3',
       },
     },
+    variant: {
+      outline: {
+        backgroundColor: '$surface',
+        borderColor: '$border',
+        '&:hover': {
+          backgroundColor: '$surfaceSubtle',
+          borderColor: '$borderStrong',
+        },
+      },
+      soft: {
+        backgroundColor: '$softBg',
+        borderColor: 'transparent',
+        '&:hover': {
+          backgroundColor: '$softBgHover',
+          borderColor: 'transparent',
+        },
+      },
+      subtle: {
+        backgroundColor: 'transparent',
+        borderColor: 'transparent',
+        '&:hover': {
+          backgroundColor: '$surfaceSubtle',
+          borderColor: 'transparent',
+        },
+      },
+    },
+  },
+  defaultVariants: {
+    size: 'sm',
+    variant: 'soft',
   },
 })
 
 const StyledChevronDown = styled(IconChevronDown, {
-  height: '14px',
-  width: '14px',
-  color: '$gray11',
+  height: '$iconXs',
+  width: '$iconXs',
+  color: '$textMuted',
   flexShrink: 0,
   position: 'absolute',
   right: '$1_5',
   top: '50%',
   transform: 'translateY(-50%)',
+  variants: {
+    size: {
+      xs: {
+        height: '$iconXs',
+        width: '$iconXs',
+      },
+      sm: {
+        height: '$iconSm',
+        width: '$iconSm',
+      },
+      md: {
+        height: '$iconMd',
+        width: '$iconMd',
+      },
+    },
+  },
 })
 
 const SearchIcon = styled(IconSearch, {
-  height: '14px',
-  width: '14px',
-  color: '$gray11',
+  height: '$iconSm',
+  width: '$iconSm',
+  color: '$textMuted',
   strokeWidth: 1.5,
   flexShrink: 0,
 })
 
 const StyledPlaceholder = styled('span', {
   all: 'unset',
-  fontSize: '11px',
-  color: '$gray11',
+  fontSize: '$1',
+  color: '$textMuted',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  whiteSpace: 'nowrap',
 })
 
 const StyledComboboxContent = styled(Flex, {
@@ -78,6 +129,7 @@ const StyledComboboxContent = styled(Flex, {
   position: 'relative',
   flex: 1,
   flexWrap: 'nowrap !important',
+  backgroundColor: '$surfaceOverlay',
   '&[data-state="open"]': {
     animation: 'none',
   },
@@ -88,11 +140,11 @@ const StyledComboboxContent = styled(Flex, {
     background: 'transparent',
   },
   '&::-webkit-scrollbar-thumb': {
-    background: '$grayA5',
+    background: '$scrollbarThumb',
     borderRadius: '4px',
   },
   '&::-webkit-scrollbar-thumb:hover': {
-    background: '$grayA6',
+    background: '$scrollbarTrackHover',
   },
 })
 
@@ -101,24 +153,55 @@ const StyledComboboxSearchInput = styled('input', {
   width: '100%',
   padding: '$1',
   fontSize: '$1',
-  color: '$gray11',
+  color: '$text',
   boxSizing: 'border-box',
+  '&::placeholder': {
+    color: '$textMuted',
+  },
 })
 
 const StyledComboBoxItem = styled('button', basicItemStyle, {
   userSelect: 'none',
   width: '100%',
   flexShrink: 0,
+  '&:focus': {
+    backgroundColor: 'transparent',
+    color: '$text',
+  },
   '&:hover': {
-    color: '$gray12',
-    backgroundColor: '$grayA4',
+    color: '$textStrong',
+    backgroundColor: '$surfaceSubtle',
   },
   variants: {
     focused: {
-      true: {}
+      true: {},
     },
     selected: {
-      true: {},
+      true: {
+        backgroundColor: '$selectionBg',
+        color: '$selectionText',
+        borderRadius: 0,
+        '&:focus': {
+          backgroundColor: '$selectionBg',
+          color: '$selectionText',
+        },
+        '&:hover': {
+          backgroundColor: '$selectionBgHover',
+          color: '$selectionText',
+        },
+      },
+    },
+    selectedStart: {
+      true: {
+        borderTopLeftRadius: '$sm',
+        borderTopRightRadius: '$sm',
+      },
+    },
+    selectedEnd: {
+      true: {
+        borderBottomLeftRadius: '$sm',
+        borderBottomRightRadius: '$sm',
+      },
     },
   },
 })
@@ -140,7 +223,7 @@ const StyledSelectAllWrapper = styled('div', {
 
 const SelectAllText = styled('span', {
   fontSize: '$1',
-  color: '$gray11',
+  color: '$text',
   cursor: 'pointer',
   userSelect: 'none',
 })
@@ -151,11 +234,45 @@ const StyledComboboxSlot = styled('div', {
   alignItems: 'center',
   justifyContent: 'center',
   flexShrink: 0,
-  color: '$gray9',
+  color: '$textMuted',
   transition: 'color 0.2s ease',
   userSelect: 'none',
-  padding: '0 $1',
-  fontSize: '$1',
+  variants: {
+    size: {
+      xs: {
+        paddingRight: '$1',
+        fontSize: '$1',
+      },
+      sm: {
+        paddingRight: '$1_5',
+        fontSize: '$1',
+      },
+      md: {
+        paddingRight: '$2',
+        fontSize: '$2',
+      },
+    },
+  },
+})
+
+const StyledComboboxTriggerContent = styled('div', {
+  display: 'flex',
+  alignItems: 'center',
+  flex: 1,
+  minWidth: 0,
+  height: '100%',
+  gap: '$1',
+})
+
+const StyledComboboxValueNode = styled(Flex, {
+  flex: 1,
+  minWidth: 0,
+  height: '100%',
+  alignItems: 'center',
+  overflow: 'hidden',
+  '& > *': {
+    minWidth: 0,
+  },
 })
 
 interface ComboboxContextProps {
@@ -182,6 +299,7 @@ interface ComboboxContextProps {
   maxDisplayCount?: number
   maxDisplayText?: string
   noneText?: string
+  options: string[]
 }
 
 const ComboboxContext = createContext<ComboboxContextProps>({
@@ -195,6 +313,7 @@ const ComboboxContext = createContext<ComboboxContextProps>({
   maxDisplayCount: 0,
   maxDisplayText: '{count} items selected',
   noneText: '',
+  options: [],
 })
 
 export interface ComboboxTriggerProps {
@@ -203,13 +322,14 @@ export interface ComboboxTriggerProps {
   valueRenderer?: (value: string) => React.ReactNode
   startSlot?: React.ReactNode
   size?: 'xs' | 'sm' | 'md'
+  variant?: 'outline' | 'soft' | 'subtle'
 }
 
 export const ComboboxTrigger = forwardRef<HTMLButtonElement, ComboboxTriggerProps>(
   function ComboboxTrigger(props, forwardedRef) {
     const { value, onValueNodeChange, placeholder, maxDisplayCount, maxDisplayText, noneText } =
       useContext(ComboboxContext)
-    const { valueRenderer, startSlot, ...rest } = props
+    const { valueRenderer, startSlot, size, variant, ...rest } = props
 
     const valueArray = Array.isArray(value) ? value : value ? [value] : []
 
@@ -219,22 +339,24 @@ export const ComboboxTrigger = forwardRef<HTMLButtonElement, ComboboxTriggerProp
     const summaryText = maxDisplayText.replace('{count}', valueArray.length.toString())
 
     return (
-      <StyledComboboxTrigger {...rest} ref={forwardedRef}>
-        {startSlot && <StyledComboboxSlot>{startSlot}</StyledComboboxSlot>}
-        <Flex gap="xxs" ref={onValueNodeChange}>
-          {shouldShowSummary && (
-            <Text size="sm" secondary css={{ padding: '0 $1_5' }}>
-              {summaryText}
-            </Text>
-          )}
-          {shouldShowNoneText && (
-            <Text size="sm" secondary css={{ padding: '0 $1_5' }}>
-              {noneText}
-            </Text>
-          )}
-        </Flex>
-        {valueArray.length === 0 && !noneText && <StyledPlaceholder>{placeholder}</StyledPlaceholder>}
-        <StyledChevronDown />
+      <StyledComboboxTrigger {...rest} ref={forwardedRef} size={size} variant={variant}>
+        <StyledComboboxTriggerContent>
+          {startSlot && <StyledComboboxSlot size={size}>{startSlot}</StyledComboboxSlot>}
+          <StyledComboboxValueNode gap="xxs" wrap={false} ref={onValueNodeChange}>
+            {shouldShowSummary && (
+              <Text size="sm" css={{ padding: '0 $1_5' }}>
+                {summaryText}
+              </Text>
+            )}
+            {shouldShowNoneText && (
+              <Text size="sm" css={{ padding: '0 $1_5' }}>
+                {noneText}
+              </Text>
+            )}
+            {valueArray.length === 0 && !noneText && <StyledPlaceholder>{placeholder}</StyledPlaceholder>}
+          </StyledComboboxValueNode>
+        </StyledComboboxTriggerContent>
+        <StyledChevronDown size={size} />
       </StyledComboboxTrigger>
     )
   }
@@ -288,10 +410,16 @@ export function ComboboxItem(props: ComboboxItemProps) {
     valueNode,
     searchValue,
     autoClose,
+    options,
   } = useContext(ComboboxContext)
   const selectedValueArray = Array.isArray(selectedValue) ? selectedValue : selectedValue ? [selectedValue] : []
   const isSelected = selectedValue.indexOf(value) !== -1
   const ivVisible = searchValue ? value.toLowerCase().indexOf(searchValue.toLowerCase()) !== -1 : true
+  const optionIndex = options.indexOf(value)
+  const prevValue = optionIndex > 0 ? options[optionIndex - 1] : undefined
+  const nextValue = optionIndex >= 0 && optionIndex < options.length - 1 ? options[optionIndex + 1] : undefined
+  const hasPrevSelected = !!prevValue && selectedValueArray.includes(prevValue)
+  const hasNextSelected = !!nextValue && selectedValueArray.includes(nextValue)
 
   const preventDefault = useCallback((e) => {
     e.preventDefault()
@@ -308,6 +436,7 @@ export function ComboboxItem(props: ComboboxItemProps) {
     e.preventDefault()
     e.stopPropagation()
     selectValue && selectValue(value)
+    e.currentTarget.blur()
     autoClose && close && close()
   }
 
@@ -322,6 +451,8 @@ export function ComboboxItem(props: ComboboxItemProps) {
           tabIndex={-1}
           {...rest}
           selected={isSelected}
+          selectedStart={isSelected && !hasPrevSelected}
+          selectedEnd={isSelected && !hasNextSelected}
           onPointerUp={handleSelect}
           focused={focusedIndex === index}>
           {valueRenderer ? valueRenderer(value) : children}
@@ -413,6 +544,7 @@ export interface ComboboxProps {
    */
   startSlot?: React.ReactNode
   size?: 'xs' | 'sm' | 'md'
+  variant?: 'outline' | 'soft' | 'subtle'
 }
 
 export function Combobox(props: ComboboxProps) {
@@ -428,6 +560,7 @@ export function Combobox(props: ComboboxProps) {
     maxDisplayText = '{count} items selected',
     noneText = '',
     size,
+    variant = 'soft',
     showSelectAll = false,
     selectAllText = 'Select All',
   } = props
@@ -440,7 +573,7 @@ export function Combobox(props: ComboboxProps) {
 
   const [value, setValue] = useControllableState({
     prop: props.value,
-    defaultProp: props.defaultValue || [],
+    defaultProp: props.defaultValue ?? [],
     onChange: props.onValueChange,
   })
 
@@ -511,6 +644,7 @@ export function Combobox(props: ComboboxProps) {
         maxDisplayCount,
         maxDisplayText,
         noneText,
+        options,
       }}>
       <Popover
         compact
@@ -522,7 +656,9 @@ export function Combobox(props: ComboboxProps) {
           display: 'flex',
           flexDirection: 'column',
         }}
-        trigger={<ComboboxTrigger placeholder={placeholder} startSlot={props.startSlot} size={size} />}
+        trigger={
+          <ComboboxTrigger placeholder={placeholder} startSlot={props.startSlot} size={size} variant={variant} />
+        }
         onOpenChange={setOpen}>
         <div
           style={{

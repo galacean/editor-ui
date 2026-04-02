@@ -1,28 +1,33 @@
-import { PropsWithChildren } from "react";
-import { FormItem } from "./FormItem";
-import { Input, Button, Textarea, CascadeSlider, CSS, } from "@galacean/editor-ui";
-import { BaseFormItemProps } from "./FormItem/FormItem";
+import { PropsWithChildren } from 'react'
+import { FormItem } from './FormItem'
+import { Input, Button, Textarea, CascadeSlider, CSS } from '@galacean/editor-ui'
+import { BaseFormItemProps } from './FormItem/FormItem'
 
 function generateGUI<T>() {
   return <C extends React.JSXElementConstructor<any>>(Component: C, defaultProps?: React.ComponentProps<C>) => {
     return function GUIComponent(props: React.ComponentProps<C> & BaseFormItemProps<T>) {
-      const { label, info, formStartSlot, formEndSlot, direction, ...rest } = props;
+      const { label, info, formStartSlot, formEndSlot, direction, ...rest } = props
       return (
-        <FormItem label={label} info={info} formStartSlot={formStartSlot} formEndSlot={formEndSlot} direction={direction}>
-          <Component {...defaultProps} {...rest as typeof defaultProps} />
+        <FormItem
+          label={label}
+          info={info}
+          formStartSlot={formStartSlot}
+          formEndSlot={formEndSlot}
+          direction={direction}>
+          <Component {...defaultProps} {...(rest as typeof defaultProps)} />
         </FormItem>
-      );
+      )
     }
   }
 }
 
-export type FormItemButtonProps = PropsWithChildren<Omit<BaseFormItemProps<string>, 'value' | 'onChange'>>;
+export type FormItemButtonProps = PropsWithChildren<Omit<BaseFormItemProps<string>, 'value' | 'onChange'>>
 export const FormItemButton = generateGUI<string>()(Button, {
-  variant: "classic"
-}); 
+  variant: 'soft',
+})
 
-export type FormItemCascadeSliderProps = BaseFormItemProps<number[]>;
-export const FormItemCascadeSlider = generateGUI<number[]>()(CascadeSlider);
+export type FormItemCascadeSliderProps = BaseFormItemProps<number[]>
+export const FormItemCascadeSlider = generateGUI<number[]>()(CascadeSlider)
 
 export { FormItemInput, type FormItemInputProps } from './FormItemInput'
 export { FormItemSelect, type FormItemSelectProps } from './FormItemSelect'
@@ -31,11 +36,10 @@ export { FormItemColor, type FormItemColorProps } from './FormItemColor'
 export { type Color } from '@galacean/editor-ui'
 export { FormItemGroup, type FormItemGroupProps } from './FormItemGroup'
 export { FormItemInputNumber, type FormItemInputNumberProps } from './FormItemInputNumber'
-export { FormItemTextarea, type FormItemTextareaProps, } from './FormItemTextarea'
+export { FormItemTextarea, type FormItemTextareaProps } from './FormItemTextarea'
 
 export { FormItemToggle, type FormItemToggleProps } from './FormItemToggle'
 export { FormItemToggleGroup, type FormItemToggleGroupProps } from './FormItemToggleGroup'
-
 
 export * from './FormItemVector2'
 export * from './FormItemVector3'
@@ -54,10 +58,6 @@ export {
   type GradientValue,
 } from './FormItemGradient'
 export { FormItemParticleCurve, type FormItemParticleCurveProps } from './FormItemParticle'
+export { FormItemParticleCurve as FormItemParticle } from './FormItemParticle'
 
-export {
-  FormItem,
-  type BaseFormItemProps,
-  type FormItemSelectableProps,
-  type FormItemRangeProps
-} from './FormItem'
+export { FormItem, type BaseFormItemProps, type FormItemSelectableProps, type FormItemRangeProps } from './FormItem'

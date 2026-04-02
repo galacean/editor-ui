@@ -5,7 +5,7 @@ import { useControllableState } from '@radix-ui/react-use-controllable-state'
 import { styled, StitchesComponent } from '../design-system'
 
 const StyledContent = styled(CollapsiblePrimitive.Content, {
-  borderRadius: '0 0 $2 $2',
+  borderRadius: '0 0 $sm $sm',
   padding: '0 $1 $1 $1',
   backgroundColor: '$panelBg',
   '&:empty': {
@@ -35,10 +35,10 @@ const StyledTitle = styled('div', {
   alignItems: 'center',
   lineHeight: 1,
   justifyContent: 'space-between',
-  color: '$grayA11',
+  color: '$text',
   padding: '0 $1 0 $1',
-  minHeight: '$8',
-  fontSize: '$sm',
+  minHeight: '30px',
+  fontSize: '$1',
   userSelect: 'none',
   backgroundColor: '$panelBg',
 })
@@ -52,12 +52,12 @@ const StyledTrigger = styled(CollapsiblePrimitive.Trigger, {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  borderRadius: '$1',
-  height: '$5',
-  width: '$5',
+  borderRadius: '$xs',
+  height: '$6',
+  width: '$6',
   cursor: 'pointer',
   '&:focus-visible': {
-    boxShadow: '0px 0px 0px 2px $colors$gray7',
+    boxShadow: '$subtleFocus',
   },
 })
 
@@ -66,8 +66,8 @@ const StyledRoot = styled(CollapsiblePrimitive.Root, {
   display: 'flex',
   flexDirection: 'column',
   width: '100%',
-  color: '$grayA11',
-  borderRadius: '$2',
+  color: '$text',
+  borderRadius: '$sm',
   overflow: 'hidden',
   '&  &': {
     backgroundColor: '$panelBg',
@@ -87,18 +87,18 @@ const StyledRoot = styled(CollapsiblePrimitive.Root, {
     subtle: {
       true: {
         backgroundColor: '$appBg',
-        borderRadius: '6px',
-        border: '1px solid $gray6',
+        borderRadius: '$md',
+        border: '1px solid $border',
         [`& > ${StyledTitle}`]: {
-          height: '$7',
+          minHeight: '30px',
         },
         [`& > ${StyledContent}`]: {
-          backgroundColor: '$gray1',
-          borderRadius: '6px',
+          backgroundColor: '$surface',
+          borderRadius: '$md',
           padding: '$1 $2 $1',
         },
         [`&[data-state=open] > ${StyledTitle}`]: {
-          borderBottom: '1px solid $gray6',
+          borderBottom: '1px solid $border',
         },
       },
     },
@@ -177,7 +177,7 @@ function Collapsible(props: CollapsibleProps) {
   return (
     <StyledRoot
       {...rest}
-      className='collapsible'
+      className="collapsible"
       open={open}
       onOpenChange={handleOnOpenChange}
       disabled={!collapsible}

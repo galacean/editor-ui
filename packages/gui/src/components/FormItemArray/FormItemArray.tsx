@@ -133,7 +133,7 @@ export function FormItemArray(props: FormItemArrayProps) {
           </AccordionItem>
         ))}
         {addable && (
-          <AddItemButton size="sm" variant="secondary" onClick={onAdd}>
+          <AddItemButton size="sm" variant="soft" onClick={onAdd}>
             <IconPlus size="12px" /> {addItemText}
           </AddItemButton>
         )}

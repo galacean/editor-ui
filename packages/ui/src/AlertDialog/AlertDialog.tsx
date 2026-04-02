@@ -5,29 +5,19 @@ import React, { PropsWithChildren } from 'react'
 import { styled, animations } from '../design-system'
 import { Button } from '../Button'
 import { Flex } from '../Flex'
-import { Text, Title } from '../Typography'
+import { modalSurfaceStyle, overlayStyle } from '../design-system/recipes'
+import { CSS } from '../design-system'
 
 const { Root, Trigger, Portal, Overlay, Content, Title: AlertTitle, Description, Cancel, Action } = AlertDialogPrimitive
 
-const StyledOverlay = styled(Overlay, {
-  position: 'fixed',
-  inset: 0,
+const StyledOverlay = styled(Overlay, overlayStyle, {
   animation: `${animations.overlayFadeIn} 150ms cubic-bezier(0.16, 1, 0.3, 1)`,
 })
-const StyledContent = styled(Content, {
-  position: 'fixed',
-  padding: '$5',
-  top: '50%',
-  left: '50%',
+const StyledContent = styled(Content, modalSurfaceStyle, {
+  padding: '$4',
   maxWidth: '26rem',
-  width: '100%',
-  transform: 'translate(-50%, -50%)',
-  backgroundColor: '$gray1',
-  borderRadius: '$5',
-  border: '1px solid $gray4',
+  width: 'min(26rem, calc(100vw - 32px))',
   zIndex: 50,
-  outline: 'none',
-  boxSizing: 'content-box',
   animation: `${animations.contentShow} 150ms cubic-bezier(0.16, 1, 0.3, 1)`,
 
   '&:focus': { outline: 'none' },
@@ -40,9 +30,39 @@ const StyledContent = styled(Content, {
   },
 })
 
-const StyledFooter = styled(Flex, {
-  marginTop: '$6',
+const headerStyle: CSS = {
+  display: 'grid',
+  gap: '$2',
+}
+
+const footerStyle: CSS = {
+  display: 'flex',
+  alignItems: 'center',
   justifyContent: 'flex-end',
+  gap: '$2',
+  marginTop: '$5',
+  paddingTop: '$4',
+}
+
+const StyledHeader = styled('div', headerStyle)
+
+const StyledFooter = styled(Flex, footerStyle)
+
+const StyledTitle = styled(AlertTitle, {
+  margin: 0,
+  color: '$textStrong',
+  fontSize: '$4',
+  lineHeight: '$lineHeights$4',
+  fontWeight: 600,
+})
+
+const StyledDescription = styled(Description, {
+  margin: 0,
+  color: '$textMuted',
+  fontSize: '$2',
+  lineHeight: '$lineHeights$2',
+  maxWidth: '56ch',
+  whiteSpace: 'pre-line',
 })
 
 export interface IAlertDialogProps {
@@ -76,30 +96,22 @@ function AlertDialog(props: PropsWithChildren<IAlertDialogProps & AlertDialogPro
       <Portal>
         <StyledOverlay style={{ zIndex }} />
         <StyledContent style={{ zIndex }}>
-          <AlertTitle asChild>
-            <Title size={3} css={{ marginBottom: '$3' }} weight="bold">
-              {title}
-            </Title>
-          </AlertTitle>
-          {description && (
-            <Description asChild>
-              <Text size="2" secondary css={{ whiteSpace: 'pre-line' }}>
-                {description}
-              </Text>
-            </Description>
-          )}
+          <StyledHeader>
+            <StyledTitle>{title}</StyledTitle>
+            {description && <StyledDescription>{description}</StyledDescription>}
+          </StyledHeader>
           {actionable && (
-            <StyledFooter gap="sm" justifyContent="end" css={{ marginTop: '$8' }}>
+            <StyledFooter gap="sm" justifyContent="end">
               {onClose && (
                 <Cancel asChild>
-                  <Button variant="secondary" size="md" onClick={onClose}>
+                  <Button variant="soft" size="md" onClick={onClose}>
                     {cancelText}
                   </Button>
                 </Cancel>
               )}
               {onConfirm && (
                 <Action asChild>
-                  <Button variant="primary" critical size="md" onClick={onConfirm}>
+                  <Button variant="solid" critical size="md" onClick={onConfirm}>
                     {confirmText}
                   </Button>
                 </Action>

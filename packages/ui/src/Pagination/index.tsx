@@ -15,56 +15,66 @@ const StyledPaginationItem = styled('li', {
   display: 'inline-flex',
   alignItems: 'center',
   justifyContent: 'center',
-  border: '1px solid $gray6',
-  color: '$gray11',
+  border: '1px solid $border',
+  color: '$text',
   userSelect: 'none',
   cursor: 'pointer',
   marginRight: '$2',
+  transition: '$borderColor, $backgroundColor, $color, $shadow',
   '&:last-child': {
     marginRight: 0,
   },
   '&:hover': {
-    backgroundColor: '$gray3',
+    borderColor: '$borderStrong',
+    backgroundColor: '$surfaceSubtle',
   },
-  '&:focus': {
-    backgroundColor: '$gray4',
+  '&:focus-visible': {
+    borderColor: '$borderStrong',
+    boxShadow: '$focus',
   },
   variants: {
     active: {
       true: {
-        backgroundColor: '$gray3',
-        color: '$gray12',
+        backgroundColor: '$selectionBg',
+        borderColor: '$selectionBorder',
+        color: '$selectionText',
+        '&:hover': {
+          borderColor: '$selectionBorder',
+          backgroundColor: '$selectionBgHover',
+          color: '$selectionText',
+        },
       },
     },
     disabled: {
       true: {
-        backgroundColor: '$gray2',
-        color: '$gray8',
+        backgroundColor: '$surface',
+        color: '$textMuted',
         cursor: 'initial',
         '&:hover': {
-          backgroundColor: '$gray2',
+          borderColor: '$border',
+          backgroundColor: '$surface',
         },
       },
     },
     size: {
       sm: {
-        height: '$6',
-        width: '$6',
+        height: '$sm',
+        width: '$sm',
         fontSize: '$1',
-        borderRadius: '$1',
+        borderRadius: '$sm',
         '& > svg': {
-          width: '$3',
-          height: '$3',
+          width: '$iconSm',
+          height: '$iconSm',
         },
       },
       md: {
-        height: '$9',
-        width: '$9',
-        fontSize: '$3',
-        borderRadius: '$2',
+        height: '$md',
+        width: '$md',
+        fontSize: '$2',
+        borderRadius: '$md',
         '& > svg': {
-          width: '$4',
-          height: '$4',
+          width: '$iconMd',
+          height: '$iconMd',
         },
       },
     },

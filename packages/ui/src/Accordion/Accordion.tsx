@@ -7,97 +7,177 @@ import type {
   AccordionMultipleProps,
 } from '@radix-ui/react-accordion'
 
-import { styled } from '../design-system'
+import { keyframes, styled } from '../design-system'
+
+const slideDown = keyframes({
+  from: { height: 0, opacity: 0 },
+  to: { height: 'var(--radix-accordion-content-height)', opacity: 1 },
+})
+
+const slideUp = keyframes({
+  from: { height: 'var(--radix-accordion-content-height)', opacity: 1 },
+  to: { height: 0, opacity: 0 },
+})
+
+type AccordionSize = 'sm' | 'md'
+
+const AccordionContext = React.createContext<{ size: AccordionSize }>({
+  size: 'sm',
+})
 
 const StyledAccordion = styled(AccordionPrimitive.Root, {
-  borderRadius: '$3',
   width: '100%',
-  overflow: 'hidden',
-  boxShadow: '$popContainer',
-})
-
-const StyledChevron = styled(IconChevronRight, {
-  marginRight: '$0_5',
-  width: '$3',
-  height: '$3',
-  transform: 'rotate(0deg)',
-  transition: 'transform .2s ease',
-})
-
-const StyledTitle = styled(AccordionPrimitive.Trigger, {
-  all: 'unset',
   display: 'flex',
-  width: '100%',
-  padding: '0 $1',
-  height: '$8',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  fontSize: '$1',
-  color: '$grayA11',
-  overflow: 'hidden',
-  boxSizing: 'border-box',
-  backgroundColor: '$grayA2',
-  '&[data-state="open"]': {
-    [`& ${StyledChevron}`]: {
-      transform: 'rotate(90deg)',
-    },
-  },
-  '&:hover': { backgroundColor: '$grayA3' },
-  '&:focus-visible': {
-    outline: 'none',
-    boxShadow: 'inset 0 0 0 1px $colors$blue9',
-  },
-})
-
-const StyledContent = styled(AccordionPrimitive.Content, {
-  fontSize: '$1',
-  padding: '$1 $1',
-  backgroundColor: '$grayA2',
-  color: '$gray11',
-  '&[data-state="open"]': {
-    borderBottom: '1px solid $grayA3',
-  },
-  '&:empty': {
-    padding: 0,
-    borderTop: 'none',
-  },
+  flexDirection: 'column',
 })
 
 const StyledItem = styled(AccordionPrimitive.Item, {
   position: 'relative',
   boxSizing: 'border-box',
   width: '100%',
-  '& + &::after': {
-    content: "''",
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '1px',
-    backgroundColor: '$grayA3',
-  },
+  backgroundColor: '$surface',
+  border: '1px solid $border',
+  borderBottom: 'none',
+  overflow: 'hidden',
   '&:first-child': {
-    [`& ${StyledTitle}`]: {
-      borderRadius: '$2 $2 0 0 !important',
+    borderTopLeftRadius: '$sm',
+    borderTopRightRadius: '$sm',
+  },
+  '&:last-child': {
+    borderBottomLeftRadius: '$sm',
+    borderBottomRightRadius: '$sm',
+    borderBottom: '1px solid $border',
+  },
+  '&[data-state=open]': {
+    borderColor: '$borderStrong',
+    '&:not(:first-child)': {
+      borderTopColor: '$borderStrong',
+    },
+    '& + &': {
+      borderTopColor: '$borderStrong',
     },
   },
-  // '&:last-of-type': {
-  //   [`& ${StyledTitle}`]: {
-  //     borderRadius: "",
-  //     borderBottom: '1px solid $border',
-  //   }
-  // },
-  '&[data-state="open"] + &::after': {
-    display: 'none',
+  '&:has(+ [data-state=open])': {
+    borderBottomColor: '$borderStrong',
   },
-  '&[data-state="open"]:last-child': {
-    [`& ${StyledTitle}`]: {
-      borderRadius: 0,
+})
+
+const StyledChevron = styled(IconChevronRight, {
+  width: '$iconSm',
+  height: '$iconSm',
+  color: 'currentColor',
+  flexShrink: 0,
+  transform: 'rotate(0deg)',
+  transition: 'transform .2s ease, color .2s ease',
+})
+
+const StyledHeader = styled(AccordionPrimitive.Header, {
+  all: 'unset',
+  display: 'block',
+})
+
+const StyledTrigger = styled(AccordionPrimitive.Trigger, {
+  all: 'unset',
+  display: 'flex',
+  width: '100%',
+  minHeight: '30px',
+  padding: '0 $3',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  gap: '$2',
+  fontSize: '$2',
+  lineHeight: '$lineHeights$2',
+  fontWeight: 500,
+  color: '$text',
+  overflow: 'hidden',
+  boxSizing: 'border-box',
+  userSelect: 'none',
+  backgroundColor: '$grayA2',
+  transition: '$backgroundColor, $borderColor, $color',
+  '& > span': {
+    flex: 1,
+    minWidth: 0,
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+  },
+  '&[data-state="open"]': {
+    [`& ${StyledChevron}`]: {
+      transform: 'rotate(90deg)',
+    },
+  },
+  '&:hover': {
+    backgroundColor: '$grayA3',
+    color: '$textStrong',
+  },
+  '&:focus-visible': {
+    outline: 'none',
+    boxShadow: '$focus',
+  },
+  variants: {
+    size: {
+      sm: {
+        minHeight: '27px',
+        padding: '0 $2',
+        fontSize: '$1',
+        lineHeight: '$lineHeights$1',
+      },
+      md: {
+        minHeight: '30px',
+        padding: '0 $3',
+        fontSize: '$2',
+        lineHeight: '$lineHeights$2',
+      },
+    },
+  },
+  defaultVariants: {
+    size: 'sm',
+  },
+})
+
+const StyledContent = styled(AccordionPrimitive.Content, {
+  overflow: 'hidden',
+  fontSize: '$1',
+  color: '$text',
+  backgroundColor: '$grayA2',
+  '&[data-state="open"]': {
+    animation: `${slideDown} 200ms cubic-bezier(0.16, 1, 0.3, 1)`,
+  },
+  '&[data-state="closed"]': {
+    animation: `${slideUp} 180ms cubic-bezier(0.16, 1, 0.3, 1)`,
+  },
+  '@media (prefers-reduced-motion: reduce)': {
+    '&[data-state="open"], &[data-state="closed"]': {
+      animation: 'none',
     },
   },
 })
 
-export type AccordionProps = AccordionSingleProps | AccordionMultipleProps
+const StyledContentInner = styled('div', {
+  color: '$text',
+  borderTop: '1px solid $border',
+  variants: {
+    size: {
+      sm: {
+        padding: '$2',
+        fontSize: '$1',
+        lineHeight: '$lineHeights$1',
+      },
+      md: {
+        padding: '$3',
+        fontSize: '$1',
+        lineHeight: '$lineHeights$2',
+      },
+    },
+  },
+  defaultVariants: {
+    size: 'sm',
+  },
+})
+
+export type AccordionProps = (AccordionSingleProps | AccordionMultipleProps) & {
+  size?: AccordionSize
+}
 
 /**
  * The Accordion Component is used to show/hide content in a collapsible manner. Consists of `Accordion` and `AccordionItem` components.
@@ -105,7 +185,12 @@ export type AccordionProps = AccordionSingleProps | AccordionMultipleProps
  * This Component provide controlled and uncontrolled modes.
  */
 export const Accordion = function Accordion(props: AccordionProps) {
-  return <StyledAccordion {...props} />
+  const { size = 'sm', ...rest } = props
+  return (
+    <AccordionContext.Provider value={{ size }}>
+      <StyledAccordion {...rest} />
+    </AccordionContext.Provider>
+  )
 }
 
 export type AccordionItemProps = Omit<PrimitiveItemProps, 'title'> & {
@@ -114,14 +199,19 @@ export type AccordionItemProps = Omit<PrimitiveItemProps, 'title'> & {
 }
 
 export function AccordionItem(props: AccordionItemProps) {
+  const { size } = React.useContext(AccordionContext)
   const { children, title, arrow = true, ...rest } = props
   return (
     <StyledItem {...rest}>
-      <StyledTitle>
-        {arrow && <StyledChevron aria-hidden />}
-        {title}
-      </StyledTitle>
-      <StyledContent>{children}</StyledContent>
+      <StyledHeader>
+        <StyledTrigger size={size}>
+          <span>{title}</span>
+          {arrow && <StyledChevron aria-hidden />}
+        </StyledTrigger>
+      </StyledHeader>
+      <StyledContent>
+        <StyledContentInner size={size}>{children}</StyledContentInner>
+      </StyledContent>
     </StyledItem>
   )
 }

@@ -48,7 +48,7 @@ export function useDrop<T extends HTMLElement, U = any>(options: IDropOptions<U>
     }
 
     const isAccepted = (e: DragEvent) => {
-      return (accept & dragItem.type) || (acceptFiles && e.dataTransfer?.types.includes('Files'))
+      return accept & dragItem.type || (acceptFiles && e.dataTransfer?.types.includes('Files'))
     }
 
     const handleDragOver = (e: DragEvent) => {

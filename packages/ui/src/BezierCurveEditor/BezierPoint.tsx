@@ -21,7 +21,17 @@ export interface BezierPointProps {
 }
 
 export function BezierPoint(props: BezierPointProps) {
-  const { pointId, bezierPoint, onPointChange, onHoverChange, algo, doublePoint = false, pointHoverLabel, pointClipPath, getRoot } = props
+  const {
+    pointId,
+    bezierPoint,
+    onPointChange,
+    onHoverChange,
+    algo,
+    doublePoint = false,
+    pointHoverLabel,
+    pointClipPath,
+    getRoot,
+  } = props
   const { point, controlPoint } = bezierPoint
   const pointClipStyle = pointClipPath ? { clipPath: pointClipPath } : undefined
 
@@ -38,10 +48,7 @@ export function BezierPoint(props: BezierPointProps) {
     const dy = svgPos.y - point.y
     onPointChange(pointId, {
       point: svgPos,
-      controlPoint:
-        algo === 'bezier'
-          ? { x: controlPoint.x + dx, y: controlPoint.y + dy }
-          : null,
+      controlPoint: algo === 'bezier' ? { x: controlPoint.x + dx, y: controlPoint.y + dy } : null,
     })
   }
 
@@ -61,7 +68,14 @@ export function BezierPoint(props: BezierPointProps) {
     <>
       {algo === 'bezier' && (
         <>
-          <StyledControlLine strokeWidth={1} x1={point.x} y1={point.y} x2={controlPoint.x} y2={controlPoint.y} style={pointClipStyle} />
+          <StyledControlLine
+            strokeWidth={1}
+            x1={point.x}
+            y1={point.y}
+            x2={controlPoint.x}
+            y2={controlPoint.y}
+            style={pointClipStyle}
+          />
           {doublePoint && (
             <StyledControlLine
               strokeWidth={1}
@@ -86,9 +100,21 @@ export function BezierPoint(props: BezierPointProps) {
       />
       {algo === 'bezier' && (
         <>
-          <Point type="control" point={controlPoint} getRoot={getRoot} onPointChange={handleControlPointChange} pointClipPath={pointClipPath} />
+          <Point
+            type="control"
+            point={controlPoint}
+            getRoot={getRoot}
+            onPointChange={handleControlPointChange}
+            pointClipPath={pointClipPath}
+          />
           {doublePoint && (
-            <Point type="control" point={subControlPoint} getRoot={getRoot} onPointChange={handleSubControlPointChange} pointClipPath={pointClipPath} />
+            <Point
+              type="control"
+              point={subControlPoint}
+              getRoot={getRoot}
+              onPointChange={handleSubControlPointChange}
+              pointClipPath={pointClipPath}
+            />
           )}
         </>
       )}

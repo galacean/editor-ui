@@ -43,30 +43,26 @@ const StyledText = styled('p', {
       1: {
         fontSize: '$1',
         lineHeight: '$1',
-        letterSpacing: '$1',
       },
       2: {
         fontSize: '$2',
         lineHeight: '$2',
-        letterSpacing: '$2',
       },
       3: {
         fontSize: '$3',
         lineHeight: '$3',
-        letterSpacing: '$3',
       },
       4: {
         fontSize: '$4',
         lineHeight: '$4',
-        letterSpacing: '$4',
       },
       5: {
         fontSize: '$6',
+        lineHeight: '$6',
       },
       sm: {
         fontSize: '$1',
         lineHeight: '$1',
-        letterSpacing: '$1',
       },
     },
     align: {
@@ -74,9 +70,9 @@ const StyledText = styled('p', {
         textAlign: 'center',
       },
     },
-    secondary: {
+    muted: {
       true: {
-        color: '$gray11',
+        color: '$textMuted',
       },
     },
     deleted: {
@@ -94,7 +90,7 @@ const StyledText = styled('p', {
     },
     primary: {
       true: {
-        color: '$gray12',
+        color: '$textStrong',
       },
     },
     error: {
@@ -112,7 +108,7 @@ const StyledText = styled('p', {
 
 const StyledBold = styled('strong', {
   fontWeight: 'bold',
-  color: '$gray12',
+  color: '$textStrong',
   variants: {
     variant: {
       subtle: {
@@ -122,10 +118,10 @@ const StyledBold = styled('strong', {
   },
 })
 
-const StyledTitle = styled('title', {
+const StyledTitle = styled('h2', {
   display: 'block',
-  // color: "$hiContrast",
-  color: '$gray12',
+  margin: 0,
+  color: '$textStrong',
   variants: {
     weight: {
       light: {
@@ -146,19 +142,19 @@ const StyledTitle = styled('title', {
     },
     size: {
       1: {
-        fontSize: '12px',
+        fontSize: '$1',
         lineHeight: 1.2,
       },
       2: {
-        fontSize: '14px',
+        fontSize: '$2',
         lineHeight: 1.2,
       },
       3: {
-        fontSize: '18px',
+        fontSize: '$4',
         lineHeight: 1.4,
       },
       4: {
-        fontSize: '24px',
+        fontSize: '$6',
         lineHeight: 1.4,
       },
       5: {

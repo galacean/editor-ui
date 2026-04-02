@@ -28,7 +28,7 @@ const StyledSegmentControlItem = styled(RadioGroupPrimitive.Item, {
   justifyContent: 'center',
   flex: 1,
   height: '100%',
-  color: '$grayA10',
+  color: '$textMuted',
   border: 'none',
   backgroundColor: 'transparent',
   outline: 'none',
@@ -39,35 +39,35 @@ const StyledSegmentControlItem = styled(RadioGroupPrimitive.Item, {
   transition: 'all .2s ease',
   userSelect: 'none',
   '& > svg': {
-    height: '14px',
-    width: '14px',
+    height: '$iconSm',
+    width: '$iconSm',
   },
   '&:hover': {
-    color: '$grayA12',
+    color: '$textStrong',
   },
   '&[data-state=checked]': {
-    backgroundColor: '$grayA3',
-    color: '$white',
-    boxShadow: 'inset 0 0 0 1px $colors$grayA4',
+    backgroundColor: '$surfaceOverlay',
+    color: '$textStrong',
+    boxShadow: '$border',
     '&:hover': {
-      color: '$white',
+      color: '$textStrong',
     },
   },
   '&:focus-visible': {
     position: 'relative',
-    boxShadow: 'inset 0 0 0 1px $colors$grayA8',
+    boxShadow: 'inset 0 0 0 1px $colors$borderStrong',
   },
   variants: {
     variant: {
       subtle: {},
       solid: {
-        backgroundColor: '$grayA3',
+        backgroundColor: '$softBg',
         '&[data-state=checked]': {
-          backgroundColor: '$blue10',
-          color: '$white',
+          backgroundColor: '$selectionBg',
+          color: '$selectionText',
           boxShadow: 'none',
           '&:hover': {
-            color: '$white',
+            color: '$selectionText',
           },
         },
       },
@@ -80,7 +80,7 @@ const StyledSegmentControlItem = styled(RadioGroupPrimitive.Item, {
 
 const StyledSegmentControlRoot = styled(RadioGroupPrimitive.Root, {
   display: 'inline-grid',
-  backgroundColor: '$grayA3',
+  backgroundColor: '$softBg',
   gridAutoColumns: '1fr',
   gridAutoFlow: 'column',
   width: '100%',
@@ -117,20 +117,19 @@ type SegmentControlProps = React.ComponentProps<typeof StyledSegmentControlRoot>
   variant?: 'subtle' | 'solid'
 }
 
-const SegmentControl = React.forwardRef<
-  React.ElementRef<typeof StyledSegmentControlRoot>,
-  SegmentControlProps
->((props, ref) => {
-  const { size = 'sm', variant = 'subtle', children, ...rest } = props
+const SegmentControl = React.forwardRef<React.ElementRef<typeof StyledSegmentControlRoot>, SegmentControlProps>(
+  (props, ref) => {
+    const { size = 'sm', variant = 'subtle', children, ...rest } = props
 
-  return (
-    <SegmentControlContext.Provider value={{ size, variant }}>
-      <StyledSegmentControlRoot ref={ref} size={size} variant={variant} {...rest}>
-        {children}
-      </StyledSegmentControlRoot>
-    </SegmentControlContext.Provider>
-  )
-})
+    return (
+      <SegmentControlContext.Provider value={{ size, variant }}>
+        <StyledSegmentControlRoot ref={ref} size={size} variant={variant} {...rest}>
+          {children}
+        </StyledSegmentControlRoot>
+      </SegmentControlContext.Provider>
+    )
+  }
+)
 
 SegmentControl.displayName = 'SegmentControl'
 

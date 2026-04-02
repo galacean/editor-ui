@@ -1,10 +1,10 @@
-name: "Chromatic"
+name: 'Chromatic'
 
 on:
   push:
     branches:
       - main
-  pull_request_target:
+  pull_request:
     branches:
       - main
 
@@ -20,6 +20,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - uses: pnpm/action-setup@v4
         name: Install pnpm
         with:
@@ -41,7 +42,7 @@ jobs:
           zip: true
 
       - name: Find existing Storybook comment
-        if: github.event_name == 'pull_request_target'
+        if: github.event_name == 'pull_request'
         id: find-comment
         uses: peter-evans/find-comment@v3
         with:
@@ -50,7 +51,7 @@ jobs:
           body-includes: Storybook Preview
 
       - name: Comment PR with Storybook Preview URLs
-        if: github.event_name == 'pull_request_target'
+        if: github.event_name == 'pull_request'
         uses: peter-evans/create-or-update-comment@v4
         with:
           comment-id: ${{ steps.find-comment.outputs.comment-id }}

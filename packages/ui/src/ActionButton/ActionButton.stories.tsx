@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { Meta, StoryFn, StoryObj } from '@storybook/react'
-import { IconVideo, IconVideoPlus, IconMenu, IconApps, IconCircleCheckFilled, IconDownload } from '@tabler/icons-react'
+import { IconVideo, IconApps, IconCircleCheckFilled, IconDownload } from '@tabler/icons-react'
 
 import { Flex } from '../Flex'
 
@@ -19,7 +19,7 @@ const meta: Meta<typeof ActionButton> = {
   },
   args: {
     children: <IconApps />,
-    variant: 'default',
+    variant: 'soft',
     size: 'md',
     fancy: false,
     disabled: false,
@@ -35,10 +35,15 @@ const meta: Meta<typeof ActionButton> = {
     variant: {
       type: {
         name: 'enum',
-        value: ['default', 'secondary', 'subtle'],
+        value: ['outline', 'soft', 'subtle', 'ghost'],
       },
       control: {
         type: 'inline-radio',
+      },
+    },
+    active: {
+      type: {
+        name: 'boolean',
       },
     },
     fancy: {
@@ -62,6 +67,25 @@ export default meta
 type Story = StoryObj<typeof ActionButton>
 
 export const Overview: Story = {}
+
+export const Sizes: StoryFn<typeof ActionButton> = (args) => {
+  return (
+    <Flex gap="sm" align="v">
+      <ActionButton {...args} size="xs">
+        <IconApps />
+      </ActionButton>
+      <ActionButton {...args} size="sm">
+        <IconApps />
+      </ActionButton>
+      <ActionButton {...args} size="md">
+        <IconApps />
+      </ActionButton>
+      <ActionButton {...args} size="lg">
+        <IconApps />
+      </ActionButton>
+    </Flex>
+  )
+}
 
 /**
  * Sometimes you need to use async function to handle some actions by clicking the button.
@@ -87,12 +111,12 @@ export const WithAsyncFunction: StoryFn = (args) => {
 /**
  * `<ActionButtonGroup />` is a styled wrapper component to group multiple ActionButton components. This component could handle `radius` prop correctly so that you can set multi ActionButton Component in a group.
  *
- * You could use `dir` prop to set the direction of the group.
+ * You could use `direction` prop to set the direction of the group.
  */
 export const ActionButtonGroup: StoryFn = (args) => {
-  const { dir, ...rest } = args
+  const { direction, ...rest } = args
   return (
-    <PrimitiveActionButtonGroup dir={dir}>
+    <PrimitiveActionButtonGroup direction={direction}>
       <ActionButton {...rest}>
         <IconVideo />
       </ActionButton>
@@ -104,11 +128,11 @@ export const ActionButtonGroup: StoryFn = (args) => {
 }
 
 ActionButtonGroup.args = {
-  dir: 'horizontal',
+  direction: 'horizontal',
 }
 
 ActionButtonGroup.argTypes = {
-  dir: {
+  direction: {
     type: {
       name: 'enum',
       value: ['vertical', 'horizontal'],

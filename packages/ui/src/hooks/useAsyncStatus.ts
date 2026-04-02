@@ -8,35 +8,37 @@ interface Params {
 
 function useAsyncStatus(params: Params) {
   const { propLoading, asyncFunction, onClick } = params
-  const [loading, setLoading] = useState(propLoading)
+  const [loading, setLoading] = useState(Boolean(propLoading))
 
-  async function start() {
-    if (!asyncFunction) return
-    try {
-      setLoading(true)
-      await asyncFunction()
-      setLoading(false)
-    } catch (error) {
-      console.error(error)
-      setLoading(false)
-    }
-  }
+  const start = useCallback(
+    async function start() {
+      if (!asyncFunction) return
+      try {
+        setLoading(true)
+        await asyncFunction()
+        setLoading(false)
+      } catch (error) {
+        console.error(error)
+        setLoading(false)
+      }
+    },
+    [asyncFunction]
+  )
 
   const handleClick = useCallback(
     function handleClick(e) {
       if (loading) return
-      if (onClick) {
-        onClick(e)
-      }
+      onClick?.(e)
+      if (e?.defaultPrevented) return
       if (asyncFunction) {
-        start()
+        void start()
       }
     },
     [onClick, start]
   )
 
   useEffect(() => {
-    setLoading(propLoading)
+    setLoading(Boolean(propLoading))
   }, [propLoading])
 
   return {

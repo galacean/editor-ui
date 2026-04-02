@@ -23,6 +23,10 @@ export default {
       },
     },
   },
+  args: {
+    size: 'sm',
+    variant: 'subtle',
+  },
 } as Meta<typeof SegmentControl>
 
 /**
@@ -39,6 +43,61 @@ export const Overview: StoryFn<typeof SegmentControl> = (args) => {
         <SegmentControlItem value="enable">Enable</SegmentControlItem>
         <SegmentControlItem value="idle">Idle</SegmentControlItem>
         <SegmentControlItem value="disable">Disable</SegmentControlItem>
+      </SegmentControl>
+    </Flex>
+  )
+}
+
+export const Sizes: StoryFn<typeof SegmentControl> = (args) => {
+  return (
+    <Flex direction="column" gap="sm" css={{ width: '400px' }}>
+      <SegmentControl defaultValue="enable" {...args} size="sm">
+        <SegmentControlItem value="enable">Enable</SegmentControlItem>
+        <SegmentControlItem value="idle">Idle</SegmentControlItem>
+        <SegmentControlItem value="disable">Disable</SegmentControlItem>
+      </SegmentControl>
+      <SegmentControl defaultValue="enable" {...args} size="md">
+        <SegmentControlItem value="enable">Enable</SegmentControlItem>
+        <SegmentControlItem value="idle">Idle</SegmentControlItem>
+        <SegmentControlItem value="disable">Disable</SegmentControlItem>
+      </SegmentControl>
+    </Flex>
+  )
+}
+
+export const Variants: StoryFn<typeof SegmentControl> = (args) => {
+  return (
+    <Flex direction="column" gap="sm" css={{ width: '400px' }}>
+      <SegmentControl defaultValue="enable" {...args} variant="subtle">
+        <SegmentControlItem value="enable">Enable</SegmentControlItem>
+        <SegmentControlItem value="idle">Idle</SegmentControlItem>
+        <SegmentControlItem value="disable">Disable</SegmentControlItem>
+      </SegmentControl>
+      <SegmentControl defaultValue="enable" {...args} variant="solid">
+        <SegmentControlItem value="enable">Enable</SegmentControlItem>
+        <SegmentControlItem value="idle">Idle</SegmentControlItem>
+        <SegmentControlItem value="disable">Disable</SegmentControlItem>
+      </SegmentControl>
+    </Flex>
+  )
+}
+
+export const Disabled: StoryFn<typeof SegmentControl> = (args) => {
+  return (
+    <Flex direction="column" gap="sm" css={{ width: '400px' }}>
+      <SegmentControl defaultValue="idle" {...args}>
+        <SegmentControlItem value="enable">Enable</SegmentControlItem>
+        <SegmentControlItem value="idle">Idle</SegmentControlItem>
+        <SegmentControlItem value="disable" disabled>
+          Disable
+        </SegmentControlItem>
+      </SegmentControl>
+      <SegmentControl defaultValue="idle" {...args} variant="solid">
+        <SegmentControlItem value="enable">Enable</SegmentControlItem>
+        <SegmentControlItem value="idle">Idle</SegmentControlItem>
+        <SegmentControlItem value="disable" disabled>
+          Disable
+        </SegmentControlItem>
       </SegmentControl>
     </Flex>
   )
