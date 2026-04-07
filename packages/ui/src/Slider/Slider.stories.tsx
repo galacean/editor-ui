@@ -16,6 +16,12 @@ export default {
         value: ['xs', 'sm'],
       },
     },
+    orientation: {
+      type: {
+        name: 'enum',
+        value: ['horizontal', 'vertical'],
+      },
+    },
     defaultValue: {
       description: 'The default value of the slider. Use this if you want an uncontrolled component.',
     },
@@ -39,6 +45,7 @@ export default {
     showRuler: false,
     max: 100,
     size: 'sm',
+    orientation: 'horizontal',
   },
 } as Meta<typeof Slider>
 
@@ -81,6 +88,49 @@ export const Sizes = (args) => {
     <Flex css={{ width: '300px' }} direction="column" gap="sm">
       <Slider {...args} size="xs" />
       <Slider {...args} size="sm" />
+    </Flex>
+  )
+}
+
+export const Vertical = (args) => {
+  return (
+    <Flex css={{ height: '200px' }} gap="lg">
+      <Slider {...args} orientation="vertical" defaultValue={[30]} />
+      <Slider {...args} orientation="vertical" defaultValue={[50]} size="xs" />
+    </Flex>
+  )
+}
+
+export const Disabled = (args) => {
+  return (
+    <Flex css={{ width: '300px' }} direction="column" gap="sm">
+      <Slider {...args} disabled defaultValue={[30]} />
+      <Slider {...args} disabled defaultValue={[30]} compact />
+    </Flex>
+  )
+}
+
+export const Compact = (args) => {
+  return (
+    <Flex css={{ width: '300px' }} direction="column" gap="sm">
+      <Slider {...args} compact />
+      <Slider {...args} compact defaultValue={[30, 60]} />
+    </Flex>
+  )
+}
+
+export const WithRuler = (args) => {
+  return (
+    <Flex css={{ width: '300px' }} direction="column" gap="lg">
+      <Slider {...args} showRuler />
+    </Flex>
+  )
+}
+
+export const VerticalWithRuler = (args) => {
+  return (
+    <Flex css={{ height: '200px' }} gap="lg">
+      <Slider {...args} orientation="vertical" showRuler defaultValue={[30]} />
     </Flex>
   )
 }

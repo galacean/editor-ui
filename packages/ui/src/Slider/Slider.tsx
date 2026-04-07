@@ -11,8 +11,8 @@ const StyledTrack = styled(SliderPrimitive.Track, {
   justifyContent: 'space-between',
   flexGrow: 1,
   borderRadius: '$2',
-  overflow: 'hidden',
-  color: '$text',
+  // overflow: 'hidden',
+  color: '$gray11',
   '&[data-orientation="horizontal"]': {
     height: '100%',
   },
@@ -26,31 +26,111 @@ const StyledTrack = styled(SliderPrimitive.Track, {
 
 const StyledRange = styled(SliderPrimitive.Range, {
   position: 'absolute',
-  backgroundColor: '$softBgHover',
   height: '100%',
   transition: 'background-color .2s ease',
+  borderRadius: 'inherit',
   '&[data-orientation="vertical"]': {
     width: '100%',
+    height: 'unset',
   },
   '&[data-disabled]': {
-    backgroundColor: '$surfaceSubtle',
+    backgroundColor: '$gray6',
   },
 })
 
 const StyledThumb = styled(SliderPrimitive.Thumb, {
-  all: 'unset',
+  // Normal mode: thumb with an icon inside
+  // Height matches track height, scale(1.1) makes it slightly overflow
   position: 'relative',
-  display: 'block',
-  width: '$0_5',
-  height: '100%',
-  backgroundColor: '$borderStrong',
-  transition: 'opacity .2s ease, background-color .2s ease, width .2s ease',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  // Default to sm: width=$5, height=$6 (matches track height)
+  width: '$5',
+  height: '$6',
+  backgroundColor: '$gray4',
+  border: '1px solid $grayA2',
+  borderRadius: '$2',
+  transform: 'scale(1.1)',
+  color: '$gray9',
+  '&:hover': {
+    backgroundColor: '$gray5',
+    border: '1px solid $grayA6',
+    color: '$gray11',
+  },
+  '& > svg': {
+    transform: 'rotate(90deg)',
+  },
+  transition: 'opacity .2s ease, background-color .2s ease, width .2s ease, color .2s ease',
+  '&:focus-visible': {
+    outline: 'none',
+  },
+  // Vertical orientation: swap width/height
   '&[data-orientation="vertical"]': {
     width: '$6',
-    height: '$0_5',
+    height: '$5',
+    '& > svg': {
+      transform: 'rotate(0deg)',
+    },
   },
+  // Disabled state: use solid colors to avoid transparency issues
   '&[data-disabled]': {
-    backgroundColor: '$border',
+    backgroundColor: '$gray6',
+    border: '1px solid $grayA6',
+    color: '$gray9',
+    transform: 'scale(1)',
+  },
+  // Size variants
+  variants: {
+    size: {
+      xs: {
+        width: '$4',
+        height: '$5',
+        '&[data-orientation="vertical"]': {
+          width: '$5',
+          height: '$4',
+        },
+      },
+      sm: {
+        width: '$5',
+        height: '$6',
+        '&[data-orientation="vertical"]': {
+          width: '$6',
+          height: '$5',
+        },
+      },
+    },
+    compact: {
+      true: {
+        // Compact mode: circular white thumb
+        width: '16px',
+        height: '16px',
+        borderRadius: '$round',
+        border: 'none',
+        transform: 'scale(1)',
+        backgroundColor: '$white',
+        boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
+        '& > svg': {
+          display: 'none',
+        },
+        '&:hover': {
+          backgroundColor: '$white',
+          border: 'none',
+          boxShadow: '0 2px 6px rgba(0, 0, 0, 0.15)',
+        },
+        '&[data-orientation="vertical"]': {
+          width: '16px',
+          height: '16px',
+        },
+        '&[data-disabled]': {
+          backgroundColor: '$gray10',
+        },
+      },
+    },
+  },
+  defaultVariants: {
+    size: 'sm',
+    compact: false,
   },
 })
 
@@ -61,23 +141,24 @@ const StyledSlider = styled(SliderPrimitive.Root, {
   userSelect: 'none',
   touchAction: 'none',
   width: '100%',
+  borderRadius: 'inherit',
   '&[data-orientation="horizontal"]': {
     height: '$sm',
     backgroundColor: '$softBg',
     borderRadius: '$2',
+    cursor: 'ew-resize',
   },
   '&[data-orientation="vertical"]': {
     flexDirection: 'column',
     width: '$sm',
+    height: '100%',
+    backgroundColor: '$softBg',
+    borderRadius: '$2',
+    cursor: 'ns-resize',
   },
-  cursor: 'ew-resize',
   '&:hover': {
     [`& ${StyledRange}`]: {
       backgroundColor: '$selectionBgHover',
-    },
-    [`& ${StyledThumb}`]: {
-      width: '3px',
-      backgroundColor: '$selectionText',
     },
   },
   '&[data-disabled]': {
@@ -87,31 +168,60 @@ const StyledSlider = styled(SliderPrimitive.Root, {
   variants: {
     compact: {
       true: {
-        [`& ${StyledTrack}`]: {
-          height: '3px',
-          borderRadius: '$2',
+        // Compact mode: thin track with circular thumb
+        backgroundColor: 'transparent',
+        '&[data-orientation="horizontal"]': {
+          backgroundColor: 'transparent',
         },
-        [`& ${StyledThumb}`]: {
-          width: '14px',
-          height: '14px',
-          // backgroundColor: "$white",
-          borderRadius: '$round',
+        '&[data-orientation="vertical"]': {
+          backgroundColor: 'transparent',
+        },
+        [`& ${StyledTrack}`]: {
+          // Override default height: 100% with fixed 3px and center
+          height: '3px',
+          alignSelf: 'center',
+          borderRadius: '$2',
+          backgroundColor: '$softBg',
+          '&[data-orientation="vertical"]': {
+            width: '3px',
+            height: '100%',
+            alignSelf: 'unset',
+          },
           '&[data-disabled]': {
-            backgroundColor: '$textMuted',
+            backgroundColor: '$gray6',
           },
         },
         [`& ${StyledRange}`]: {
+          height: '3px',
           backgroundColor: '$selectionBg',
+          '&[data-orientation="vertical"]': {
+            width: '3px',
+            height: 'unset',
+          },
           '&[data-disabled]': {
-            backgroundColor: '$focusRingMuted',
+            backgroundColor: '$gray8',
           },
         },
       },
     },
     size: {
       xs: {
+        '&[data-orientation="vertical"]': {
+          width: '$xs',
+        },
         '&[data-orientation="horizontal"]': {
           height: '$xs',
+        },
+        [`& ${StyledTrack}`]: {
+          borderRadius: '$2',
+        },
+      },
+      sm: {
+        '&[data-orientation="vertical"]': {
+          width: '$sm',
+        },
+        '&[data-orientation="horizontal"]': {
+          height: '$sm',
         },
         [`& ${StyledTrack}`]: {
           borderRadius: '$2',
@@ -124,7 +234,6 @@ const StyledSlider = styled(SliderPrimitive.Root, {
 const StyledSliderSlot = styled('div', {
   position: 'absolute',
   pointerEvents: 'none',
-  top: '50%',
   fontSize: '9px',
   fontFamily: '$mono',
   color: '$textMuted',
@@ -132,20 +241,46 @@ const StyledSliderSlot = styled('div', {
     position: {
       start: {
         left: '$1',
+        top: '50%',
         transform: 'translateY(-50%)',
       },
       center: {
         left: '50%',
+        top: '50%',
         transform: 'translate(-50%, -50%)',
       },
       end: {
         right: '$1',
+        top: '50%',
         transform: 'translateY(-50%)',
+      },
+    },
+    orientation: {
+      horizontal: {},
+      vertical: {
+        start: {
+          bottom: '$1',
+          left: '50%',
+          top: 'unset',
+          transform: 'translateX(-50%)',
+        },
+        center: {
+          left: '50%',
+          top: '50%',
+          transform: 'translate(-50%, -50%)',
+        },
+        end: {
+          top: '$1',
+          left: '50%',
+          right: 'unset',
+          transform: 'translateX(-50%)',
+        },
       },
     },
   },
   defaultVariants: {
     position: 'start',
+    orientation: 'horizontal',
   },
 })
 
@@ -166,32 +301,34 @@ interface RulerProps {
   length: number
   interval: number
   majorInterval?: number
+  orientation?: 'horizontal' | 'vertical'
 }
 
 const StyledLine = styled('line', {
   stroke: '$borderStrong',
 })
 
-function Ruler({ length, interval, majorInterval }: RulerProps) {
+function Ruler({ length, interval, majorInterval, orientation = 'horizontal' }: RulerProps) {
   const ticks: number[] = []
   for (let i = 0; i <= length; i += interval) {
     ticks.push(i)
   }
 
+  const isVertical = orientation === 'vertical'
+
   return (
     <RulerContainer>
-      <svg width="100%" height="24px">
+      <svg width={isVertical ? '24px' : '100%'} height={isVertical ? '100%' : '24px'}>
         {ticks.map((tick, index, arr) => {
           if (index === 0 || index === arr.length - 1) return null
-          return (
-            <StyledLine
-              key={index}
-              x1={(tick / length) * 100 + '%'}
-              y1="24"
-              x2={(tick / length) * 100 + '%'}
-              y2={majorInterval ? (index % majorInterval === 0 ? '12' : '19') : '19'} // Adjust major tick length
-            />
-          )
+          const position = (tick / length) * 100 + '%'
+          const isMajor = majorInterval ? index % majorInterval === 0 : false
+
+          if (isVertical) {
+            return <StyledLine key={index} x1="24" y1={position} x2={isMajor ? '12' : '19'} y2={position} />
+          }
+
+          return <StyledLine key={index} x1={position} y1="24" x2={position} y2={isMajor ? '12' : '19'} />
         })}
       </svg>
     </RulerContainer>
@@ -233,6 +370,8 @@ export function Slider(props: SliderProps) {
     min = 0,
     max = 100,
     showRuler = false,
+    size = 'sm',
+    orientation = 'horizontal',
     ...rest
   } = props
   const [value, setValue] = useControllableState({
@@ -268,21 +407,47 @@ export function Slider(props: SliderProps) {
       onPointerDown={handlePointerDown}
       onPointerUp={handlePointerUp}
       disabled={disabled}
+      orientation={orientation}
       {...rest}
       compact={compact}>
       <StyledTrack className="slider-track">
         <StyledRange className="slider-range" />
-        {value![0] === min && <StyledSliderSlot position="start">MIN</StyledSliderSlot>}
-        {value![value!.length - 1] === max && <StyledSliderSlot position="end">MAX</StyledSliderSlot>}
-        {showRuler && <Ruler length={max} interval={1} majorInterval={Math.round(max / 10)} />}
-        {value?.map((v, i) => <StyledThumb key={i} />)}
+        {value![0] === min && (
+          <StyledSliderSlot position="start" orientation={orientation}>
+            MIN
+          </StyledSliderSlot>
+        )}
+        {value![value!.length - 1] === max && (
+          <StyledSliderSlot position="end" orientation={orientation}>
+            MAX
+          </StyledSliderSlot>
+        )}
+        {showRuler && (
+          <Ruler length={max} interval={1} majorInterval={Math.round(max / 10)} orientation={orientation} />
+        )}
       </StyledTrack>
-      {/* {tooltip ? (
-        <Tooltip content={value[0]} arrow open={showTooltip}>
-          <StyledThumb />
-        </Tooltip>
-      ) : ( */}
-      {/* )} */}
+      {value?.map((v, i) => (
+        <StyledThumb className="slider-thumb" key={i} size={size} compact={compact}>
+          {!compact && (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 16 16"
+              fill="none"
+              id="Menu--Streamline-Majesticons"
+              height={12}
+              width={12}>
+              <desc>{'\n    Menu Streamline Icon: https://streamlinehq.com\n  '}</desc>
+              <path
+                stroke="CurrentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={1.3333}
+                d="M4 5.333333333333333h8M4 8h8M4 10.666666666666666h8"
+              />
+            </svg>
+          )}
+        </StyledThumb>
+      ))}
     </StyledSlider>
   )
 }
