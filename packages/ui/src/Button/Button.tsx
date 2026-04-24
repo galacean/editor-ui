@@ -63,7 +63,7 @@ const StyledButton = styled('button', button, {
         fontSize: '$2',
         lineHeight: '$lineHeights$2',
         fontWeight: 500,
-        borderRadius: '$md',
+        borderRadius: '$xl',
         padding: '0 $4',
         [`& ${Spin}`]: {
           height: '$iconLg',

@@ -50,6 +50,15 @@ const StyledItem = styled(
             height: '$iconMd',
           },
         },
+        lg: {
+          height: '$lg',
+          borderRadius: '$xl',
+          fontSize: '$2',
+          '& > svg': {
+            width: '$iconLg',
+            height: '$iconLg',
+          },
+        },
       },
       fancy: {
         true: {
@@ -103,7 +112,7 @@ const StyledItem = styled(
 
 type ToggleGroupPrimitiveProps = ToggleGroupSingleProps | ToggleGroupMultipleProps
 
-type ToggleGroupProps = ToggleGroupPrimitiveProps & { size?: 'sm' | 'md'; variant?: 'primary' | 'subtle' }
+type ToggleGroupProps = ToggleGroupPrimitiveProps & { size?: 'sm' | 'md' | 'lg'; variant?: 'primary' | 'subtle' }
 
 export const ToggleGroup = forwardRef<HTMLDivElement, ToggleGroupProps>(function ToggleGroup(props, forwardedRef) {
   const { size, variant, children: propChildren, ...rest } = props
@@ -120,7 +129,7 @@ export const ToggleGroup = forwardRef<HTMLDivElement, ToggleGroupProps>(function
 
 export interface ToggleGroupItemProps extends PrimitiveItemProps {
   fancy?: boolean
-  size?: 'sm' | 'md'
+  size?: 'sm' | 'md' | 'lg'
   subtle?: boolean
 }
 

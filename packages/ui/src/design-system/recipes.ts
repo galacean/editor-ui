@@ -142,7 +142,7 @@ export const basicItemStyle = styled('div', {
       md: {
         height: '$md',
         borderRadius: '$md',
-        fontSize: '$2',
+        fontSize: '$1_5',
         padding: '0 $3',
       },
       lg: {

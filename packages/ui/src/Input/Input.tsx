@@ -168,7 +168,7 @@ export const StyledInputRoot = styled('div', {
         height: '$lg',
         fontSize: '$2',
         lineHeight: '$lineHeights$2',
-        borderRadius: '$md',
+        borderRadius: '$xl',
       },
     },
     disabled: {
