@@ -76,6 +76,18 @@ function groupAssets<T extends BasicAssetType>(assets: T[], groupBy?: (asset: T)
 
 const key = 'galacean-gui-asset-picker-display-mode'
 
+function stripImageExtension(name: string) {
+  return name.replace(/\.(png|jpe?g|webp|hdr)$/i, '')
+}
+
+function getAssetDisplayName<T extends BasicAssetType>(asset: T) {
+  const type = asset.getMetaConfig?.().type
+  if (['Texture', 'Texture2D', 'TextureCube'].includes(type)) {
+    return stripImageExtension(asset.name)
+  }
+  return asset.name
+}
+
 export function AssetPickerContent<T extends BasicAssetType>(props: AssetPickerPopoverProps<T>) {
   const { assets, customFilter, onSelect, selectedAssetId, groupBy } = props
   const searchRef = useRef<HTMLInputElement>(null)
@@ -122,7 +134,7 @@ export function AssetPickerContent<T extends BasicAssetType>(props: AssetPickerP
               <PickableAssetItem
                 selected={selectedAssetId === asset.id}
                 key={asset.id}
-                name={asset.name}
+                name={getAssetDisplayName(asset)}
                 thumbnail={asset.thumbnailUrl}
                 onClick={() => {
                   if (!asset.isInitCompleted) return
