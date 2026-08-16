@@ -35,6 +35,11 @@ const StyledField = styled('div', {
       },
       asset: {
         gridTemplateColumns: 'minmax(0, 8fr) $sm $sm',
+        alignItems: 'center',
+      },
+      assetPreview: {
+        gridTemplateColumns: 'minmax(0, 1fr)',
+        alignItems: 'center',
       },
     },
   },

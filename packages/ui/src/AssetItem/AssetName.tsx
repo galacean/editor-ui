@@ -17,7 +17,7 @@ export const StyledAssetNameRoot = styled('div', {
 
 const AssetNameDisplay = styled('span', {
   display: 'block',
-  height: '$5',
+  minHeight: '$5',
   color: '$gray11',
   padding: '0 $1_5',
   variants: {

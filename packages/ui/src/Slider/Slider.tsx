@@ -28,12 +28,26 @@ const StyledRange = styled(SliderPrimitive.Range, {
   position: 'absolute',
   backgroundColor: '$softBgHover',
   height: '100%',
+  borderRadius: 'inherit',
   transition: 'background-color .2s ease',
   '&[data-orientation="vertical"]': {
     width: '100%',
   },
   '&[data-disabled]': {
     backgroundColor: '$surfaceSubtle',
+  },
+  '&::after': {
+    content: '""',
+    display: 'block',
+    position: 'absolute',
+    right: '$1',
+    height: '60%',
+    width: '$0_5',
+    borderRadius: '$1',
+    backgroundColor: '$gray9',
+    top: '50%',
+    transition: 'background-color .2s ease, transform .2s ease',
+    transform: 'translateY(-50%) scale(1)',
   },
 })
 
@@ -75,9 +89,19 @@ const StyledSlider = styled(SliderPrimitive.Root, {
     [`& ${StyledRange}`]: {
       backgroundColor: '$selectionBgHover',
     },
+    [`& ${StyledRange}::after`]: {
+      backgroundColor: '$white',
+      transform: 'translateY(-50%) scale(1.02)',
+    },
     [`& ${StyledThumb}`]: {
       width: '3px',
       backgroundColor: '$selectionText',
+    },
+  },
+  '&:active': {
+    [`& ${StyledRange}::after`]: {
+      backgroundColor: '$white',
+      transform: 'translateY(-50%) scale(1.16)',
     },
   },
   '&[data-disabled]': {
