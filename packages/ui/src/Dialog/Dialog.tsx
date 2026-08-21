@@ -108,6 +108,7 @@ export function DialogTrigger(props: { children?: React.ReactNode }) {
 export interface DialogProps {
   open?: boolean
   disabled?: boolean
+  title?: React.ReactNode
   trigger?: React.ReactNode
   children?: React.ReactNode
   closable?: boolean
@@ -120,7 +121,7 @@ export interface DialogProps {
 }
 
 export function Dialog(props: DialogProps) {
-  const { trigger, children, closable, onOpenChange, disabled, css, zIndex, className, id, modal = true, ...rest } = props
+  const { title, trigger, children, closable, onOpenChange, disabled, css, zIndex, className, id, modal = true, ...rest } = props
 
   return (
     <DialogRoot onOpenChange={onOpenChange} modal={modal} {...rest}>
@@ -131,7 +132,7 @@ export function Dialog(props: DialogProps) {
       )}
       <DialogContent id={id} css={css} zIndex={zIndex} className={className}>
         <VisuallyHidden.Root>
-          <DialogPrimitive.Title />
+          <DialogPrimitive.Title>{title}</DialogPrimitive.Title>
           <DialogPrimitive.Description />
         </VisuallyHidden.Root>
         {children}
