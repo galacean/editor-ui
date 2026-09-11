@@ -4,7 +4,6 @@ import {
   IconAnimationControllerFile,
   IconAnimatorClipFile,
   IconFontFile,
-  IconLottieFile,
   IconPrefabFile,
   IconSceneFile,
   IconShaderFile,
@@ -80,10 +79,6 @@ export const Overview = () => {
       <IconItem>
         <IconFontFile />
         <Text>Font</Text>
-      </IconItem>
-      <IconItem>
-        <IconLottieFile />
-        <Text>Lottie</Text>
       </IconItem>
       <IconItem>
         <IconPrefabFile />

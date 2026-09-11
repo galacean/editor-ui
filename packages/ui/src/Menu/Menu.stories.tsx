@@ -69,14 +69,12 @@ export const DropdownMenuDemo: StoryFn<any> = () => {
         }>
         <SubMenuItem name="Animation">
           <MenuItem name="Sprite Renderer" />
-          <MenuItem name="Lottie" />
           <MenuItem name="Mars" />
           <MenuItem name="Spine Animation" />
         </SubMenuItem>
         <SubMenuItem name="Clips">
           <MenuItem name="Sprite Mask" />
           <MenuItem name="Sprite Renderer" />
-          <MenuItem name="Lottie" shortcuts={['⌘', 'D']} />
           <MenuItem name="Mars" />
           <MenuItem name="Spine Animation" />
         </SubMenuItem>
@@ -97,14 +95,12 @@ export const ContextMenuDemo: StoryFn<typeof ContextMenu> = () => {
       <SubMenuItem name="Animation">
         <MenuItem name="Sprite Mask" />
         <MenuItem name="Sprite Renderer" />
-        <MenuItem name="Lottie" />
         <MenuItem name="Mars" />
         <MenuItem name="Spine Animation" />
       </SubMenuItem>
       <SubMenuItem name="Clips">
         <MenuItem name="Sprite Mask" />
         <MenuItem name="Sprite Renderer" />
-        <MenuItem name="Lottie" />
         <MenuItem name="Mars" />
         <MenuItem name="Spine Animation" />
       </SubMenuItem>
@@ -126,7 +122,6 @@ export const ContextMenuInList = (args) => {
           <SubMenuItem name="Animation">
             <MenuItem name="Sprite Mask" />
             <MenuItem name="Sprite Renderer" />
-            <MenuItem name="Lottie" />
             <MenuItem name="Mars" />
             <MenuItem name="Spine Animation" />
           </SubMenuItem>
@@ -152,7 +147,6 @@ export const ContextMenuInList = (args) => {
             <MenuGroup label="Animation" divider>
               <MenuItem name="Sprite Mask" />
               <MenuItem name="Sprite Renderer" />
-              <MenuItem name="Lottie" />
               <MenuItem name="Mars" />
               <MenuItem name="Spine Animation" />
               <MenuCheckboxItem checked={true} name="Check me" />
