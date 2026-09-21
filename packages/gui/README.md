@@ -11,6 +11,11 @@ An opinionated GUI library designed to create engaging and functional online too
 - ♿ **Accessibility First** - Built with accessibility in mind
 - 🔧 **TypeScript Support** - Full type safety and IntelliSense
 
+## Asset labels
+
+Asset pickers use the owner-provided `displayName` when present and otherwise use `name`.
+The component does not infer file types or strip extensions; selection callbacks keep the original asset object and value.
+
 ## Installation
 
 ### For React Projects

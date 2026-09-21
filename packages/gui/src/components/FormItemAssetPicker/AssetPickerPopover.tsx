@@ -4,15 +4,8 @@ import { AssetPickerContent } from "./AssetPickerContent";
 
 import { Popover } from "@galacean/editor-ui";
 
-export interface BasicAssetType {
-  id: string;
-  name: string;
-  isSubAsset?: boolean;
-  path?: string;
-  vitualPath?: string;
-  [key: string]: any;
-  getMetaConfig: () => any;
-}
+import type { BasicAssetType } from "./PickableAssetItem";
+export type { BasicAssetType } from "./PickableAssetItem";
 
 export function dirname(path: string) {
   const match = /(\/|\\)[^/\\]*$/.exec(path);

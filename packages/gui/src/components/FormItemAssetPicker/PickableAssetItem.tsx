@@ -4,6 +4,8 @@ import { AssetItem, PopoverCloseTrigger, type AssetItemProps } from '@galacean/e
 export interface BasicAssetType {
   id: string;
   name: string;
+  /** Label supplied by the asset owner; independent of file names and references. */
+  displayName?: string;
   isSubAsset?: boolean;
   path?: string;
   vitualPath?: string;

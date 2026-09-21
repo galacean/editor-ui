@@ -144,10 +144,6 @@ const StyledTriggerButton = styled(Button, {
   },
 })
 
-function stripImageExtension(name: string) {
-  return name.replace(/\.(png|jpe?g|webp|hdr)$/i, '')
-}
-
 function _FormItemAssetPicker<T extends BasicAssetType>(props: FormItemAssetPickerProps<T>, ref) {
   const [isDraggingOver, setIsDraggingOver] = useState(false)
   const {
@@ -171,7 +167,7 @@ function _FormItemAssetPicker<T extends BasicAssetType>(props: FormItemAssetPick
   const assetType = asset?.getMetaConfig?.().type
   const useLargePreview = hasSelectedAsset && ['Texture', 'Texture2D', 'TextureCube'].includes(assetType)
   const selectedThumbnail = useLargePreview ? asset?.thumbnailUrl : undefined
-  const textureDisplayName = useLargePreview ? stripImageExtension(value) : value
+  const displayName = asset?.displayName ?? value
 
   const dropRef = useDrop({
     accept: dropLayer,
@@ -212,7 +208,7 @@ function _FormItemAssetPicker<T extends BasicAssetType>(props: FormItemAssetPick
                 sideOffset={6}
                 trigger={
                   <TextureAssetName id={label} disabled={disabled}>
-                    <TextureAssetNameText>{textureDisplayName}</TextureAssetNameText>
+                    <TextureAssetNameText>{displayName}</TextureAssetNameText>
                     <IconChevronDown size="14px" />
                   </TextureAssetName>
                 }
@@ -252,7 +248,7 @@ function _FormItemAssetPicker<T extends BasicAssetType>(props: FormItemAssetPick
         justifyContent: 'initial',
       }}>
       <PreviewFallbackIcon size="14px" />
-      <Placeholder>{value ? value : placeholder}</Placeholder>
+      <Placeholder>{value ? displayName : placeholder}</Placeholder>
     </StyledTriggerButton>
   )
 
